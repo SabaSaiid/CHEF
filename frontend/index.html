@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEF — Constraint-based Hybrid Eating Framework</title>
+    <meta name="description" content="CHEF: A smart food assistant that parses ingredients, discovers recipes, and provides nutritional insights. Capstone project.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- ── Navigation ──────────────────────────────────────── -->
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <span class="nav-logo">👨‍🍳</span>
+            <div class="nav-brand-text">
+                <span class="nav-title">CHEF</span>
+                <span class="nav-subtitle">Constraint-based Hybrid Eating Framework</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-page="ingredients" id="nav-ingredients">Ingredients</button>
+            <button class="nav-btn" data-page="recipes" id="nav-recipes">Recipes</button>
+            <button class="nav-btn" data-page="nutrition" id="nav-nutrition">Nutrition</button>
+            <button class="nav-btn" data-page="detection" id="nav-detection">Detection</button>
+            <button class="nav-btn" data-page="saved" id="nav-saved">Saved</button>
+        </div>
+    </nav>
+
+    <!-- ── Main Content ────────────────────────────────────── -->
+    <main id="app-main">
+
+        <!-- INGREDIENTS PAGE -->
+        <section id="page-ingredients" class="page active">
+            <div class="page-header">
+                <h1>Enter Ingredients</h1>
+                <p class="subtitle">Type what you have and we'll find recipes for you</p>
+            </div>
+            <div class="card glass">
+                <textarea id="ingredient-input" placeholder="Enter ingredients, e.g.:&#10;2 cups atta (wheat flour)&#10;1 cup chana dal&#10;potatoes, onion, tomato&#10;paneer, green chili, cumin" rows="6"></textarea>
+                <button id="btn-parse" class="btn-primary">
+                    <span class="btn-icon">🔍</span> Analyze
+                </button>
+            </div>
+            <div id="parse-results" class="results-area"></div>
+        </section>
+
+        <!-- RECIPES PAGE -->
+        <section id="page-recipes" class="page">
+            <div class="page-header">
+                <h1>Find Recipes</h1>
+                <p class="subtitle">Search by ingredients — we'll suggest what you can cook</p>
+            </div>
+            <div class="card glass">
+                <div class="input-row">
+                    <input type="text" id="recipe-ingredients" placeholder="e.g. paneer, tomato, onion">
+                    <button id="btn-search" class="btn-primary">
+                        <span class="btn-icon">🍽️</span> Search
+                    </button>
+                </div>
+                <div class="constraints-row">
+                    <span class="constraints-label">⚙️ Constraints</span>
+                    <select id="filter-diet">
+                        <option value="">Any Diet</option>
+                        <option value="vegetarian">🥬 Vegetarian</option>
+                        <option value="vegan">🌱 Vegan</option>
+                        <option value="keto">🥑 Keto</option>
+                        <option value="gluten-free">🌾 Gluten-Free</option>
+                        <option value="high-protein">💪 High-Protein</option>
+                    </select>
+                    <input type="number" id="filter-max-cal" placeholder="Max kcal" min="50" max="5000" step="50" class="constraint-input">
+                    <input type="number" id="filter-max-time" placeholder="Max min" min="5" max="300" step="5" class="constraint-input">
+                </div>
+            </div>
+            <div id="recipe-results" class="results-area"></div>
+        </section>
+
+        <!-- NUTRITION PAGE -->
+        <section id="page-nutrition" class="page">
+            <div class="page-header">
+                <h1>Nutrition Lookup</h1>
+                <p class="subtitle">Check nutritional values for common foods</p>
+            </div>
+            <div class="card glass">
+                <div class="input-row">
+                    <input type="text" id="nutrition-food" placeholder="e.g. chicken breast">
+                    <input type="number" id="nutrition-qty" placeholder="Qty" value="1" min="0.1" step="0.1" class="qty-input">
+                    <button id="btn-nutrition" class="btn-primary">
+                        <span class="btn-icon">📊</span> Analyze
+                    </button>
+                </div>
+            </div>
+            <div id="nutrition-results" class="results-area"></div>
+        </section>
+
+        <!-- DETECTION PAGE -->
+        <section id="page-detection" class="page">
+            <div class="page-header">
+                <h1>Food Detection</h1>
+                <p class="subtitle">Upload an image to identify food items</p>
+                <div class="demo-badge">🧪 Rule-Based Demo — detects by filename keywords, not real ML</div>
+            </div>
+            <div class="card glass">
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="detection-file" accept="image/*" hidden>
+                    <div class="upload-content">
+                        <span class="upload-icon">📸</span>
+                        <p>Click to upload or drag an image</p>
+                        <p class="upload-hint">Try naming your file like "chicken_salad.jpg" or "pizza.png"</p>
+                    </div>
+                </div>
+                <div id="selected-file" class="selected-file"></div>
+                <button id="btn-detect" class="btn-primary" disabled>
+                    <span class="btn-icon">🔬</span> Detect Food
+                </button>
+            </div>
+            <div id="detection-results" class="results-area"></div>
+        </section>
+
+        <!-- SAVED RECIPES PAGE -->
+        <section id="page-saved" class="page">
+            <div class="page-header">
+                <h1>Saved Recipes</h1>
+                <p class="subtitle">Your bookmarked recipes</p>
+            </div>
+            <div id="saved-results" class="results-area"></div>
+        </section>
+
+    </main>
+
+    <!-- ── Status Bar ──────────────────────────────────────── -->
+    <div id="status-bar" class="status-bar hidden">
+        <span id="status-text"></span>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

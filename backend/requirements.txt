@@ -1,0 +1,20 @@
+# CHEF — Python 3.14-compatible dependencies
+# Install: pip install -r requirements.txt
+
+# Core framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+
+# Database (SQLite — uses Python's built-in sqlite3, no extra driver)
+sqlalchemy>=2.0.36
+
+# File uploads (for food detection endpoint)
+python-multipart>=0.0.18
+
+# HTTP client (for optional external API calls)
+httpx>=0.28.0
+
+# Environment
+python-dotenv>=1.0.1
