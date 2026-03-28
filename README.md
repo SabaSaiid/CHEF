@@ -110,4 +110,5 @@ Edit `backend/.env` to configure:
 | User Profile + TDEE Calculator | Input age, weight, height, activity level to calculate recommended daily intake |
 | Recipe of the Day | Randomly featured recipe on the dashboard to encourage exploration |
 | Search History | Show recent ingredient searches for quick re-access |
-| Dark / Light Theme Toggle | User-selectable theme preference (currently dark-only) |
+| Dark / Light Theme Toggle | User-selectable theme preference (currently Light-only) |
+
