@@ -33,3 +33,5 @@ class SavedRecipe(Base):
 
     def __repr__(self) -> str:
         return f"<SavedRecipe id={self.id} title={self.title!r}>"
+
+
