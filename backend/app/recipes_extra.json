@@ -1,0 +1,8070 @@
+[
+  {
+    "id": "x-1",
+    "title": "Aloo Tikki",
+    "summary": "Crispy spiced potato patties served with chutneys",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "onion",
+      "peas",
+      "cumin",
+      "coriander powder",
+      "bread crumbs",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 4,
+      "carbs_g": 25,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-2",
+    "title": "Chole Kulche",
+    "summary": "Spicy chickpea curry with soft leavened bread",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "maida",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 14,
+      "carbs_g": 50,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-3",
+    "title": "Kadai Paneer",
+    "summary": "Paneer in spicy bell pepper and tomato gravy",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "paneer",
+      "bell pepper",
+      "tomato",
+      "onion",
+      "garlic",
+      "cumin",
+      "coriander seeds",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 290,
+      "protein_g": 16,
+      "carbs_g": 12,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "x-4",
+    "title": "Paneer Do Pyaza",
+    "summary": "Paneer with double onion gravy",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "paneer",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "cumin",
+      "garam masala",
+      "cream",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein_g": 15,
+      "carbs_g": 14,
+      "fat_g": 21
+    }
+  },
+  {
+    "id": "x-5",
+    "title": "Methi Malai Murg",
+    "summary": "Chicken in fenugreek cream sauce",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "methi leaves",
+      "cream",
+      "onion",
+      "garlic",
+      "ginger",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 28,
+      "carbs_g": 8,
+      "fat_g": 26
+    }
+  },
+  {
+    "id": "x-6",
+    "title": "Paneer Bhurji",
+    "summary": "Scrambled paneer with onion and spices",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "paneer",
+      "onion",
+      "tomato",
+      "green chili",
+      "turmeric",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 16,
+      "carbs_g": 8,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-7",
+    "title": "Kali Dal",
+    "summary": "Slow-cooked whole black lentils",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "urad dal",
+      "butter",
+      "cream",
+      "onion",
+      "tomato",
+      "garlic",
+      "ginger",
+      "garam masala",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 340,
+      "protein_g": 14,
+      "carbs_g": 30,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-8",
+    "title": "Mixed Veg Curry",
+    "summary": "Seasonal vegetables in tomato-onion gravy",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "carrot",
+      "peas",
+      "beans",
+      "cauliflower",
+      "onion",
+      "tomato",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 5,
+      "carbs_g": 20,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-9",
+    "title": "Mushroom Masala",
+    "summary": "Button mushrooms in spicy onion gravy",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "mushroom",
+      "onion",
+      "tomato",
+      "garlic",
+      "ginger",
+      "cumin",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 130,
+      "protein_g": 5,
+      "carbs_g": 10,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-10",
+    "title": "Baingan Ka Bharta",
+    "summary": "Smoky roasted eggplant mash",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "brinjal",
+      "onion",
+      "tomato",
+      "green chili",
+      "garlic",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 3,
+      "carbs_g": 10,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-11",
+    "title": "Bhindi Masala",
+    "summary": "Okra stir-fried with onion and spices",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "bhindi",
+      "onion",
+      "tomato",
+      "turmeric",
+      "cumin",
+      "coriander powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 110,
+      "protein_g": 3,
+      "carbs_g": 10,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-12",
+    "title": "Gobi Manchurian",
+    "summary": "Indo-Chinese crispy cauliflower in tangy sauce",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "cauliflower",
+      "maida",
+      "corn flour",
+      "soy sauce",
+      "garlic",
+      "ginger",
+      "green chili",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 25,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "x-13",
+    "title": "Veg Manchurian",
+    "summary": "Mixed vegetable balls in soy-chili sauce",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "cabbage",
+      "carrot",
+      "corn flour",
+      "maida",
+      "soy sauce",
+      "garlic",
+      "ginger",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 4,
+      "carbs_g": 28,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-14",
+    "title": "Paneer Lababdar",
+    "summary": "Paneer in rich tomato-cashew gravy",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "paneer",
+      "tomato",
+      "cashew",
+      "onion",
+      "cream",
+      "garlic",
+      "ginger",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 330,
+      "protein_g": 15,
+      "carbs_g": 14,
+      "fat_g": 25
+    }
+  },
+  {
+    "id": "x-15",
+    "title": "Dum Biryani",
+    "summary": "Slow-cooked layered rice with marinated meat",
+    "ready_in_minutes": 70,
+    "servings": 5,
+    "ingredients": [
+      "basmati rice",
+      "mutton",
+      "onion",
+      "curd",
+      "ginger",
+      "garlic",
+      "garam masala",
+      "saffron",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 480,
+      "protein_g": 22,
+      "carbs_g": 55,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-16",
+    "title": "Nihari",
+    "summary": "Slow-cooked meat stew, Lucknowi specialty",
+    "ready_in_minutes": 180,
+    "servings": 5,
+    "ingredients": [
+      "beef",
+      "onion",
+      "ginger",
+      "garlic",
+      "turmeric",
+      "garam masala",
+      "ghee",
+      "atta",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 28,
+      "carbs_g": 10,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "x-17",
+    "title": "Korma",
+    "summary": "Mild creamy curry with nuts and yogurt",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "curd",
+      "cashew",
+      "onion",
+      "garlic",
+      "ginger",
+      "cardamom",
+      "cream",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein_g": 25,
+      "carbs_g": 12,
+      "fat_g": 28
+    }
+  },
+  {
+    "id": "x-18",
+    "title": "Keema Matar",
+    "summary": "Minced meat with green peas",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "keema",
+      "peas",
+      "onion",
+      "tomato",
+      "garlic",
+      "ginger",
+      "cumin",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 22,
+      "carbs_g": 12,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "x-19",
+    "title": "Chicken 65",
+    "summary": "Spicy deep-fried chicken, South Indian bar snack",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "curd",
+      "corn flour",
+      "red chili powder",
+      "garlic",
+      "ginger",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 22,
+      "carbs_g": 10,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-20",
+    "title": "Reshmi Kebab",
+    "summary": "Silky smooth chicken kebabs",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "cream",
+      "cheese",
+      "cashew",
+      "garlic",
+      "ginger",
+      "cardamom",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 24,
+      "carbs_g": 5,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-21",
+    "title": "Medu Vada",
+    "summary": "Crispy urad dal doughnuts, South Indian breakfast",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "urad dal",
+      "onion",
+      "curry leaves",
+      "green chili",
+      "ginger",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 8,
+      "carbs_g": 18,
+      "fat_g": 9
+    }
+  },
+  {
+    "id": "x-22",
+    "title": "Rava Dosa",
+    "summary": "Crispy semolina crepe with cumin and pepper",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "semolina",
+      "rice flour",
+      "cumin",
+      "pepper",
+      "curry leaves",
+      "onion",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 170,
+      "protein_g": 4,
+      "carbs_g": 28,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-23",
+    "title": "Mysore Masala Dosa",
+    "summary": "Dosa with red chutney and potato filling",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "urad dal",
+      "potato",
+      "onion",
+      "red chili",
+      "garlic",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 7,
+      "carbs_g": 40,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-24",
+    "title": "Bisi Bele Bath",
+    "summary": "Karnataka-style spiced rice with lentils and veggies",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "arhar dal",
+      "carrot",
+      "beans",
+      "tamarind",
+      "ghee",
+      "mustard seeds",
+      "curry leaves",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 8,
+      "carbs_g": 40,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-25",
+    "title": "Avial",
+    "summary": "Mixed vegetables in coconut-yogurt sauce, Kerala style",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "drumstick",
+      "carrot",
+      "beans",
+      "raw banana",
+      "coconut",
+      "curd",
+      "curry leaves",
+      "coconut oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 4,
+      "carbs_g": 15,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-26",
+    "title": "Rasam",
+    "summary": "Tangy pepper-tamarind soup, South Indian comfort food",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "tomato",
+      "tamarind",
+      "pepper",
+      "cumin",
+      "mustard seeds",
+      "curry leaves",
+      "garlic",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 40,
+      "protein_g": 1,
+      "carbs_g": 6,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-27",
+    "title": "Payasam",
+    "summary": "South Indian milk and vermicelli pudding",
+    "ready_in_minutes": 30,
+    "servings": 5,
+    "ingredients": [
+      "vermicelli",
+      "milk",
+      "sugar",
+      "ghee",
+      "cashew",
+      "raisins",
+      "cardamom"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 40,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-28",
+    "title": "Kozhi Curry",
+    "summary": "Kerala chicken curry with coconut milk",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "coconut milk",
+      "onion",
+      "tomato",
+      "curry leaves",
+      "garlic",
+      "ginger",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 24,
+      "carbs_g": 8,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "x-29",
+    "title": "Meen Moilee",
+    "summary": "Kerala fish curry in mild coconut milk",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "coconut milk",
+      "onion",
+      "tomato",
+      "green chili",
+      "turmeric",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 22,
+      "carbs_g": 6,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "x-30",
+    "title": "Vendakkai Poriyal",
+    "summary": "Tamil-style okra stir fry with coconut",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "bhindi",
+      "onion",
+      "coconut",
+      "mustard seeds",
+      "urad dal",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 100,
+      "protein_g": 3,
+      "carbs_g": 10,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-31",
+    "title": "Machher Jhol",
+    "summary": "Bengali fish curry in mustard-turmeric broth",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "potato",
+      "tomato",
+      "turmeric",
+      "mustard seeds",
+      "green chili",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 20,
+      "carbs_g": 12,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-32",
+    "title": "Shukto",
+    "summary": "Bengali mixed vegetable bittersweet curry",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "bitter gourd",
+      "potato",
+      "drumstick",
+      "brinjal",
+      "milk",
+      "mustard paste",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 130,
+      "protein_g": 4,
+      "carbs_g": 16,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-33",
+    "title": "Luchi",
+    "summary": "Bengali deep-fried puffed bread",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "ghee",
+      "salt",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 5,
+      "carbs_g": 35,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-34",
+    "title": "Mishti Pulao",
+    "summary": "Bengali sweet fragrant rice",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "basmati rice",
+      "ghee",
+      "sugar",
+      "raisins",
+      "cashew",
+      "cardamom",
+      "bay leaf",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 4,
+      "carbs_g": 42,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-35",
+    "title": "Chingri Malai Curry",
+    "summary": "Prawns in coconut milk, Bengali delicacy",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "prawn",
+      "coconut milk",
+      "onion",
+      "turmeric",
+      "green chili",
+      "sugar",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 22,
+      "carbs_g": 8,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-36",
+    "title": "Thukpa",
+    "summary": "Noodle soup from Northeast India",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "noodles",
+      "chicken",
+      "carrot",
+      "cabbage",
+      "garlic",
+      "ginger",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 14,
+      "carbs_g": 22,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-37",
+    "title": "Momos",
+    "summary": "Steamed dumplings filled with veggies or meat",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "cabbage",
+      "carrot",
+      "onion",
+      "garlic",
+      "ginger",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 6,
+      "carbs_g": 25,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-38",
+    "title": "Aloo Pitika",
+    "summary": "Assamese mashed potato with mustard oil",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "potato",
+      "onion",
+      "green chili",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 2,
+      "carbs_g": 20,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "x-39",
+    "title": "Pakhala Bhaat",
+    "summary": "Odia fermented rice in water",
+    "ready_in_minutes": 15,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "curd",
+      "onion",
+      "green chili",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 3,
+      "carbs_g": 28,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-40",
+    "title": "Dalma",
+    "summary": "Odia dal with mixed vegetables",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "moong dal",
+      "pumpkin",
+      "raw banana",
+      "tomato",
+      "turmeric",
+      "cumin",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 8,
+      "carbs_g": 25,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-41",
+    "title": "Dal Baati Churma",
+    "summary": "Rajasthani trio of baked bread, dal, and sweet",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "ghee",
+      "arhar dal",
+      "onion",
+      "tomato",
+      "sugar",
+      "cardamom",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 12,
+      "carbs_g": 55,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "x-42",
+    "title": "Gatte Ki Sabji",
+    "summary": "Besan dumplings in yogurt gravy",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "besan",
+      "curd",
+      "onion",
+      "cumin",
+      "turmeric",
+      "red chili powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 8,
+      "carbs_g": 18,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "x-43",
+    "title": "Ker Sangri",
+    "summary": "Rajasthani desert bean and berry curry",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "ker",
+      "sangri",
+      "onion",
+      "red chili powder",
+      "cumin",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 4,
+      "carbs_g": 15,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-44",
+    "title": "Pyaaz Ki Kachori",
+    "summary": "Rajasthani onion-stuffed fried pastry",
+    "ready_in_minutes": 40,
+    "servings": 5,
+    "ingredients": [
+      "maida",
+      "onion",
+      "cumin",
+      "red chili powder",
+      "coriander powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 5,
+      "carbs_g": 35,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-45",
+    "title": "Mirchi Vada",
+    "summary": "Rajasthani chili fritters with potato stuffing",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "green chili",
+      "potato",
+      "besan",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 5,
+      "carbs_g": 22,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-46",
+    "title": "Pav Bhaji",
+    "summary": "Mumbai spiced mashed vegetable curry with bread",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "cauliflower",
+      "peas",
+      "onion",
+      "tomato",
+      "butter",
+      "pav bhaji masala",
+      "bread",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 9,
+      "carbs_g": 45,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "x-47",
+    "title": "Misal Pav",
+    "summary": "Spicy sprouted moth curry with bread, Maharashtrian",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "moth beans",
+      "onion",
+      "tomato",
+      "garlic",
+      "ginger",
+      "garam masala",
+      "oil",
+      "bread",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein_g": 12,
+      "carbs_g": 38,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "x-48",
+    "title": "Puran Poli",
+    "summary": "Sweet lentil-stuffed flatbread, Maharashtrian",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "chana dal",
+      "jaggery",
+      "cardamom",
+      "ghee",
+      "turmeric",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 45,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-49",
+    "title": "Thalipeeth",
+    "summary": "Maharashtrian multi-grain flatbread",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "jowar",
+      "bajra",
+      "besan",
+      "onion",
+      "cumin",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 7,
+      "carbs_g": 30,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-50",
+    "title": "Zunka",
+    "summary": "Maharashtrian besan crumble with onion and spices",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "besan",
+      "onion",
+      "green chili",
+      "garlic",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 190,
+      "protein_g": 8,
+      "carbs_g": 18,
+      "fat_g": 9
+    }
+  },
+  {
+    "id": "x-51",
+    "title": "Aloo Chaat",
+    "summary": "Spicy tangy potato chaat with chutneys",
+    "ready_in_minutes": 15,
+    "servings": 3,
+    "ingredients": [
+      "potato",
+      "onion",
+      "green chutney",
+      "tamarind chutney",
+      "chaat masala",
+      "cumin",
+      "lemon",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 3,
+      "carbs_g": 28,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-52",
+    "title": "Papdi Chaat",
+    "summary": "Crispy wafers topped with curd and chutneys",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "curd",
+      "onion",
+      "green chutney",
+      "tamarind chutney",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 30,
+      "fat_g": 9
+    }
+  },
+  {
+    "id": "x-53",
+    "title": "Kathi Roll",
+    "summary": "Paratha wrapped around spiced filling",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "egg",
+      "onion",
+      "bell pepper",
+      "chicken",
+      "cumin",
+      "lemon",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 18,
+      "carbs_g": 30,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-54",
+    "title": "Bread Pakora",
+    "summary": "Bread triangles stuffed with potato, batter-fried",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "bread",
+      "potato",
+      "besan",
+      "green chili",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 32,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-55",
+    "title": "Aloo Bonda",
+    "summary": "Deep-fried potato balls in besan batter",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "besan",
+      "green chili",
+      "mustard seeds",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 5,
+      "carbs_g": 28,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-56",
+    "title": "Chana Chaat",
+    "summary": "Chickpea salad with onion, tomato and spices",
+    "ready_in_minutes": 10,
+    "servings": 3,
+    "ingredients": [
+      "chickpeas",
+      "onion",
+      "tomato",
+      "cucumber",
+      "lemon",
+      "chaat masala",
+      "green chili",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 8,
+      "carbs_g": 25,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-57",
+    "title": "Corn Chaat",
+    "summary": "Spiced sweet corn with butter and lime",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "corn",
+      "butter",
+      "lemon",
+      "red chili powder",
+      "chaat masala",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 4,
+      "carbs_g": 22,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-58",
+    "title": "Egg Roll",
+    "summary": "Kolkata-style egg paratha roll",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "egg",
+      "atta",
+      "onion",
+      "green chili",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 14,
+      "carbs_g": 28,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-59",
+    "title": "Masala Papad",
+    "summary": "Roasted papad topped with onion-tomato mix",
+    "ready_in_minutes": 5,
+    "servings": 2,
+    "ingredients": [
+      "papad",
+      "onion",
+      "tomato",
+      "green chili",
+      "lemon",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 100,
+      "protein_g": 5,
+      "carbs_g": 15,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "x-60",
+    "title": "Murmura Chivda",
+    "summary": "Puffed rice snack mix with peanuts and spices",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "murmura",
+      "peanuts",
+      "curry leaves",
+      "mustard seeds",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 8,
+      "carbs_g": 60,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-61",
+    "title": "Margherita Pizza",
+    "summary": "Classic Italian pizza with tomato and mozzarella",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "tomato",
+      "mozzarella",
+      "olive oil",
+      "basil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 10,
+      "carbs_g": 30,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-62",
+    "title": "Caesar Salad",
+    "summary": "Romaine lettuce with parmesan dressing and croutons",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "lettuce",
+      "parmesan",
+      "bread",
+      "olive oil",
+      "garlic",
+      "lemon",
+      "egg",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 7,
+      "carbs_g": 12,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-63",
+    "title": "Pad Thai",
+    "summary": "Thai stir-fried rice noodles with peanuts",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "rice noodles",
+      "egg",
+      "peanuts",
+      "tofu",
+      "bean sprouts",
+      "soy sauce",
+      "tamarind",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 12,
+      "carbs_g": 45,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-64",
+    "title": "Fried Rice",
+    "summary": "Chinese-style wok-fried rice with vegetables",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "egg",
+      "carrot",
+      "peas",
+      "onion",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 6,
+      "carbs_g": 35,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-65",
+    "title": "Spring Roll",
+    "summary": "Crispy vegetable rolls, Chinese appetizer",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "cabbage",
+      "carrot",
+      "beans",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 4,
+      "carbs_g": 25,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-66",
+    "title": "Noodle Soup",
+    "summary": "Clear broth with noodles and vegetables",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "noodles",
+      "carrot",
+      "cabbage",
+      "onion",
+      "garlic",
+      "ginger",
+      "soy sauce",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 5,
+      "carbs_g": 25,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-67",
+    "title": "Tom Yum Soup",
+    "summary": "Thai hot and sour shrimp soup",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "shrimp",
+      "mushroom",
+      "lemon",
+      "garlic",
+      "ginger",
+      "red chili",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 10,
+      "carbs_g": 5,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "x-68",
+    "title": "Sushi Roll",
+    "summary": "Japanese rice rolls with fish and seaweed",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "fish",
+      "nori",
+      "cucumber",
+      "rice vinegar",
+      "sugar",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 6,
+      "carbs_g": 28,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-69",
+    "title": "Teriyaki Chicken",
+    "summary": "Japanese glazed grilled chicken",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "chicken",
+      "soy sauce",
+      "sugar",
+      "garlic",
+      "ginger",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 24,
+      "carbs_g": 10,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-70",
+    "title": "Bibimbap",
+    "summary": "Korean mixed rice bowl with vegetables and egg",
+    "ready_in_minutes": 30,
+    "servings": 2,
+    "ingredients": [
+      "rice",
+      "egg",
+      "spinach",
+      "carrot",
+      "mushroom",
+      "soy sauce",
+      "sesame oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein_g": 12,
+      "carbs_g": 55,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-71",
+    "title": "Greek Salad",
+    "summary": "Mediterranean salad with feta and olives",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "cucumber",
+      "tomato",
+      "onion",
+      "feta",
+      "olives",
+      "olive oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "keto"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 5,
+      "carbs_g": 8,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "x-72",
+    "title": "Tzatziki",
+    "summary": "Greek yogurt-cucumber dip",
+    "ready_in_minutes": 10,
+    "servings": 4,
+    "ingredients": [
+      "curd",
+      "cucumber",
+      "garlic",
+      "olive oil",
+      "mint",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein_g": 3,
+      "carbs_g": 4,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-73",
+    "title": "Shakshuka",
+    "summary": "Eggs poached in spicy tomato sauce, Middle Eastern",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "egg",
+      "tomato",
+      "onion",
+      "bell pepper",
+      "garlic",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 12,
+      "carbs_g": 10,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-74",
+    "title": "Falafel Wrap",
+    "summary": "Chickpea fritters in pita with tahini",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "chickpeas",
+      "pita bread",
+      "onion",
+      "garlic",
+      "cumin",
+      "tahini",
+      "lettuce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 12,
+      "carbs_g": 40,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "x-75",
+    "title": "Pho",
+    "summary": "Vietnamese rice noodle soup with herbs",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "rice noodles",
+      "beef",
+      "onion",
+      "ginger",
+      "star anise",
+      "basil",
+      "bean sprouts",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 18,
+      "carbs_g": 35,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-76",
+    "title": "Tacos",
+    "summary": "Mexican corn tortillas with seasoned filling",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "corn tortilla",
+      "chicken",
+      "onion",
+      "tomato",
+      "lettuce",
+      "sour cream",
+      "cumin",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 14,
+      "carbs_g": 20,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-77",
+    "title": "Guacamole",
+    "summary": "Mexican avocado dip",
+    "ready_in_minutes": 10,
+    "servings": 4,
+    "ingredients": [
+      "avocado",
+      "onion",
+      "tomato",
+      "green chili",
+      "lemon",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "keto"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 2,
+      "carbs_g": 9,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "x-78",
+    "title": "Fish Tacos",
+    "summary": "Crispy fish in corn tortilla with slaw",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "corn tortilla",
+      "cabbage",
+      "lemon",
+      "curd",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 16,
+      "carbs_g": 22,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "x-79",
+    "title": "Bruschetta",
+    "summary": "Italian toasted bread with tomato-basil topping",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "bread",
+      "tomato",
+      "garlic",
+      "basil",
+      "olive oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 4,
+      "carbs_g": 22,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-80",
+    "title": "Minestrone",
+    "summary": "Italian vegetable and pasta soup",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "pasta",
+      "tomato",
+      "beans",
+      "carrot",
+      "onion",
+      "garlic",
+      "olive oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 5,
+      "carbs_g": 18,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-81",
+    "title": "Risotto",
+    "summary": "Italian creamy rice with parmesan",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "parmesan",
+      "onion",
+      "butter",
+      "garlic",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 8,
+      "carbs_g": 45,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-82",
+    "title": "Tiramisu",
+    "summary": "Italian coffee-flavoured layered dessert",
+    "ready_in_minutes": 30,
+    "servings": 6,
+    "ingredients": [
+      "maida",
+      "egg",
+      "cheese",
+      "coffee",
+      "sugar",
+      "cocoa",
+      "cream"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 290,
+      "protein_g": 5,
+      "carbs_g": 30,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "x-83",
+    "title": "Churros",
+    "summary": "Spanish fried dough with chocolate sauce",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "butter",
+      "egg",
+      "sugar",
+      "chocolate",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 4,
+      "carbs_g": 40,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-84",
+    "title": "Crepe",
+    "summary": "French thin pancakes with fillings",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "egg",
+      "milk",
+      "butter",
+      "sugar",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 6,
+      "carbs_g": 28,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "x-85",
+    "title": "Baklava",
+    "summary": "Middle Eastern layered pastry with nuts and honey",
+    "ready_in_minutes": 50,
+    "servings": 8,
+    "ingredients": [
+      "maida",
+      "pistachio",
+      "walnut",
+      "butter",
+      "honey",
+      "sugar",
+      "cardamom"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "x-86",
+    "title": "Borscht",
+    "summary": "Eastern European beetroot soup",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "beetroot",
+      "potato",
+      "cabbage",
+      "onion",
+      "garlic",
+      "cream",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 3,
+      "carbs_g": 12,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "x-87",
+    "title": "Fish and Chips",
+    "summary": "British battered fish with fried potatoes",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "potato",
+      "maida",
+      "oil",
+      "salt",
+      "lemon"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 18,
+      "carbs_g": 35,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "x-88",
+    "title": "Kimchi Fried Rice",
+    "summary": "Korean spicy fermented cabbage fried rice",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "rice",
+      "kimchi",
+      "egg",
+      "onion",
+      "soy sauce",
+      "sesame oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 10,
+      "carbs_g": 40,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "x-89",
+    "title": "Gyoza",
+    "summary": "Japanese pan-fried dumplings",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "pork",
+      "cabbage",
+      "garlic",
+      "ginger",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 10,
+      "carbs_g": 22,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "x-90",
+    "title": "Clam Chowder",
+    "summary": "American creamy clam soup",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "clams",
+      "potato",
+      "onion",
+      "cream",
+      "butter",
+      "maida",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 10,
+      "carbs_g": 15,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-91",
+    "title": "Jackfruit Curry",
+    "summary": "Unripe jackfruit cooked as meat substitute",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "jackfruit",
+      "onion",
+      "tomato",
+      "coconut milk",
+      "turmeric",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 3,
+      "carbs_g": 22,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "x-92",
+    "title": "Bamboo Shoot Curry",
+    "summary": "Northeast Indian bamboo shoot preparation",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "bamboo shoot",
+      "onion",
+      "tomato",
+      "turmeric",
+      "mustard oil",
+      "green chili",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 3,
+      "carbs_g": 10,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-93",
+    "title": "Ragi Mudde",
+    "summary": "Finger millet balls, Karnataka staple",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "ragi",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 3,
+      "carbs_g": 25,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-94",
+    "title": "Panta Bhat",
+    "summary": "Overnight fermented rice, Bengali summer food",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "rice",
+      "onion",
+      "green chili",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 130,
+      "protein_g": 3,
+      "carbs_g": 28,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-95",
+    "title": "Sattu Sharbat",
+    "summary": "Roasted gram flour drink, Bihar cooler",
+    "ready_in_minutes": 5,
+    "servings": 2,
+    "ingredients": [
+      "sattu",
+      "lemon",
+      "salt",
+      "sugar"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 7,
+      "carbs_g": 25,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "x-96",
+    "title": "Kanji",
+    "summary": "Fermented carrot and mustard drink",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "carrot",
+      "mustard seeds",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 25,
+      "protein_g": 0.5,
+      "carbs_g": 5,
+      "fat_g": 0.2
+    }
+  },
+  {
+    "id": "x-97",
+    "title": "Solkadhi",
+    "summary": "Kokum-coconut milk drink from Konkan",
+    "ready_in_minutes": 10,
+    "servings": 3,
+    "ingredients": [
+      "kokum",
+      "coconut milk",
+      "garlic",
+      "green chili",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein_g": 1,
+      "carbs_g": 5,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "x-98",
+    "title": "Kozhukattai",
+    "summary": "Tamil steamed rice dumpling with jaggery filling",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "rice flour",
+      "jaggery",
+      "coconut",
+      "cardamom",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 3,
+      "carbs_g": 38,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-99",
+    "title": "Pitha",
+    "summary": "Assamese rice cake with sesame filling",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "rice flour",
+      "sesame seeds",
+      "jaggery",
+      "coconut",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 40,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "x-100",
+    "title": "Chakuli Pitha",
+    "summary": "Odisha fermented rice crepe",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "urad dal",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 110,
+      "protein_g": 3,
+      "carbs_g": 20,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-101",
+    "title": "Jadoh",
+    "summary": "Meghalaya pork and rice dish",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "pork",
+      "onion",
+      "ginger",
+      "turmeric",
+      "bay leaf",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 18,
+      "carbs_g": 40,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "x-102",
+    "title": "Galho",
+    "summary": "Nagaland rice and vegetable stew",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "pumpkin",
+      "beans",
+      "garlic",
+      "ginger",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 4,
+      "carbs_g": 30,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-103",
+    "title": "Ema Datshi",
+    "summary": "Bhutanese chili and cheese stew",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "green chili",
+      "cheese",
+      "onion",
+      "tomato",
+      "garlic",
+      "butter",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "keto"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 12,
+      "carbs_g": 6,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "x-104",
+    "title": "Cacio e Pepe",
+    "summary": "Roman pasta with pepper and pecorino",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "pasta",
+      "parmesan",
+      "black pepper",
+      "butter",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein_g": 14,
+      "carbs_g": 45,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "x-105",
+    "title": "Shakarkandi Chaat",
+    "summary": "Sweet potato chaat with spices",
+    "ready_in_minutes": 15,
+    "servings": 3,
+    "ingredients": [
+      "sweet potato",
+      "lemon",
+      "chaat masala",
+      "green chutney",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 2,
+      "carbs_g": 25,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "x-106",
+    "title": "Banana Blossom Curry",
+    "summary": "South Indian curry with banana flower",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "banana blossom",
+      "coconut",
+      "mustard seeds",
+      "curry leaves",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein_g": 2,
+      "carbs_g": 14,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-107",
+    "title": "Drumstick Sambar",
+    "summary": "Sambar with moringa drumstick pods",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "drumstick",
+      "arhar dal",
+      "tamarind",
+      "onion",
+      "tomato",
+      "mustard seeds",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 7,
+      "carbs_g": 20,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "x-108",
+    "title": "Black Rice Pudding",
+    "summary": "Manipuri forbidden rice dessert",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "black rice",
+      "coconut milk",
+      "jaggery",
+      "cardamom"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 4,
+      "carbs_g": 38,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "x-109",
+    "title": "Poi",
+    "summary": "Goan fermented toddy bread",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "toddy",
+      "sugar",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 6,
+      "carbs_g": 48,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "x-110",
+    "title": "Sorpotel",
+    "summary": "Goan spicy pork offal stew",
+    "ready_in_minutes": 60,
+    "servings": 5,
+    "ingredients": [
+      "pork",
+      "onion",
+      "garlic",
+      "ginger",
+      "vinegar",
+      "red chili",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 22,
+      "carbs_g": 5,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xx-111",
+    "title": "Baingan Bharta",
+    "summary": "Smoky roasted aubergine mash with spices",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "brinjal",
+      "onion",
+      "tomato",
+      "green chili",
+      "mustard oil",
+      "garlic",
+      "ginger",
+      "coriander powder",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 3,
+      "carbs_g": 15,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-113",
+    "title": "Aloo Gobi Matar",
+    "summary": "Potato, cauliflower, and pea stir-fry",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "cauliflower",
+      "peas",
+      "onion",
+      "tomato",
+      "turmeric",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 5,
+      "carbs_g": 25,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-115",
+    "title": "Dal Fry",
+    "summary": "Yellow lentils tempered with fried onions and spices",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "arhar dal",
+      "onion",
+      "tomato",
+      "garlic",
+      "cumin",
+      "turmeric",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 10,
+      "carbs_g": 28,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-117",
+    "title": "Dum Aloo",
+    "summary": "Baby potatoes slow-cooked in a yogurt-based gravy",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "curd",
+      "onion",
+      "garlic",
+      "ginger",
+      "cashew",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 35,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xx-119",
+    "title": "Veg Korma",
+    "summary": "Mixed vegetables in a mild, creamy coconut gravy",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "carrot",
+      "peas",
+      "beans",
+      "potato",
+      "onion",
+      "coconut milk",
+      "cashew",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 20,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-121",
+    "title": "Methi Matar Malai",
+    "summary": "Creamy fenugreek leaves and green peas curry",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "methi",
+      "peas",
+      "cream",
+      "onion",
+      "cashew",
+      "ginger",
+      "garlic",
+      "sugar",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 340,
+      "protein_g": 8,
+      "carbs_g": 22,
+      "fat_g": 26
+    }
+  },
+  {
+    "id": "xx-123",
+    "title": "Malai Kofta",
+    "summary": "Deep-fried potato and paneer balls in a rich gravy",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "paneer",
+      "maida",
+      "onion",
+      "tomato",
+      "cashew",
+      "cream",
+      "shahi masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 12,
+      "carbs_g": 35,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xx-125",
+    "title": "Kadhi Pakora",
+    "summary": "Gram flour fritters in a tangy yogurt-based soup",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "besan",
+      "curd",
+      "onion",
+      "mustard seeds",
+      "fenugreek seeds",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 10,
+      "carbs_g": 28,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-127",
+    "title": "Mix Veg Jaipuri",
+    "summary": "Spicy mixed vegetables from Rajasthan",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "carrot",
+      "peas",
+      "french beans",
+      "cauliflower",
+      "onion",
+      "tomato",
+      "khoya",
+      "papads",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 6,
+      "carbs_g": 25,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-129",
+    "title": "Soya Chaap Curry",
+    "summary": "Textured soya protein in a spicy masala",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "soya chaap",
+      "onion",
+      "tomato",
+      "curd",
+      "garlic",
+      "ginger",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein_g": 24,
+      "carbs_g": 18,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xx-131",
+    "title": "Tawa Sabji",
+    "summary": "Mixed vegetables cooked on a flat griddle",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "parwal",
+      "tinda",
+      "brinjal",
+      "bhindi",
+      "amchur",
+      "jeera powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 4,
+      "carbs_g": 18,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xx-133",
+    "title": "Chicken Tikka Masala",
+    "summary": "Grilled chicken in a medium spiced red gravy",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "onion",
+      "tomato",
+      "curd",
+      "cream",
+      "ginger",
+      "garlic",
+      "tikka masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 32,
+      "carbs_g": 14,
+      "fat_g": 28
+    }
+  },
+  {
+    "id": "xx-135",
+    "title": "Mutton Curry",
+    "summary": "Traditional spicy goat meat preparation",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "mutton",
+      "onion",
+      "tomato",
+      "garlic",
+      "ginger",
+      "turmeric",
+      "coriander powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 480,
+      "protein_g": 35,
+      "carbs_g": 8,
+      "fat_g": 34
+    }
+  },
+  {
+    "id": "xx-137",
+    "title": "Fish Curry",
+    "summary": "Coastal style fish in a tangy broth",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "fish",
+      "tamarind",
+      "coconut milk",
+      "onion",
+      "mustard seeds",
+      "curry leaves",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 28,
+      "carbs_g": 6,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "xx-139",
+    "title": "Egg Bhurji",
+    "summary": "Indian style scrambled eggs with onions and chilies",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "egg",
+      "onion",
+      "tomato",
+      "green chili",
+      "coriander",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 14,
+      "carbs_g": 8,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-141",
+    "title": "Chicken Biryani",
+    "summary": "Fragrant long grain rice cooked with chicken",
+    "ready_in_minutes": 60,
+    "servings": 5,
+    "ingredients": [
+      "basmati rice",
+      "chicken",
+      "onion",
+      "curd",
+      "mint",
+      "saffron",
+      "whole spices",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 580,
+      "protein_g": 28,
+      "carbs_g": 65,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xx-143",
+    "title": "Mutton Biryani",
+    "summary": "Slow-cooked layered rice and meat delicacy",
+    "ready_in_minutes": 90,
+    "servings": 5,
+    "ingredients": [
+      "basmati rice",
+      "mutton",
+      "onion",
+      "curd",
+      "saffron",
+      "biryani masala",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 640,
+      "protein_g": 32,
+      "carbs_g": 60,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xx-145",
+    "title": "Veg Pulao",
+    "summary": "Savoury rice with mixed vegetables",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "basmati rice",
+      "carrot",
+      "peas",
+      "beans",
+      "onion",
+      "cumin",
+      "cardamom",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 52,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-147",
+    "title": "Jeera Rice",
+    "summary": "Cumin tempered basmati rice",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "basmati rice",
+      "cumin",
+      "bay leaf",
+      "cloves",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-149",
+    "title": "Curd Rice",
+    "summary": "South Indian style comforting yogurt rice",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "rice",
+      "curd",
+      "mustard seeds",
+      "curry leaves",
+      "ginger",
+      "green chili",
+      "pomegranate",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 8,
+      "carbs_g": 38,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-151",
+    "title": "Lemon Rice",
+    "summary": "Tangy and nutty South Indian rice",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "lemon",
+      "peanuts",
+      "chana dal",
+      "mustard seeds",
+      "turmeric",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 48,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-153",
+    "title": "Tomato Rice",
+    "summary": "Spicy tomato flavored rice with herbs",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "tomato",
+      "onion",
+      "garlic",
+      "curry leaves",
+      "mustard seeds",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 5,
+      "carbs_g": 45,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xx-155",
+    "title": "Vada Pav",
+    "summary": "The iconic Mumbai potato burger",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "pav",
+      "potato",
+      "besan",
+      "garlic chutney",
+      "green chili",
+      "turmeric",
+      "mustard seeds",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 8,
+      "carbs_g": 48,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xx-157",
+    "title": "Dabeli",
+    "summary": "Spiced potato mix in pav with pomegranate",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "pav",
+      "potato",
+      "dabeli masala",
+      "pomegranate",
+      "peanuts",
+      "sev",
+      "tamarind chutney",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 6,
+      "carbs_g": 50,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-159",
+    "title": "Kanda Poha",
+    "summary": "Flattened rice with onions and peanuts",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "poha",
+      "onion",
+      "peanuts",
+      "turmeric",
+      "mustard seeds",
+      "curry leaves",
+      "lemon",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 35,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-161",
+    "title": "Upma",
+    "summary": "Savoury roasted semolina porridge",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "semolina",
+      "onion",
+      "green chili",
+      "mustard seeds",
+      "curry leaves",
+      "ginger",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 6,
+      "carbs_g": 38,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xx-163",
+    "title": "Masala Dosa",
+    "summary": "Crispy rice crepe with potato filling",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "urad dal",
+      "potato",
+      "onion",
+      "mustard seeds",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 7,
+      "carbs_g": 45,
+      "fat_g": 9
+    }
+  },
+  {
+    "id": "xx-165",
+    "title": "Uttapam",
+    "summary": "Thick rice pancake with vegetable toppings",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "urad dal",
+      "onion",
+      "tomato",
+      "green chili",
+      "coriander",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-167",
+    "title": "Idli Sambar",
+    "summary": "Steamed rice cakes with lentil vegetable stew",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "urad dal",
+      "arhar dal",
+      "mixed vegetables",
+      "tamarind",
+      "sambar powder",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 12,
+      "carbs_g": 55,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-169",
+    "title": "Appam",
+    "summary": "Fermented rice pancakes with coconut milk",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "coconut milk",
+      "sugar",
+      "yeast",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 3,
+      "carbs_g": 35,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-171",
+    "title": "Puttu",
+    "summary": "Steamed cylinders of ground rice and coconut",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "rice flour",
+      "coconut",
+      "water",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xx-173",
+    "title": "Fish Fry",
+    "summary": "Masala coated deep-fried fish fillets",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "red chili powder",
+      "turmeric",
+      "lemon",
+      "ginger",
+      "garlic",
+      "rice flour",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 28,
+      "carbs_g": 10,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xx-175",
+    "title": "Egg Roast",
+    "summary": "Eggs in a spicy caramelized onion base",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "egg",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "fennel seeds",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 14,
+      "carbs_g": 12,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-177",
+    "title": "Paneer Tikka",
+    "summary": "Grilled marinated paneer cubes",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "paneer",
+      "curd",
+      "bell pepper",
+      "onion",
+      "tandoori masala",
+      "ginger",
+      "garlic",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 16,
+      "carbs_g": 10,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-179",
+    "title": "Hara Bhara Kebab",
+    "summary": "Spinach and pea nutritious patties",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "spinach",
+      "peas",
+      "potato",
+      "besan",
+      "green chili",
+      "ginger",
+      "bread crumbs",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 6,
+      "carbs_g": 22,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-181",
+    "title": "Samosa",
+    "summary": "Crispy pastry with spiced potato filling",
+    "ready_in_minutes": 40,
+    "servings": 6,
+    "ingredients": [
+      "maida",
+      "potato",
+      "peas",
+      "cumin",
+      "carom seeds",
+      "ginger",
+      "green chili",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 5,
+      "carbs_g": 35,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-183",
+    "title": "Jalebi",
+    "summary": "Deep-fried fermented batter in sugar syrup",
+    "ready_in_minutes": 45,
+    "servings": 6,
+    "ingredients": [
+      "maida",
+      "curd",
+      "sugar",
+      "saffron",
+      "cardamom",
+      "ghee",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 3,
+      "carbs_g": 65,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-185",
+    "title": "Gulab Jamun",
+    "summary": "Milk-based dumplings in rose sugar syrup",
+    "ready_in_minutes": 40,
+    "servings": 8,
+    "ingredients": [
+      "khoya",
+      "maida",
+      "sugar",
+      "rose water",
+      "cardamom",
+      "ghee",
+      "saffron"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 6,
+      "carbs_g": 55,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-187",
+    "title": "Rasmalai",
+    "summary": "Cheese dumplings in thickened saffron milk",
+    "ready_in_minutes": 60,
+    "servings": 5,
+    "ingredients": [
+      "chenna",
+      "milk",
+      "sugar",
+      "saffron",
+      "cardamom",
+      "pistachio",
+      "almond"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 8,
+      "carbs_g": 32,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-189",
+    "title": "Kheer",
+    "summary": "Classic Indian rice pudding with nuts",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "milk",
+      "sugar",
+      "cardamom",
+      "cashew",
+      "raisins",
+      "saffron"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 7,
+      "carbs_g": 40,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-191",
+    "title": "Gajar Halwa",
+    "summary": "Carrot pudding slow-cooked with milk",
+    "ready_in_minutes": 60,
+    "servings": 5,
+    "ingredients": [
+      "carrot",
+      "milk",
+      "sugar",
+      "ghee",
+      "khoya",
+      "cardamom",
+      "nuts"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 6,
+      "carbs_g": 45,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-193",
+    "title": "Besan Ladoo",
+    "summary": "Roasted gram flour sweet balls",
+    "ready_in_minutes": 30,
+    "servings": 10,
+    "ingredients": [
+      "besan",
+      "ghee",
+      "sugar",
+      "cardamom",
+      "almonds"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 5,
+      "carbs_g": 30,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-195",
+    "title": "Motichoor Ladoo",
+    "summary": "Fine gram flour pearl sweet balls",
+    "ready_in_minutes": 60,
+    "servings": 10,
+    "ingredients": [
+      "besan",
+      "sugar",
+      "ghee",
+      "melon seeds",
+      "cardamom",
+      "saffron"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-197",
+    "title": "Barfi",
+    "summary": "Milk-based fudge-like sweet",
+    "ready_in_minutes": 30,
+    "servings": 8,
+    "ingredients": [
+      "milk powder",
+      "sugar",
+      "milk",
+      "ghee",
+      "cardamom",
+      "pistachio"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 30,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-199",
+    "title": "Shrikhand",
+    "summary": "Strained sweetened yogurt with saffron",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "curd",
+      "sugar",
+      "saffron",
+      "cardamom",
+      "charoli"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-201",
+    "title": "Mango Lassi",
+    "summary": "Refreshing yogurt and mango smoothie",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "mango",
+      "curd",
+      "sugar",
+      "cardamom",
+      "milk"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 6,
+      "carbs_g": 40,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-203",
+    "title": "Thandai",
+    "summary": "Spiced nutty milk festive drink",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "milk",
+      "sugar",
+      "almonds",
+      "cashew",
+      "melon seeds",
+      "pepper",
+      "fennel",
+      "saffron"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 6,
+      "carbs_g": 25,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-205",
+    "title": "Masala Chai",
+    "summary": "Spiced Indian milk tea",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "tea leaves",
+      "milk",
+      "sugar",
+      "ginger",
+      "cardamom",
+      "cinnamon",
+      "clove",
+      "pepper"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 3,
+      "carbs_g": 12,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xx-207",
+    "title": "Phulka",
+    "summary": "Soft puffed wheat flatbreads",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "water",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 5,
+      "carbs_g": 28,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "xx-209",
+    "title": "Butter Naan",
+    "summary": "Leavened oven-baked flatbread with butter",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "maida",
+      "yeast",
+      "curd",
+      "sugar",
+      "butter",
+      "nigella seeds",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein_g": 8,
+      "carbs_g": 48,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-211",
+    "title": "Garlic Naan",
+    "summary": "Flavored flatbread with minced garlic",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "maida",
+      "yeast",
+      "curd",
+      "garlic",
+      "butter",
+      "coriander",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 8,
+      "carbs_g": 46,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "xx-213",
+    "title": "Tandoori Roti",
+    "summary": "Oven-baked whole wheat unleavened bread",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "water",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 4,
+      "carbs_g": 25,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xx-215",
+    "title": "Missi Roti",
+    "summary": "Spiced gram flour flatbread",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "besan",
+      "onion",
+      "ajwain",
+      "turmeric",
+      "kasuri methi",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 10,
+      "carbs_g": 40,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-217",
+    "title": "Aloo Paratha",
+    "summary": "Stuffed potato whole wheat flatbread",
+    "ready_in_minutes": 30,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "potato",
+      "onion",
+      "green chili",
+      "coriander powder",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 7,
+      "carbs_g": 48,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-219",
+    "title": "Paneer Paratha",
+    "summary": "Stuffed cottage cheese flatbread",
+    "ready_in_minutes": 30,
+    "servings": 2,
+    "ingredients": [
+      "atta",
+      "paneer",
+      "onion",
+      "garam masala",
+      "anardana powder",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 15,
+      "carbs_g": 42,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xx-221",
+    "title": "Thepla",
+    "summary": "Spiced Gujarati fenugreek flatbread",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "besan",
+      "methi",
+      "turmeric",
+      "sesame seeds",
+      "curd",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 8,
+      "carbs_g": 40,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-223",
+    "title": "Bhakri",
+    "summary": "Round flat unfermented bread, hard in texture",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "jowar",
+      "water",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 5,
+      "carbs_g": 32,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "xx-225",
+    "title": "Puri",
+    "summary": "Deep-fried wheat puffs",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "xx-227",
+    "title": "Bhatura",
+    "summary": "Large leavened deep-fried bread",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "yeast",
+      "curd",
+      "sugar",
+      "salt",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 8,
+      "carbs_g": 52,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-229",
+    "title": "Dal Makhani",
+    "summary": "Slow-cooked black lentils and kidney beans",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "urad dal",
+      "rajma",
+      "butter",
+      "cream",
+      "tomato puree",
+      "ginger",
+      "garlic",
+      "garam masala",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 16,
+      "carbs_g": 38,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xx-231",
+    "title": "Rajma Masala",
+    "summary": "Red kidney bean curry in onion tomato gravy",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "rajma",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "coriander powder",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 18,
+      "carbs_g": 55,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-233",
+    "title": "Chana Masala",
+    "summary": "Spicy chickpea curry",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "amchur",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 14,
+      "carbs_g": 42,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-235",
+    "title": "Moong Dal",
+    "summary": "Simple yellow split lentil soup",
+    "ready_in_minutes": 15,
+    "servings": 3,
+    "ingredients": [
+      "moong dal",
+      "turmeric",
+      "cumin",
+      "ginger",
+      "green chili",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 7,
+      "carbs_g": 24,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xx-237",
+    "title": "Chole Bhature",
+    "summary": "Spicy chickpeas with deep-fried bread",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "maida",
+      "curd",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 650,
+      "protein_g": 18,
+      "carbs_g": 90,
+      "fat_g": 26
+    }
+  },
+  {
+    "id": "xx-239",
+    "title": "Veg Kathi Roll",
+    "summary": "Vegetable wrap in a paratha",
+    "ready_in_minutes": 25,
+    "servings": 2,
+    "ingredients": [
+      "paratha",
+      "paneer",
+      "bell pepper",
+      "onion",
+      "kathi masala",
+      "vinegar",
+      "green chutney",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 12,
+      "carbs_g": 45,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-241",
+    "title": "Pani Puri",
+    "summary": "Crispy hollow spheres with spicy water",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "puri shells",
+      "potato",
+      "chana",
+      "mint water",
+      "tamarind chutney",
+      "chaat masala",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 4,
+      "carbs_g": 40,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-243",
+    "title": "Bhel Puri",
+    "summary": "Savory snack of puffed rice and chutneys",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "murmura",
+      "sev",
+      "papdi",
+      "onion",
+      "tomato",
+      "green chutney",
+      "tamarind chutney",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 48,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-245",
+    "title": "Aloo Tikki Chaat",
+    "summary": "Potato patties topped with yogurt and chutneys",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "potato",
+      "curd",
+      "onion",
+      "sev",
+      "green chutney",
+      "tamarind chutney",
+      "chaat masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 7,
+      "carbs_g": 45,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-247",
+    "title": "Dahi Puri",
+    "summary": "Puri shells filled with stuffing and yogurt",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "puri shells",
+      "potato",
+      "curd",
+      "sev",
+      "sweet chutney",
+      "green chutney",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-249",
+    "title": "Sevai",
+    "summary": "Roasted vermicelli with milk and nuts",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "vermicelli",
+      "milk",
+      "sugar",
+      "cardamom",
+      "cashew",
+      "raisins",
+      "ghee"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 7,
+      "carbs_g": 45,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-251",
+    "title": "Sabudana Khichdi",
+    "summary": "Sago pearls with peanuts and potatoes",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "sabudana",
+      "peanuts",
+      "potato",
+      "cumin",
+      "green chili",
+      "lemon",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 4,
+      "carbs_g": 55,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-253",
+    "title": "Sabudana Vada",
+    "summary": "Deep-fried sago and potato patties",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "sabudana",
+      "potato",
+      "peanuts",
+      "green chili",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein_g": 6,
+      "carbs_g": 48,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "xx-255",
+    "title": "Puri Bhaji",
+    "summary": "Poori served with spiced potato curry",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "poori",
+      "potato",
+      "onion",
+      "mustard seeds",
+      "turmeric",
+      "curry leaves",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 10,
+      "carbs_g": 65,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "xx-257",
+    "title": "Matar Paneer",
+    "summary": "Green peas and cottage cheese curry",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "paneer",
+      "peas",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "cream",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 290,
+      "protein_g": 15,
+      "carbs_g": 18,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-259",
+    "title": "Palak Paneer",
+    "summary": "Soft paneer in a spiced spinach gravy",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "paneer",
+      "spinach",
+      "onion",
+      "garlic",
+      "ginger",
+      "tomato",
+      "cream",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 270,
+      "protein_g": 16,
+      "carbs_g": 12,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-261",
+    "title": "Shahi Paneer",
+    "summary": "Paneer in a rich tomato-nuts gravy",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "paneer",
+      "cashew",
+      "tomato puree",
+      "cream",
+      "butter",
+      "shahi masala",
+      "sugar",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 14,
+      "carbs_g": 15,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xx-263",
+    "title": "Mutter Mushroom",
+    "summary": "Green peas and mushrooms in gravy",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "mushroom",
+      "peas",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "coriander powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 8,
+      "carbs_g": 15,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-265",
+    "title": "Aloo Matar",
+    "summary": "Potato and green peas curry",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "potato",
+      "peas",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 6,
+      "carbs_g": 30,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-267",
+    "title": "Gobi Matar",
+    "summary": "Cauliflower and green peas stir-fry",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "cauliflower",
+      "peas",
+      "onion",
+      "green chili",
+      "cumin",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 5,
+      "carbs_g": 20,
+      "fat_g": 5
+    }
+  },
+  {
+    "id": "xx-269",
+    "title": "Baingan Masala",
+    "summary": "Baby aubergines in a spiced masala",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "brinjal",
+      "onion",
+      "tomato",
+      "peanuts",
+      "sesame seeds",
+      "tamarind",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 5,
+      "carbs_g": 18,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-271",
+    "title": "Bharwa Karela",
+    "summary": "Bitter gourd stuffed with spiced masala",
+    "ready_in_minutes": 45,
+    "servings": 3,
+    "ingredients": [
+      "bitter gourd",
+      "onion",
+      "fennel seeds",
+      "amchur",
+      "cumin",
+      "jaggery",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 4,
+      "carbs_g": 25,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-273",
+    "title": "Tinda Masala",
+    "summary": "Apple gourd cooked with Indian spices",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "tinda",
+      "onion",
+      "tomato",
+      "cumin",
+      "coriander powder",
+      "garam masala",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 3,
+      "carbs_g": 14,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-275",
+    "title": "Lauki Sabji",
+    "summary": "Bottle gourd in a mild tomato gravy",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "bottle gourd",
+      "tomato",
+      "cumin",
+      "ginger",
+      "turmeric",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein_g": 2,
+      "carbs_g": 12,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-277",
+    "title": "Torai Sabji",
+    "summary": "Ridge gourd stir-fry with simple spices",
+    "ready_in_minutes": 15,
+    "servings": 3,
+    "ingredients": [
+      "ridge gourd",
+      "onion",
+      "cumin",
+      "turmeric",
+      "chili powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 2,
+      "carbs_g": 10,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-279",
+    "title": "Parwal ki Sabji",
+    "summary": "Pointed gourd and potato preparation",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "parwal",
+      "potato",
+      "onion",
+      "tomato",
+      "garlic",
+      "cumin",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 4,
+      "carbs_g": 15,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-281",
+    "title": "Arbi Masala",
+    "summary": "Taro root stir-fried with carom seeds",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "arbi",
+      "onion",
+      "ajwain",
+      "turmeric",
+      "amchur",
+      "green chili",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-283",
+    "title": "Soya Chunks Curry",
+    "summary": "Nutritious soy nuggets in gravy",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "soya chunks",
+      "onion",
+      "tomato",
+      "potato",
+      "garam masala",
+      "garlic",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 24,
+      "carbs_g": 22,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-285",
+    "title": "Pumpkin Masala",
+    "summary": "Spiced sweet and tangy red pumpkin",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "red pumpkin",
+      "onion",
+      "jaggery",
+      "amchur",
+      "mustard seeds",
+      "methi seeds",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 2,
+      "carbs_g": 18,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-287",
+    "title": "Kathal Sabji",
+    "summary": "Raw jackfruit curry mimicking meat texture",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "jackfruit",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "whole spices",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 5,
+      "carbs_g": 32,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xx-289",
+    "title": "Besan Gatta",
+    "summary": "Rajathani gram flour dumpling curry",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "besan",
+      "curd",
+      "onion",
+      "ajwain",
+      "turmeric",
+      "red chili powder",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 10,
+      "carbs_g": 28,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-291",
+    "title": "Panchmel Dal",
+    "summary": "Five types of lentils mixed together",
+    "ready_in_minutes": 40,
+    "servings": 5,
+    "ingredients": [
+      "arhar",
+      "chana",
+      "moong",
+      "urad",
+      "masoor",
+      "garlic",
+      "cumin",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 14,
+      "carbs_g": 30,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-293",
+    "title": "Dal Baati",
+    "summary": "Baked wheat balls with spicy lentils",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "ghee",
+      "mixed dal",
+      "onion",
+      "garam masala",
+      "garlic",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 550,
+      "protein_g": 15,
+      "carbs_g": 75,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xx-295",
+    "title": "Makki di Roti",
+    "summary": "Cornmeal flatbread from Punjab",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "cornmeal",
+      "radish",
+      "green chili",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein_g": 5,
+      "carbs_g": 38,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-297",
+    "title": "Sarson ka Saag",
+    "summary": "Spiced mustard and spinach greens",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "mustard greens",
+      "spinach",
+      "bathua",
+      "maize flour",
+      "ginger",
+      "garlic",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 8,
+      "carbs_g": 18,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-299",
+    "title": "Pindi Chole",
+    "summary": "Dry dark spicy chickpeas from Punjab",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "tea leaves",
+      "anardana",
+      "amchur",
+      "garlic",
+      "ginger",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 14,
+      "carbs_g": 40,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-301",
+    "title": "Amritsari Kulcha",
+    "summary": "Baked leavened bread with spiced stuffing",
+    "ready_in_minutes": 45,
+    "servings": 3,
+    "ingredients": [
+      "maida",
+      "potato",
+      "onion",
+      "anardana",
+      "butter",
+      "nigella seeds",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 8,
+      "carbs_g": 62,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-303",
+    "title": "Doi Maach",
+    "summary": "Fish cooked in a yogurt-based gravy",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "curd",
+      "onion",
+      "ginger",
+      "garlic",
+      "turmeric",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 26,
+      "carbs_g": 10,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xx-305",
+    "title": "Prawn Malai Curry",
+    "summary": "Prawns in a creamy coconut milk gravy",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "prawns",
+      "coconut milk",
+      "onion",
+      "turmeric",
+      "whole spices",
+      "sugar",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 24,
+      "carbs_g": 15,
+      "fat_g": 32
+    }
+  },
+  {
+    "id": "xx-307",
+    "title": "Mishti Doi",
+    "summary": "Sweetened fermented dessert yogurt",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "milk",
+      "nolen gur",
+      "curd",
+      "cardamom",
+      "sugar"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein_g": 6,
+      "carbs_g": 38,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-309",
+    "title": "Sandesh",
+    "summary": "Soft milk-solids Bengali sweet",
+    "ready_in_minutes": 30,
+    "servings": 6,
+    "ingredients": [
+      "chenna",
+      "sugar",
+      "cardamom",
+      "saffron",
+      "pistachios"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 8,
+      "carbs_g": 25,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-311",
+    "title": "Veg Momos",
+    "summary": "Steamed dumplings with cabbage and carrot",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "maida",
+      "cabbage",
+      "carrot",
+      "onion",
+      "garlic",
+      "soy sauce",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein_g": 6,
+      "carbs_g": 42,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xx-313",
+    "title": "Thekua",
+    "summary": "Deep-fried wheat cookies from Bihar",
+    "ready_in_minutes": 40,
+    "servings": 10,
+    "ingredients": [
+      "atta",
+      "jaggery",
+      "coconut",
+      "fennel seeds",
+      "ghee",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 5,
+      "carbs_g": 55,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-315",
+    "title": "Litti Chokha",
+    "summary": "Baked wheat balls with spicy mash",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "atta",
+      "sattu",
+      "brinjal",
+      "potato",
+      "onion",
+      "mustard oil",
+      "ghee",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 12,
+      "carbs_g": 65,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-317",
+    "title": "Spaghetti Bolognese",
+    "summary": "Pasta with a rich meat-based tomato sauce",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "spaghetti",
+      "beef mince",
+      "onion",
+      "tomato",
+      "garlic",
+      "herbs",
+      "parmesan",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 550,
+      "protein_g": 30,
+      "carbs_g": 65,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-319",
+    "title": "Beef Burger",
+    "summary": "Juicy grilled beef patty in a bun",
+    "ready_in_minutes": 20,
+    "servings": 1,
+    "ingredients": [
+      "beef patty",
+      "burger bun",
+      "lettuce",
+      "cheese",
+      "tomato",
+      "ketchup",
+      "mustard",
+      "onion"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein_g": 28,
+      "carbs_g": 42,
+      "fat_g": 26
+    }
+  },
+  {
+    "id": "xx-321",
+    "title": "Sushi Rolls",
+    "summary": "Japanese seaweed wrapped rice with filling",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "sushi rice",
+      "nori",
+      "salmon",
+      "cucumber",
+      "avocado",
+      "soy sauce",
+      "wasabi",
+      "ginger"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 16,
+      "carbs_g": 55,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xx-323",
+    "title": "Tacos al Pastor",
+    "summary": "Mexican pork and pineapple tacos",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "corn tortilla",
+      "pork",
+      "pineapple",
+      "onion",
+      "cilantro",
+      "lime",
+      "salsa"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 18,
+      "carbs_g": 35,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xx-325",
+    "title": "Chicken Pho",
+    "summary": "Vietnamese aromatic noodle soup",
+    "ready_in_minutes": 60,
+    "servings": 3,
+    "ingredients": [
+      "rice noodles",
+      "chicken",
+      "onion",
+      "ginger",
+      "star anise",
+      "basil",
+      "lime",
+      "sprouts"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 26,
+      "carbs_g": 65,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-327",
+    "title": "Lasagna",
+    "summary": "Layered pasta with meat, cheese and sauce",
+    "ready_in_minutes": 90,
+    "servings": 6,
+    "ingredients": [
+      "lasagna sheets",
+      "beef mince",
+      "mozzarella",
+      "ricotta",
+      "parmesan",
+      "marinara",
+      "bechamel"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 650,
+      "protein_g": 35,
+      "carbs_g": 55,
+      "fat_g": 32
+    }
+  },
+  {
+    "id": "xx-329",
+    "title": "Hummus and Pita",
+    "summary": "Middle Eastern chickpea dip with bread",
+    "ready_in_minutes": 10,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "tahini",
+      "olive oil",
+      "lemon",
+      "garlic",
+      "pita bread",
+      "paprika"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 12,
+      "carbs_g": 48,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-331",
+    "title": "Chicken Teriyaki",
+    "summary": "Japanese grilled chicken with sweet glaze",
+    "ready_in_minutes": 25,
+    "servings": 2,
+    "ingredients": [
+      "chicken",
+      "soy sauce",
+      "mirin",
+      "sugar",
+      "ginger",
+      "broccoli",
+      "rice"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 28,
+      "carbs_g": 65,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-333",
+    "title": "Ratatouille",
+    "summary": "French stewed vegetables",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "eggplant",
+      "zucchini",
+      "bell pepper",
+      "tomato",
+      "onion",
+      "garlic",
+      "herbs",
+      "olive oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "low-carb"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 22,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-335",
+    "title": "Pancakes with Syrup",
+    "summary": "Fluffy American breakfast pancakes",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "flour",
+      "milk",
+      "egg",
+      "butter",
+      "sugar",
+      "baking powder",
+      "maple syrup"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 10,
+      "carbs_g": 85,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-337",
+    "title": "Gazpacho",
+    "summary": "Spanish cold tomato and vegetable soup",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "tomato",
+      "cucumber",
+      "bell pepper",
+      "garlic",
+      "onion",
+      "vinegar",
+      "olive oil",
+      "bread"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 4,
+      "carbs_g": 22,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-339",
+    "title": "Ramen",
+    "summary": "Japanese wheat noodle soup with topping",
+    "ready_in_minutes": 40,
+    "servings": 2,
+    "ingredients": [
+      "ramen noodles",
+      "pork chashu",
+      "egg",
+      "bamboo shoots",
+      "nori",
+      "miso broth",
+      "green onion"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 550,
+      "protein_g": 25,
+      "carbs_g": 75,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-341",
+    "title": "Eggs Benedict",
+    "summary": "Poached eggs on muffin with ham and sauce",
+    "ready_in_minutes": 25,
+    "servings": 2,
+    "ingredients": [
+      "egg",
+      "english muffin",
+      "ham",
+      "hollandaise sauce",
+      "vinegar",
+      "butter",
+      "chives"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 580,
+      "protein_g": 22,
+      "carbs_g": 45,
+      "fat_g": 34
+    }
+  },
+  {
+    "id": "xx-343",
+    "title": "Butter Croissant",
+    "summary": "Flaky and buttery French pastry",
+    "ready_in_minutes": 180,
+    "servings": 6,
+    "ingredients": [
+      "flour",
+      "yeast",
+      "butter",
+      "sugar",
+      "salt",
+      "milk"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein_g": 6,
+      "carbs_g": 32,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-345",
+    "title": "Minestrone Soup",
+    "summary": "Italian hearty vegetable and pasta soup",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "pasta",
+      "tomato",
+      "beans",
+      "celery",
+      "onion",
+      "carrot",
+      "zucchini",
+      "parmesan"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 10,
+      "carbs_g": 35,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xx-347",
+    "title": "Risotto with Mushroom",
+    "summary": "Creamy Italian rice with mushrooms",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "arborio rice",
+      "mushroom",
+      "onion",
+      "garlic",
+      "butter",
+      "parmesan",
+      "white wine",
+      "broth"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 10,
+      "carbs_g": 65,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-349",
+    "title": "Quinoa Salad",
+    "summary": "Healthy grain salad with fresh herbs",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "quinoa",
+      "cucumber",
+      "tomato",
+      "parsley",
+      "lemon",
+      "olive oil",
+      "feta",
+      "chickpeas"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 12,
+      "carbs_g": 45,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-351",
+    "title": "Ceviche",
+    "summary": "Fresh raw fish cured in citrus juices",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "white fish",
+      "lime",
+      "lemon",
+      "onion",
+      "cilantro",
+      "chili",
+      "sweet potato",
+      "corn"
+    ],
+    "diets": [
+      "gluten-free",
+      "low-carb",
+      "paleo"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein_g": 28,
+      "carbs_g": 15,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-353",
+    "title": "Chicken Shawarma",
+    "summary": "Spiced middle eastern grilled chicken",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "chicken",
+      "yogurt",
+      "garlic",
+      "lemon",
+      "tahini",
+      "cucumber",
+      "pita bread",
+      "spices"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein_g": 35,
+      "carbs_g": 45,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xx-355",
+    "title": "Paella Mixta",
+    "summary": "Spanish rice with seafood and meat",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "shrimp",
+      "mussels",
+      "chicken",
+      "chorizo",
+      "saffron",
+      "peas",
+      "bell pepper"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 580,
+      "protein_g": 35,
+      "carbs_g": 75,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-357",
+    "title": "Moussaka",
+    "summary": "Mediterranean eggplant and meat bake",
+    "ready_in_minutes": 75,
+    "servings": 6,
+    "ingredients": [
+      "eggplant",
+      "lamb mince",
+      "onion",
+      "potato",
+      "marinara",
+      "bechamel sauce",
+      "cinnamon"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 550,
+      "protein_g": 32,
+      "carbs_g": 42,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xx-359",
+    "title": "Beef Wellington",
+    "summary": "Steak wrapped in puff pastry with pat\u00e9",
+    "ready_in_minutes": 120,
+    "servings": 4,
+    "ingredients": [
+      "beef tenderloin",
+      "puff pastry",
+      "mushroom duxelles",
+      "prosciutto",
+      "egg wash",
+      "salt"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 850,
+      "protein_g": 45,
+      "carbs_g": 45,
+      "fat_g": 55
+    }
+  },
+  {
+    "id": "xx-361",
+    "title": "Gelato",
+    "summary": "Italian style creamy ice cream",
+    "ready_in_minutes": 15,
+    "servings": 4,
+    "ingredients": [
+      "milk",
+      "cream",
+      "sugar",
+      "egg yolks",
+      "vanilla",
+      "fruits",
+      "nuts"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 4,
+      "carbs_g": 30,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-363",
+    "title": "French Onion Soup",
+    "summary": "Caramelized onions in broth with bread and cheese",
+    "ready_in_minutes": 60,
+    "servings": 3,
+    "ingredients": [
+      "onion",
+      "beef broth",
+      "butter",
+      "gruyere cheese",
+      "baguette",
+      "thyme"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 15,
+      "carbs_g": 35,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-365",
+    "title": "Miso Soup",
+    "summary": "Japanese savory fermented soybean soup",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "dashi",
+      "miso paste",
+      "tofu",
+      "seaweed",
+      "green onion"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "low-carb"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 6,
+      "carbs_g": 8,
+      "fat_g": 3
+    }
+  },
+  {
+    "id": "xx-367",
+    "title": "Chili con Carne",
+    "summary": "Mexican beef and bean spicy stew",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "beef mince",
+      "kidney beans",
+      "onion",
+      "tomato",
+      "chili powder",
+      "cumin",
+      "bell pepper"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 35,
+      "carbs_g": 42,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-369",
+    "title": "Enchiladas",
+    "summary": "Tortillas filled and covered with sauce",
+    "ready_in_minutes": 50,
+    "servings": 3,
+    "ingredients": [
+      "corn tortilla",
+      "chicken",
+      "cheese",
+      "enchilada sauce",
+      "onion",
+      "black beans",
+      "sour cream"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein_g": 28,
+      "carbs_g": 55,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xx-371",
+    "title": "Starfruit Salad",
+    "summary": "Refreshing tropical fruit salad",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "starfruit",
+      "lime",
+      "chili powder",
+      "salt",
+      "mint"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein_g": 1,
+      "carbs_g": 14,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xx-373",
+    "title": "Dragon Fruit Smoothie Bowl",
+    "summary": "Bright pink breakfast bowl with toppings",
+    "ready_in_minutes": 10,
+    "servings": 1,
+    "ingredients": [
+      "dragon fruit",
+      "banana",
+      "coconut water",
+      "granola",
+      "chia seeds",
+      "berries"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 6,
+      "carbs_g": 65,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xx-375",
+    "title": "Fiddlehead Fern Stir-fry",
+    "summary": "Rare seasonal forest greens",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "fiddlehead ferns",
+      "garlic",
+      "butter",
+      "lemon",
+      "pepper",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 4,
+      "carbs_g": 12,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xx-377",
+    "title": "Truffle Pasta",
+    "summary": "Rich pasta with aromatic truffle oil/shavings",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "tagliatelle",
+      "truffle oil",
+      "parmesan",
+      "garlic",
+      "butter",
+      "parsley"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 480,
+      "protein_g": 12,
+      "carbs_g": 65,
+      "fat_g": 20
+    }
+  },
+  {
+    "id": "xx-379",
+    "title": "Acai Berry Bowl",
+    "summary": "Amazonian superfruit thick smoothie",
+    "ready_in_minutes": 10,
+    "servings": 1,
+    "ingredients": [
+      "acai pulp",
+      "banana",
+      "honey",
+      "granola",
+      "shredded coconut"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 5,
+      "carbs_g": 62,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-381",
+    "title": "Morel Mushroom Risotto",
+    "summary": "Wild earthy mushrooms with rice",
+    "ready_in_minutes": 45,
+    "servings": 2,
+    "ingredients": [
+      "morel mushrooms",
+      "arborio rice",
+      "shallots",
+      "wine",
+      "butter",
+      "parmesan"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 12,
+      "carbs_g": 68,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-383",
+    "title": "Persimmon Bread",
+    "summary": "Sweet loaf made with seasonal persimmons",
+    "ready_in_minutes": 75,
+    "servings": 8,
+    "ingredients": [
+      "persimmon pulp",
+      "flour",
+      "sugar",
+      "walnuts",
+      "butter",
+      "cinnamon"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-385",
+    "title": "Durian Pastry",
+    "summary": "Exotic and pungent fruit filling",
+    "ready_in_minutes": 45,
+    "servings": 8,
+    "ingredients": [
+      "durian",
+      "flour",
+      "butter",
+      "sugar",
+      "egg wash"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 5,
+      "carbs_g": 42,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-387",
+    "title": "Bison Steak",
+    "summary": "Lean wild alternative to beef",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "bison ribeye",
+      "rosemary",
+      "garlic",
+      "butter",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein",
+      "paleo"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 45,
+      "carbs_g": 0,
+      "fat_g": 26
+    }
+  },
+  {
+    "id": "xx-389",
+    "title": "Ostrich Burger",
+    "summary": "Very lean and high protein desert bird meat",
+    "ready_in_minutes": 20,
+    "servings": 1,
+    "ingredients": [
+      "ostrich patty",
+      "bun",
+      "lettuce",
+      "avocado",
+      "spicy aioli"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 35,
+      "carbs_g": 35,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-391",
+    "title": "Mangosteen Cooler",
+    "summary": "Delicate tropical fruit infused drink",
+    "ready_in_minutes": 5,
+    "servings": 2,
+    "ingredients": [
+      "mangosteen",
+      "honey",
+      "soda water",
+      "lime",
+      "ice"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein_g": 1,
+      "carbs_g": 22,
+      "fat_g": 0
+    }
+  },
+  {
+    "id": "xx-393",
+    "title": "Quail Egg Salad",
+    "summary": "Dainty eggs with fresh field greens",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "quail eggs",
+      "arugula",
+      "radish",
+      "white wine vinegar",
+      "dill"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free",
+      "keto"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 12,
+      "carbs_g": 5,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xx-395",
+    "title": "Uni Pasta",
+    "summary": "Sea urchin creamy seafood pasta",
+    "ready_in_minutes": 25,
+    "servings": 2,
+    "ingredients": [
+      "spaghetti",
+      "sea urchin uni",
+      "cream",
+      "garlic",
+      "nori",
+      "butter"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein_g": 24,
+      "carbs_g": 60,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xx-397",
+    "title": "Escargot",
+    "summary": "Snails cooked in garlic and parsley butter",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "snails",
+      "butter",
+      "garlic",
+      "parsley",
+      "shallots",
+      "bread"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 18,
+      "carbs_g": 12,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xx-399",
+    "title": "Lion's Mane Steak",
+    "summary": "Medicinal mushroom prepared like meat",
+    "ready_in_minutes": 20,
+    "servings": 1,
+    "ingredients": [
+      "lion's mane mushroom",
+      "soy sauce",
+      "garlic",
+      "thyme",
+      "butter"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 6,
+      "carbs_g": 14,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xx-401",
+    "title": "Goat Cheese Stuffed Fig",
+    "summary": "Sweet figs with tangy artisanal cheese",
+    "ready_in_minutes": 10,
+    "servings": 4,
+    "ingredients": [
+      "figs",
+      "goat cheese",
+      "honey",
+      "walnuts",
+      "balsamic glaze"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 6,
+      "carbs_g": 32,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xx-403",
+    "title": "Artichoke Heart Confit",
+    "summary": "Slow-cooked edible flower hearts",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "artichoke hearts",
+      "olive oil",
+      "garlic",
+      "lemon peel",
+      "peppercorns"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "low-carb"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 3,
+      "carbs_g": 12,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xx-405",
+    "title": "Bird's Nest Soup",
+    "summary": "Delicately sweet edible nest dessert",
+    "ready_in_minutes": 120,
+    "servings": 2,
+    "ingredients": [
+      "bird's nest",
+      "rock sugar",
+      "water"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 1,
+      "carbs_g": 28,
+      "fat_g": 0
+    }
+  },
+  {
+    "id": "xx-407",
+    "title": "Rambutan Curry",
+    "summary": "Sweet and savory tropical fruit curry",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "rambutan",
+      "coconut milk",
+      "red curry paste",
+      "tofu",
+      "basil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 6,
+      "carbs_g": 25,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xx-409",
+    "title": "Kangaroo Skewers",
+    "summary": "Lean game meat from Australia",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "kangaroo meat",
+      "native spices",
+      "lemon myrtle",
+      "oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein",
+      "paleo"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 42,
+      "carbs_g": 0,
+      "fat_g": 16
+    }
+  },
+  {
+    "id": "xxx-261",
+    "title": "Bisibelebath",
+    "summary": "Spiced lentil rice from Karnataka",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "rice",
+      "lentils",
+      "carrot",
+      "beans",
+      "tamarind",
+      "ghee",
+      "peanuts"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 12,
+      "carbs_g": 58,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xxx-263",
+    "title": "Thoriyan",
+    "summary": "Kerala style dry vegetable stir-fry",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "mixed vegetables",
+      "coconut",
+      "mustard seeds",
+      "green chili",
+      "turmeric",
+      "curry leaves"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 3,
+      "carbs_g": 12,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xxx-265",
+    "title": "Alleppey Fish Curry",
+    "summary": "Tangy mango and coconut fish curry",
+    "ready_in_minutes": 35,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "raw mango",
+      "coconut milk",
+      "ginger",
+      "curry leaves",
+      "turmeric",
+      "oil"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 28,
+      "carbs_g": 8,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xxx-267",
+    "title": "Pori Urundai",
+    "summary": "Sweet puffed rice balls with jaggery",
+    "ready_in_minutes": 20,
+    "servings": 10,
+    "ingredients": [
+      "puffed rice",
+      "jaggery",
+      "cardamom",
+      "ginger powder"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein_g": 1,
+      "carbs_g": 28,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxx-269",
+    "title": "Murukku",
+    "summary": "Crunchy rice flour savory snack",
+    "ready_in_minutes": 40,
+    "servings": 8,
+    "ingredients": [
+      "rice flour",
+      "urad dal flour",
+      "butter",
+      "cumin",
+      "ajwain",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 6,
+      "carbs_g": 45,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xxx-271",
+    "title": "Achappam",
+    "summary": "Rose shaped crunchy fried cookie",
+    "ready_in_minutes": 45,
+    "servings": 12,
+    "ingredients": [
+      "rice flour",
+      "coconut milk",
+      "sugar",
+      "egg",
+      "sesame seeds",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 3,
+      "carbs_g": 35,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xxx-273",
+    "title": "Unniyappam",
+    "summary": "Sweet fried rice and banana balls",
+    "ready_in_minutes": 35,
+    "servings": 6,
+    "ingredients": [
+      "rice flour",
+      "banana",
+      "jaggery",
+      "coconut bits",
+      "ghee",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 4,
+      "carbs_g": 52,
+      "fat_g": 11
+    }
+  },
+  {
+    "id": "xxx-275",
+    "title": "Puttu and Kadala Curry",
+    "summary": "Steamed rice and black chickpeas",
+    "ready_in_minutes": 45,
+    "servings": 3,
+    "ingredients": [
+      "rice flour",
+      "coconut",
+      "black chickpeas",
+      "onion",
+      "coconut milk",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 15,
+      "carbs_g": 65,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xxx-277",
+    "title": "Idiyappam",
+    "summary": "Steamed rice strings usually served with stew",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "rice flour",
+      "water",
+      "salt",
+      "coconut"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 3,
+      "carbs_g": 40,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "xxx-279",
+    "title": "Olan",
+    "summary": "White ash gourd and beans in coconut milk",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "ash gourd",
+      "black eyed peas",
+      "coconut milk",
+      "curry leaves",
+      "coconut oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 4,
+      "carbs_g": 12,
+      "fat_g": 14
+    }
+  },
+  {
+    "id": "xxx-281",
+    "title": "Kootu Curry",
+    "summary": "Yam and plantain with roasted coconut",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "yam",
+      "raw banana",
+      "black chickpeas",
+      "coconut",
+      "pepper",
+      "ghee"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 8,
+      "carbs_g": 35,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xxx-283",
+    "title": "Inji Puli",
+    "summary": "Ginger and tamarind sweet and sour pickle",
+    "ready_in_minutes": 20,
+    "servings": 10,
+    "ingredients": [
+      "ginger",
+      "tamarind",
+      "jaggery",
+      "green chili",
+      "mustard seeds",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein_g": 0.5,
+      "carbs_g": 15,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xxx-285",
+    "title": "Nadan Chicken Curry",
+    "summary": "Kerala style traditional chicken curry",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "onion",
+      "tomato",
+      "ginger",
+      "garlic",
+      "coconut oil",
+      "spices"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 28,
+      "carbs_g": 12,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xxx-287",
+    "title": "Meen Peera",
+    "summary": "Small fish cooked with shredded coconut",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "small fish",
+      "coconut",
+      "gamboge",
+      "turmeric",
+      "green chili",
+      "curry leaves"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 22,
+      "carbs_g": 5,
+      "fat_g": 15
+    }
+  },
+  {
+    "id": "xxx-289",
+    "title": "Pathiri",
+    "summary": "Thin rice pancakes from Malabar",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "rice flour",
+      "water",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 3,
+      "carbs_g": 30,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxx-291",
+    "title": "Nangia Curry",
+    "summary": "Assamese fish curry with sour notes",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "tomato",
+      "lemon",
+      "turmeric",
+      "ginger",
+      "mustard oil"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 24,
+      "carbs_g": 6,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xxx-293",
+    "title": "Khura",
+    "summary": "Buckwheat pancakes from Arunachal",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "buckwheat flour",
+      "water",
+      "salt",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 5,
+      "carbs_g": 32,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xxx-295",
+    "title": "Zan",
+    "summary": "Monpa style porridge from Arunachal",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "millet flour",
+      "vegetables",
+      "ginger",
+      "water"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 4,
+      "carbs_g": 35,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxx-297",
+    "title": "Hinkhuve",
+    "summary": "Naga recipe of meat cooked with local herbs",
+    "ready_in_minutes": 45,
+    "servings": 3,
+    "ingredients": [
+      "pork",
+      "local herbs",
+      "garlic",
+      "chili",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 22,
+      "carbs_g": 2,
+      "fat_g": 28
+    }
+  },
+  {
+    "id": "xxx-299",
+    "title": "Taro Leaves with Smoked Pork",
+    "summary": "Traditional Naga delicacy",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "taro leaves",
+      "smoked pork",
+      "ghost chili",
+      "bamboo shoot",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 20,
+      "carbs_g": 10,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xxx-301",
+    "title": "Iromba",
+    "summary": "Manipuri fermented fish and vegetable mash",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "fermented fish",
+      "bamboo shoot",
+      "potato",
+      "chili",
+      "coriander"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 12,
+      "carbs_g": 18,
+      "fat_g": 2
+    }
+  },
+  {
+    "id": "xxx-303",
+    "title": "Morok Metpa",
+    "summary": "Simple spicy chili chutney from Manipur",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "bhut jolokia",
+      "onion",
+      "salt",
+      "roasted fish"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein_g": 4,
+      "carbs_g": 8,
+      "fat_g": 1
+    }
+  },
+  {
+    "id": "xxx-305",
+    "title": "Ooti",
+    "summary": "Manipuri pea and leafy green dish",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "split peas",
+      "spinach",
+      "bicarbonate soda",
+      "ginger",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 10,
+      "carbs_g": 32,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxx-307",
+    "title": "Bai",
+    "summary": "Mizo mixed vegetable and pork fat stew",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "vegetables",
+      "pork fat",
+      "bicarbonate soda",
+      "salt",
+      "water"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein_g": 6,
+      "carbs_g": 12,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xxx-309",
+    "title": "Sawhchiar",
+    "summary": "Mizo meat and rice porridge",
+    "ready_in_minutes": 40,
+    "servings": 3,
+    "ingredients": [
+      "rice",
+      "chicken",
+      "ginger",
+      "garlic",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 22,
+      "carbs_g": 50,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xxx-311",
+    "title": "Koat Pitha",
+    "summary": "Mizo banana and rice flour fritters",
+    "ready_in_minutes": 25,
+    "servings": 4,
+    "ingredients": [
+      "banana",
+      "rice flour",
+      "jaggery",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 240,
+      "protein_g": 3,
+      "carbs_g": 42,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xxx-313",
+    "title": "Masor Tenga",
+    "summary": "Assamese light and sour fish curry",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "fish",
+      "tomato",
+      "lemon",
+      "coriander",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 24,
+      "carbs_g": 5,
+      "fat_g": 10
+    }
+  },
+  {
+    "id": "xxx-315",
+    "title": "Poora Haah",
+    "summary": "Assamese roasted duck with bamboo shoot",
+    "ready_in_minutes": 60,
+    "servings": 4,
+    "ingredients": [
+      "duck",
+      "bamboo shoot",
+      "ginger",
+      "garlic",
+      "turmeric",
+      "oil"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 28,
+      "carbs_g": 8,
+      "fat_g": 35
+    }
+  },
+  {
+    "id": "xxx-317",
+    "title": "Khaar",
+    "summary": "Assamese alkaline dish with papaya and pulses",
+    "ready_in_minutes": 30,
+    "servings": 4,
+    "ingredients": [
+      "papaya",
+      "kol khar",
+      "moong dal",
+      "mustard oil",
+      "salt"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein_g": 6,
+      "carbs_g": 20,
+      "fat_g": 4
+    }
+  },
+  {
+    "id": "xxx-319",
+    "title": "Pork with Dried Bamboo Shoot",
+    "summary": "Nagaland signature dish",
+    "ready_in_minutes": 50,
+    "servings": 4,
+    "ingredients": [
+      "pork",
+      "dried bamboo shoot",
+      "ginger",
+      "chili",
+      "salt"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein_g": 24,
+      "carbs_g": 6,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xxx-321",
+    "title": "Pad See Ew",
+    "summary": "Thai stir-fried wide rice noodles",
+    "ready_in_minutes": 20,
+    "servings": 2,
+    "ingredients": [
+      "rice noodles",
+      "beef",
+      "broccoli",
+      "egg",
+      "soy sauce",
+      "sugar",
+      "oyster sauce"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein_g": 24,
+      "carbs_g": 65,
+      "fat_g": 12
+    }
+  },
+  {
+    "id": "xxx-323",
+    "title": "Green Curry",
+    "summary": "Thai spicy and aromatic green coconut curry",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "chicken",
+      "green curry paste",
+      "coconut milk",
+      "bamboo shoots",
+      "basil",
+      "lime leaves"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein_g": 26,
+      "carbs_g": 15,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xxx-325",
+    "title": "Massaman Curry",
+    "summary": "Rich mild Thai curry with peanuts and potato",
+    "ready_in_minutes": 45,
+    "servings": 3,
+    "ingredients": [
+      "beef",
+      "massaman paste",
+      "coconut milk",
+      "potato",
+      "onion",
+      "peanuts"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 550,
+      "protein_g": 32,
+      "carbs_g": 25,
+      "fat_g": 38
+    }
+  },
+  {
+    "id": "xxx-327",
+    "title": "Som Tum",
+    "summary": "Thai spicy green papaya salad",
+    "ready_in_minutes": 15,
+    "servings": 2,
+    "ingredients": [
+      "green papaya",
+      "peanuts",
+      "shrimp",
+      "lime",
+      "chili",
+      "palm sugar",
+      "fish sauce"
+    ],
+    "diets": [
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 8,
+      "carbs_g": 22,
+      "fat_g": 7
+    }
+  },
+  {
+    "id": "xxx-329",
+    "title": "Kung Pao Chicken",
+    "summary": "Szechuan spicy stir-fry with peanuts",
+    "ready_in_minutes": 25,
+    "servings": 2,
+    "ingredients": [
+      "chicken",
+      "peanuts",
+      "bell pepper",
+      "onion",
+      "dried chili",
+      "soy sauce",
+      "hoisin"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 480,
+      "protein_g": 32,
+      "carbs_g": 18,
+      "fat_g": 30
+    }
+  },
+  {
+    "id": "xxx-331",
+    "title": "Mapo Tofu",
+    "summary": "Szechuan spicy silken tofu with minced meat",
+    "ready_in_minutes": 20,
+    "servings": 3,
+    "ingredients": [
+      "tofu",
+      "minced pork",
+      "doubanjiang",
+      "garlic",
+      "ginger",
+      "scallions",
+      "oil"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 22,
+      "carbs_g": 12,
+      "fat_g": 24
+    }
+  },
+  {
+    "id": "xxx-333",
+    "title": "Wonton Soup",
+    "summary": "Chinese dumplings in clear savory broth",
+    "ready_in_minutes": 30,
+    "servings": 2,
+    "ingredients": [
+      "wonton wrappers",
+      "pork",
+      "shrimp",
+      "bok choy",
+      "scallions",
+      "ginger",
+      "broth"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein_g": 15,
+      "carbs_g": 25,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xxx-335",
+    "title": "Duck L'Orange",
+    "summary": "Classic French roast duck with orange sauce",
+    "ready_in_minutes": 120,
+    "servings": 4,
+    "ingredients": [
+      "duck",
+      "orange juice",
+      "sugar",
+      "vinegar",
+      "butter",
+      "herbs"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 650,
+      "protein_g": 35,
+      "carbs_g": 25,
+      "fat_g": 45
+    }
+  },
+  {
+    "id": "xxx-337",
+    "title": "Coq au Vin",
+    "summary": "French chicken braised in red wine",
+    "ready_in_minutes": 90,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "red wine",
+      "bacon",
+      "mushrooms",
+      "onion",
+      "garlic",
+      "butter"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein_g": 38,
+      "carbs_g": 12,
+      "fat_g": 32
+    }
+  },
+  {
+    "id": "xxx-339",
+    "title": "Boeuf Bourguignon",
+    "summary": "Classic French beef stew in red wine",
+    "ready_in_minutes": 180,
+    "servings": 6,
+    "ingredients": [
+      "beef",
+      "red wine",
+      "carrot",
+      "onion",
+      "mushrooms",
+      "bacon",
+      "herbs"
+    ],
+    "diets": [
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 580,
+      "protein_g": 42,
+      "carbs_g": 15,
+      "fat_g": 35
+    }
+  },
+  {
+    "id": "xxx-341",
+    "title": "Starfruit and Chili Salad",
+    "summary": "Exotic sharp and spicy tropical fruit salad",
+    "ready_in_minutes": 10,
+    "servings": 2,
+    "ingredients": [
+      "starfruit",
+      "bird eye chili",
+      "lime juice",
+      "salt",
+      "sugar"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 70,
+      "protein_g": 1,
+      "carbs_g": 16,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxx-343",
+    "title": "Dragon Fruit Smoothie Royale",
+    "summary": "Exotic pink smoothie with superfoods",
+    "ready_in_minutes": 10,
+    "servings": 1,
+    "ingredients": [
+      "dragon fruit",
+      "goji berries",
+      "chia seeds",
+      "almond milk",
+      "honey"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 6,
+      "carbs_g": 52,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xxx-345",
+    "title": "Wild Berry Tart",
+    "summary": "Delicate tart with foraged forest berries",
+    "ready_in_minutes": 60,
+    "servings": 6,
+    "ingredients": [
+      "mixed berries",
+      "pastry crust",
+      "cream",
+      "sugar",
+      "vanilla"
+    ],
+    "diets": [
+      "vegetarian"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 4,
+      "carbs_g": 45,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xxx-347",
+    "title": "Hibiscus Tea Poached Pears",
+    "summary": "Elegant dessert with floral notes",
+    "ready_in_minutes": 45,
+    "servings": 4,
+    "ingredients": [
+      "pears",
+      "hibiscus tea",
+      "cinnamon",
+      "honey",
+      "lemon peel"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein_g": 1,
+      "carbs_g": 45,
+      "fat_g": 0.2
+    }
+  },
+  {
+    "id": "xxx-349",
+    "title": "Candied Lotus Seeds",
+    "summary": "Rare traditional delicate sweet snack",
+    "ready_in_minutes": 90,
+    "servings": 10,
+    "ingredients": [
+      "lotus seeds",
+      "sugar",
+      "water",
+      "vanilla"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein_g": 3,
+      "carbs_g": 35,
+      "fat_g": 0.5
+    }
+  },
+  {
+    "id": "xxxx-306",
+    "title": "Pindi Chole Masala",
+    "summary": "Spicy dark chickpeas with tangy amchur",
+    "ready_in_minutes": 40,
+    "servings": 4,
+    "ingredients": [
+      "chickpeas",
+      "tea leaves",
+      "anardana",
+      "black salt",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "vegan",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 15,
+      "carbs_g": 38,
+      "fat_g": 6
+    }
+  },
+  {
+    "id": "xxxx-308",
+    "title": "Chicken Saagwala",
+    "summary": "Chicken cooked in a creamy spinach puree",
+    "ready_in_minutes": 35,
+    "servings": 4,
+    "ingredients": [
+      "chicken",
+      "spinach",
+      "garlic",
+      "ginger",
+      "cream",
+      "oil"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein_g": 28,
+      "carbs_g": 12,
+      "fat_g": 22
+    }
+  },
+  {
+    "id": "xxxx-310",
+    "title": "Dal Tadka Royale",
+    "summary": "Yellow lentils tempered with ghee and red chilies",
+    "ready_in_minutes": 20,
+    "servings": 4,
+    "ingredients": [
+      "arhar dal",
+      "mustard seeds",
+      "whole red chilies",
+      "ghee",
+      "turmeric"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein_g": 10,
+      "carbs_g": 28,
+      "fat_g": 8
+    }
+  },
+  {
+    "id": "xxxx-312",
+    "title": "Paneer Jalfrezi",
+    "summary": "Tangy and spicy stir-fried paneer with slivered veggies",
+    "ready_in_minutes": 25,
+    "servings": 3,
+    "ingredients": [
+      "paneer",
+      "bell pepper",
+      "onion",
+      "vinegar",
+      "tomato salsa",
+      "oil"
+    ],
+    "diets": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein_g": 16,
+      "carbs_g": 14,
+      "fat_g": 18
+    }
+  },
+  {
+    "id": "xxxx-314",
+    "title": "Coconut Shrimp Curry",
+    "summary": "Creamy and spicy coastal style shrimp curry",
+    "ready_in_minutes": 30,
+    "servings": 3,
+    "ingredients": [
+      "shrimp",
+      "coconut milk",
+      "curry leaves",
+      "mustard seeds",
+      "oil"
+    ],
+    "diets": [
+      "gluten-free",
+      "high-protein"
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein_g": 24,
+      "carbs_g": 8,
+      "fat_g": 22
+    }
+  }
+]

@@ -1,0 +1,1458 @@
+{
+  "bajra": {
+    "calories": 361,
+    "protein_g": 12,
+    "carbs_g": 67,
+    "fat_g": 5,
+    "fiber_g": 1.2,
+    "sugar_g": 0
+  },
+  "bajra roti": {
+    "calories": 120,
+    "protein_g": 3,
+    "carbs_g": 22,
+    "fat_g": 3,
+    "fiber_g": 2,
+    "sugar_g": 0
+  },
+  "jowar": {
+    "calories": 349,
+    "protein_g": 11,
+    "carbs_g": 73,
+    "fat_g": 3,
+    "fiber_g": 1.6,
+    "sugar_g": 0
+  },
+  "jowar roti": {
+    "calories": 115,
+    "protein_g": 3,
+    "carbs_g": 21,
+    "fat_g": 2,
+    "fiber_g": 1.8,
+    "sugar_g": 0
+  },
+  "ragi": {
+    "calories": 328,
+    "protein_g": 7,
+    "carbs_g": 72,
+    "fat_g": 1.3,
+    "fiber_g": 3.6,
+    "sugar_g": 0
+  },
+  "ragi dosa": {
+    "calories": 110,
+    "protein_g": 3,
+    "carbs_g": 20,
+    "fat_g": 2,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "makka": {
+    "calories": 342,
+    "protein_g": 9,
+    "carbs_g": 73,
+    "fat_g": 4,
+    "fiber_g": 2,
+    "sugar_g": 0
+  },
+  "makki roti": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 25,
+    "fat_g": 3,
+    "fiber_g": 2.5,
+    "sugar_g": 0
+  },
+  "besan": {
+    "calories": 387,
+    "protein_g": 22,
+    "carbs_g": 58,
+    "fat_g": 7,
+    "fiber_g": 10,
+    "sugar_g": 0
+  },
+  "besan chilla": {
+    "calories": 180,
+    "protein_g": 8,
+    "carbs_g": 20,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 0
+  },
+  "sabudana": {
+    "calories": 332,
+    "protein_g": 0.2,
+    "carbs_g": 83,
+    "fat_g": 0.2,
+    "fiber_g": 0.5,
+    "sugar_g": 0
+  },
+  "sabudana khichdi": {
+    "calories": 200,
+    "protein_g": 4,
+    "carbs_g": 35,
+    "fat_g": 5,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "makhana": {
+    "calories": 347,
+    "protein_g": 9.7,
+    "carbs_g": 77,
+    "fat_g": 0.1,
+    "fiber_g": 14.5,
+    "sugar_g": 0
+  },
+  "murmura": {
+    "calories": 390,
+    "protein_g": 6,
+    "carbs_g": 85,
+    "fat_g": 1,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "thepla": {
+    "calories": 250,
+    "protein_g": 6,
+    "carbs_g": 32,
+    "fat_g": 11,
+    "fiber_g": 2.5,
+    "sugar_g": 1
+  },
+  "mathri": {
+    "calories": 450,
+    "protein_g": 8,
+    "carbs_g": 50,
+    "fat_g": 24,
+    "fiber_g": 2,
+    "sugar_g": 0
+  },
+  "kachori": {
+    "calories": 380,
+    "protein_g": 7,
+    "carbs_g": 40,
+    "fat_g": 21,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "bhajiyas": {
+    "calories": 300,
+    "protein_g": 6,
+    "carbs_g": 30,
+    "fat_g": 18,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "pakora": {
+    "calories": 290,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fat_g": 17,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "vada": {
+    "calories": 260,
+    "protein_g": 7,
+    "carbs_g": 25,
+    "fat_g": 15,
+    "fiber_g": 2,
+    "sugar_g": 0.5
+  },
+  "medu vada": {
+    "calories": 250,
+    "protein_g": 8,
+    "carbs_g": 22,
+    "fat_g": 15,
+    "fiber_g": 3,
+    "sugar_g": 0
+  },
+  "bonda": {
+    "calories": 280,
+    "protein_g": 5,
+    "carbs_g": 30,
+    "fat_g": 16,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "uttapam": {
+    "calories": 150,
+    "protein_g": 4,
+    "carbs_g": 25,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 0.5
+  },
+  "appam": {
+    "calories": 160,
+    "protein_g": 3,
+    "carbs_g": 30,
+    "fat_g": 2,
+    "fiber_g": 0.5,
+    "sugar_g": 0.5
+  },
+  "puttu": {
+    "calories": 180,
+    "protein_g": 4,
+    "carbs_g": 35,
+    "fat_g": 2,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "pesarattu": {
+    "calories": 150,
+    "protein_g": 7,
+    "carbs_g": 22,
+    "fat_g": 3,
+    "fiber_g": 3,
+    "sugar_g": 0
+  },
+  "pongal": {
+    "calories": 180,
+    "protein_g": 5,
+    "carbs_g": 30,
+    "fat_g": 4,
+    "fiber_g": 1,
+    "sugar_g": 0.5
+  },
+  "bisibelebath": {
+    "calories": 200,
+    "protein_g": 6,
+    "carbs_g": 32,
+    "fat_g": 5,
+    "fiber_g": 2,
+    "sugar_g": 0.5
+  },
+  "puliyogare": {
+    "calories": 210,
+    "protein_g": 4,
+    "carbs_g": 35,
+    "fat_g": 6,
+    "fiber_g": 1,
+    "sugar_g": 1
+  },
+  "curd rice": {
+    "calories": 160,
+    "protein_g": 4,
+    "carbs_g": 25,
+    "fat_g": 4,
+    "fiber_g": 0.5,
+    "sugar_g": 3
+  },
+  "khichdi": {
+    "calories": 150,
+    "protein_g": 5,
+    "carbs_g": 25,
+    "fat_g": 2,
+    "fiber_g": 1.5,
+    "sugar_g": 0
+  },
+  "dal fry": {
+    "calories": 130,
+    "protein_g": 7,
+    "carbs_g": 18,
+    "fat_g": 3,
+    "fiber_g": 4,
+    "sugar_g": 0.5
+  },
+  "dal tadka": {
+    "calories": 140,
+    "protein_g": 7,
+    "carbs_g": 20,
+    "fat_g": 3,
+    "fiber_g": 4,
+    "sugar_g": 0.5
+  },
+  "sambhar powder": {
+    "calories": 280,
+    "protein_g": 15,
+    "carbs_g": 40,
+    "fat_g": 8,
+    "fiber_g": 25,
+    "sugar_g": 3
+  },
+  "rasam": {
+    "calories": 30,
+    "protein_g": 1,
+    "carbs_g": 5,
+    "fat_g": 0.5,
+    "fiber_g": 0.5,
+    "sugar_g": 0.5
+  },
+  "kadhi": {
+    "calories": 90,
+    "protein_g": 3,
+    "carbs_g": 8,
+    "fat_g": 5,
+    "fiber_g": 0.5,
+    "sugar_g": 2
+  },
+  "kadhi pakora": {
+    "calories": 150,
+    "protein_g": 5,
+    "carbs_g": 12,
+    "fat_g": 9,
+    "fiber_g": 1,
+    "sugar_g": 2
+  },
+  "paneer butter masala": {
+    "calories": 280,
+    "protein_g": 12,
+    "carbs_g": 10,
+    "fat_g": 22,
+    "fiber_g": 1,
+    "sugar_g": 3
+  },
+  "shahi paneer": {
+    "calories": 310,
+    "protein_g": 13,
+    "carbs_g": 12,
+    "fat_g": 24,
+    "fiber_g": 1,
+    "sugar_g": 4
+  },
+  "malai kofta": {
+    "calories": 350,
+    "protein_g": 10,
+    "carbs_g": 20,
+    "fat_g": 26,
+    "fiber_g": 2,
+    "sugar_g": 5
+  },
+  "navratan korma": {
+    "calories": 250,
+    "protein_g": 8,
+    "carbs_g": 22,
+    "fat_g": 15,
+    "fiber_g": 3,
+    "sugar_g": 4
+  },
+  "dum aloo": {
+    "calories": 200,
+    "protein_g": 4,
+    "carbs_g": 25,
+    "fat_g": 10,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "baingan bharta": {
+    "calories": 120,
+    "protein_g": 3,
+    "carbs_g": 10,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 2
+  },
+  "bharwa bhindi": {
+    "calories": 140,
+    "protein_g": 3,
+    "carbs_g": 12,
+    "fat_g": 9,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "tinda masala": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 10,
+    "fat_g": 3,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "lauki sabji": {
+    "calories": 60,
+    "protein_g": 1.5,
+    "carbs_g": 8,
+    "fat_g": 2,
+    "fiber_g": 1,
+    "sugar_g": 2
+  },
+  "karela sabji": {
+    "calories": 90,
+    "protein_g": 2,
+    "carbs_g": 8,
+    "fat_g": 5,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "parwal sabji": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 9,
+    "fat_g": 3,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "aamras": {
+    "calories": 90,
+    "protein_g": 1,
+    "carbs_g": 22,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 18
+  },
+  "raita": {
+    "calories": 70,
+    "protein_g": 3,
+    "carbs_g": 5,
+    "fat_g": 4,
+    "fiber_g": 0.5,
+    "sugar_g": 3
+  },
+  "boondi raita": {
+    "calories": 100,
+    "protein_g": 3,
+    "carbs_g": 10,
+    "fat_g": 5,
+    "fiber_g": 0.5,
+    "sugar_g": 3
+  },
+  "pickle": {
+    "calories": 150,
+    "protein_g": 1,
+    "carbs_g": 10,
+    "fat_g": 12,
+    "fiber_g": 1,
+    "sugar_g": 3
+  },
+  "papad": {
+    "calories": 350,
+    "protein_g": 20,
+    "carbs_g": 55,
+    "fat_g": 3,
+    "fiber_g": 5,
+    "sugar_g": 0
+  },
+  "chutney green": {
+    "calories": 50,
+    "protein_g": 2,
+    "carbs_g": 5,
+    "fat_g": 2,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "tamarind chutney": {
+    "calories": 200,
+    "protein_g": 1,
+    "carbs_g": 50,
+    "fat_g": 0.5,
+    "fiber_g": 2,
+    "sugar_g": 35
+  },
+  "coconut chutney": {
+    "calories": 180,
+    "protein_g": 3,
+    "carbs_g": 8,
+    "fat_g": 15,
+    "fiber_g": 4,
+    "sugar_g": 3
+  },
+  "peanut chutney": {
+    "calories": 350,
+    "protein_g": 14,
+    "carbs_g": 15,
+    "fat_g": 28,
+    "fiber_g": 5,
+    "sugar_g": 3
+  },
+  "schezwan chutney": {
+    "calories": 120,
+    "protein_g": 2,
+    "carbs_g": 15,
+    "fat_g": 6,
+    "fiber_g": 3,
+    "sugar_g": 5
+  },
+  "halwa": {
+    "calories": 350,
+    "protein_g": 5,
+    "carbs_g": 45,
+    "fat_g": 17,
+    "fiber_g": 1,
+    "sugar_g": 25
+  },
+  "gajar halwa": {
+    "calories": 280,
+    "protein_g": 4,
+    "carbs_g": 35,
+    "fat_g": 14,
+    "fiber_g": 2,
+    "sugar_g": 22
+  },
+  "moong dal halwa": {
+    "calories": 400,
+    "protein_g": 8,
+    "carbs_g": 40,
+    "fat_g": 24,
+    "fiber_g": 2,
+    "sugar_g": 20
+  },
+  "suji halwa": {
+    "calories": 340,
+    "protein_g": 4,
+    "carbs_g": 45,
+    "fat_g": 16,
+    "fiber_g": 1,
+    "sugar_g": 28
+  },
+  "besan ladoo": {
+    "calories": 480,
+    "protein_g": 10,
+    "carbs_g": 50,
+    "fat_g": 27,
+    "fiber_g": 3,
+    "sugar_g": 25
+  },
+  "motichoor ladoo": {
+    "calories": 450,
+    "protein_g": 8,
+    "carbs_g": 55,
+    "fat_g": 22,
+    "fiber_g": 1,
+    "sugar_g": 30
+  },
+  "barfi": {
+    "calories": 400,
+    "protein_g": 8,
+    "carbs_g": 45,
+    "fat_g": 22,
+    "fiber_g": 0,
+    "sugar_g": 30
+  },
+  "peda": {
+    "calories": 380,
+    "protein_g": 7,
+    "carbs_g": 50,
+    "fat_g": 18,
+    "fiber_g": 0,
+    "sugar_g": 35
+  },
+  "jalebi": {
+    "calories": 380,
+    "protein_g": 3,
+    "carbs_g": 60,
+    "fat_g": 15,
+    "fiber_g": 0,
+    "sugar_g": 40
+  },
+  "imarti": {
+    "calories": 370,
+    "protein_g": 4,
+    "carbs_g": 58,
+    "fat_g": 14,
+    "fiber_g": 1,
+    "sugar_g": 35
+  },
+  "rabri": {
+    "calories": 250,
+    "protein_g": 6,
+    "carbs_g": 25,
+    "fat_g": 14,
+    "fiber_g": 0,
+    "sugar_g": 18
+  },
+  "basundi": {
+    "calories": 220,
+    "protein_g": 5,
+    "carbs_g": 22,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 15
+  },
+  "rasmalai": {
+    "calories": 280,
+    "protein_g": 8,
+    "carbs_g": 30,
+    "fat_g": 14,
+    "fiber_g": 0,
+    "sugar_g": 20
+  },
+  "rasgulla": {
+    "calories": 186,
+    "protein_g": 5,
+    "carbs_g": 30,
+    "fat_g": 4,
+    "fiber_g": 0,
+    "sugar_g": 22
+  },
+  "sandesh": {
+    "calories": 300,
+    "protein_g": 8,
+    "carbs_g": 35,
+    "fat_g": 14,
+    "fiber_g": 0,
+    "sugar_g": 25
+  },
+  "mishti doi": {
+    "calories": 150,
+    "protein_g": 4,
+    "carbs_g": 22,
+    "fat_g": 5,
+    "fiber_g": 0,
+    "sugar_g": 15
+  },
+  "kulfi": {
+    "calories": 240,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 20
+  },
+  "falooda": {
+    "calories": 200,
+    "protein_g": 4,
+    "carbs_g": 35,
+    "fat_g": 5,
+    "fiber_g": 1,
+    "sugar_g": 22
+  },
+  "thandai": {
+    "calories": 150,
+    "protein_g": 5,
+    "carbs_g": 18,
+    "fat_g": 6,
+    "fiber_g": 1,
+    "sugar_g": 12
+  },
+  "shrikhand": {
+    "calories": 280,
+    "protein_g": 6,
+    "carbs_g": 30,
+    "fat_g": 15,
+    "fiber_g": 0,
+    "sugar_g": 22
+  },
+  "puran poli": {
+    "calories": 280,
+    "protein_g": 6,
+    "carbs_g": 45,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 18
+  },
+  "modak": {
+    "calories": 300,
+    "protein_g": 5,
+    "carbs_g": 48,
+    "fat_g": 10,
+    "fiber_g": 2,
+    "sugar_g": 22
+  },
+  "anarsa": {
+    "calories": 450,
+    "protein_g": 5,
+    "carbs_g": 65,
+    "fat_g": 18,
+    "fiber_g": 1,
+    "sugar_g": 30
+  },
+  "tilgul": {
+    "calories": 480,
+    "protein_g": 8,
+    "carbs_g": 50,
+    "fat_g": 28,
+    "fiber_g": 4,
+    "sugar_g": 35
+  },
+  "pav": {
+    "calories": 280,
+    "protein_g": 8,
+    "carbs_g": 50,
+    "fat_g": 5,
+    "fiber_g": 2,
+    "sugar_g": 5
+  },
+  "ladi pav": {
+    "calories": 280,
+    "protein_g": 8,
+    "carbs_g": 50,
+    "fat_g": 5,
+    "fiber_g": 2,
+    "sugar_g": 5
+  },
+  "veg biryani": {
+    "calories": 220,
+    "protein_g": 5,
+    "carbs_g": 35,
+    "fat_g": 6,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "pulao": {
+    "calories": 180,
+    "protein_g": 4,
+    "carbs_g": 30,
+    "fat_g": 4,
+    "fiber_g": 1,
+    "sugar_g": 0.5
+  },
+  "tahari": {
+    "calories": 190,
+    "protein_g": 4,
+    "carbs_g": 32,
+    "fat_g": 4,
+    "fiber_g": 1,
+    "sugar_g": 0.5
+  },
+  "tehri": {
+    "calories": 185,
+    "protein_g": 4,
+    "carbs_g": 30,
+    "fat_g": 5,
+    "fiber_g": 1,
+    "sugar_g": 0.5
+  },
+  "lemon pickle": {
+    "calories": 180,
+    "protein_g": 1,
+    "carbs_g": 12,
+    "fat_g": 15,
+    "fiber_g": 1,
+    "sugar_g": 5
+  },
+  "mango pickle": {
+    "calories": 200,
+    "protein_g": 1,
+    "carbs_g": 15,
+    "fat_g": 16,
+    "fiber_g": 1,
+    "sugar_g": 8
+  },
+  "chaat masala": {
+    "calories": 250,
+    "protein_g": 8,
+    "carbs_g": 40,
+    "fat_g": 6,
+    "fiber_g": 15,
+    "sugar_g": 5
+  },
+  "pani puri": {
+    "calories": 200,
+    "protein_g": 4,
+    "carbs_g": 30,
+    "fat_g": 7,
+    "fiber_g": 2,
+    "sugar_g": 3
+  },
+  "sev puri": {
+    "calories": 280,
+    "protein_g": 5,
+    "carbs_g": 35,
+    "fat_g": 13,
+    "fiber_g": 2,
+    "sugar_g": 4
+  },
+  "bhel puri": {
+    "calories": 250,
+    "protein_g": 5,
+    "carbs_g": 40,
+    "fat_g": 8,
+    "fiber_g": 2,
+    "sugar_g": 3
+  },
+  "dahi puri": {
+    "calories": 220,
+    "protein_g": 5,
+    "carbs_g": 28,
+    "fat_g": 10,
+    "fiber_g": 1,
+    "sugar_g": 5
+  },
+  "ragda pattice": {
+    "calories": 280,
+    "protein_g": 7,
+    "carbs_g": 38,
+    "fat_g": 11,
+    "fiber_g": 3,
+    "sugar_g": 2
+  },
+  "misal pav": {
+    "calories": 280,
+    "protein_g": 10,
+    "carbs_g": 35,
+    "fat_g": 11,
+    "fiber_g": 5,
+    "sugar_g": 2
+  },
+  "dabeli": {
+    "calories": 280,
+    "protein_g": 6,
+    "carbs_g": 40,
+    "fat_g": 10,
+    "fiber_g": 2,
+    "sugar_g": 5
+  },
+  "vada pav": {
+    "calories": 300,
+    "protein_g": 7,
+    "carbs_g": 35,
+    "fat_g": 15,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "khandvi": {
+    "calories": 180,
+    "protein_g": 8,
+    "carbs_g": 20,
+    "fat_g": 7,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "dhokla": {
+    "calories": 160,
+    "protein_g": 7,
+    "carbs_g": 25,
+    "fat_g": 3,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "handvo": {
+    "calories": 200,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fat_g": 7,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "undhiyu": {
+    "calories": 180,
+    "protein_g": 5,
+    "carbs_g": 22,
+    "fat_g": 8,
+    "fiber_g": 4,
+    "sugar_g": 3
+  },
+  "dal baati": {
+    "calories": 350,
+    "protein_g": 10,
+    "carbs_g": 45,
+    "fat_g": 14,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "gatte ki sabji": {
+    "calories": 200,
+    "protein_g": 7,
+    "carbs_g": 25,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "ker sangri": {
+    "calories": 120,
+    "protein_g": 4,
+    "carbs_g": 15,
+    "fat_g": 5,
+    "fiber_g": 5,
+    "sugar_g": 2
+  },
+  "laal maas": {
+    "calories": 300,
+    "protein_g": 22,
+    "carbs_g": 5,
+    "fat_g": 21,
+    "fiber_g": 1,
+    "sugar_g": 1
+  },
+  "keema": {
+    "calories": 250,
+    "protein_g": 20,
+    "carbs_g": 5,
+    "fat_g": 17,
+    "fiber_g": 0.5,
+    "sugar_g": 0
+  },
+  "mutton rogan josh": {
+    "calories": 280,
+    "protein_g": 22,
+    "carbs_g": 6,
+    "fat_g": 19,
+    "fiber_g": 1,
+    "sugar_g": 1
+  },
+  "biryani masala": {
+    "calories": 350,
+    "protein_g": 12,
+    "carbs_g": 45,
+    "fat_g": 14,
+    "fiber_g": 20,
+    "sugar_g": 3
+  },
+  "tandoori chicken": {
+    "calories": 200,
+    "protein_g": 25,
+    "carbs_g": 5,
+    "fat_g": 9,
+    "fiber_g": 0.5,
+    "sugar_g": 1
+  },
+  "chicken tikka": {
+    "calories": 180,
+    "protein_g": 26,
+    "carbs_g": 4,
+    "fat_g": 7,
+    "fiber_g": 0.5,
+    "sugar_g": 0.5
+  },
+  "seekh kebab": {
+    "calories": 250,
+    "protein_g": 18,
+    "carbs_g": 8,
+    "fat_g": 16,
+    "fiber_g": 1,
+    "sugar_g": 1
+  },
+  "shammi kebab": {
+    "calories": 240,
+    "protein_g": 16,
+    "carbs_g": 12,
+    "fat_g": 14,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "butter naan": {
+    "calories": 320,
+    "protein_g": 9,
+    "carbs_g": 48,
+    "fat_g": 10,
+    "fiber_g": 2,
+    "sugar_g": 4
+  },
+  "garlic naan": {
+    "calories": 300,
+    "protein_g": 9,
+    "carbs_g": 45,
+    "fat_g": 9,
+    "fiber_g": 2,
+    "sugar_g": 3
+  },
+  "rumali roti": {
+    "calories": 240,
+    "protein_g": 7,
+    "carbs_g": 42,
+    "fat_g": 5,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "laccha paratha": {
+    "calories": 310,
+    "protein_g": 6,
+    "carbs_g": 38,
+    "fat_g": 14,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "missi roti": {
+    "calories": 200,
+    "protein_g": 8,
+    "carbs_g": 32,
+    "fat_g": 5,
+    "fiber_g": 4,
+    "sugar_g": 1
+  },
+  "tandoori roti": {
+    "calories": 130,
+    "protein_g": 4,
+    "carbs_g": 24,
+    "fat_g": 2,
+    "fiber_g": 2,
+    "sugar_g": 0.5
+  },
+  "bhakri": {
+    "calories": 140,
+    "protein_g": 4,
+    "carbs_g": 28,
+    "fat_g": 1.5,
+    "fiber_g": 2,
+    "sugar_g": 0
+  },
+  "thalipeeth": {
+    "calories": 220,
+    "protein_g": 7,
+    "carbs_g": 30,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "pizza": {
+    "calories": 266,
+    "protein_g": 11,
+    "carbs_g": 33,
+    "fat_g": 10,
+    "fiber_g": 2,
+    "sugar_g": 4
+  },
+  "burger": {
+    "calories": 295,
+    "protein_g": 17,
+    "carbs_g": 24,
+    "fat_g": 14,
+    "fiber_g": 1,
+    "sugar_g": 5
+  },
+  "french fries": {
+    "calories": 312,
+    "protein_g": 3,
+    "carbs_g": 41,
+    "fat_g": 15,
+    "fiber_g": 4,
+    "sugar_g": 0.3
+  },
+  "hot dog": {
+    "calories": 290,
+    "protein_g": 10,
+    "carbs_g": 24,
+    "fat_g": 18,
+    "fiber_g": 1,
+    "sugar_g": 4
+  },
+  "sushi": {
+    "calories": 143,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fat_g": 1,
+    "fiber_g": 0.5,
+    "sugar_g": 5
+  },
+  "ramen": {
+    "calories": 436,
+    "protein_g": 10,
+    "carbs_g": 56,
+    "fat_g": 19,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "croissant": {
+    "calories": 406,
+    "protein_g": 8,
+    "carbs_g": 46,
+    "fat_g": 21,
+    "fiber_g": 2,
+    "sugar_g": 7
+  },
+  "pancake": {
+    "calories": 227,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fat_g": 10,
+    "fiber_g": 1,
+    "sugar_g": 7
+  },
+  "waffle": {
+    "calories": 291,
+    "protein_g": 8,
+    "carbs_g": 33,
+    "fat_g": 14,
+    "fiber_g": 1,
+    "sugar_g": 5
+  },
+  "bagel": {
+    "calories": 250,
+    "protein_g": 10,
+    "carbs_g": 49,
+    "fat_g": 1.5,
+    "fiber_g": 2,
+    "sugar_g": 5
+  },
+  "tortilla": {
+    "calories": 318,
+    "protein_g": 8,
+    "carbs_g": 52,
+    "fat_g": 8,
+    "fiber_g": 3,
+    "sugar_g": 1
+  },
+  "taco": {
+    "calories": 226,
+    "protein_g": 9,
+    "carbs_g": 20,
+    "fat_g": 12,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "burrito": {
+    "calories": 206,
+    "protein_g": 8,
+    "carbs_g": 25,
+    "fat_g": 8,
+    "fiber_g": 2,
+    "sugar_g": 1
+  },
+  "nachos": {
+    "calories": 500,
+    "protein_g": 7,
+    "carbs_g": 58,
+    "fat_g": 27,
+    "fiber_g": 4,
+    "sugar_g": 1
+  },
+  "hummus": {
+    "calories": 166,
+    "protein_g": 8,
+    "carbs_g": 14,
+    "fat_g": 10,
+    "fiber_g": 6,
+    "sugar_g": 0
+  },
+  "falafel": {
+    "calories": 333,
+    "protein_g": 13,
+    "carbs_g": 32,
+    "fat_g": 18,
+    "fiber_g": 5,
+    "sugar_g": 0
+  },
+  "pita bread": {
+    "calories": 275,
+    "protein_g": 9,
+    "carbs_g": 55,
+    "fat_g": 1.2,
+    "fiber_g": 2,
+    "sugar_g": 2
+  },
+  "couscous": {
+    "calories": 112,
+    "protein_g": 4,
+    "carbs_g": 23,
+    "fat_g": 0.2,
+    "fiber_g": 1.4,
+    "sugar_g": 0
+  },
+  "quinoa": {
+    "calories": 120,
+    "protein_g": 4,
+    "carbs_g": 21,
+    "fat_g": 2,
+    "fiber_g": 2.8,
+    "sugar_g": 0.9
+  },
+  "granola": {
+    "calories": 471,
+    "protein_g": 10,
+    "carbs_g": 64,
+    "fat_g": 20,
+    "fiber_g": 7,
+    "sugar_g": 25
+  },
+  "mac and cheese": {
+    "calories": 350,
+    "protein_g": 12,
+    "carbs_g": 40,
+    "fat_g": 16,
+    "fiber_g": 1,
+    "sugar_g": 4
+  },
+  "lasagna": {
+    "calories": 135,
+    "protein_g": 8,
+    "carbs_g": 16,
+    "fat_g": 5,
+    "fiber_g": 1,
+    "sugar_g": 3
+  },
+  "spaghetti": {
+    "calories": 131,
+    "protein_g": 5,
+    "carbs_g": 25,
+    "fat_g": 1.1,
+    "fiber_g": 1.8,
+    "sugar_g": 0.6
+  },
+  "meatball": {
+    "calories": 250,
+    "protein_g": 15,
+    "carbs_g": 10,
+    "fat_g": 17,
+    "fiber_g": 0.5,
+    "sugar_g": 3
+  },
+  "steak": {
+    "calories": 271,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 18,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "bacon": {
+    "calories": 541,
+    "protein_g": 37,
+    "carbs_g": 1,
+    "fat_g": 42,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "sausage": {
+    "calories": 301,
+    "protein_g": 12,
+    "carbs_g": 2,
+    "fat_g": 27,
+    "fiber_g": 0,
+    "sugar_g": 1
+  },
+  "ham": {
+    "calories": 145,
+    "protein_g": 21,
+    "carbs_g": 1,
+    "fat_g": 6,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "turkey": {
+    "calories": 135,
+    "protein_g": 30,
+    "carbs_g": 0,
+    "fat_g": 1,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "duck": {
+    "calories": 337,
+    "protein_g": 19,
+    "carbs_g": 0,
+    "fat_g": 28,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "lobster": {
+    "calories": 89,
+    "protein_g": 19,
+    "carbs_g": 0,
+    "fat_g": 1,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "crab": {
+    "calories": 97,
+    "protein_g": 19,
+    "carbs_g": 0,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "oyster": {
+    "calories": 68,
+    "protein_g": 7,
+    "carbs_g": 4,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "scallop": {
+    "calories": 69,
+    "protein_g": 12,
+    "carbs_g": 3,
+    "fat_g": 0.5,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "mozzarella": {
+    "calories": 280,
+    "protein_g": 28,
+    "carbs_g": 3,
+    "fat_g": 17,
+    "fiber_g": 0,
+    "sugar_g": 1
+  },
+  "parmesan": {
+    "calories": 431,
+    "protein_g": 38,
+    "carbs_g": 4,
+    "fat_g": 29,
+    "fiber_g": 0,
+    "sugar_g": 0.9
+  },
+  "brie": {
+    "calories": 334,
+    "protein_g": 21,
+    "carbs_g": 0.5,
+    "fat_g": 28,
+    "fiber_g": 0,
+    "sugar_g": 0.5
+  },
+  "feta": {
+    "calories": 264,
+    "protein_g": 14,
+    "carbs_g": 4,
+    "fat_g": 21,
+    "fiber_g": 0,
+    "sugar_g": 4
+  },
+  "toasted bread": {
+    "calories": 313,
+    "protein_g": 11,
+    "carbs_g": 55,
+    "fat_g": 5,
+    "fiber_g": 3,
+    "sugar_g": 5
+  },
+  "corn tortilla": {
+    "calories": 218,
+    "protein_g": 6,
+    "carbs_g": 44,
+    "fat_g": 3,
+    "fiber_g": 6,
+    "sugar_g": 1
+  },
+  "jackfruit": {
+    "calories": 95,
+    "protein_g": 2,
+    "carbs_g": 23,
+    "fat_g": 0.6,
+    "fiber_g": 1.5,
+    "sugar_g": 19
+  },
+  "starfruit": {
+    "calories": 31,
+    "protein_g": 1,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.8,
+    "sugar_g": 4
+  },
+  "dragon fruit": {
+    "calories": 50,
+    "protein_g": 1,
+    "carbs_g": 11,
+    "fat_g": 0.4,
+    "fiber_g": 3,
+    "sugar_g": 8
+  },
+  "persimmon": {
+    "calories": 70,
+    "protein_g": 0.6,
+    "carbs_g": 19,
+    "fat_g": 0.2,
+    "fiber_g": 3.6,
+    "sugar_g": 13
+  },
+  "lychee": {
+    "calories": 66,
+    "protein_g": 0.8,
+    "carbs_g": 17,
+    "fat_g": 0.4,
+    "fiber_g": 1.3,
+    "sugar_g": 15
+  },
+  "rambutan": {
+    "calories": 68,
+    "protein_g": 0.9,
+    "carbs_g": 16,
+    "fat_g": 0.2,
+    "fiber_g": 0.9,
+    "sugar_g": 14
+  },
+  "tamarind": {
+    "calories": 239,
+    "protein_g": 2.8,
+    "carbs_g": 63,
+    "fat_g": 0.6,
+    "fiber_g": 5.1,
+    "sugar_g": 38
+  },
+  "raw banana": {
+    "calories": 89,
+    "protein_g": 1.3,
+    "carbs_g": 23,
+    "fat_g": 0.3,
+    "fiber_g": 2.6,
+    "sugar_g": 5
+  },
+  "moringa": {
+    "calories": 64,
+    "protein_g": 9,
+    "carbs_g": 8,
+    "fat_g": 1.4,
+    "fiber_g": 2,
+    "sugar_g": 0
+  },
+  "turmeric milk": {
+    "calories": 80,
+    "protein_g": 3,
+    "carbs_g": 10,
+    "fat_g": 3,
+    "fiber_g": 0.5,
+    "sugar_g": 6
+  },
+  "spirulina": {
+    "calories": 290,
+    "protein_g": 57,
+    "carbs_g": 24,
+    "fat_g": 8,
+    "fiber_g": 4,
+    "sugar_g": 3
+  },
+  "nutritional yeast": {
+    "calories": 325,
+    "protein_g": 50,
+    "carbs_g": 36,
+    "fat_g": 5,
+    "fiber_g": 21,
+    "sugar_g": 0
+  },
+  "tempeh": {
+    "calories": 192,
+    "protein_g": 20,
+    "carbs_g": 8,
+    "fat_g": 11,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  "seitan": {
+    "calories": 370,
+    "protein_g": 75,
+    "carbs_g": 14,
+    "fat_g": 2,
+    "fiber_g": 1,
+    "sugar_g": 0
+  },
+  "edamame": {
+    "calories": 121,
+    "protein_g": 12,
+    "carbs_g": 9,
+    "fat_g": 5,
+    "fiber_g": 5,
+    "sugar_g": 2
+  },
+  "hemp seeds": {
+    "calories": 553,
+    "protein_g": 32,
+    "carbs_g": 9,
+    "fat_g": 49,
+    "fiber_g": 4,
+    "sugar_g": 1.5
+  },
+  "acai berry": {
+    "calories": 70,
+    "protein_g": 1.5,
+    "carbs_g": 4,
+    "fat_g": 5,
+    "fiber_g": 3.3,
+    "sugar_g": 0
+  },
+  "goji berry": {
+    "calories": 349,
+    "protein_g": 14,
+    "carbs_g": 77,
+    "fat_g": 0.4,
+    "fiber_g": 13,
+    "sugar_g": 46
+  },
+  "truffle": {
+    "calories": 284,
+    "protein_g": 6,
+    "carbs_g": 47,
+    "fat_g": 0.5,
+    "fiber_g": 17,
+    "sugar_g": 0
+  },
+  "saffron": {
+    "calories": 310,
+    "protein_g": 11,
+    "carbs_g": 65,
+    "fat_g": 6,
+    "fiber_g": 4,
+    "sugar_g": 0
+  }
+}
