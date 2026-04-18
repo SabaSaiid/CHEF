@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api';
+import RecipeModal from '../components/RecipeModal';
 
 export default function Recipes() {
   const location = useLocation();
@@ -57,7 +58,7 @@ export default function Recipes() {
         ready_in_minutes: recipe.ready_in_minutes || null,
         servings: recipe.servings || null,
       });
-      alert(`"\${recipe.title}" saved!`);
+      alert(`"${recipe.title}" saved!`);
     } catch (err) {
       alert(err.message);
     }
@@ -79,7 +80,7 @@ export default function Recipes() {
             onChange={e => setIngredients(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
           />
-          <button className={`btn-primary \${loading ? 'loading' : ''}`} onClick={handleSearch} disabled={loading}>
+          <button className={`btn-primary ${loading ? 'loading' : ''}`} onClick={handleSearch} disabled={loading}>
             <span className="btn-icon">🍽️</span> Search
           </button>
         </div>
@@ -117,7 +118,7 @@ export default function Recipes() {
             </div>
             <div className="recipe-grid" style={{marginTop: '20px'}}>
               {results.recipes.map((recipe, idx) => (
-                <div key={idx} className="recipe-card" style={{animationDelay: `\${idx * 0.06}s`}}>
+                <div key={idx} className="recipe-card" style={{animationDelay: `${idx * 0.06}s`}}>
                   {recipe.image_url && <img className="recipe-image" src={recipe.image_url} alt={recipe.title} loading="lazy" />}
                   <div className="recipe-info">
                     <div className="recipe-title">{recipe.title}</div>
@@ -145,53 +146,7 @@ export default function Recipes() {
         )}
       </div>
 
-      {selectedRecipe && (
-        <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setSelectedRecipe(null)}>
-          <div className="modal-content">
-            <button className="modal-close" onClick={() => setSelectedRecipe(null)}>×</button>
-            <h2 className="modal-title">{selectedRecipe.title}</h2>
-            {selectedRecipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: selectedRecipe.summary}}></p>}
-            
-            {selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 && (
-              <div className="modal-section" style={{marginTop: '15px'}}>
-                <h3>Ingredients</h3>
-                <ul>{selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}</ul>
-              </div>
-            )}
-
-            {selectedRecipe.instructions && (
-              <div className="modal-section" style={{marginTop: '15px'}}>
-                <h3>Instructions</h3>
-                <p className="instructions-text">{selectedRecipe.instructions}</p>
-              </div>
-            )}
-
-            {selectedRecipe.nutrition && (
-              <div className="modal-section" style={{marginTop: '15px'}}>
-                <h3>Nutrition</h3>
-                <div className="nutrition-grid" style={{marginTop: '8px'}}>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value calories">{selectedRecipe.nutrition.calories}<span className="nutrient-unit"> kcal</span></div>
-                    <div className="nutrient-label">Calories</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{selectedRecipe.nutrition.protein_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Protein</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{selectedRecipe.nutrition.carbs_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Carbs</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{selectedRecipe.nutrition.fat_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Fat</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
     </section>
   );
 }

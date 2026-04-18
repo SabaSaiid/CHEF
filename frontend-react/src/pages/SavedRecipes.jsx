@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import RecipeModal from '../components/RecipeModal';
 
 export default function SavedRecipes() {
   const { token } = useContext(AuthContext);
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const fetchRecipes = async () => {
     if (!token) {
@@ -30,7 +32,7 @@ export default function SavedRecipes() {
 
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/recipes/saved/\${id}`);
+      await api.delete(`/recipes/saved/${id}`);
       fetchRecipes();
     } catch (err) {
       alert(err.message);
@@ -68,6 +70,7 @@ export default function SavedRecipes() {
                     {r.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{r.ready_in_minutes} min</span></span>}
                   </div>
                   <div className="recipe-actions">
+                    <button className="btn-secondary" onClick={() => setSelectedRecipe({...r, ingredients: r.ingredients ? r.ingredients.split(', ') : []})}>View Details</button>
                     <button className="btn-danger" onClick={() => handleDelete(r.id)}>🗑️ Remove</button>
                   </div>
                 </div>
@@ -76,6 +79,8 @@ export default function SavedRecipes() {
           </div>
         )}
       </div>
+
+      <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
     </section>
   );
 }

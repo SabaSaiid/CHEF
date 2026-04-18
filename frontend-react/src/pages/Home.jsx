@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import RecipeModal from '../components/RecipeModal';
 
 export default function Home() {
   const { username } = useContext(AuthContext);
@@ -9,6 +10,7 @@ export default function Home() {
   const [dailyRecipe, setDailyRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     api.get('/recipes/daily')
@@ -47,7 +49,7 @@ export default function Home() {
   return (
     <section className="page active">
       <div className="kitchen-hero-header">
-        <h1>{username ? `Good Morning, Chef \${username}!` : 'Welcome to the Kitchen'}</h1>
+        <h1>{username ? `Good Morning, Chef ${username}!` : 'Welcome to the Kitchen'}</h1>
         <p className="subtitle">Your personalized food assistant</p>
       </div>
 
@@ -78,7 +80,7 @@ export default function Home() {
                     {dailyRecipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{dailyRecipe.servings} servings</span></span>}
                   </div>
                   <div className="recipe-actions">
-                    <button className="btn-primary" onClick={() => {/* Navigate to details if needed */}}>Let's Cook</button>
+                    <button className="btn-primary" onClick={() => setModalOpen(true)}>Let's Cook</button>
                     <button className="btn-secondary" onClick={handleSaveRecipe}>💾 Bookmark</button>
                   </div>
                 </div>
@@ -105,6 +107,10 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
+      {isModalOpen && dailyRecipe && (
+        <RecipeModal recipe={dailyRecipe} onClose={() => setModalOpen(false)} />
+      )}
     </section>
   );
 }

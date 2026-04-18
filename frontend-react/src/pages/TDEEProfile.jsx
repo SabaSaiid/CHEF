@@ -122,7 +122,7 @@ export default function TDEEProfile() {
           </div>
           
           {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>}
-          <button type="submit" className={`btn-primary btn-full \${loading ? 'loading' : ''}`} disabled={loading} style={{marginTop: '15px'}}>
+          <button type="submit" className={`btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading} style={{marginTop: '15px'}}>
             Calculate & Save
           </button>
         </form>

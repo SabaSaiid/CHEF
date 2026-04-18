@@ -36,7 +36,7 @@ export default function Detection() {
     formData.append('file', file);
 
     const token = localStorage.getItem('chef_token');
-    const headers = token ? { 'Authorization': `Bearer \${token}` } : {};
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
     try {
       const res = await fetch('/api/detect/image', {
@@ -47,7 +47,7 @@ export default function Detection() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail || `Request failed (\${res.status})`);
+        throw new Error(err.detail || `Request failed (${res.status})`);
       }
 
       const data = await res.json();
@@ -87,7 +87,7 @@ export default function Detection() {
           {file && <div className="selected-file">{file.name}</div>}
         </div>
         <button 
-          className={`btn-primary btn-full \${loading ? 'loading' : ''}`} 
+          className={`btn-primary btn-full ${loading ? 'loading' : ''}`} 
           onClick={handleDetect} 
           disabled={!file || loading}
           style={{marginTop: '15px'}}

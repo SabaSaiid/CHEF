@@ -50,7 +50,7 @@ export default function Nutrition() {
             className="qty-input" 
             onChange={e => setQty(e.target.value)}
           />
-          <button className={`btn-primary \${loading ? 'loading' : ''}`} onClick={handleAnalyze} disabled={loading}>
+          <button className={`btn-primary ${loading ? 'loading' : ''}`} onClick={handleAnalyze} disabled={loading}>
             <span className="btn-icon">📊</span> Analyze
           </button>
         </div>
