@@ -73,3 +73,21 @@ class SavedRecipe(Base):
 
     def __repr__(self) -> str:
         return f"<SavedRecipe id={self.id} title={self.title!r}>"
+
+
+class MealPlan(Base):
+    """A user's planned meal linking a specific recipe to a date and slot."""
+    __tablename__ = "meal_plans"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    recipe_id: Mapped[int] = mapped_column(Integer, ForeignKey("saved_recipes.id"), nullable=False)
+    date: Mapped[str] = mapped_column(String(10), nullable=False, index=True)  # Format: YYYY-MM-DD
+    meal_slot: Mapped[str] = mapped_column(String(20), nullable=False)  # Breakfast, Lunch, Dinner, Snack
+
+    # Relationships
+    owner: Mapped["User"] = relationship("User")
+    recipe: Mapped["SavedRecipe"] = relationship("SavedRecipe")
+
+    def __repr__(self) -> str:
+        return f"<MealPlan id={self.id} date={self.date} slot={self.meal_slot}>"

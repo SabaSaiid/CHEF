@@ -201,3 +201,29 @@ class DetectionResult(BaseModel):
     ingredients: list[str] = []
     message: str = "Detection complete"
     method: str = "rule_based_demo"
+
+
+# ── Meal Planner ────────────────────────────────────────────────
+
+class MealPlanCreate(BaseModel):
+    recipe_id: int
+    date: str = Field(..., pattern=r"^\d{4}-\d{2}-\d{2}$", description="YYYY-MM-DD")
+    meal_slot: str = Field(..., pattern="^(Breakfast|Lunch|Dinner|Snack)$")
+
+
+class MealPlanResponse(BaseModel):
+    id: int
+    user_id: int
+    recipe_id: int
+    date: str
+    meal_slot: str
+    recipe: Optional[SavedRecipeResponse] = None  # Full recipe details for rendering the UI
+
+    class Config:
+        from_attributes = True
+
+
+class ShoppingListItem(BaseModel):
+    ingredient: str
+    count: int
+    recipes_used_in: list[str] = []

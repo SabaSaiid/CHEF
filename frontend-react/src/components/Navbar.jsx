@@ -28,6 +28,7 @@ export default function Navbar() {
           <NavLink to="/tdee" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Profile/TDEE</NavLink>
           <NavLink to="/detection" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Detection</NavLink>
           <NavLink to="/saved" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Saved</NavLink>
+          <NavLink to="/planner" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Planner</NavLink>
         </div>
 
         <div className="nav-auth">
