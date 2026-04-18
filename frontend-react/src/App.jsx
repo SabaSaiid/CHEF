@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Ingredients from './pages/Ingredients';
@@ -13,22 +14,24 @@ import './index.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
-        <main id="app-main">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/ingredients" element={<Ingredients />} />
-            <Route path="/recipes" element={<Recipes />} />
-            <Route path="/nutrition" element={<Nutrition />} />
-            <Route path="/detection" element={<Detection />} />
-            <Route path="/tdee" element={<TDEEProfile />} />
-            <Route path="/saved" element={<SavedRecipes />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
+          <main id="app-main">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/ingredients" element={<Ingredients />} />
+              <Route path="/recipes" element={<Recipes />} />
+              <Route path="/nutrition" element={<Nutrition />} />
+              <Route path="/detection" element={<Detection />} />
+              <Route path="/tdee" element={<TDEEProfile />} />
+              <Route path="/saved" element={<SavedRecipes />} />
+            </Routes>
+          </main>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

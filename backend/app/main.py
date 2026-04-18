@@ -57,7 +57,7 @@ app.add_middleware(
 
 
 # ── Register routers ──────────────────────────────────────────
-from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee  # noqa: E402
+from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, substitutions  # noqa: E402
 
 app.include_router(auth_router.router)
 app.include_router(tdee.router)
@@ -65,6 +65,7 @@ app.include_router(ingredients.router)
 app.include_router(recipes.router)
 app.include_router(nutrition.router)
 app.include_router(detection.router)
+app.include_router(substitutions.router)
 
 
 # ── Health check ──────────────────────────────────────────────
