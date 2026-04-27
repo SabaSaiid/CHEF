@@ -69,9 +69,7 @@ export default function Home() {
                   {dailyRecipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{ __html: dailyRecipe.summary }} style={{ marginBottom: '15px' }}></div>}
                   {dailyRecipe.diets?.length > 0 && (
                     <div className="diet-tags" style={{ marginBottom: '15px' }}>
-                      {dailyRecipe.diets
-                        .filter(d => !(d.toLowerCase() === 'halal' && dailyRecipe.diets.some(v => ['vegetarian', 'vegan'].includes(v.toLowerCase()))))
-                        .map(d => <span key={d} className="diet-tag">{d}</span>)}
+                      {dailyRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}
                     </div>
                   )}
                   <div className="recipe-meta" style={{ marginBottom: '15px' }}>

@@ -18,7 +18,7 @@
 | **JWT Authentication** | [auth.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/auth.py), [auth_router.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/auth_router.py) | ✅ Signup, Login, `/me` profile endpoint |
 | **Ingredient Parsing** | [ingredients.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/ingredients.py) | ✅ Rule-based regex parser |
 | **Recipe Search** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ 30 in-line demo recipes + extended JSON (~180KB `recipes_extra.json`) |
-| **Constraint Filtering** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ Diet (vegetarian/vegan/halal/keto/gluten-free/high-protein), max calories, max time |
+| **Constraint Filtering** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ Diet (vegetarian/vegan/keto/gluten-free/high-protein), max calories, max time |
 | **Spoonacular Integration** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ Optional — falls back to demo data |
 | **Save/List/Delete Recipes** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ Per-user (auth-protected) |
 | **Recipe of the Day** | [recipes.py](file:///e:/Saba%20CSE/temps/AntiGravity/CHEF/backend/app/routers/recipes.py) | ✅ `/api/recipes/daily` — date-seeded random pick |

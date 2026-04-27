@@ -41,7 +41,7 @@ For production, run `npm run build` inside `frontend-react/` — the backend wil
 |---------|--------|-------|
 | Ingredient Parsing | Rule-based regex | Handles quantities, units, fractions, ranges |
 | Recipe Search | 30+ in-line + extended JSON dataset (~180 KB) | Set `SPOONACULAR_API_KEY` in `.env` for real API fallback |
-| **Constraint Filtering** | Diet, calories, cook time | vegetarian/vegan/halal/keto/gluten-free/high-protein, max kcal, max minutes |
+| **Constraint Filtering** | Diet, calories, cook time | vegetarian/vegan/keto/gluten-free/high-protein, max kcal, max minutes |
 | Nutrition Lookup | Built-in database (350+ foods) | Per-100g values, scales by quantity. Covers Indian & global foods |
 | Food Detection | **YOLOv8 ML** (real inference) | Detects 10 COCO food classes from uploaded images |
 | JWT Authentication | bcrypt + python-jose | Signup, login, protected endpoints, user profiles |

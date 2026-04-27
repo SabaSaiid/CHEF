@@ -63,7 +63,7 @@ DEMO_RECIPES = [
         ingredients=["paneer", "curd", "bell pepper", "onion", "ginger", "garlic", "cumin", "red chili powder", "garam masala", "lemon", "oil", "salt"],
         instructions="1. Marinate paneer and veggies in spiced curd.\n2. Thread on skewers.\n3. Grill or bake at 220°C for 12-15 min.\n4. Serve with mint chutney.",
         nutrition=RecipeNutrition(calories=260, protein_g=18, carbs_g=10, fat_g=17), diets=["vegetarian", "gluten-free", "high-protein", "keto"]),
-    RecipeItem(id="r-7", title="Palak Paneer", image_url="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400",
+    RecipeItem(id="r-7", title="Palak Paneer",
         summary="Creamy spinach curry with soft paneer cubes — nutritious and rich in iron.", ready_in_minutes=30, servings=3,
         ingredients=["spinach", "paneer", "onion", "tomato", "garlic", "ginger", "cumin", "garam masala", "cream", "salt", "green chili"],
         instructions="1. Blanch and blend spinach.\n2. Sauté onion, garlic, ginger, tomato.\n3. Add spinach paste, paneer, cream.\n4. Simmer and serve with naan.",
@@ -93,7 +93,7 @@ DEMO_RECIPES = [
         ingredients=["atta", "potato", "onion", "green chili", "cumin", "coriander powder", "salt", "ghee", "ginger"],
         instructions="1. Boil and mash potatoes with spices.\n2. Stuff into atta dough.\n3. Roll and cook on tawa with ghee until golden.",
         nutrition=RecipeNutrition(calories=310, protein_g=7, carbs_g=45, fat_g=12), diets=["vegetarian"]),
-    RecipeItem(id="r-13", title="Matar Paneer", image_url="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400",
+    RecipeItem(id="r-13", title="Matar Paneer",
         summary="Green peas and paneer cubes in a spiced tomato-onion gravy.", ready_in_minutes=30, servings=3,
         ingredients=["paneer", "peas", "onion", "tomato", "ginger", "garlic", "cumin", "turmeric", "garam masala", "cream", "oil", "salt"],
         instructions="1. Sauté onion, ginger-garlic.\n2. Add tomato puree, spices.\n3. Add peas, paneer, cream.\n4. Simmer and serve with roti.",
@@ -376,11 +376,11 @@ def delete_saved_recipe(recipe_id: int, db: Session = Depends(get_db), current_u
 
 @router.get("/daily", response_model=RecipeItem)
 def get_daily_recipe():
-    """Get the recipe of the day (changes every 24 hours). Prioritizes halal/vegetarian."""
+    """Get the recipe of the day (changes every 24 hours). Prioritizes vegetarian."""
     # Build list of eligible recipes
-    eligible = [r for r in DEMO_RECIPES if "halal" in r.diets and "vegetarian" in r.diets]
+    eligible = [r for r in DEMO_RECIPES if "vegetarian" in r.diets]
     if not eligible:
-        # Fallback if no halal+veg found (though we expect them)
+        # Fallback if no veg found (though we expect them)
         eligible = DEMO_RECIPES
         
     date_str = datetime.now().strftime("%Y-%m-%d")

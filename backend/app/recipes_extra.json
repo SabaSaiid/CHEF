@@ -16,8 +16,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 180,
@@ -45,8 +44,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 380,
@@ -75,8 +73,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 290,
@@ -106,8 +103,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 300,
@@ -136,8 +132,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 380,
@@ -165,8 +160,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 260,
@@ -195,8 +189,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 340,
@@ -227,8 +220,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -258,8 +250,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 130,
@@ -287,8 +278,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -317,8 +307,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 110,
@@ -346,8 +335,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 220,
@@ -375,8 +363,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 240,
@@ -406,8 +393,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 330,
@@ -436,8 +422,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 480,
@@ -465,8 +450,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -495,8 +479,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 400,
@@ -526,8 +509,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 280,
@@ -556,8 +538,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 250,
@@ -586,8 +567,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 220,
@@ -615,8 +595,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 180,
@@ -644,8 +623,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 170,
@@ -674,8 +652,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 280,
@@ -704,8 +681,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 250,
@@ -734,8 +710,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -765,8 +740,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 40,
@@ -792,8 +766,7 @@
       "cardamom"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -823,8 +796,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 320,
@@ -853,8 +825,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 250,
@@ -883,8 +854,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 100,
@@ -912,8 +882,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 220,
@@ -941,8 +910,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 130,
@@ -965,8 +933,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -994,8 +961,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 250,
@@ -1023,8 +989,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 280,
@@ -1052,8 +1017,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 200,
@@ -1081,8 +1045,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 180,
@@ -1108,8 +1071,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 120,
@@ -1134,8 +1096,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -1163,8 +1124,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -1192,8 +1152,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 450,
@@ -1221,8 +1180,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -1250,8 +1208,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -1278,8 +1235,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 320,
@@ -1306,8 +1262,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -1335,8 +1290,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -1364,8 +1318,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 300,
@@ -1391,8 +1344,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -1420,8 +1372,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 220,
@@ -1449,8 +1400,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 190,
@@ -1479,8 +1429,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -1507,8 +1456,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 220,
@@ -1536,8 +1484,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 320,
@@ -1563,8 +1510,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -1591,8 +1537,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 240,
@@ -1621,8 +1566,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -1648,8 +1592,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -1675,8 +1618,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 280,
@@ -1703,8 +1645,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 100,
@@ -1732,8 +1673,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 380,
@@ -1758,8 +1698,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 250,
@@ -1786,8 +1725,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 180,
@@ -1815,8 +1753,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 350,
@@ -1843,8 +1780,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 220,
@@ -1871,8 +1807,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 200,
@@ -1900,8 +1835,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 150,
@@ -1927,8 +1861,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -1954,8 +1887,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -1981,8 +1913,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 220,
@@ -2009,8 +1940,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 400,
@@ -2038,8 +1968,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "keto",
-      "halal"
+      "keto"
     ],
     "nutrition": {
       "calories": 180,
@@ -2065,8 +1994,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 60,
@@ -2094,8 +2022,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -2124,8 +2051,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 350,
@@ -2152,8 +2078,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -2180,8 +2105,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -2209,8 +2133,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "keto",
-      "halal"
+      "keto"
     ],
     "nutrition": {
       "calories": 160,
@@ -2237,8 +2160,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 250,
@@ -2264,8 +2186,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 180,
@@ -2293,8 +2214,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 120,
@@ -2320,8 +2240,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -2347,8 +2266,7 @@
       "cream"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 290,
@@ -2374,8 +2292,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -2400,8 +2317,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 200,
@@ -2427,8 +2343,7 @@
       "cardamom"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 400,
@@ -2456,8 +2371,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -2482,8 +2396,7 @@
       "lemon"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 380,
@@ -2509,8 +2422,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 280,
@@ -2563,8 +2475,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 200,
@@ -2593,8 +2504,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -2622,8 +2532,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -2646,8 +2555,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -2673,8 +2581,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 130,
@@ -2699,8 +2606,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -2724,8 +2630,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 25,
@@ -2751,8 +2656,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 60,
@@ -2778,8 +2682,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -2805,8 +2708,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -2830,8 +2732,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 110,
@@ -2885,8 +2786,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -2914,8 +2814,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "keto",
-      "halal"
+      "keto"
     ],
     "nutrition": {
       "calories": 250,
@@ -2939,8 +2838,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 400,
@@ -2966,8 +2864,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -2995,8 +2892,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 90,
@@ -3026,8 +2922,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -3052,8 +2947,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -3077,8 +2971,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 260,
@@ -3136,8 +3029,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -3167,8 +3059,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -3196,8 +3087,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -3226,8 +3116,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -3258,8 +3147,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -3289,8 +3177,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 340,
@@ -3319,8 +3206,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 420,
@@ -3347,8 +3233,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 260,
@@ -3377,8 +3262,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 240,
@@ -3407,8 +3291,7 @@
     ],
     "diets": [
       "vegetarian",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 300,
@@ -3438,8 +3321,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -3469,8 +3351,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 450,
@@ -3499,8 +3380,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 480,
@@ -3528,8 +3408,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -3557,8 +3436,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 240,
@@ -3587,8 +3465,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 580,
@@ -3615,8 +3492,7 @@
       "salt"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 640,
@@ -3645,8 +3521,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -3672,8 +3547,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -3701,8 +3575,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -3732,8 +3605,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -3762,8 +3634,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 260,
@@ -3791,8 +3662,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -3820,8 +3690,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -3851,8 +3720,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -3880,8 +3748,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 240,
@@ -3910,8 +3777,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -3940,8 +3806,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 260,
@@ -3969,8 +3834,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -3996,8 +3860,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -4022,8 +3885,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -4052,8 +3914,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -4082,8 +3943,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 240,
@@ -4113,8 +3973,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 260,
@@ -4142,8 +4001,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 180,
@@ -4172,8 +4030,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 280,
@@ -4199,8 +4056,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -4226,8 +4082,7 @@
       "saffron"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -4254,8 +4109,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -4282,8 +4136,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 260,
@@ -4310,8 +4163,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -4336,8 +4188,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -4363,8 +4214,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -4390,8 +4240,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -4416,8 +4265,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -4442,8 +4290,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -4471,8 +4318,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -4500,8 +4346,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -4524,8 +4369,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 140,
@@ -4551,8 +4395,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 310,
@@ -4578,8 +4421,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -4602,8 +4444,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 120,
@@ -4630,8 +4471,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 240,
@@ -4657,8 +4497,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -4685,8 +4524,7 @@
     ],
     "diets": [
       "vegetarian",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -4713,8 +4551,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 260,
@@ -4738,8 +4575,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -4762,8 +4598,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 280,
@@ -4788,8 +4623,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -4818,8 +4652,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 420,
@@ -4849,8 +4682,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -4881,8 +4713,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 280,
@@ -4909,8 +4740,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -4938,8 +4768,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 650,
@@ -4967,8 +4796,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 380,
@@ -4995,8 +4823,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 200,
@@ -5024,8 +4851,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 280,
@@ -5053,8 +4879,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -5080,8 +4905,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -5107,8 +4931,7 @@
       "ghee"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -5136,8 +4959,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -5164,8 +4986,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 300,
@@ -5193,8 +5014,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 450,
@@ -5223,8 +5043,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 290,
@@ -5254,8 +5073,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 270,
@@ -5283,8 +5101,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 380,
@@ -5314,8 +5131,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -5345,8 +5161,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -5375,8 +5190,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -5405,8 +5219,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -5435,8 +5248,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -5465,8 +5277,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -5494,8 +5305,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 90,
@@ -5523,8 +5333,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -5553,8 +5362,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -5583,8 +5391,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -5612,8 +5419,7 @@
     ],
     "diets": [
       "vegetarian",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 240,
@@ -5642,8 +5448,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -5672,8 +5477,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -5701,8 +5505,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -5732,8 +5535,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 220,
@@ -5759,8 +5561,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 550,
@@ -5785,8 +5586,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 210,
@@ -5814,8 +5614,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -5845,8 +5644,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 260,
@@ -5872,8 +5670,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 380,
@@ -5901,8 +5698,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -5930,8 +5726,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 420,
@@ -5956,8 +5751,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 250,
@@ -5982,8 +5776,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -6011,8 +5804,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 210,
@@ -6037,8 +5829,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 380,
@@ -6065,8 +5856,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 420,
@@ -6093,8 +5883,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 550,
@@ -6121,8 +5910,7 @@
       "onion"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 520,
@@ -6149,8 +5937,7 @@
       "ginger"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -6204,8 +5991,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 420,
@@ -6258,8 +6044,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 350,
@@ -6285,8 +6070,7 @@
       "rice"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 450,
@@ -6316,8 +6100,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "low-carb",
-      "halal"
+      "low-carb"
     ],
     "nutrition": {
       "calories": 220,
@@ -6343,8 +6126,7 @@
       "maple syrup"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 450,
@@ -6372,8 +6154,7 @@
     ],
     "diets": [
       "vegetarian",
-      "vegan",
-      "halal"
+      "vegan"
     ],
     "nutrition": {
       "calories": 160,
@@ -6450,8 +6231,7 @@
       "milk"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 300,
@@ -6478,8 +6258,7 @@
       "parmesan"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 240,
@@ -6507,8 +6286,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 420,
@@ -6536,8 +6314,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -6566,8 +6343,7 @@
     "diets": [
       "gluten-free",
       "low-carb",
-      "paleo",
-      "halal"
+      "paleo"
     ],
     "nutrition": {
       "calories": 260,
@@ -6594,8 +6370,7 @@
       "spices"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 520,
@@ -6622,8 +6397,7 @@
       "bell pepper"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 580,
@@ -6674,8 +6448,7 @@
       "salt"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 850,
@@ -6702,8 +6475,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -6728,8 +6500,7 @@
       "thyme"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -6756,8 +6527,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "low-carb",
-      "halal"
+      "low-carb"
     ],
     "nutrition": {
       "calories": 80,
@@ -6784,8 +6554,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 450,
@@ -6811,8 +6580,7 @@
       "sour cream"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 520,
@@ -6838,8 +6606,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 60,
@@ -6866,8 +6633,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 320,
@@ -6893,8 +6659,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -6919,8 +6684,7 @@
       "parsley"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 480,
@@ -6945,8 +6709,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 350,
@@ -6972,8 +6735,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 450,
@@ -6998,8 +6760,7 @@
       "cinnamon"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -7023,8 +6784,7 @@
       "egg wash"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -7050,8 +6810,7 @@
     "diets": [
       "gluten-free",
       "high-protein",
-      "paleo",
-      "halal"
+      "paleo"
     ],
     "nutrition": {
       "calories": 420,
@@ -7075,8 +6834,7 @@
       "spicy aioli"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 380,
@@ -7102,8 +6860,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 90,
@@ -7129,8 +6886,7 @@
     "diets": [
       "vegetarian",
       "gluten-free",
-      "keto",
-      "halal"
+      "keto"
     ],
     "nutrition": {
       "calories": 220,
@@ -7155,8 +6911,7 @@
       "butter"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 520,
@@ -7181,8 +6936,7 @@
       "bread"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 320,
@@ -7207,8 +6961,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -7233,8 +6986,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -7261,8 +7013,7 @@
       "vegetarian",
       "vegan",
       "gluten-free",
-      "low-carb",
-      "halal"
+      "low-carb"
     ],
     "nutrition": {
       "calories": 200,
@@ -7285,8 +7036,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -7312,8 +7062,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -7339,8 +7088,7 @@
     "diets": [
       "gluten-free",
       "high-protein",
-      "paleo",
-      "halal"
+      "paleo"
     ],
     "nutrition": {
       "calories": 320,
@@ -7367,8 +7115,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 380,
@@ -7395,8 +7142,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -7423,8 +7169,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -7449,8 +7194,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -7476,8 +7220,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 350,
@@ -7502,8 +7245,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -7528,8 +7270,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 320,
@@ -7556,8 +7297,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 450,
@@ -7582,8 +7322,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -7609,8 +7348,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -7636,8 +7374,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -7664,8 +7401,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -7692,8 +7428,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 420,
@@ -7719,8 +7454,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 240,
@@ -7744,8 +7478,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -7771,8 +7504,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 220,
@@ -7797,8 +7529,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -7823,8 +7554,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 160,
@@ -7898,8 +7628,7 @@
       "coriander"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -7922,8 +7651,7 @@
       "roasted fish"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 60,
@@ -7949,8 +7677,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -7999,8 +7726,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 320,
@@ -8025,8 +7751,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 240,
@@ -8052,8 +7777,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 200,
@@ -8079,8 +7803,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 450,
@@ -8106,8 +7829,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 140,
@@ -8158,8 +7880,7 @@
       "oyster sauce"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 450,
@@ -8185,8 +7906,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 420,
@@ -8211,8 +7931,7 @@
       "peanuts"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 550,
@@ -8238,8 +7957,7 @@
       "fish sauce"
     ],
     "diets": [
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -8265,8 +7983,7 @@
       "hoisin"
     ],
     "diets": [
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 480,
@@ -8344,8 +8061,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 650,
@@ -8423,8 +8139,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 70,
@@ -8449,8 +8164,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -8474,8 +8188,7 @@
       "vanilla"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 350,
@@ -8501,8 +8214,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -8527,8 +8239,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 150,
@@ -8554,8 +8265,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -8581,8 +8291,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 350,
@@ -8607,8 +8316,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 200,
@@ -8634,8 +8342,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 280,
@@ -8660,8 +8367,7 @@
     ],
     "diets": [
       "gluten-free",
-      "high-protein",
-      "halal"
+      "high-protein"
     ],
     "nutrition": {
       "calories": 320,
@@ -8688,8 +8394,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 90,
@@ -8714,8 +8419,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 180,
@@ -8739,8 +8443,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 110,
@@ -8766,8 +8469,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 60,
@@ -8796,8 +8498,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 220,
@@ -8822,8 +8523,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -8849,8 +8549,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -8875,8 +8574,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 210,
@@ -8901,8 +8599,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 350,
@@ -8931,8 +8628,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 20,
@@ -8957,8 +8653,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 210,
@@ -8984,8 +8679,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 280,
@@ -9008,8 +8702,7 @@
       "water"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 250,
@@ -9036,8 +8729,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 15,
@@ -9062,8 +8754,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 120,
@@ -9086,8 +8777,7 @@
       "oil"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 160,
@@ -9112,8 +8802,7 @@
     ],
     "diets": [
       "vegetarian",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 80,
@@ -9142,8 +8831,7 @@
     "diets": [
       "vegetarian",
       "vegan",
-      "gluten-free",
-      "halal"
+      "gluten-free"
     ],
     "nutrition": {
       "calories": 40,
@@ -9169,8 +8857,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 300,
@@ -9196,8 +8883,7 @@
       "salt"
     ],
     "diets": [
-      "vegetarian",
-      "halal"
+      "vegetarian"
     ],
     "nutrition": {
       "calories": 200,

@@ -90,7 +90,6 @@ export default function Recipes() {
             <option value="">Any Diet</option>
             <option value="vegetarian">🥬 Vegetarian</option>
             <option value="vegan">🌱 Vegan</option>
-            <option value="halal">🌙 Halal</option>
             <option value="keto">🥑 Keto</option>
             <option value="gluten-free">🌾 Gluten-Free</option>
             <option value="high-protein">💪 High-Protein</option>
