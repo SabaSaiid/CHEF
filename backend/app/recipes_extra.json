@@ -24,7 +24,8 @@
       "carbs_g": 25,
       "fat_g": 7
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-2",
@@ -52,7 +53,8 @@
       "carbs_g": 50,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-3",
@@ -81,7 +83,8 @@
       "carbs_g": 12,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-4",
@@ -111,7 +114,8 @@
       "carbs_g": 14,
       "fat_g": 21
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "x-5",
@@ -140,7 +144,8 @@
       "carbs_g": 8,
       "fat_g": 26
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "x-6",
@@ -168,7 +173,8 @@
       "carbs_g": 8,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add paneer and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-7",
@@ -197,7 +203,8 @@
       "carbs_g": 30,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-8",
@@ -228,7 +235,8 @@
       "carbs_g": 20,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare potato — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add potato, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-9",
@@ -258,7 +266,8 @@
       "carbs_g": 10,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare mushroom — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add mushroom, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-10",
@@ -286,7 +295,8 @@
       "carbs_g": 10,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop brinjal, onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add brinjal, onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-11",
@@ -315,7 +325,8 @@
       "carbs_g": 10,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare bhindi — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add bhindi, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-12",
@@ -343,7 +354,8 @@
       "carbs_g": 25,
       "fat_g": 11
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Cut cauliflower into pieces/florets.\n2. Make a batter with cornflour, maida, and spices.\n3. Coat cauliflower in batter, deep fry until crispy. Set aside.\n4. In a wok, sauté garlic, ginger, and green chili.\n5. Add soy sauce, chili sauce, and a splash of vinegar.\n6. Toss in the fried cauliflower, stir-fry on high heat.\n7. Garnish with spring onions and serve hot."
   },
   {
     "id": "x-13",
@@ -371,7 +383,8 @@
       "carbs_g": 28,
       "fat_g": 12
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Cut cabbage into pieces/florets.\n2. Make a batter with cornflour, maida, and spices.\n3. Coat cabbage in batter, deep fry until crispy. Set aside.\n4. In a wok, sauté garlic, ginger, and green chili.\n5. Add soy sauce, chili sauce, and a splash of vinegar.\n6. Toss in the fried cabbage, stir-fry on high heat.\n7. Garnish with spring onions and serve hot."
   },
   {
     "id": "x-14",
@@ -401,7 +414,8 @@
       "carbs_g": 14,
       "fat_g": 25
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "x-15",
@@ -430,7 +444,8 @@
       "carbs_g": 55,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Marinate mutton with curd, spices, and salt for 30 min.\n2. Wash and soak basmati rice for 20 min.\n3. Par-boil rice with whole spices until 70% done, drain.\n4. Cook mutton with sliced onions until half done.\n5. Layer rice and the cooked mixture alternately.\n6. Add saffron milk, fried onions, and mint on top.\n7. Seal and dum cook on low heat for 25 min.\n8. Gently mix and serve with raita."
   },
   {
     "id": "x-16",
@@ -458,7 +473,8 @@
       "carbs_g": 10,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare beef — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add beef, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-17",
@@ -487,7 +503,8 @@
       "carbs_g": 12,
       "fat_g": 28
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "x-18",
@@ -517,7 +534,8 @@
       "carbs_g": 12,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare keema — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add keema and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-19",
@@ -546,7 +564,8 @@
       "carbs_g": 10,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cut chicken into pieces/florets.\n2. Make a batter with cornflour, maida, and spices.\n3. Coat chicken in batter, deep fry until crispy. Set aside.\n4. In a wok, sauté garlic, ginger, and green chili.\n5. Add soy sauce, chili sauce, and a splash of vinegar.\n6. Toss in the fried chicken, stir-fry on high heat.\n7. Garnish with spring onions and serve hot."
   },
   {
     "id": "x-20",
@@ -575,7 +594,8 @@
       "carbs_g": 5,
       "fat_g": 12
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Cut chicken into cubes.\n2. Marinate with curd, spices, and lemon juice for 1 hour.\n3. Thread onto skewers with onion and bell pepper.\n4. Grill or bake at 220°C for 12-15 min, turning once.\n5. Squeeze lemon and serve with mint chutney."
   },
   {
     "id": "x-21",
@@ -603,7 +623,8 @@
       "carbs_g": 18,
       "fat_g": 9
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-22",
@@ -631,7 +652,8 @@
       "carbs_g": 28,
       "fat_g": 5
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Soak rice and dal separately for 6 hours.\n2. Grind to a smooth batter, ferment overnight.\n3. Add salt to the fermented batter.\n4. Heat a tawa/griddle, spread batter thinly in a circle.\n5. Drizzle oil around the edges.\n6. Cook until crispy and golden.\n7. Serve with sambar and chutney."
   },
   {
     "id": "x-23",
@@ -660,7 +682,8 @@
       "carbs_g": 40,
       "fat_g": 10
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare potato — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add potato, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-24",
@@ -689,7 +712,8 @@
       "carbs_g": 40,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak arhar dal for 30 min.\n2. Pressure cook arhar dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked arhar dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-25",
@@ -718,7 +742,8 @@
       "carbs_g": 15,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop drumstick, carrot, beans.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add drumstick, carrot, beans, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-26",
@@ -748,7 +773,8 @@
       "carbs_g": 6,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-27",
@@ -774,7 +800,8 @@
       "carbs_g": 40,
       "fat_g": 10
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Boil milk in a heavy-bottomed pan, stirring often.\n2. Add the main ingredient (rice/vermicelli/nuts).\n3. Cook on low heat until thickened.\n4. Add sugar, cardamom, and saffron.\n5. Garnish with fried nuts and raisins.\n6. Serve warm or chilled."
   },
   {
     "id": "x-28",
@@ -804,7 +831,8 @@
       "carbs_g": 8,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-29",
@@ -833,7 +861,8 @@
       "carbs_g": 6,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-30",
@@ -862,7 +891,8 @@
       "carbs_g": 10,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-31",
@@ -890,7 +920,8 @@
       "carbs_g": 12,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-32",
@@ -918,7 +949,8 @@
       "carbs_g": 16,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop bitter gourd, potato, drumstick.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add bitter gourd, potato, drumstick, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-33",
@@ -941,7 +973,8 @@
       "carbs_g": 35,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "x-34",
@@ -969,7 +1002,8 @@
       "carbs_g": 42,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Marinate vegetables with curd, spices, and salt for 30 min.\n2. Wash and soak basmati rice for 20 min.\n3. Par-boil rice with whole spices until 70% done, drain.\n4. Cook vegetables with sliced onions until half done.\n5. Layer rice and the cooked mixture alternately.\n6. Add saffron milk, fried onions, and mint on top.\n7. Seal and dum cook on low heat for 25 min.\n8. Gently mix and serve with raita."
   },
   {
     "id": "x-35",
@@ -997,7 +1031,8 @@
       "carbs_g": 8,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-36",
@@ -1025,7 +1060,8 @@
       "carbs_g": 22,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-37",
@@ -1053,7 +1089,8 @@
       "carbs_g": 25,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead maida dough, rest for 30 min.\n2. Prepare filling with vegetables/meat and spices.\n3. Roll thin circles, place filling, fold and pleat edges.\n4. Steam in a steamer for 12-15 min.\n5. Serve with spicy red chutney."
   },
   {
     "id": "x-38",
@@ -1079,7 +1116,8 @@
       "carbs_g": 20,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-39",
@@ -1104,7 +1142,8 @@
       "carbs_g": 28,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-40",
@@ -1132,7 +1171,8 @@
       "carbs_g": 25,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak moong dal for 30 min.\n2. Pressure cook moong dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked moong dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-41",
@@ -1160,7 +1200,8 @@
       "carbs_g": 55,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "x-42",
@@ -1188,7 +1229,8 @@
       "carbs_g": 18,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-43",
@@ -1216,7 +1258,8 @@
       "carbs_g": 15,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-44",
@@ -1243,7 +1286,8 @@
       "carbs_g": 35,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-45",
@@ -1270,7 +1314,8 @@
       "carbs_g": 22,
       "fat_g": 10
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-46",
@@ -1298,7 +1343,8 @@
       "carbs_g": 45,
       "fat_g": 15
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-47",
@@ -1326,7 +1372,8 @@
       "carbs_g": 38,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-48",
@@ -1352,7 +1399,8 @@
       "carbs_g": 45,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "x-49",
@@ -1380,7 +1428,8 @@
       "carbs_g": 30,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-50",
@@ -1408,7 +1457,8 @@
       "carbs_g": 18,
       "fat_g": 9
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-51",
@@ -1437,7 +1487,8 @@
       "carbs_g": 28,
       "fat_g": 6
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-52",
@@ -1464,7 +1515,8 @@
       "carbs_g": 30,
       "fat_g": 9
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-53",
@@ -1492,7 +1544,8 @@
       "carbs_g": 30,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-54",
@@ -1518,7 +1571,8 @@
       "carbs_g": 32,
       "fat_g": 14
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "x-55",
@@ -1545,7 +1599,8 @@
       "carbs_g": 28,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-56",
@@ -1574,7 +1629,8 @@
       "carbs_g": 25,
       "fat_g": 3
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-57",
@@ -1600,7 +1656,8 @@
       "carbs_g": 22,
       "fat_g": 5
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-58",
@@ -1626,7 +1683,8 @@
       "carbs_g": 28,
       "fat_g": 12
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-59",
@@ -1653,7 +1711,8 @@
       "carbs_g": 15,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-60",
@@ -1681,7 +1740,8 @@
       "carbs_g": 60,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-61",
@@ -1706,7 +1766,8 @@
       "carbs_g": 30,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-62",
@@ -1733,7 +1794,8 @@
       "carbs_g": 12,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-63",
@@ -1761,7 +1823,8 @@
       "carbs_g": 45,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-64",
@@ -1788,7 +1851,8 @@
       "carbs_g": 35,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "x-65",
@@ -1815,7 +1879,8 @@
       "carbs_g": 25,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-66",
@@ -1843,7 +1908,8 @@
       "carbs_g": 25,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "x-67",
@@ -1869,7 +1935,8 @@
       "carbs_g": 5,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "x-68",
@@ -1895,7 +1962,8 @@
       "carbs_g": 28,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-69",
@@ -1921,7 +1989,8 @@
       "carbs_g": 10,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-70",
@@ -1948,7 +2017,8 @@
       "carbs_g": 55,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-71",
@@ -1976,7 +2046,8 @@
       "carbs_g": 8,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-72",
@@ -2002,7 +2073,8 @@
       "carbs_g": 4,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-73",
@@ -2030,7 +2102,8 @@
       "carbs_g": 10,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-74",
@@ -2059,7 +2132,8 @@
       "carbs_g": 40,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-75",
@@ -2086,7 +2160,8 @@
       "carbs_g": 35,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare beef — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add beef and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-76",
@@ -2113,7 +2188,8 @@
       "carbs_g": 20,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-77",
@@ -2141,7 +2217,8 @@
       "carbs_g": 9,
       "fat_g": 15
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-78",
@@ -2168,7 +2245,8 @@
       "carbs_g": 22,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-79",
@@ -2194,7 +2272,8 @@
       "carbs_g": 22,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-80",
@@ -2222,7 +2301,8 @@
       "carbs_g": 18,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato, beans, carrot.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, beans, carrot, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-81",
@@ -2248,7 +2328,8 @@
       "carbs_g": 45,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-82",
@@ -2274,7 +2355,8 @@
       "carbs_g": 30,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-83",
@@ -2300,7 +2382,8 @@
       "carbs_g": 40,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-84",
@@ -2325,7 +2408,8 @@
       "carbs_g": 28,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-85",
@@ -2351,7 +2435,8 @@
       "carbs_g": 42,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-86",
@@ -2379,7 +2464,8 @@
       "carbs_g": 12,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop beetroot, potato, cabbage.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add beetroot, potato, cabbage, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-87",
@@ -2404,7 +2490,8 @@
       "carbs_g": 35,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-88",
@@ -2430,7 +2517,8 @@
       "carbs_g": 40,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "x-89",
@@ -2457,7 +2545,8 @@
       "carbs_g": 22,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-90",
@@ -2483,7 +2572,8 @@
       "carbs_g": 15,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-91",
@@ -2512,7 +2602,8 @@
       "carbs_g": 22,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare jackfruit — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add jackfruit, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-92",
@@ -2540,7 +2631,8 @@
       "carbs_g": 10,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-93",
@@ -2563,7 +2655,8 @@
       "carbs_g": 25,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-94",
@@ -2589,7 +2682,8 @@
       "carbs_g": 28,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-95",
@@ -2614,7 +2708,8 @@
       "carbs_g": 25,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "x-96",
@@ -2638,7 +2733,8 @@
       "carbs_g": 5,
       "fat_g": 0.2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "x-97",
@@ -2664,7 +2760,8 @@
       "carbs_g": 5,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-98",
@@ -2690,7 +2787,8 @@
       "carbs_g": 38,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-99",
@@ -2716,7 +2814,8 @@
       "carbs_g": 40,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-100",
@@ -2740,7 +2839,8 @@
       "carbs_g": 20,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-101",
@@ -2767,7 +2867,8 @@
       "carbs_g": 40,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "x-102",
@@ -2794,7 +2895,8 @@
       "carbs_g": 30,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop pumpkin, beans.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add pumpkin, beans, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-103",
@@ -2822,7 +2924,8 @@
       "carbs_g": 6,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "x-104",
@@ -2846,7 +2949,8 @@
       "carbs_g": 45,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-105",
@@ -2872,7 +2976,8 @@
       "carbs_g": 25,
       "fat_g": 1
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "x-106",
@@ -2900,7 +3005,8 @@
       "carbs_g": 14,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare main ingredient — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add main ingredient, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "x-107",
@@ -2930,7 +3036,8 @@
       "carbs_g": 20,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak arhar dal for 30 min.\n2. Pressure cook arhar dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked arhar dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "x-108",
@@ -2955,7 +3062,8 @@
       "carbs_g": 38,
       "fat_g": 4
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "x-109",
@@ -2979,7 +3087,8 @@
       "carbs_g": 48,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "x-110",
@@ -3007,7 +3116,8 @@
       "carbs_g": 5,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-111",
@@ -3037,7 +3147,8 @@
       "carbs_g": 15,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop brinjal, onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add brinjal, onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-113",
@@ -3067,7 +3178,8 @@
       "carbs_g": 25,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, cauliflower, peas.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, cauliflower, peas, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-115",
@@ -3095,7 +3207,8 @@
       "carbs_g": 28,
       "fat_g": 4
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Wash and soak arhar dal for 30 min.\n2. Pressure cook arhar dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked arhar dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-117",
@@ -3124,7 +3237,8 @@
       "carbs_g": 35,
       "fat_g": 15
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-119",
@@ -3155,7 +3269,8 @@
       "carbs_g": 20,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare carrot — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add carrot, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-121",
@@ -3185,7 +3300,8 @@
       "carbs_g": 22,
       "fat_g": 26
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare peas — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add peas, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xx-123",
@@ -3214,7 +3330,8 @@
       "carbs_g": 35,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xx-125",
@@ -3241,7 +3358,8 @@
       "carbs_g": 28,
       "fat_g": 12
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-127",
@@ -3270,7 +3388,8 @@
       "carbs_g": 25,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-129",
@@ -3299,7 +3418,8 @@
       "carbs_g": 18,
       "fat_g": 15
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-131",
@@ -3329,7 +3449,8 @@
       "carbs_g": 18,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, brinjal, bhindi.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, brinjal, bhindi, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-133",
@@ -3359,7 +3480,8 @@
       "carbs_g": 14,
       "fat_g": 28
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xx-135",
@@ -3388,7 +3510,8 @@
       "carbs_g": 8,
       "fat_g": 34
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare mutton — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add mutton, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-137",
@@ -3416,7 +3539,8 @@
       "carbs_g": 6,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add fish, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-139",
@@ -3444,7 +3568,8 @@
       "carbs_g": 8,
       "fat_g": 18
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-141",
@@ -3473,7 +3598,8 @@
       "carbs_g": 65,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Marinate chicken with curd, spices, and salt for 30 min.\n2. Wash and soak basmati rice for 20 min.\n3. Par-boil rice with whole spices until 70% done, drain.\n4. Cook chicken with sliced onions until half done.\n5. Layer rice and the cooked mixture alternately.\n6. Add saffron milk, fried onions, and mint on top.\n7. Seal and dum cook on low heat for 25 min.\n8. Gently mix and serve with raita."
   },
   {
     "id": "xx-143",
@@ -3500,7 +3626,8 @@
       "carbs_g": 60,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Marinate mutton with curd, spices, and salt for 30 min.\n2. Wash and soak basmati rice for 20 min.\n3. Par-boil rice with whole spices until 70% done, drain.\n4. Cook mutton with sliced onions until half done.\n5. Layer rice and the cooked mixture alternately.\n6. Add saffron milk, fried onions, and mint on top.\n7. Seal and dum cook on low heat for 25 min.\n8. Gently mix and serve with raita."
   },
   {
     "id": "xx-145",
@@ -3529,7 +3656,8 @@
       "carbs_g": 52,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Marinate vegetables with curd, spices, and salt for 30 min.\n2. Wash and soak basmati rice for 20 min.\n3. Par-boil rice with whole spices until 70% done, drain.\n4. Cook vegetables with sliced onions until half done.\n5. Layer rice and the cooked mixture alternately.\n6. Add saffron milk, fried onions, and mint on top.\n7. Seal and dum cook on low heat for 25 min.\n8. Gently mix and serve with raita."
   },
   {
     "id": "xx-147",
@@ -3555,7 +3683,8 @@
       "carbs_g": 45,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "xx-149",
@@ -3583,7 +3712,8 @@
       "carbs_g": 38,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "xx-151",
@@ -3613,7 +3743,8 @@
       "carbs_g": 48,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak chana dal for 30 min.\n2. Pressure cook chana dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked chana dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-153",
@@ -3642,7 +3773,8 @@
       "carbs_g": 45,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "xx-155",
@@ -3670,7 +3802,8 @@
       "carbs_g": 48,
       "fat_g": 15
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-157",
@@ -3698,7 +3831,8 @@
       "carbs_g": 50,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-159",
@@ -3728,7 +3862,8 @@
       "carbs_g": 35,
       "fat_g": 8
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-161",
@@ -3756,7 +3891,8 @@
       "carbs_g": 38,
       "fat_g": 7
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-163",
@@ -3785,7 +3921,8 @@
       "carbs_g": 45,
       "fat_g": 9
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare potato — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add potato, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-165",
@@ -3814,7 +3951,8 @@
       "carbs_g": 42,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-167",
@@ -3842,7 +3980,8 @@
       "carbs_g": 55,
       "fat_g": 4
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and soak urad dal for 30 min.\n2. Pressure cook urad dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-169",
@@ -3868,7 +4007,8 @@
       "carbs_g": 35,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Soak rice and dal separately for 6 hours.\n2. Grind to a smooth batter, ferment overnight.\n3. Add salt to the fermented batter.\n4. Heat a tawa/griddle, spread batter thinly in a circle.\n5. Drizzle oil around the edges.\n6. Cook until crispy and golden.\n7. Serve with sambar and chutney."
   },
   {
     "id": "xx-171",
@@ -3893,7 +4033,8 @@
       "carbs_g": 45,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-173",
@@ -3922,7 +4063,8 @@
       "carbs_g": 10,
       "fat_g": 24
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-175",
@@ -3951,7 +4093,8 @@
       "carbs_g": 12,
       "fat_g": 16
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-177",
@@ -3981,7 +4124,8 @@
       "carbs_g": 10,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add paneer and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-179",
@@ -4009,7 +4153,8 @@
       "carbs_g": 22,
       "fat_g": 8
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Cut paneer into cubes.\n2. Marinate with curd, spices, and lemon juice for 1 hour.\n3. Thread onto skewers with onion and bell pepper.\n4. Grill or bake at 220°C for 12-15 min, turning once.\n5. Squeeze lemon and serve with mint chutney."
   },
   {
     "id": "xx-181",
@@ -4038,7 +4183,8 @@
       "carbs_g": 35,
       "fat_g": 14
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-183",
@@ -4064,7 +4210,8 @@
       "carbs_g": 65,
       "fat_g": 10
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Make a batter with maida/dal, let it ferment.\n2. Prepare sugar syrup with cardamom and saffron.\n3. Heat oil for deep frying.\n4. Pipe batter in spiral shapes into hot oil.\n5. Fry until crispy and golden.\n6. Soak in warm sugar syrup and serve."
   },
   {
     "id": "xx-185",
@@ -4090,7 +4237,8 @@
       "carbs_g": 55,
       "fat_g": 12
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-187",
@@ -4117,7 +4265,8 @@
       "carbs_g": 32,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-189",
@@ -4144,7 +4293,8 @@
       "carbs_g": 40,
       "fat_g": 8
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Boil milk in a heavy-bottomed pan, stirring often.\n2. Add the main ingredient (rice/vermicelli/nuts).\n3. Cook on low heat until thickened.\n4. Add sugar, cardamom, and saffron.\n5. Garnish with fried nuts and raisins.\n6. Serve warm or chilled."
   },
   {
     "id": "xx-191",
@@ -4171,7 +4321,8 @@
       "carbs_g": 45,
       "fat_g": 14
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Prepare carrot — grate, soak, or roast as needed.\n2. Heat ghee in a heavy pan.\n3. Cook carrot in ghee, stirring continuously.\n4. Add sugar/sweetener, mix until dissolved.\n5. Add cardamom and any dry fruits.\n6. Cook until mixture leaves the sides of the pan.\n7. Garnish with nuts and serve warm."
   },
   {
     "id": "xx-193",
@@ -4196,7 +4347,8 @@
       "carbs_g": 30,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Dry roast or prepare the base ingredient.\n2. Let it cool slightly.\n3. Add ghee, sugar/jaggery, and cardamom.\n4. Mix well while still warm.\n5. Shape into round balls.\n6. Garnish with nuts and let them set."
   },
   {
     "id": "xx-195",
@@ -4222,7 +4374,8 @@
       "carbs_g": 45,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Dry roast or prepare the base ingredient.\n2. Let it cool slightly.\n3. Add ghee, sugar/jaggery, and cardamom.\n4. Mix well while still warm.\n5. Shape into round balls.\n6. Garnish with nuts and let them set."
   },
   {
     "id": "xx-197",
@@ -4248,7 +4401,8 @@
       "carbs_g": 30,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-199",
@@ -4273,7 +4427,8 @@
       "carbs_g": 42,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-201",
@@ -4298,7 +4453,8 @@
       "carbs_g": 40,
       "fat_g": 4
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-203",
@@ -4326,7 +4482,8 @@
       "carbs_g": 25,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-205",
@@ -4354,7 +4511,8 @@
       "carbs_g": 12,
       "fat_g": 2
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare main ingredient — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add main ingredient, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-207",
@@ -4377,7 +4535,8 @@
       "carbs_g": 28,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-209",
@@ -4403,7 +4562,8 @@
       "carbs_g": 48,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-211",
@@ -4429,7 +4589,8 @@
       "carbs_g": 46,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-213",
@@ -4452,7 +4613,8 @@
       "carbs_g": 25,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-215",
@@ -4479,7 +4641,8 @@
       "carbs_g": 40,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-217",
@@ -4505,7 +4668,8 @@
       "carbs_g": 48,
       "fat_g": 12
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare potato stuffing — boil/grate and mix with spices.\n2. Knead atta dough with water and salt, rest 20 min.\n3. Roll dough, place potato filling, seal and re-roll.\n4. Cook on hot tawa with ghee/oil until golden on both sides.\n5. Serve hot with curd, pickle, or butter."
   },
   {
     "id": "xx-219",
@@ -4532,7 +4696,8 @@
       "carbs_g": 42,
       "fat_g": 15
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare onion stuffing — boil/grate and mix with spices.\n2. Knead atta dough with water and salt, rest 20 min.\n3. Roll dough, place onion filling, seal and re-roll.\n4. Cook on hot tawa with ghee/oil until golden on both sides.\n5. Serve hot with curd, pickle, or butter."
   },
   {
     "id": "xx-221",
@@ -4559,7 +4724,8 @@
       "carbs_g": 40,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-223",
@@ -4583,7 +4749,8 @@
       "carbs_g": 32,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-225",
@@ -4606,7 +4773,8 @@
       "carbs_g": 42,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-227",
@@ -4631,7 +4799,8 @@
       "carbs_g": 52,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-229",
@@ -4660,7 +4829,8 @@
       "carbs_g": 38,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare main ingredient — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add main ingredient, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xx-231",
@@ -4690,7 +4860,8 @@
       "carbs_g": 55,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-233",
@@ -4721,7 +4892,8 @@
       "carbs_g": 42,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-235",
@@ -4748,7 +4920,8 @@
       "carbs_g": 24,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak moong dal for 30 min.\n2. Pressure cook moong dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked moong dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-237",
@@ -4776,7 +4949,8 @@
       "carbs_g": 90,
       "fat_g": 26
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-239",
@@ -4804,7 +4978,8 @@
       "carbs_g": 45,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add paneer and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-241",
@@ -4831,7 +5006,8 @@
       "carbs_g": 40,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-243",
@@ -4859,7 +5035,8 @@
       "carbs_g": 48,
       "fat_g": 8
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-245",
@@ -4887,7 +5064,8 @@
       "carbs_g": 45,
       "fat_g": 12
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-247",
@@ -4913,7 +5091,8 @@
       "carbs_g": 42,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-249",
@@ -4939,7 +5118,8 @@
       "carbs_g": 45,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-251",
@@ -4967,7 +5147,8 @@
       "carbs_g": 55,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "xx-253",
@@ -4994,7 +5175,8 @@
       "carbs_g": 48,
       "fat_g": 11
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-255",
@@ -5022,7 +5204,8 @@
       "carbs_g": 65,
       "fat_g": 20
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Knead dough with flour, salt, and a little oil.\n2. Rest the dough for 20 min.\n3. Divide into small balls, roll into circles.\n4. Deep fry in hot oil until puffed and golden.\n5. Serve hot with curry or chutney."
   },
   {
     "id": "xx-257",
@@ -5051,7 +5234,8 @@
       "carbs_g": 18,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add paneer and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-259",
@@ -5081,7 +5265,8 @@
       "carbs_g": 12,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xx-261",
@@ -5109,7 +5294,8 @@
       "carbs_g": 15,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add paneer and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-263",
@@ -5139,7 +5325,8 @@
       "carbs_g": 15,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop mushroom, peas, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add mushroom, peas, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-265",
@@ -5169,7 +5356,8 @@
       "carbs_g": 30,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, peas, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, peas, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-267",
@@ -5198,7 +5386,8 @@
       "carbs_g": 20,
       "fat_g": 5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop cauliflower, peas, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add cauliflower, peas, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-269",
@@ -5227,7 +5416,8 @@
       "carbs_g": 18,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare brinjal — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add brinjal, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-271",
@@ -5256,7 +5446,8 @@
       "carbs_g": 25,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop bitter gourd, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add bitter gourd, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-273",
@@ -5285,7 +5476,8 @@
       "carbs_g": 14,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-275",
@@ -5313,7 +5505,8 @@
       "carbs_g": 12,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop bottle gourd, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add bottle gourd, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-277",
@@ -5341,7 +5534,8 @@
       "carbs_g": 10,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop ridge gourd, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add ridge gourd, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-279",
@@ -5370,7 +5564,8 @@
       "carbs_g": 15,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato, onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-281",
@@ -5399,7 +5594,8 @@
       "carbs_g": 45,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-283",
@@ -5427,7 +5623,8 @@
       "carbs_g": 22,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-285",
@@ -5456,7 +5653,8 @@
       "carbs_g": 18,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-287",
@@ -5485,7 +5683,8 @@
       "carbs_g": 32,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop jackfruit, onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add jackfruit, onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-289",
@@ -5513,7 +5712,8 @@
       "carbs_g": 28,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-291",
@@ -5543,7 +5743,8 @@
       "carbs_g": 30,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak chana for 30 min.\n2. Pressure cook chana with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked chana.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-293",
@@ -5569,7 +5770,8 @@
       "carbs_g": 75,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak mixed dal for 30 min.\n2. Pressure cook mixed dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked mixed dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xx-295",
@@ -5594,7 +5796,8 @@
       "carbs_g": 38,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-297",
@@ -5622,7 +5825,8 @@
       "carbs_g": 18,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare spinach — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add spinach, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-299",
@@ -5652,7 +5856,8 @@
       "carbs_g": 40,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-301",
@@ -5678,7 +5883,8 @@
       "carbs_g": 62,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-303",
@@ -5706,7 +5912,8 @@
       "carbs_g": 10,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-305",
@@ -5734,7 +5941,8 @@
       "carbs_g": 15,
       "fat_g": 32
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare prawns — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add prawns, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-307",
@@ -5759,7 +5967,8 @@
       "carbs_g": 38,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-309",
@@ -5784,7 +5993,8 @@
       "carbs_g": 25,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-311",
@@ -5812,7 +6022,8 @@
       "carbs_g": 42,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Knead maida dough, rest for 30 min.\n2. Prepare filling with vegetables/meat and spices.\n3. Roll thin circles, place filling, fold and pleat edges.\n4. Steam in a steamer for 12-15 min.\n5. Serve with spicy red chutney."
   },
   {
     "id": "xx-313",
@@ -5837,7 +6048,8 @@
       "carbs_g": 55,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-315",
@@ -5864,7 +6076,8 @@
       "carbs_g": 65,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop brinjal, potato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add brinjal, potato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-317",
@@ -5891,7 +6104,8 @@
       "carbs_g": 65,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-319",
@@ -5918,7 +6132,8 @@
       "carbs_g": 42,
       "fat_g": 26
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-321",
@@ -5945,7 +6160,8 @@
       "carbs_g": 55,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-323",
@@ -5971,7 +6187,8 @@
       "carbs_g": 35,
       "fat_g": 15
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-325",
@@ -5999,7 +6216,8 @@
       "carbs_g": 65,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-327",
@@ -6025,7 +6243,8 @@
       "carbs_g": 55,
       "fat_g": 32
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-329",
@@ -6052,7 +6271,8 @@
       "carbs_g": 48,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-331",
@@ -6078,7 +6298,8 @@
       "carbs_g": 65,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-333",
@@ -6108,7 +6329,8 @@
       "carbs_g": 22,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop eggplant, zucchini, bell pepper.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add eggplant, zucchini, bell pepper, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-335",
@@ -6134,7 +6356,8 @@
       "carbs_g": 85,
       "fat_g": 8
     },
-    "meal_type": "Dessert"
+    "meal_type": "Dessert",
+    "instructions": "1. Prepare the base ingredients as needed.\n2. Cook with ghee/butter on medium heat.\n3. Add sweetener and mix well.\n4. Add cardamom and flavoring.\n5. Garnish with nuts.\n6. Serve warm or chilled as preferred."
   },
   {
     "id": "xx-337",
@@ -6162,7 +6385,8 @@
       "carbs_g": 22,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato, bell pepper, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, bell pepper, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-339",
@@ -6188,7 +6412,8 @@
       "carbs_g": 75,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-341",
@@ -6214,7 +6439,8 @@
       "carbs_g": 45,
       "fat_g": 34
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare egg — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add egg and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-343",
@@ -6239,7 +6465,8 @@
       "carbs_g": 32,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-345",
@@ -6266,7 +6493,8 @@
       "carbs_g": 35,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-347",
@@ -6294,7 +6522,8 @@
       "carbs_g": 65,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop mushroom, onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add mushroom, onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-349",
@@ -6322,7 +6551,8 @@
       "carbs_g": 45,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop tomato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add tomato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-351",
@@ -6351,7 +6581,8 @@
       "carbs_g": 15,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, sweet potato, corn.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, sweet potato, corn, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-353",
@@ -6378,7 +6609,8 @@
       "carbs_g": 45,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-355",
@@ -6405,7 +6637,8 @@
       "carbs_g": 75,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare shrimp — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add shrimp and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-357",
@@ -6431,12 +6664,13 @@
       "carbs_g": 42,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop eggplant, onion, potato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add eggplant, onion, potato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-359",
     "title": "Beef Wellington",
-    "summary": "Steak wrapped in puff pastry with pat\u00e9",
+    "summary": "Steak wrapped in puff pastry with paté",
     "ready_in_minutes": 120,
     "servings": 4,
     "ingredients": [
@@ -6456,7 +6690,8 @@
       "carbs_g": 45,
       "fat_g": 55
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-361",
@@ -6483,7 +6718,8 @@
       "carbs_g": 30,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-363",
@@ -6508,7 +6744,8 @@
       "carbs_g": 35,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-365",
@@ -6535,7 +6772,8 @@
       "carbs_g": 8,
       "fat_g": 3
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-367",
@@ -6562,7 +6800,8 @@
       "carbs_g": 42,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion, tomato, bell pepper.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, tomato, bell pepper, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-369",
@@ -6588,7 +6827,8 @@
       "carbs_g": 55,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xx-371",
@@ -6614,7 +6854,8 @@
       "carbs_g": 14,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-373",
@@ -6641,7 +6882,8 @@
       "carbs_g": 65,
       "fat_g": 8
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-375",
@@ -6667,7 +6909,8 @@
       "carbs_g": 12,
       "fat_g": 7
     },
-    "meal_type": "Snack"
+    "meal_type": "Snack",
+    "instructions": "1. Prepare the filling/mixture with main ingredients and spices.\n2. Shape into desired form (patties/balls/rolls).\n3. Coat with breadcrumbs or batter if needed.\n4. Heat oil for deep/shallow frying.\n5. Fry until golden and crispy on all sides.\n6. Drain on paper towels.\n7. Serve hot with chutney."
   },
   {
     "id": "xx-377",
@@ -6692,7 +6935,8 @@
       "carbs_g": 65,
       "fat_g": 20
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-379",
@@ -6717,7 +6961,8 @@
       "carbs_g": 62,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-381",
@@ -6743,7 +6988,8 @@
       "carbs_g": 68,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-383",
@@ -6768,7 +7014,8 @@
       "carbs_g": 45,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "xx-385",
@@ -6792,7 +7039,8 @@
       "carbs_g": 42,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-387",
@@ -6818,7 +7066,8 @@
       "carbs_g": 0,
       "fat_g": 26
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-389",
@@ -6842,7 +7091,8 @@
       "carbs_g": 35,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-391",
@@ -6868,7 +7118,8 @@
       "carbs_g": 22,
       "fat_g": 0
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-393",
@@ -6894,7 +7145,8 @@
       "carbs_g": 5,
       "fat_g": 18
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and chop radish.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add radish, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xx-395",
@@ -6919,7 +7171,8 @@
       "carbs_g": 60,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-397",
@@ -6944,7 +7197,8 @@
       "carbs_g": 12,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-399",
@@ -6969,7 +7223,8 @@
       "carbs_g": 14,
       "fat_g": 10
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-401",
@@ -6994,7 +7249,8 @@
       "carbs_g": 32,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-403",
@@ -7021,7 +7277,8 @@
       "carbs_g": 12,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xx-405",
@@ -7044,7 +7301,8 @@
       "carbs_g": 28,
       "fat_g": 0
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xx-407",
@@ -7070,7 +7328,8 @@
       "carbs_g": 25,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare tofu — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add tofu, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xx-409",
@@ -7096,7 +7355,8 @@
       "carbs_g": 0,
       "fat_g": 16
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-261",
@@ -7123,7 +7383,8 @@
       "carbs_g": 58,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Cook rice and spread to cool.\n2. Heat oil/ghee for tempering.\n3. Add mustard seeds, urad dal, peanuts, curry leaves.\n4. Add any vegetables and sauté briefly.\n5. Add the flavoring (lemon/tamarind/spice paste).\n6. Toss in the cooked rice, mix gently.\n7. Adjust salt and serve."
   },
   {
     "id": "xxx-263",
@@ -7150,7 +7411,8 @@
       "carbs_g": 12,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-265",
@@ -7177,7 +7439,8 @@
       "carbs_g": 8,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add fish, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-267",
@@ -7202,7 +7465,8 @@
       "carbs_g": 28,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-269",
@@ -7228,7 +7492,8 @@
       "carbs_g": 45,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak urad dal flour for 30 min.\n2. Pressure cook urad dal flour with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked urad dal flour.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xxx-271",
@@ -7253,7 +7518,8 @@
       "carbs_g": 35,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Soak rice and dal separately for 6 hours.\n2. Grind to a smooth batter, ferment overnight.\n3. Add salt to the fermented batter.\n4. Heat a tawa/griddle, spread batter thinly in a circle.\n5. Drizzle oil around the edges.\n6. Cook until crispy and golden.\n7. Serve with sambar and chutney."
   },
   {
     "id": "xxx-273",
@@ -7278,7 +7544,8 @@
       "carbs_g": 52,
       "fat_g": 11
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Soak rice and dal separately for 6 hours.\n2. Grind to a smooth batter, ferment overnight.\n3. Add salt to the fermented batter.\n4. Heat a tawa/griddle, spread batter thinly in a circle.\n5. Drizzle oil around the edges.\n6. Cook until crispy and golden.\n7. Serve with sambar and chutney."
   },
   {
     "id": "xxx-275",
@@ -7305,7 +7572,8 @@
       "carbs_g": 65,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare onion — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add onion, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-277",
@@ -7330,7 +7598,8 @@
       "carbs_g": 40,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Soak rice and dal separately for 6 hours.\n2. Grind to a smooth batter, ferment overnight.\n3. Add salt to the fermented batter.\n4. Heat a tawa/griddle, spread batter thinly in a circle.\n5. Drizzle oil around the edges.\n6. Cook until crispy and golden.\n7. Serve with sambar and chutney."
   },
   {
     "id": "xxx-279",
@@ -7356,7 +7625,8 @@
       "carbs_g": 12,
       "fat_g": 14
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop ash gourd.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add ash gourd, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xxx-281",
@@ -7382,7 +7652,8 @@
       "carbs_g": 35,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare yam — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add yam, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-283",
@@ -7409,7 +7680,8 @@
       "carbs_g": 15,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-285",
@@ -7436,7 +7708,8 @@
       "carbs_g": 12,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-287",
@@ -7462,7 +7735,8 @@
       "carbs_g": 5,
       "fat_g": 15
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-289",
@@ -7486,7 +7760,8 @@
       "carbs_g": 30,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-291",
@@ -7512,7 +7787,8 @@
       "carbs_g": 6,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add fish, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-293",
@@ -7537,7 +7813,8 @@
       "carbs_g": 32,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-295",
@@ -7562,7 +7839,8 @@
       "carbs_g": 35,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-297",
@@ -7587,7 +7865,8 @@
       "carbs_g": 2,
       "fat_g": 28
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-299",
@@ -7612,7 +7891,8 @@
       "carbs_g": 10,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-301",
@@ -7636,7 +7916,8 @@
       "carbs_g": 18,
       "fat_g": 2
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop potato.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add potato, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xxx-303",
@@ -7659,7 +7940,8 @@
       "carbs_g": 8,
       "fat_g": 1
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop onion.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add onion, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xxx-305",
@@ -7685,7 +7967,8 @@
       "carbs_g": 32,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and chop spinach.\n2. Heat oil/ghee in a pan.\n3. Add cumin/mustard seeds for tempering.\n4. Add onions and sauté until soft.\n5. Add spices — turmeric, coriander, chili powder.\n6. Add spinach, salt, and a splash of water.\n7. Cover and cook until vegetables are tender.\n8. Garnish with coriander and serve."
   },
   {
     "id": "xxx-307",
@@ -7709,7 +7992,8 @@
       "carbs_g": 12,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-309",
@@ -7734,7 +8018,8 @@
       "carbs_g": 50,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-311",
@@ -7759,7 +8044,8 @@
       "carbs_g": 42,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-313",
@@ -7785,7 +8071,8 @@
       "carbs_g": 5,
       "fat_g": 10
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare fish — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add fish and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-315",
@@ -7811,7 +8098,8 @@
       "carbs_g": 8,
       "fat_g": 35
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-317",
@@ -7837,7 +8125,8 @@
       "carbs_g": 20,
       "fat_g": 4
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak moong dal for 30 min.\n2. Pressure cook moong dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked moong dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xxx-319",
@@ -7862,7 +8151,8 @@
       "carbs_g": 6,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare pork — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add pork and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-321",
@@ -7888,7 +8178,8 @@
       "carbs_g": 65,
       "fat_g": 12
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare beef — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add beef and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-323",
@@ -7914,7 +8205,8 @@
       "carbs_g": 15,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-325",
@@ -7939,7 +8231,8 @@
       "carbs_g": 25,
       "fat_g": 38
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare beef — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add beef, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxx-327",
@@ -7965,7 +8258,8 @@
       "carbs_g": 22,
       "fat_g": 7
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare shrimp — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add shrimp and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-329",
@@ -7991,7 +8285,8 @@
       "carbs_g": 18,
       "fat_g": 30
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-331",
@@ -8017,7 +8312,8 @@
       "carbs_g": 12,
       "fat_g": 24
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare tofu — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add tofu and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-333",
@@ -8043,7 +8339,8 @@
       "carbs_g": 25,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xxx-335",
@@ -8069,7 +8366,8 @@
       "carbs_g": 25,
       "fat_g": 45
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-337",
@@ -8095,7 +8393,8 @@
       "carbs_g": 12,
       "fat_g": 32
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add chicken and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-339",
@@ -8121,7 +8420,8 @@
       "carbs_g": 15,
       "fat_g": 35
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare beef — clean, cut, and marinate with spices.\n2. Heat oil/ghee in a pan.\n3. Sauté onions until translucent.\n4. Add ginger-garlic paste, cook 1 min.\n5. Add tomatoes and spices, cook until oil separates.\n6. Add beef and mix well.\n7. Add water if needed, cover and cook until done.\n8. Garnish and serve hot with roti or rice."
   },
   {
     "id": "xxx-341",
@@ -8147,7 +8447,8 @@
       "carbs_g": 16,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-343",
@@ -8172,7 +8473,8 @@
       "carbs_g": 52,
       "fat_g": 6
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-345",
@@ -8196,7 +8498,8 @@
       "carbs_g": 45,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxx-347",
@@ -8222,7 +8525,8 @@
       "carbs_g": 45,
       "fat_g": 0.2
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "xxx-349",
@@ -8247,7 +8551,8 @@
       "carbs_g": 35,
       "fat_g": 0.5
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "xxxx-306",
@@ -8273,7 +8578,8 @@
       "carbs_g": 38,
       "fat_g": 6
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare main ingredient — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add main ingredient, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxxx-308",
@@ -8299,7 +8605,8 @@
       "carbs_g": 12,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare chicken — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add chicken, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala, cream. Serve with roti/rice."
   },
   {
     "id": "xxxx-310",
@@ -8324,7 +8631,8 @@
       "carbs_g": 28,
       "fat_g": 8
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Wash and soak arhar dal for 30 min.\n2. Pressure cook arhar dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked arhar dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "xxxx-312",
@@ -8350,7 +8658,8 @@
       "carbs_g": 14,
       "fat_g": 18
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare paneer — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add paneer, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "xxxx-314",
@@ -8375,7 +8684,8 @@
       "carbs_g": 8,
       "fat_g": 22
     },
-    "meal_type": "Lunch/Dinner"
+    "meal_type": "Lunch/Dinner",
+    "instructions": "1. Prepare shrimp — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add shrimp, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "dr-1",
@@ -8402,7 +8712,8 @@
       "carbs_g": 12,
       "fat_g": 3
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare main ingredient — cut into pieces, marinate if needed.\n2. Heat oil/ghee, sauté sliced onions until golden.\n3. Add ginger-garlic paste, cook for 1 min.\n4. Add tomatoes and cook until soft and oil separates.\n5. Add ground spices (turmeric, coriander, chili), stir well.\n6. Add main ingredient, coat with the masala.\n7. Add water as needed, cover and simmer until cooked through.\n8. Finish with garam masala. Serve with roti/rice."
   },
   {
     "id": "dr-2",
@@ -8427,7 +8738,8 @@
       "carbs_g": 30,
       "fat_g": 4
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "dr-3",
@@ -8451,7 +8763,8 @@
       "carbs_g": 15,
       "fat_g": 3
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "dr-4",
@@ -8477,7 +8790,8 @@
       "carbs_g": 15,
       "fat_g": 0
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "dr-5",
@@ -8506,7 +8820,8 @@
       "carbs_g": 25,
       "fat_g": 10
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "dr-6",
@@ -8531,7 +8846,8 @@
       "carbs_g": 18,
       "fat_g": 4
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "dr-7",
@@ -8557,7 +8873,8 @@
       "carbs_g": 18,
       "fat_g": 0
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare the main ingredients — chop, blend, or boil as needed.\n2. Combine all ingredients in a pot or blender.\n3. Add water/milk and mix well.\n4. Season with salt/sugar and spices.\n5. Strain if needed.\n6. Serve hot or chilled as appropriate."
   },
   {
     "id": "dr-8",
@@ -8582,7 +8899,8 @@
       "carbs_g": 35,
       "fat_g": 5
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "dr-9",
@@ -8607,7 +8925,8 @@
       "carbs_g": 55,
       "fat_g": 10
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "dr-10",
@@ -8636,7 +8955,8 @@
       "carbs_g": 5,
       "fat_g": 0
     },
-    "meal_type": "Beverage"
+    "meal_type": "Beverage",
+    "instructions": "1. Prepare all ingredients — wash, chop, and measure.\n2. Heat oil or ghee in a suitable pan.\n3. Add tempering spices and aromatics.\n4. Add the main ingredients and cook.\n5. Season with salt and spices to taste.\n6. Cook until done, adjusting consistency as needed.\n7. Garnish and serve."
   },
   {
     "id": "si-1",
@@ -8661,7 +8981,8 @@
       "carbs_g": 35,
       "fat_g": 6
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "si-2",
@@ -8687,7 +9008,8 @@
       "carbs_g": 45,
       "fat_g": 9
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Prepare potato stuffing — boil/grate and mix with spices.\n2. Knead atta dough with water and salt, rest 20 min.\n3. Roll dough, place potato filling, seal and re-roll.\n4. Cook on hot tawa with ghee/oil until golden on both sides.\n5. Serve hot with curd, pickle, or butter."
   },
   {
     "id": "si-3",
@@ -8710,7 +9032,8 @@
       "carbs_g": 35,
       "fat_g": 10
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "si-4",
@@ -8737,7 +9060,8 @@
       "carbs_g": 3,
       "fat_g": 0
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Prepare the main ingredient — wash, chop, or roast.\n2. Grind or mix with the other ingredients.\n3. Add salt, spices, and tempering if needed.\n4. Mix well and adjust seasoning.\n5. Serve as a side accompaniment."
   },
   {
     "id": "si-5",
@@ -8762,7 +9086,8 @@
       "carbs_g": 10,
       "fat_g": 7
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Prepare the main ingredient — wash, chop, or roast.\n2. Grind or mix with the other ingredients.\n3. Add salt, spices, and tempering if needed.\n4. Mix well and adjust seasoning.\n5. Serve as a side accompaniment."
   },
   {
     "id": "si-6",
@@ -8785,7 +9110,8 @@
       "carbs_g": 30,
       "fat_g": 2
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   },
   {
     "id": "si-7",
@@ -8810,7 +9136,8 @@
       "carbs_g": 10,
       "fat_g": 3
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Prepare the main ingredient — wash, chop, or roast.\n2. Grind or mix with the other ingredients.\n3. Add salt, spices, and tempering if needed.\n4. Mix well and adjust seasoning.\n5. Serve as a side accompaniment."
   },
   {
     "id": "si-8",
@@ -8839,7 +9166,8 @@
       "carbs_g": 2,
       "fat_g": 4
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Prepare the main ingredient — wash, chop, or roast.\n2. Grind or mix with the other ingredients.\n3. Add salt, spices, and tempering if needed.\n4. Mix well and adjust seasoning.\n5. Serve as a side accompaniment."
   },
   {
     "id": "si-9",
@@ -8865,7 +9193,8 @@
       "carbs_g": 40,
       "fat_g": 15
     },
-    "meal_type": "Breakfast"
+    "meal_type": "Breakfast",
+    "instructions": "1. Wash and soak chana dal for 30 min.\n2. Pressure cook chana dal with turmeric and water until soft.\n3. Heat oil/ghee for tempering.\n4. Add mustard seeds, cumin, and curry leaves.\n5. Add chopped onion, garlic, tomato — sauté until soft.\n6. Pour the tempering into the cooked chana dal.\n7. Simmer for 5-10 min, adjust salt and consistency.\n8. Garnish with coriander and serve with rice."
   },
   {
     "id": "si-10",
@@ -8891,6 +9220,7 @@
       "carbs_g": 30,
       "fat_g": 6
     },
-    "meal_type": "Side"
+    "meal_type": "Side",
+    "instructions": "1. Mix flour with salt, water, and oil. Knead into soft dough.\n2. Rest for 20 min covered with a damp cloth.\n3. Divide into balls, roll out into circles.\n4. Cook on hot tawa until brown spots appear on both sides.\n5. Apply ghee/butter and serve hot."
   }
 ]

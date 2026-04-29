@@ -207,6 +207,7 @@ if _extra_path.exists():
             ready_in_minutes=_r.get("ready_in_minutes"),
             servings=_r.get("servings"),
             ingredients=_r.get("ingredients", []),
+            instructions=_r.get("instructions"),
             diets=_r.get("diets", []),
             meal_type=_r.get("meal_type"),
             nutrition=RecipeNutrition(**_nutr) if _nutr else None,
