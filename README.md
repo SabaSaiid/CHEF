@@ -40,7 +40,7 @@ For production, run `npm run build` inside `frontend-react/` — the backend wil
 | Feature | Method | Notes |
 |---------|--------|-------|
 | Ingredient Parsing | Rule-based regex | Handles quantities, units, fractions, ranges |
-| Recipe Search | 30+ in-line + extended JSON dataset (~180 KB) | Set `SPOONACULAR_API_KEY` in `.env` for real API fallback |
+| Recipe Search | Unified JSON dataset (360 recipes, ~310 KB) | Set `SPOONACULAR_API_KEY` in `.env` for real API fallback |
 | **Constraint Filtering** | Diet, calories, cook time | vegetarian/vegan/keto/gluten-free/high-protein, max kcal, max minutes |
 | Nutrition Lookup | Built-in database (350+ foods) | Per-100g values, scales by quantity. Covers Indian & global foods |
 | Food Detection | **YOLOv8 ML** (real inference) | Detects 10 COCO food classes from uploaded images |
@@ -101,7 +101,7 @@ CHEF/
 │       ├── models.py        # ORM models (User, SavedRecipe, MealPlan)
 │       ├── schemas.py       # 20+ Pydantic request/response schemas
 │       ├── substitutions.json      # Ingredient substitution data
-│       ├── recipes_extra.json      # Extended recipe dataset (~180 KB)
+│       ├── recipes.json            # Unified recipe dataset (360 recipes, ~310 KB)
 │       ├── nutrition_extra.json    # Extended nutrition data (~26 KB)
 │       └── routers/
 │           ├── auth_router.py      # Signup, login, profile
