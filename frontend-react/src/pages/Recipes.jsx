@@ -93,6 +93,7 @@ export default function Recipes() {
             <option value="keto">🥑 Keto</option>
             <option value="gluten-free">🌾 Gluten-Free</option>
             <option value="high-protein">💪 High-Protein</option>
+            <option value="non-vegetarian">🍖 Non-Vegetarian</option>
           </select>
           <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
           <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />

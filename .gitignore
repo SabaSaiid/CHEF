@@ -5,7 +5,7 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Databases
+# Databases 
 *.sqlite3
 *.db
 chef.db

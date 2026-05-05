@@ -106,7 +106,7 @@ async def _search_spoonacular(ingredients: list[str], max_results: int) -> list[
 async def search_recipes(req: RecipeSearchRequest):
     """
     Search for recipes by ingredients with optional constraints.
-    Constraints: max_calories, max_time (minutes), diet (vegetarian/vegan/keto/gluten-free/high-protein).
+    Constraints: max_calories, max_time (minutes), diet (vegetarian/vegan/keto/gluten-free/high-protein/non-vegetarian).
     Uses Spoonacular API if a key is configured, otherwise returns demo recipes.
     """
     # Build list of applied constraints for the response
