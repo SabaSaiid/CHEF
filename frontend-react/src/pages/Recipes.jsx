@@ -12,6 +12,7 @@ export default function Recipes() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
@@ -36,11 +37,19 @@ export default function Recipes() {
 
       const data = await api.post('/recipes/search', body);
       setResults(data);
+      setHasSearched(true);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const clearFilters = () => {
+    setDiet('');
+    setMaxCal('');
+    setMaxTime('');
+    setError(null);
   };
 
   const saveRecipe = async (recipe) => {
@@ -96,13 +105,20 @@ export default function Recipes() {
           </select>
           <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
           <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />
+          <button className="btn-secondary" style={{marginLeft: '10px'}} onClick={clearFilters}>Clear filters</button>
         </div>
       </div>
 
       <div className="results-area">
         {error && <div style={{color: 'red', marginBottom: '20px'}}>{error}</div>}
-        
-        {results && results.recipes.length === 0 && (
+        {!hasSearched && !loading && (
+          <div className="empty-state">
+            <span className="empty-icon">🔎</span>
+            <p>Enter ingredients and optional filters to discover recipes.</p>
+          </div>
+        )}
+
+        {hasSearched && results && results.recipes.length === 0 && (
           <div className="empty-state">
             <span className="empty-icon">🍳</span>
             <p>No matching recipes found. Try different ingredients or relax your constraints.</p>
@@ -112,7 +128,7 @@ export default function Recipes() {
         {results && results.recipes.length > 0 && (
           <>
             <div>
-              <span className="source-badge">Source: {results.source} data · {results.total} result(s)</span>
+              <span className="source-badge">Source: {results.source} · {results.total} recipe(s)</span>
               {results.constraints_applied?.map(c => <span key={c} className="constraints-badge" style={{marginLeft: '10px'}}>⚙️ {c}</span>)}
             </div>
             <div className="recipe-grid" style={{marginTop: '20px'}}>

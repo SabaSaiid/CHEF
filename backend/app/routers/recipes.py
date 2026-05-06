@@ -65,21 +65,40 @@ def _match_score(recipe: RecipeItem, search_ingredients: list[str]) -> float:
     return matches / len(search_ings)
 
 
-async def _search_spoonacular(ingredients: list[str], max_results: int) -> list[RecipeItem] | None:
+def _diet_matches(recipe: RecipeItem, diet: str) -> bool:
+    """Return whether a recipe satisfies a dietary filter."""
+    if not diet:
+        return True
+
+    normalized_diet = diet.lower().replace(" ", "-")
+    if normalized_diet == "high-protein":
+        return bool(recipe.nutrition and recipe.nutrition.protein_g and recipe.nutrition.protein_g >= 20)
+
+    recipe_diets = {d.lower().replace(" ", "-") for d in recipe.diets}
+    return normalized_diet in recipe_diets
+
+
+async def _search_spoonacular(ingredients: list[str], max_results: int, diet: str | None = None, max_time: int | None = None) -> list[RecipeItem] | None:
     """Try to search Spoonacular API. Returns None if unavailable."""
     if not settings.SPOONACULAR_API_KEY:
         return None
     try:
+        params = {
+            "ingredients": ",".join(ingredients),
+            "number": max_results,
+            "ranking": 1,
+            "ignorePantry": True,
+            "apiKey": settings.SPOONACULAR_API_KEY,
+        }
+        if diet and diet.lower() != "high-protein":
+            params["diet"] = diet
+        if max_time:
+            params["maxReadyTime"] = max_time
+
         async with httpx.AsyncClient(timeout=10.0) as client:
             resp = await client.get(
                 "https://api.spoonacular.com/recipes/findByIngredients",
-                params={
-                    "ingredients": ",".join(ingredients),
-                    "number": max_results,
-                    "ranking": 1,
-                    "ignorePantry": True,
-                    "apiKey": settings.SPOONACULAR_API_KEY,
-                },
+                params=params,
             )
             if resp.status_code != 200:
                 return None
@@ -119,7 +138,7 @@ async def search_recipes(req: RecipeSearchRequest):
         constraints.append(req.diet)
 
     # Try Spoonacular first
-    api_results = await _search_spoonacular(req.ingredients, req.max_results)
+    api_results = await _search_spoonacular(req.ingredients, req.max_results, req.diet, req.max_time)
     if api_results is not None:
         return RecipeSearchResponse(
             recipes=api_results[:req.max_results],
@@ -138,7 +157,7 @@ async def search_recipes(req: RecipeSearchRequest):
                 continue
             if req.max_time and recipe.ready_in_minutes and recipe.ready_in_minutes > req.max_time:
                 continue
-            if req.diet and req.diet.lower() not in [d.lower() for d in recipe.diets]:
+            if not _diet_matches(recipe, req.diet or ""):
                 continue
             recipe_copy = recipe.model_copy(update={"match_score": score})
             scored.append(recipe_copy)
