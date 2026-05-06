@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api';
 import RecipeModal from '../components/RecipeModal';
@@ -14,13 +14,7 @@ export default function Recipes() {
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  useEffect(() => {
-    if (location.state?.ingredients) {
-      handleSearch();
-    }
-  }, [location.state]);
-
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!ingredients.trim()) {
       setError('Enter some ingredients to search');
       return;
@@ -37,11 +31,18 @@ export default function Recipes() {
       const data = await api.post('/recipes/search', body);
       setResults(data);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
-  };
+  }, [ingredients, diet, maxCal, maxTime]);
+  
+
+  useEffect(() => {
+    if (location.state?.ingredients) {
+      handleSearch();
+    }
+  }, [location.state?.ingredients, handleSearch]);
 
   const saveRecipe = async (recipe) => {
     try {
@@ -60,7 +61,7 @@ export default function Recipes() {
       });
       alert(`"${recipe.title}" saved!`);
     } catch (err) {
-      alert(err.message);
+      alert(err.message || "Something went wrong");
     }
   };
 
@@ -133,6 +134,28 @@ export default function Recipes() {
                       {recipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{recipe.nutrition.calories} kcal</span></span>}
                       {recipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{recipe.servings} servings</span></span>}
                     </div>
+                      {recipe.video_url && (
+                        <>
+                          <div style={{ color: "#e07a5f", fontSize: "12px", marginTop: "5px" }}>
+                            🎥 Video available
+                          </div>
+
+                          <button
+                            onClick={() => window.open(recipe.video_url, "_blank", "noopener,noreferrer")}
+                            style={{
+                              marginTop: "10px",
+                              padding: "8px 12px",
+                              backgroundColor: "#e07a5f",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "6px",
+                              cursor: "pointer"
+                            }}
+                          >
+                            ▶ Watch Recipe Video
+                          </button>
+                        </>
+                      )}
                     <div className="recipe-actions">
                       <button className="btn-secondary" onClick={() => setSelectedRecipe(recipe)}>View Details</button>
                       <button className="btn-secondary" onClick={() => saveRecipe(recipe)}>💾 Save</button>
