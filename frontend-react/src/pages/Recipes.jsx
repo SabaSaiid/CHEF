@@ -158,7 +158,7 @@ export default function Recipes() {
                       )}
                     <div className="recipe-actions">
                       <button className="btn-secondary" onClick={() => setSelectedRecipe(recipe)}>View Details</button>
-                      <button className="btn-secondary" onClick={() => saveRecipe(recipe)}>💾 Save</button>
+                      <button className="btn-secondary" onClick={() => saveRecipe(recipe)}>💾 Save</button>]
                     </div>
                   </div>
                 </div>
