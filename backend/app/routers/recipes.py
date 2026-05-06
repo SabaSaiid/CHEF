@@ -40,6 +40,7 @@ if _recipes_path.exists():
         DEMO_RECIPES.append(RecipeItem(
             id=_r["id"], title=_r["title"], summary=_r.get("summary", ""),
             image_url=_r.get("image_url"),
+            video_url=_r.get("video_url"),
             ready_in_minutes=_r.get("ready_in_minutes"),
             servings=_r.get("servings"),
             ingredients=_r.get("ingredients", []),

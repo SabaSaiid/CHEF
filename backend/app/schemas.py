@@ -104,6 +104,7 @@ class RecipeItem(BaseModel):
     id: str
     title: str
     image_url: Optional[str] = None
+    video_url: Optional[str] = None
     summary: Optional[str] = None
     ready_in_minutes: Optional[int] = None
     servings: Optional[int] = None
