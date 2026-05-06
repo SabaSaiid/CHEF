@@ -40,6 +40,7 @@ if _recipes_path.exists():
         DEMO_RECIPES.append(RecipeItem(
             id=_r["id"], title=_r["title"], summary=_r.get("summary", ""),
             image_url=_r.get("image_url"),
+            video_url=_r.get("video_url"),
             ready_in_minutes=_r.get("ready_in_minutes"),
             servings=_r.get("servings"),
             ingredients=_r.get("ingredients", []),
@@ -125,7 +126,7 @@ async def _search_spoonacular(ingredients: list[str], max_results: int, diet: st
 async def search_recipes(req: RecipeSearchRequest):
     """
     Search for recipes by ingredients with optional constraints.
-    Constraints: max_calories, max_time (minutes), diet (vegetarian/vegan/keto/gluten-free/high-protein).
+    Constraints: max_calories, max_time (minutes), diet (vegetarian/vegan/keto/gluten-free/high-protein/non-vegetarian).
     Uses Spoonacular API if a key is configured, otherwise returns demo recipes.
     """
     # Build list of applied constraints for the response

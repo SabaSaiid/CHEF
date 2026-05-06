@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api';
 import RecipeModal from '../components/RecipeModal';
@@ -15,13 +15,7 @@ export default function Recipes() {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  useEffect(() => {
-    if (location.state?.ingredients) {
-      handleSearch();
-    }
-  }, [location.state]);
-
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!ingredients.trim()) {
       setError('Enter some ingredients to search');
       return;
@@ -39,11 +33,17 @@ export default function Recipes() {
       setResults(data);
       setHasSearched(true);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
-  };
+  }, [ingredients, diet, maxCal, maxTime]);
+
+  useEffect(() => {
+    if (location.state?.ingredients) {
+      handleSearch();
+    }
+  }, [location.state?.ingredients, handleSearch]);
 
   const clearFilters = () => {
     setDiet('');
@@ -69,7 +69,7 @@ export default function Recipes() {
       });
       alert(`"${recipe.title}" saved!`);
     } catch (err) {
-      alert(err.message);
+      alert(err.message || "Something went wrong");
     }
   };
 
@@ -102,6 +102,7 @@ export default function Recipes() {
             <option value="keto">🥑 Keto</option>
             <option value="gluten-free">🌾 Gluten-Free</option>
             <option value="high-protein">💪 High-Protein</option>
+            <option value="non-vegetarian">🍖 Non-Vegetarian</option>
           </select>
           <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
           <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />
@@ -149,6 +150,36 @@ export default function Recipes() {
                       {recipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{recipe.nutrition.calories} kcal</span></span>}
                       {recipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{recipe.servings} servings</span></span>}
                     </div>
+                      {recipe.video_url && (
+                        <>
+                          <div style={{ color: "#e07a5f", fontSize: "12px", marginTop: "5px" }}>
+                            🎥 Video available
+                          </div>
+
+                          <button
+                            onClick={() => {
+                              let url = recipe.video_url;
+                              // Convert embed URLs to regular watch URLs so they play in a new tab
+                              if (url.includes('/embed/')) {
+                                const videoId = url.split('/embed/')[1].split('?')[0];
+                                url = `https://www.youtube.com/watch?v=${videoId}`;
+                              }
+                              window.open(url, "_blank", "noopener,noreferrer");
+                            }}
+                            style={{
+                              marginTop: "10px",
+                              padding: "8px 12px",
+                              backgroundColor: "#e07a5f",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "6px",
+                              cursor: "pointer"
+                            }}
+                          >
+                            ▶ Watch Recipe Video
+                          </button>
+                        </>
+                      )}
                     <div className="recipe-actions">
                       <button className="btn-secondary" onClick={() => setSelectedRecipe(recipe)}>View Details</button>
                       <button className="btn-secondary" onClick={() => saveRecipe(recipe)}>💾 Save</button>
