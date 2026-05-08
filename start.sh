@@ -14,8 +14,17 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # ── Start Backend ──────────────────────────
 echo "  🔧 Starting backend server..."
-source "$SCRIPT_DIR/backend/.venv/bin/activate"
 cd "$SCRIPT_DIR/backend"
+if [ -d ".venv" ]; then
+    echo "  📦 Activating virtual environment..."
+    if [ -f ".venv/bin/activate" ]; then
+        source .venv/bin/activate
+    elif [ -f ".venv/Scripts/activate" ]; then
+        source .venv/Scripts/activate
+    fi
+else
+    echo "  ⚠️  Warning: backend/.venv not found. Proceeding with global python..."
+fi
 python3 -m uvicorn app.main:app --reload --port 8001 &
 BACKEND_PID=$!
 
