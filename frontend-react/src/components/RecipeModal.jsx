@@ -20,7 +20,11 @@ export default function RecipeModal({ recipe, onClose }) {
         {recipe.instructions && (
           <div className="modal-section" style={{marginTop: '15px'}}>
             <h3>Instructions</h3>
-            <p className="instructions-text">{recipe.instructions}</p>
+            <ol className="instructions-list">
+              {recipe.instructions.split('\n').filter(s => s.trim()).map((step, i) => (
+                <li key={i}>{step.replace(/^\d+\.\s*/, '')}</li>
+              ))}
+            </ol>
           </div>
         )}
 

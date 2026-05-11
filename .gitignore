@@ -28,3 +28,6 @@ Thumbs.db
 # Environments
 .env
 .env.*
+
+# Editor configuration
+pyrightconfig.json

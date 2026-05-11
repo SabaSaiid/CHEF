@@ -1018,13 +1018,13 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 8px;
 }
 
-.modal-section p, .modal-section ul {
+.modal-section p, .modal-section ul, .modal-section ol {
     font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.7;
 }
 
-.modal-section ul {
+.modal-section ul, .modal-section ol {
     padding-left: 20px;
 }
 
@@ -1032,8 +1032,14 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 4px;
 }
 
-.instructions-text {
-    white-space: pre-line;
+.instructions-list {
+    padding-left: 22px;
+    counter-reset: none;
+}
+
+.instructions-list li {
+    margin-bottom: 8px;
+    padding-left: 4px;
 }
 
 
