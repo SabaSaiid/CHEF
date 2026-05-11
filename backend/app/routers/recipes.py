@@ -31,13 +31,17 @@ router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 # ── Unified recipe database — loaded from recipes.json ─────────
 _recipes_path = Path(__file__).parent.parent / "recipes.json"
 DEMO_RECIPES: list[RecipeItem] = []
+RECIPES_BY_REGION: dict[str, set[str]] = {}
+RECIPES_BY_MEAL_TYPE: dict[str, set[str]] = {}
 
 if _recipes_path.exists():
     with open(_recipes_path, encoding="utf-8") as _f:
         _all_recipes = json.load(_f)
     for _r in _all_recipes:
         _nutr = _r.get("nutrition", {})
-        DEMO_RECIPES.append(RecipeItem(
+        region = _r.get("region")
+        meal_type = _r.get("meal_type")
+        item = RecipeItem(
             id=_r["id"], title=_r["title"], summary=_r.get("summary", ""),
             image_url=_r.get("image_url"),
             video_url=_r.get("video_url"),
@@ -46,15 +50,24 @@ if _recipes_path.exists():
             ingredients=_r.get("ingredients", []),
             instructions=_r.get("instructions"),
             diets=_r.get("diets", []),
-            meal_type=_r.get("meal_type"),
+            meal_type=meal_type,
+            region=region,
+            popularity=_r.get("popularity", 50),
             nutrition=RecipeNutrition(**_nutr) if _nutr else None,
-        ))
+        )
+        DEMO_RECIPES.append(item)
+        if region:
+            RECIPES_BY_REGION.setdefault(region.lower(), set()).add(item.id)
+        if meal_type:
+            for mt in meal_type.lower().split('/'):
+                RECIPES_BY_MEAL_TYPE.setdefault(mt.strip(), set()).add(item.id)
 
 
 def _match_score(recipe: RecipeItem, search_ingredients: list[str]) -> float:
     """Calculate how well a recipe matches the search ingredients (0.0 to 1.0)."""
     if not search_ingredients:
-        return 0.0
+        return 1.0
+
     recipe_ings = {ing.lower() for ing in recipe.ingredients}
     search_ings = {ing.lower().strip() for ing in search_ingredients}
     matches = 0
@@ -137,20 +150,34 @@ async def search_recipes(req: RecipeSearchRequest):
         constraints.append(f"≤ {req.max_time} min")
     if req.diet:
         constraints.append(req.diet)
+    if req.region:
+        constraints.append(f"Region: {req.region}")
+    if req.meal_type:
+        constraints.append(f"Meal: {req.meal_type}")
 
-    # Try Spoonacular first
-    api_results = await _search_spoonacular(req.ingredients, req.max_results, req.diet, req.max_time)
+    # Try Spoonacular first if ingredients are provided
+    api_results = None
+    if req.ingredients:
+        api_results = await _search_spoonacular(req.ingredients, req.max_results, req.diet, req.max_time)
     if api_results is not None:
         return RecipeSearchResponse(
             recipes=api_results[:req.max_results],
-            source="spoonacular",
+            source="Spoonacular",
             total=len(api_results),
             constraints_applied=constraints,
         )
 
     # Fallback: match against demo recipes
+    base_recipes = DEMO_RECIPES
+    if req.region:
+        region_ids = RECIPES_BY_REGION.get(req.region.lower(), set())
+        base_recipes = [r for r in base_recipes if r.id in region_ids]
+    if req.meal_type:
+        meal_ids = RECIPES_BY_MEAL_TYPE.get(req.meal_type.lower(), set())
+        base_recipes = [r for r in base_recipes if r.id in meal_ids]
+
     scored = []
-    for recipe in DEMO_RECIPES:
+    for recipe in base_recipes:
         score = _match_score(recipe, req.ingredients)
         if score > 0:
             # Apply constraints
@@ -163,13 +190,17 @@ async def search_recipes(req: RecipeSearchRequest):
             recipe_copy = recipe.model_copy(update={"match_score": score})
             scored.append(recipe_copy)
 
-    # Sort by match score descending
-    scored.sort(key=lambda r: r.match_score, reverse=True)
+    if not req.ingredients:
+        # If no ingredients, sort by popularity
+        scored.sort(key=lambda r: r.popularity, reverse=True)
+    else:
+        # Sort by match score descending, then popularity
+        scored.sort(key=lambda r: (r.match_score, r.popularity), reverse=True)
     results = scored[:req.max_results]
 
     return RecipeSearchResponse(
         recipes=results,
-        source="demo",
+        source="CHEF Database",
         total=len(results),
         constraints_applied=constraints,
     )

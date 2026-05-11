@@ -114,16 +114,20 @@ class RecipeItem(BaseModel):
     nutrition: Optional[RecipeNutrition] = None
     diets: list[str] = []
     meal_type: Optional[str] = None
+    region: Optional[str] = None
+    popularity: int = 0
     match_score: float = 0.0
 
 
 class RecipeSearchRequest(BaseModel):
-    ingredients: list[str] = Field(..., min_length=1)
+    ingredients: list[str] = Field(default_factory=list)
     max_results: int = Field(10, ge=1, le=50)
     # ── Constraints ──
     max_calories: Optional[int] = Field(None, ge=50, le=5000, description="Max calories per serving")
     max_time: Optional[int] = Field(None, ge=5, le=300, description="Max cook time in minutes")
     diet: Optional[str] = Field(None, description="Dietary filter: vegetarian, vegan, keto, gluten-free, high-protein, non-vegetarian")
+    region: Optional[str] = Field(None, description="Region filter")
+    meal_type: Optional[str] = Field(None, description="Meal type filter")
 
 
 class RecipeSearchResponse(BaseModel):

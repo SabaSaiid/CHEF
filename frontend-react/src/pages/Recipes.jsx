@@ -7,6 +7,8 @@ export default function Recipes() {
   const location = useLocation();
   const [ingredients, setIngredients] = useState(location.state?.ingredients || '');
   const [diet, setDiet] = useState('');
+  const [region, setRegion] = useState('');
+  const [mealType, setMealType] = useState('');
   const [maxCal, setMaxCal] = useState('');
   const [maxTime, setMaxTime] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,9 +18,8 @@ export default function Recipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const handleSearch = useCallback(async () => {
-    if (!ingredients.trim()) {
-      setError('Enter some ingredients to search');
-      return;
+    if (!ingredients.trim() && !region && !mealType && !diet && !maxCal && !maxTime) {
+      // Just fetch popular recipes if nothing is selected
     }
     setLoading(true);
     setError(null);
@@ -26,6 +27,8 @@ export default function Recipes() {
       const ingList = ingredients.split(',').map(s => s.trim()).filter(Boolean);
       const body = { ingredients: ingList, max_results: 10 };
       if (diet) body.diet = diet;
+      if (region) body.region = region;
+      if (mealType) body.meal_type = mealType;
       if (maxCal) body.max_calories = parseInt(maxCal, 10);
       if (maxTime) body.max_time = parseInt(maxTime, 10);
 
@@ -47,6 +50,8 @@ export default function Recipes() {
 
   const clearFilters = () => {
     setDiet('');
+    setRegion('');
+    setMealType('');
     setMaxCal('');
     setMaxTime('');
     setError(null);
@@ -94,7 +99,27 @@ export default function Recipes() {
           </button>
         </div>
         <div className="constraints-row">
-          <span className="constraints-label">⚙️ Constraints</span>
+          <span className="constraints-label">⚙️ Filters</span>
+          <select value={region} onChange={e => setRegion(e.target.value)}>
+            <option value="">Any Region</option>
+            <option value="Indian">🇮🇳 Indian</option>
+            <option value="European">🇪🇺 European</option>
+            <option value="Chinese">🇨🇳 Chinese</option>
+            <option value="Japanese">🇯🇵 Japanese</option>
+            <option value="Mexican">🇲🇽 Mexican</option>
+            <option value="Middle Eastern">🧆 Middle Eastern</option>
+            <option value="American">🇺🇸 American</option>
+            <option value="Italian">🇮🇹 Italian</option>
+          </select>
+          <select value={mealType} onChange={e => setMealType(e.target.value)}>
+            <option value="">Any Meal</option>
+            <option value="Breakfast">🍳 Breakfast</option>
+            <option value="Lunch">🥗 Lunch</option>
+            <option value="Dinner">🍲 Dinner</option>
+            <option value="Snack">🍿 Snack</option>
+            <option value="Dessert">🍰 Dessert</option>
+            <option value="Drink">🍹 Drink</option>
+          </select>
           <select value={diet} onChange={e => setDiet(e.target.value)}>
             <option value="">Any Diet</option>
             <option value="vegetarian">🥬 Vegetarian</option>
@@ -145,7 +170,7 @@ export default function Recipes() {
                       </div>
                     )}
                     <div className="recipe-meta">
-                      {Math.round(recipe.match_score * 100) > 0 && <span className="match-badge">{Math.round(recipe.match_score * 100)}% match</span>}
+                      {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && <span className="match-badge">{Math.round(recipe.match_score * 100)}% match</span>}
                       {recipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{recipe.ready_in_minutes} min</span></span>}
                       {recipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{recipe.nutrition.calories} kcal</span></span>}
                       {recipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{recipe.servings} servings</span></span>}
