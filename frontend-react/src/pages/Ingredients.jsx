@@ -43,7 +43,7 @@ export default function Ingredients() {
     <section className="page active">
       <div className="page-header">
         <h1>Enter Ingredients</h1>
-        <p className="subtitle">Type what you have and we'll find recipes for you</p>
+        <p className="subtitle">Analyze your ingredients to discover matching recipes from our 7,000+ collection.</p>
       </div>
 
       <div className="card glass">

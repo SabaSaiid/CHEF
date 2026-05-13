@@ -25,7 +25,7 @@ export default function Recipes() {
     setError(null);
     try {
       const ingList = ingredients.split(',').map(s => s.trim()).filter(Boolean);
-      const body = { ingredients: ingList, max_results: 10 };
+      const body = { ingredients: ingList, max_results: 24 };
       if (diet) body.diet = diet;
       if (region) body.region = region;
       if (mealType) body.meal_type = mealType;
@@ -82,7 +82,7 @@ export default function Recipes() {
     <section className="page active">
       <div className="page-header">
         <h1>Find Recipes</h1>
-        <p className="subtitle">Search by ingredients — we'll suggest what you can cook</p>
+        <p className="subtitle">Explore 7,000+ recipes tailored to your ingredients, diet, and lifestyle.</p>
       </div>
 
       <div className="card glass">

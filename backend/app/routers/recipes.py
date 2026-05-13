@@ -71,7 +71,13 @@ def _match_score(recipe: RecipeItem, search_ingredients: list[str]) -> float:
     recipe_ings = {ing.lower() for ing in recipe.ingredients}
     search_ings = {ing.lower().strip() for ing in search_ingredients}
     matches = 0
+    title_lower = recipe.title.lower()
+    
     for search_ing in search_ings:
+        if search_ing in title_lower:
+            matches += 1
+            continue
+            
         for recipe_ing in recipe_ings:
             if search_ing in recipe_ing or recipe_ing in search_ing:
                 matches += 1
@@ -191,8 +197,8 @@ async def search_recipes(req: RecipeSearchRequest):
             scored.append(recipe_copy)
 
     if not req.ingredients:
-        # If no ingredients, sort by popularity
-        scored.sort(key=lambda r: r.popularity, reverse=True)
+        # If no ingredients, prioritize Bihar region, then sort by popularity
+        scored.sort(key=lambda r: (1 if r.region and r.region.lower() == "bihar" else 0, r.popularity), reverse=True)
     else:
         # Sort by match score descending, then popularity
         scored.sort(key=lambda r: (r.match_score, r.popularity), reverse=True)
@@ -201,7 +207,7 @@ async def search_recipes(req: RecipeSearchRequest):
     return RecipeSearchResponse(
         recipes=results,
         source="CHEF Database",
-        total=len(results),
+        total=len(scored),
         constraints_applied=constraints,
     )
 
