@@ -190,19 +190,37 @@ if _extra_path.exists():
     NUTRITION_DB.update(_extra)
 
 
+# ── Pre-build a reverse lookup index for O(1) partial matching ─
+# Maps every individual word-token found in DB keys back to that key.
+# e.g. "chicken breast" → tokens "chicken", "breast" → both map to the key.
+_LOOKUP_INDEX: dict[str, str] = {}
+for _db_key in NUTRITION_DB:
+    _LOOKUP_INDEX[_db_key] = _db_key          # exact key → itself
+    for _token in _db_key.split():
+        if _token not in _LOOKUP_INDEX:       # first match wins
+            _LOOKUP_INDEX[_token] = _db_key
+
+
 def _lookup(food: str) -> dict | None:
-    """Case-insensitive lookup in the nutrition database."""
+    """
+    O(1) case-insensitive lookup in the nutrition database.
+    Checks exact match first, then token-level partial match via pre-built index.
+    """
     key = food.lower().strip()
+    # 1. Exact match
     if key in NUTRITION_DB:
         return NUTRITION_DB[key]
-    # Partial match
+    # 2. Token index hit (e.g. query "breast" → "chicken breast")
+    if key in _LOOKUP_INDEX:
+        return NUTRITION_DB[_LOOKUP_INDEX[key]]
+    # 3. Substring scan as last resort (rare edge cases)
     for db_key, data in NUTRITION_DB.items():
         if key in db_key or db_key in key:
             return data
     return None
 
 
-@router.post("/analyze", response_model=NutritionData)
+@router.post("/analyze", response_model=NutritionData, response_model_exclude_none=True)
 def analyze_nutrition(req: NutritionRequest):
     """
     Look up nutrition data for a food item.

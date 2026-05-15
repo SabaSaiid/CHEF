@@ -1,6 +1,10 @@
+"""
+Meal planner router — create, retrieve, and delete weekly meal plan entries.
+Also generates an aggregated shopping list from planned meals.
+"""
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import List
 from collections import defaultdict
 import datetime
 
@@ -11,15 +15,35 @@ from app.schemas import MealPlanCreate, MealPlanResponse, ShoppingListItem
 
 router = APIRouter(prefix="/api/mealplan", tags=["mealplan"])
 
+_MAX_DATE_RANGE_DAYS = 90
 
-@router.get("", response_model=List[MealPlanResponse])
+
+def _parse_and_validate_dates(start_date: str, end_date: str) -> tuple[str, str]:
+    """Validate YYYY-MM-DD date strings and ensure start <= end within 90 days."""
+    try:
+        start = datetime.date.fromisoformat(start_date)
+        end = datetime.date.fromisoformat(end_date)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Dates must be in YYYY-MM-DD format")
+    if end < start:
+        raise HTTPException(status_code=400, detail="end_date must be on or after start_date")
+    if (end - start).days > _MAX_DATE_RANGE_DAYS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Date range cannot exceed {_MAX_DATE_RANGE_DAYS} days"
+        )
+    return start_date, end_date
+
+
+@router.get("", response_model=list[MealPlanResponse])
 def get_meal_plan(
     start_date: str = Query(..., description="YYYY-MM-DD"),
     end_date: str = Query(..., description="YYYY-MM-DD"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Fetch meal plan entries for a specific date range."""
+    """Fetch meal plan entries for a specific date range (max 90 days)."""
+    _parse_and_validate_dates(start_date, end_date)
     plans = db.query(MealPlan).filter(
         MealPlan.user_id == current_user.id,
         MealPlan.date >= start_date,
@@ -28,24 +52,22 @@ def get_meal_plan(
     return plans
 
 
-@router.post("", response_model=MealPlanResponse)
+@router.post("", response_model=MealPlanResponse, status_code=201)
 def create_meal_plan(
     req: MealPlanCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Add a recipe to the meal plan."""
+    """Add a recipe to the meal plan. The recipe must already be in your saved collection."""
     # Verify recipe belongs to user
     recipe = db.query(SavedRecipe).filter(
-        SavedRecipe.id == req.recipe_id, 
+        SavedRecipe.id == req.recipe_id,
         SavedRecipe.user_id == current_user.id
     ).first()
-    
+
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found in your saved collection")
 
-    # Optional: check if slot is already occupied, but overwriting/multiple is fine for now
-    
     mp = MealPlan(
         user_id=current_user.id,
         recipe_id=req.recipe_id,
@@ -58,7 +80,7 @@ def create_meal_plan(
     return mp
 
 
-@router.delete("/{plan_id}")
+@router.delete("/{plan_id}", status_code=200)
 def delete_meal_plan(
     plan_id: int,
     db: Session = Depends(get_db),
@@ -68,13 +90,13 @@ def delete_meal_plan(
     mp = db.query(MealPlan).filter(MealPlan.id == plan_id, MealPlan.user_id == current_user.id).first()
     if not mp:
         raise HTTPException(status_code=404, detail="Meal plan entry not found")
-    
+
     db.delete(mp)
     db.commit()
     return {"message": "Meal plan entry removed"}
 
 
-@router.get("/shopping-list", response_model=List[ShoppingListItem])
+@router.get("/shopping-list", response_model=list[ShoppingListItem])
 def get_shopping_list(
     start_date: str = Query(..., description="YYYY-MM-DD"),
     end_date: str = Query(..., description="YYYY-MM-DD"),
@@ -82,36 +104,32 @@ def get_shopping_list(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Generate an aggregated shopping list based on planned meals in the date range.
+    Generate an aggregated shopping list from planned meals in the date range (max 90 days).
+    Ingredients are deduplicated and sorted alphabetically.
     """
+    _parse_and_validate_dates(start_date, end_date)
     plans = db.query(MealPlan).filter(
         MealPlan.user_id == current_user.id,
         MealPlan.date >= start_date,
         MealPlan.date <= end_date
     ).all()
 
-    # Dictionary to aggregate: ingredient_name -> {"count": int, "recipes": set()}
-    # We will do exact string matching since parsing natural language quantities perfectly requires NLP,
-    # and this covers the basic V1 usecase nicely.
-    inventory = defaultdict(lambda: {"count": 0, "recipes": set()})
+    inventory: dict[str, dict] = defaultdict(lambda: {"count": 0, "recipes": set()})
 
     for mp in plans:
         if mp.recipe and mp.recipe.ingredients:
-            # ingredients are stored as comma-separated string
-            items = [item.strip().lower() for item in mp.recipe.ingredients.split(',') if item.strip()]
+            items = [item.strip().lower() for item in mp.recipe.ingredients.split(",") if item.strip()]
             for item in items:
                 inventory[item]["count"] += 1
                 inventory[item]["recipes"].add(mp.recipe.title)
 
-    # Convert to response model
-    shopping_list = []
-    for ing, data in inventory.items():
-        shopping_list.append(ShoppingListItem(
+    shopping_list = [
+        ShoppingListItem(
             ingredient=ing,
             count=data["count"],
             recipes_used_in=list(data["recipes"])
-        ))
-        
-    # Sort alphabetically by ingredient name
+        )
+        for ing, data in inventory.items()
+    ]
     shopping_list.sort(key=lambda x: x.ingredient)
     return shopping_list
