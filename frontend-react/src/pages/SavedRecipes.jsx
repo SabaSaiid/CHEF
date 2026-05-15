@@ -78,8 +78,8 @@ export default function SavedRecipes() {
 
         {recipes.length > 0 && (
           <div className="recipe-grid">
-            {recipes.map(r => (
-              <div key={r.id} className="recipe-card">
+            {recipes.map((r, idx) => (
+              <div key={r.id} className="recipe-card" style={{animationDelay: `${idx * 0.06}s`}}>
                 {r.image_url && <img className="recipe-image" src={r.image_url} alt={r.title} />}
                 <div className="recipe-info">
                   <div className="recipe-title">{r.title}</div>
