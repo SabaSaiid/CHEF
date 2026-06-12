@@ -99,3 +99,30 @@ class MealPlan(Base):
 
     def __repr__(self) -> str:
         return f"<MealPlan id={self.id} date={self.date} slot={self.meal_slot}>"
+
+
+class NutritionLog(Base):
+    """A user's daily food intake log entry for nutrition tracking."""
+    __tablename__ = "nutrition_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    food_item: Mapped[str] = mapped_column(String(255), nullable=False)
+    calories: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    protein_g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    carbs_g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    fat_g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    fiber_g: Mapped[float] = mapped_column(Float, nullable=True, default=0)
+    quantity: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    unit: Mapped[str] = mapped_column(String(50), nullable=False, default="serving")
+    meal_slot: Mapped[str] = mapped_column(String(20), nullable=False, default="Snack")  # Breakfast, Lunch, Dinner, Snack
+    date: Mapped[str] = mapped_column(String(10), nullable=False, index=True)  # YYYY-MM-DD
+    logged_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    # Relationship
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<NutritionLog id={self.id} food={self.food_item!r} date={self.date}>"

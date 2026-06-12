@@ -101,8 +101,11 @@ export default function SavedRecipes() {
                       ))}
                     </div>
                   </div>
-                  <div className="recipe-actions" style={{ marginTop: '15px' }}>
+                  <div className="recipe-actions" style={{ marginTop: '15px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <button className="btn-secondary" onClick={() => setSelectedRecipe({...r, ingredients: r.ingredients ? r.ingredients.split(', ') : []})}>View Details</button>
+                    <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=text`, '_blank')} title="Export as Text">📄 Text</button>
+                    <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=pdf`, '_blank')} title="Export as PDF">📕 PDF</button>
+                    <button className="btn-secondary" onClick={() => { const w = window.open('', '_blank'); w.document.write(`<pre style="font-family:monospace;white-space:pre-wrap;max-width:800px;margin:40px auto;font-size:14px">${r.title}\n\n${r.ingredients || ''}\n\n${r.instructions || ''}</pre>`); w.document.title = r.title; w.print(); }} title="Print Recipe">🖨️ Print</button>
                     <button className="btn-danger" onClick={() => handleDelete(r.id)}>🗑️ Remove</button>
                   </div>
                 </div>

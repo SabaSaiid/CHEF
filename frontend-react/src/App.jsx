@@ -11,6 +11,7 @@ import Detection from './pages/Detection';
 import TDEEProfile from './pages/TDEEProfile';
 import SavedRecipes from './pages/SavedRecipes';
 import MealPlanner from './pages/MealPlanner';
+import NutritionTracker from './pages/NutritionTracker';
 import './index.css';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/tdee" element={<TDEEProfile />} />
               <Route path="/saved" element={<SavedRecipes />} />
               <Route path="/planner" element={<MealPlanner />} />
+              <Route path="/tracker" element={<NutritionTracker />} />
             </Routes>
           </main>
         </BrowserRouter>

@@ -28,6 +28,7 @@ export default function Navbar() {
           <NavLink to="/nutrition" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Nutrition</NavLink>
           <NavLink to="/tdee" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Profile</NavLink>
           <NavLink to="/planner" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Planner</NavLink>
+          <NavLink to="/tracker" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Tracker</NavLink>
           <NavLink to="/saved" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Saved</NavLink>
         </div>
 

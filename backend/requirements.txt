@@ -26,3 +26,6 @@ Pillow
 
 # Environment
 python-dotenv>=1.0.1
+
+# PDF export (for recipe export feature)
+reportlab>=4.0

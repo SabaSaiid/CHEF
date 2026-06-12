@@ -28,7 +28,7 @@ from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from app.config import settings
 from app.database import Base, engine
 
-from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan
+from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker
 
 
 # ── Lifespan: create SQLite tables on startup ──────────────────
@@ -59,6 +59,7 @@ app = FastAPI(
         {"name": "nutrition",   "description": "Nutrition lookup — 350+ built-in foods"},
         {"name": "detection",   "description": "YOLOv8 computer vision food detection from images"},
         {"name": "mealplan",    "description": "Weekly meal planner and shopping list generator"},
+        {"name": "nutrition-tracker", "description": "Daily food intake logger and nutrition summaries"},
         {"name": "health",      "description": "API health check"},
     ],
     # Disable default docs — we serve custom branded ones below
@@ -85,6 +86,8 @@ app.include_router(recipes.router)
 app.include_router(nutrition.router)
 app.include_router(detection.router)
 app.include_router(mealplan.router)
+app.include_router(export.router)
+app.include_router(nutrition_tracker.router)
 
 
 # ── Custom branded Swagger UI ──────────────────────────────────

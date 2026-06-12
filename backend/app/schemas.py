@@ -327,3 +327,69 @@ class ShoppingListItem(BaseModel):
     ingredient: str
     count: int
     recipes_used_in: list[str] = []
+
+
+# ── Nutrition Tracker ───────────────────────────────────────────
+
+class NutritionLogCreate(BaseModel):
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "food_item": "chicken breast",
+                "calories": 165,
+                "protein_g": 31,
+                "carbs_g": 0,
+                "fat_g": 3.6,
+                "fiber_g": 0,
+                "quantity": 1.5,
+                "unit": "serving",
+                "meal_slot": "Lunch",
+                "date": "2026-06-12"
+            }
+        }
+    )
+    food_item: str = Field(..., min_length=1, max_length=255, description="Name of the food item")
+    calories: float = Field(0, ge=0, description="Calories (kcal)")
+    protein_g: float = Field(0, ge=0, description="Protein (g)")
+    carbs_g: float = Field(0, ge=0, description="Carbohydrates (g)")
+    fat_g: float = Field(0, ge=0, description="Fat (g)")
+    fiber_g: Optional[float] = Field(0, ge=0, description="Fiber (g)")
+    quantity: float = Field(1.0, gt=0, description="Quantity multiplier")
+    unit: str = Field("serving", max_length=50, description="Unit of measurement")
+    meal_slot: str = Field(
+        "Snack",
+        pattern="^(Breakfast|Lunch|Dinner|Snack)$",
+        description="Meal slot: Breakfast | Lunch | Dinner | Snack",
+    )
+    date: Optional[str] = Field(
+        None,
+        pattern=r"^\d{4}-\d{2}-\d{2}$",
+        description="Date in YYYY-MM-DD format. Defaults to today.",
+    )
+
+
+class NutritionLogResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    food_item: str
+    calories: float
+    protein_g: float
+    carbs_g: float
+    fat_g: float
+    fiber_g: Optional[float] = 0
+    quantity: float
+    unit: str
+    meal_slot: str
+    date: str
+
+
+class DailyNutritionSummary(BaseModel):
+    date: str
+    total_calories: float
+    total_protein_g: float
+    total_carbs_g: float
+    total_fat_g: float
+    total_fiber_g: float = 0
+    items_logged: int
