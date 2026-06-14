@@ -11,6 +11,7 @@ email-validator>=2.1.0
 # Database (SQLite / PostgreSQL)
 sqlalchemy>=2.0.36
 pg8000>=1.31.1
+alembic>=1.13
 
 # File uploads (for food detection endpoint)
 python-multipart>=0.0.18

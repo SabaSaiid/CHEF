@@ -31,10 +31,42 @@ from app.database import Base, engine
 from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker
 
 
-# ── Lifespan: create SQLite tables on startup ──────────────────
+# ── Lifespan: run database migrations on startup ───────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    """
+    Startup hook — ensures database schema is up to date.
+
+    Strategy:
+      1. Try Alembic `upgrade head` (proper migration path for PostgreSQL)
+      2. Fall back to `create_all()` if Alembic isn't installed yet
+         (keeps local SQLite dev working out of the box)
+    """
+    import logging
+    logger = logging.getLogger("chef.startup")
+
+    try:
+        from alembic.config import Config as AlembicConfig
+        from alembic import command as alembic_command
+        from pathlib import Path
+
+        alembic_ini = Path(__file__).resolve().parent.parent / "alembic.ini"
+        if alembic_ini.exists():
+            alembic_cfg = AlembicConfig(str(alembic_ini))
+            alembic_command.upgrade(alembic_cfg, "head")
+            logger.info("✅ Database migrations applied via Alembic")
+        else:
+            Base.metadata.create_all(bind=engine)
+            logger.info("✅ Database tables created via create_all() (no alembic.ini found)")
+    except ImportError:
+        # Alembic not installed — use the simple path
+        Base.metadata.create_all(bind=engine)
+        logger.info("✅ Database tables created via create_all() (alembic not installed)")
+    except Exception as e:
+        # If Alembic fails (e.g. first run on existing DB), fall back gracefully
+        logger.warning("⚠️  Alembic migration failed (%s), falling back to create_all()", e)
+        Base.metadata.create_all(bind=engine)
+
     yield
 
 
