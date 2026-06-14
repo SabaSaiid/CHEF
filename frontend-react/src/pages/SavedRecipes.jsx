@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import RecipeModal from '../components/RecipeModal';
@@ -83,7 +84,7 @@ export default function SavedRecipes() {
                 {r.image_url && <img className="recipe-image" src={r.image_url} alt={r.title} />}
                 <div className="recipe-info">
                   <div className="recipe-title">{r.title}</div>
-                  {r.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: r.summary}}></div>}
+                  {r.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(r.summary)}}></div>}
                   <div className="recipe-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                       {r.calories && <span className="recipe-meta-item" style={{marginRight: '10px'}}>🔥 <span className="value">{r.calories} kcal</span></span>}
@@ -105,7 +106,7 @@ export default function SavedRecipes() {
                     <button className="btn-secondary" onClick={() => setSelectedRecipe({...r, ingredients: r.ingredients ? r.ingredients.split(', ') : []})}>View Details</button>
                     <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=text`, '_blank')} title="Export as Text">📄 Text</button>
                     <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=pdf`, '_blank')} title="Export as PDF">📕 PDF</button>
-                    <button className="btn-secondary" onClick={() => { const w = window.open('', '_blank'); w.document.write(`<pre style="font-family:monospace;white-space:pre-wrap;max-width:800px;margin:40px auto;font-size:14px">${r.title}\n\n${r.ingredients || ''}\n\n${r.instructions || ''}</pre>`); w.document.title = r.title; w.print(); }} title="Print Recipe">🖨️ Print</button>
+                    <button className="btn-secondary" onClick={() => { const w = window.open('', '_blank'); w.document.write(`<pre style="font-family:monospace;white-space:pre-wrap;max-width:800px;margin:40px auto;font-size:14px">${DOMPurify.sanitize(r.title)}\n\n${DOMPurify.sanitize(r.ingredients || '')}\n\n${DOMPurify.sanitize(r.instructions || '')}</pre>`); w.document.title = DOMPurify.sanitize(r.title); w.print(); }} title="Print Recipe">🖨️ Print</button>
                     <button className="btn-danger" onClick={() => handleDelete(r.id)}>🗑️ Remove</button>
                   </div>
                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
+import DOMPurify from 'dompurify';
 
 function InstructionSteps({ instructions }) {
   if (!instructions) {
@@ -58,7 +59,7 @@ export default function RecipeModal({ recipe, onClose }) {
       <div className="modal-content">
         <button className="modal-close" onClick={onClose}>×</button>
         <h2 className="modal-title">{recipe.title}</h2>
-        {recipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: recipe.summary}}></p>}
+        {recipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(recipe.summary)}}></p>}
         
         {recipe.ingredients && recipe.ingredients.length > 0 && (
           <div className="modal-section" style={{marginTop: '15px'}}>

@@ -1,0 +1,81 @@
+# ─────────────────────────────────────────────────────────────
+#  CHEF — Docker Compose (Development)
+#
+#  Usage:
+#    docker compose up          → Start everything (backend + frontend + PostgreSQL)
+#    docker compose up -d       → Same, but in background
+#    docker compose down        → Stop everything
+#    docker compose down -v     → Stop + delete database volume (fresh start)
+#
+#  Services:
+#    db       → PostgreSQL 16 database (port 5432)
+#    backend  → FastAPI + Alembic (port 8001)
+#    frontend → Vite React dev server (port 5173)
+# ─────────────────────────────────────────────────────────────
+
+services:
+  # ── PostgreSQL Database ────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: chef-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chef_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chef_dev_pass_change_me}
+      POSTGRES_DB: chef_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - chef_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chef_user -d chef_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Backend ────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-dev
+    container_name: chef-backend
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_BACKEND: postgresql
+      DATABASE_URL: postgresql+pg8000://chef_user:${POSTGRES_PASSWORD:-chef_dev_pass_change_me}@db:5432/chef_db
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-chef-dev-only-secret-change-in-production}
+      DEBUG: "true"
+    volumes:
+      # Mount source code for hot-reload during development
+      - ./backend/app:/app/backend/app
+      - ./backend/alembic:/app/backend/alembic
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+
+  # ── React Frontend (Vite Dev Server) ───────────────────────
+  frontend:
+    image: node:20-slim
+    container_name: chef-frontend
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8001
+    volumes:
+      - ./frontend-react:/app
+      - chef_node_modules:/app/node_modules
+    command: ["sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
+    depends_on:
+      - backend
+
+volumes:
+  chef_pgdata:
+    driver: local
+  chef_node_modules:
+    driver: local

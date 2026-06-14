@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import api from '../services/api';
 import RecipeModal from '../components/RecipeModal';
 
@@ -172,7 +173,7 @@ export default function Recipes() {
                   {recipe.image_url && <img className="recipe-image" src={recipe.image_url} alt={recipe.title} loading="lazy" />}
                   <div className="recipe-info">
                     <div className="recipe-title">{recipe.title}</div>
-                    {recipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: recipe.summary}}></div>}
+                    {recipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(recipe.summary)}}></div>}
                     {recipe.diets?.length > 0 && (
                       <div className="diet-tags">
                         {recipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}

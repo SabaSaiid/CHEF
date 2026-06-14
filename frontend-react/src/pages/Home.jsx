@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import RecipeModal from '../components/RecipeModal';
@@ -142,7 +143,7 @@ export default function Home() {
                 {dailyRecipe.image_url && <img className="recipe-image" style={{ maxHeight: '250px', objectFit: 'cover' }} src={dailyRecipe.image_url} alt={dailyRecipe.title} />}
                 <div className="recipe-info" style={{ padding: '20px' }}>
                   <div className="recipe-title" style={{ fontSize: '1.5rem' }}>{dailyRecipe.title}</div>
-                  {dailyRecipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{ __html: dailyRecipe.summary }} style={{ marginBottom: '15px' }}></div>}
+                  {dailyRecipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(dailyRecipe.summary) }} style={{ marginBottom: '15px' }}></div>}
                   {dailyRecipe.diets?.length > 0 && (
                     <div className="diet-tags" style={{ marginBottom: '15px' }}>
                       {dailyRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}

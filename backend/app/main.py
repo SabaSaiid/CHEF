@@ -110,6 +110,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Rate limiting (OWASP A07 — brute-force protection) ─────────
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from app.routers.auth_router import limiter
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 # ── Register routers ───────────────────────────────────────────
 app.include_router(auth_router.router)
 app.include_router(tdee.router)

@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False  # Defaults to off — set DEBUG=true in .env for development
 
     # CORS
-    CORS_ORIGINS: str = "*"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:5174,http://localhost:8001"
 
     @property
     def cors_origins_list(self) -> list[str]:

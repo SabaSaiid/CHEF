@@ -1,10 +1,13 @@
 name: CI
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
+  # ── Frontend Build ──────────────────────────────────────────
   build-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +25,7 @@ jobs:
         working-directory: ./frontend-react
         run: npm run build
 
+  # ── Backend Checks ──────────────────────────────────────────
   test-backend:
     runs-on: ubuntu-latest
     steps:
@@ -29,12 +33,34 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
           cache: 'pip'
       - name: Install dependencies
         working-directory: ./backend
         run: pip install -r requirements.txt
+      - name: Verify imports
+        working-directory: ./backend
+        run: |
+          python -c "
+          from app.database import Base, engine
+          from app.models import User, SavedRecipe, MealPlan, NutritionLog
+          from app.main import app
+          routes = [r.path for r in app.routes]
+          tables = list(Base.metadata.tables.keys())
+          print(f'✅ {len(routes)} routes, {len(tables)} tables: {tables}')
+          "
       # Add your pytest commands here when you write backend tests
       # - name: Run tests
       #   working-directory: ./backend
       #   run: pytest
+
+  # ── Docker Build ────────────────────────────────────────────
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: [build-frontend, test-backend]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend-prod image
+        run: docker build --target backend-prod -t chef-backend:ci .
+      - name: Verify image
+        run: docker run --rm chef-backend:ci python -c "from app.main import app; print('✅ Docker image OK')"

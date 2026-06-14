@@ -1,0 +1,40 @@
+# ─────────────────────────────────────────────────────────────
+#  CHEF — Docker Compose (Production Overrides)
+#
+#  Usage:
+#    docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+#  What this changes vs dev:
+#    - Backend: no hot-reload, production Uvicorn settings
+#    - Frontend: served as static files via nginx (no Vite dev server)
+#    - No source code volumes mounted (runs from built image)
+#    - Stricter security (non-root user, no debug)
+# ─────────────────────────────────────────────────────────────
+
+services:
+  backend:
+    build:
+      target: backend-prod
+    environment:
+      DEBUG: "false"
+      # IMPORTANT: Override these in your deployment platform's secrets
+      # DATABASE_URL: postgresql+pg8000://user:pass@db:5432/chef_db
+      # JWT_SECRET_KEY: <generate-a-real-secret>
+    volumes: []  # Don't mount source code in production
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "2"]
+
+  frontend:
+    image: nginx:alpine
+    container_name: chef-frontend-prod
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-prod
+    command: ["nginx", "-g", "daemon off;"]
+
+  db:
+    environment:
+      # Override with strong credentials in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chef_dev_pass_change_me}

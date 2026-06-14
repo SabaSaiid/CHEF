@@ -43,3 +43,7 @@ git
 *.md
 !backend/app/*.md
 !frontend-react/*.md
+
+# Docker files (no need to copy these into the container)
+docker-compose*.yml
+nginx.conf

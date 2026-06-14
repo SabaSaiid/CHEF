@@ -3,7 +3,7 @@ Pydantic schemas — all request/response models in one file.
 """
 
 from typing import Optional
-from pydantic import BaseModel, Field, EmailStr, ConfigDict
+from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 
 
 # ── Authentication ──────────────────────────────────────────────
@@ -18,9 +18,22 @@ class UserSignupRequest(BaseModel):
         json_schema_extra={"example": "user@example.com"}
     )
     password: str = Field(
-        ..., min_length=6, max_length=128, description="Password (min 6 characters)",
-        json_schema_extra={"example": "securepassword123"}
+        ..., min_length=8, max_length=128,
+        description="Password (min 8 chars, must include uppercase, lowercase, and digit)",
+        json_schema_extra={"example": "SecurePass1"}
     )
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        """Enforce password complexity — OWASP minimum requirements."""
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(c.islower() for c in v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one digit")
+        return v
 
 
 class UserLoginRequest(BaseModel):
@@ -282,10 +295,21 @@ class NutritionData(BaseModel):
 
 # ── Detection ───────────────────────────────────────────────────
 
+class BoundingBox(BaseModel):
+    """Bounding box coordinates (normalized 0–1 relative to image dimensions)."""
+    x1: float = Field(..., description="Left edge (0–1)")
+    y1: float = Field(..., description="Top edge (0–1)")
+    x2: float = Field(..., description="Right edge (0–1)")
+    y2: float = Field(..., description="Bottom edge (0–1)")
+
+
 class DetectedFood(BaseModel):
     label: str
-    confidence: float = Field(..., ge=0.0, le=1.0, description="YOLOv8 confidence score (0–1)")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Model confidence score (0–1)")
     ingredient: str
+    bbox: Optional[BoundingBox] = None
+    estimated_portion_g: Optional[float] = Field(None, description="Estimated portion weight in grams")
+    estimated_calories: Optional[float] = Field(None, description="Estimated calories based on portion size")
 
 
 class DetectionResult(BaseModel):
@@ -293,6 +317,9 @@ class DetectionResult(BaseModel):
     ingredients: list[str] = []
     message: str = "Detection complete"
     method: str = "rule_based_demo"
+    model_version: str = "basic"
+    total_estimated_calories: Optional[float] = Field(None, description="Sum of all estimated calories")
+
 
 
 # ── Meal Planner ────────────────────────────────────────────────
