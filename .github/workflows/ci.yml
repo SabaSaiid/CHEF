@@ -45,7 +45,7 @@ jobs:
           from app.database import Base, engine
           from app.models import User, SavedRecipe, MealPlan, NutritionLog
           from app.main import app
-          routes = [r.path for r in app.routes]
+          routes = list(app.openapi().get('paths', {}).keys())
           tables = list(Base.metadata.tables.keys())
           print(f'✅ {len(routes)} routes, {len(tables)} tables: {tables}')
           "
