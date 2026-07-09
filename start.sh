@@ -25,7 +25,7 @@ if [ -d ".venv" ]; then
 else
     echo "  ⚠️  Warning: backend/.venv not found. Proceeding with global python..."
 fi
-python3 -m uvicorn app.main:app --reload --port 8001 &
+python3 -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8001 &
 BACKEND_PID=$!
 
 # Wait a moment for the backend to boot

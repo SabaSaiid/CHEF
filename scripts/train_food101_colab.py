@@ -14,9 +14,21 @@ HOW TO USE THIS IN GOOGLE COLAB:
 """
 
 # ══════════════════════════════════════════════════════════════
-#  CELL 1: Install Dependencies
+#  CELL 1: Install Dependencies & Mount Drive
 # ══════════════════════════════════════════════════════════════
-# !pip install -q ultralytics datasets Pillow tqdm
+
+!pip install ultralytics roboflow datasets Pillow tqdm
+
+from google.colab import drive
+import os
+
+print("Mounting Google Drive to save progress...")
+drive.mount('/content/drive')
+
+# Create a folder in Google Drive to save the model
+DRIVE_SAVE_PATH = "/content/drive/MyDrive/CHEF_Model_Training"
+os.makedirs(DRIVE_SAVE_PATH, exist_ok=True)
+print(f"Checkpoints will be safely saved to: {DRIVE_SAVE_PATH}")
 
 # ══════════════════════════════════════════════════════════════
 #  CELL 2: Download & Prepare Food-101 Dataset
@@ -69,9 +81,16 @@ print(f"   Val:   {len(ds['validation'])} images")
 # ══════════════════════════════════════════════════════════════
 
 from ultralytics import YOLO
+from pathlib import Path
 
-# Load pre-trained YOLOv8 nano classification model
-model = YOLO("yolov8n-cls.pt")
+checkpoint_path = Path(f"{DRIVE_SAVE_PATH}/food101_yolov8/weights/last.pt")
+
+if checkpoint_path.exists():
+    print(f"🔄 Found checkpoint in Google Drive! Resuming from {checkpoint_path}")
+    model = YOLO(str(checkpoint_path))
+else:
+    print("🚀 Starting fresh training... This will take ~2-3 hours on a T4 GPU.")
+    model = YOLO("yolov8n-cls.pt")
 
 print("🚀 Starting training... This will take ~2-3 hours on a T4 GPU.")
 print("   You can close this tab — Colab will keep running.")
@@ -88,10 +107,11 @@ results = model.train(
     lr0=0.001,
     weight_decay=0.01,
     augment=True,
-    project="/content/food101_training",
+    project=DRIVE_SAVE_PATH,      # Save directly to Google Drive!
     name="food101_yolov8",
     exist_ok=True,
     verbose=True,
+    resume=True,                  # Automatically resume if interrupted and restarted
 )
 
 print("\n🎉 Training complete!")
@@ -111,8 +131,9 @@ import shutil
 from google.colab import files
 
 # Copy best weights to a clean filename
-best_weights = Path("/content/food101_training/food101_yolov8/weights/best.pt")
-output_path = Path("/content/food101_yolov8.pt")
+# Copy best weights to a clean filename in your Drive
+best_weights = Path(f"{DRIVE_SAVE_PATH}/food101_yolov8/weights/best.pt")
+output_path = Path(f"{DRIVE_SAVE_PATH}/food101_yolov8.pt")
 
 if best_weights.exists():
     shutil.copy(best_weights, output_path)
@@ -123,7 +144,7 @@ if best_weights.exists():
 else:
     print("❌ Best weights not found. Check training logs above.")
     # Try last weights as fallback
-    last_weights = Path("/content/food101_training/food101_yolov8/weights/last.pt")
+    last_weights = Path(f"{DRIVE_SAVE_PATH}/food101_yolov8/weights/last.pt")
     if last_weights.exists():
         shutil.copy(last_weights, output_path)
         print(f"⚠️  Using last checkpoint instead: {output_path}")

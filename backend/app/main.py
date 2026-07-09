@@ -28,7 +28,7 @@ from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from app.config import settings
 from app.database import Base, engine
 
-from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker
+from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo
 
 
 # ── Lifespan: run database migrations on startup ───────────────
@@ -128,6 +128,7 @@ app.include_router(detection.router)
 app.include_router(mealplan.router)
 app.include_router(export.router)
 app.include_router(nutrition_tracker.router)
+app.include_router(demo.router)
 
 
 # ── Custom branded Swagger UI ──────────────────────────────────

@@ -20,12 +20,24 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const data = await api.post('/auth/login', credentials);
     saveAuthData(data);
+    const profile = await api.get('/auth/me');
+    setUserProfile(profile);
     return data;
   };
 
   const signup = async (userData) => {
     const data = await api.post('/auth/signup', userData);
     saveAuthData(data);
+    const profile = await api.get('/auth/me');
+    setUserProfile(profile);
+    return data;
+  };
+
+  const seedDemo = async () => {
+    const data = await api.post('/demo/seed');
+    saveAuthData(data);
+    const profile = await api.get('/auth/me');
+    setUserProfile(profile);
     return data;
   };
 
@@ -49,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, username, userId, userProfile, login, signup, logout }}>
+    <AuthContext.Provider value={{ token, username, userId, userProfile, login, signup, seedDemo, logout }}>
       {children}
     </AuthContext.Provider>
   );

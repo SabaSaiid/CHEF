@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 import foodFacts from '../data/foodFacts';
 
@@ -16,8 +17,36 @@ function getGreeting() {
 const FACT_COUNT = 3;
 const AUTO_ROTATE_MS = 6000;
 
+/* ── Animated Counter Component ─────────────────────────────── */
+function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    const startTime = performance.now();
+    const animate = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic for a satisfying deceleration
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) {
+        ref.current = requestAnimationFrame(animate);
+      }
+    };
+    ref.current = requestAnimationFrame(animate);
+    return () => { if (ref.current) cancelAnimationFrame(ref.current); };
+  }, [end, duration]);
+
+  return <>{count.toLocaleString()}{suffix}</>;
+}
+
 export default function Home() {
   const { username } = useContext(AuthContext);
+  const toast = useToast();
   const navigate = useNavigate();
   const [dailyRecipe, setDailyRecipe] = useState(null);
   const [quickRecipes, setQuickRecipes] = useState([]);
@@ -96,9 +125,9 @@ export default function Home() {
         ready_in_minutes: dailyRecipe.ready_in_minutes || null,
         servings: dailyRecipe.servings || null,
       });
-      alert(`"${dailyRecipe.title}" saved!`);
+      toast.success(`"${dailyRecipe.title}" saved to bookmarks ✓`);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -123,6 +152,23 @@ export default function Home() {
         </div>
         <h1>{username ? `${greeting}, Chef ${username}!` : 'Welcome to the Kitchen'}</h1>
         <p className="subtitle">Your AI-powered culinary companion</p>
+      </div>
+
+      {/* ── Stats Ribbon ── */}
+      <div className="stats-ribbon">
+        {[
+          { end: 7100, suffix: '+', label: 'Recipes' },
+          { end: 350, suffix: '+', label: 'Foods in DB' },
+          { end: 101, suffix: '', label: 'ML Classes' },
+          { end: 22, suffix: '', label: 'API Endpoints' },
+        ].map(stat => (
+          <div key={stat.label} className="stat-pill">
+            <span className="stat-number">
+              <AnimatedCounter end={stat.end} suffix={stat.suffix} />
+            </span>
+            <span className="stat-label">{stat.label}</span>
+          </div>
+        ))}
       </div>
 
       {/* ── Recipe of the Day + Fun Fact ── */}

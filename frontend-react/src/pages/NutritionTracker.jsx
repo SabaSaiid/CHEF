@@ -1,11 +1,77 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const MEAL_SLOTS = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
+/* ── Macro Donut Chart (Pure SVG) ───────────────────────────── */
+function MacroDonut({ protein, carbs, fat }) {
+  const proteinCal = protein * 4;
+  const carbsCal = carbs * 4;
+  const fatCal = fat * 9;
+  const total = proteinCal + carbsCal + fatCal;
+
+  if (total === 0) return null;
+
+  const proteinPct = Math.round((proteinCal / total) * 100);
+  const carbsPct = Math.round((carbsCal / total) * 100);
+  const fatPct = 100 - proteinPct - carbsPct;
+
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
+
+  const segments = [
+    { label: 'Protein', value: protein, pct: proteinPct, color: '#81b29a', cal: proteinCal },
+    { label: 'Carbs', value: carbs, pct: carbsPct, color: '#f2cc8f', cal: carbsCal },
+    { label: 'Fat', value: fat, pct: fatPct, color: '#e07a5f', cal: fatCal },
+  ];
+
+  let offset = 0;
+
+  return (
+    <div className="macro-donut-card">
+      <div className="macro-donut-svg-wrap">
+        <svg className="macro-donut-svg" viewBox="0 0 120 120">
+          {segments.map((seg) => {
+            const dash = (seg.pct / 100) * circumference;
+            const gap = circumference - dash;
+            const currentOffset = offset;
+            offset += dash;
+            return (
+              <circle
+                key={seg.label}
+                className="macro-donut-segment"
+                cx="60" cy="60" r={radius}
+                strokeDasharray={`${dash} ${gap}`}
+                strokeDashoffset={-currentOffset}
+                stroke={seg.color}
+              />
+            );
+          })}
+        </svg>
+        <div className="macro-donut-center">
+          <div className="macro-donut-center-value">{Math.round(total)}</div>
+          <div className="macro-donut-center-label">kcal</div>
+        </div>
+      </div>
+      <div className="macro-donut-legend">
+        {segments.map(seg => (
+          <div key={seg.label} className="macro-legend-item">
+            <span className="macro-legend-dot" style={{ background: seg.color }} />
+            <span>{seg.label}</span>
+            <span className="macro-legend-value">{Math.round(seg.value)}g</span>
+            <span className="macro-legend-pct">{seg.pct}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function NutritionTracker() {
   const { token, userProfile } = useContext(AuthContext);
+  const toast = useToast();
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -95,6 +161,7 @@ export default function NutritionTracker() {
     if (!form.food_item.trim()) return;
     try {
       await api.post('/nutrition/log', { ...form, date: selectedDate });
+      toast.success(`${form.food_item} logged ✓`);
       setForm({
         food_item: '',
         calories: 0,
@@ -110,17 +177,18 @@ export default function NutritionTracker() {
       fetchLogs();
       fetchSummary();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
   const handleDelete = async (id) => {
     try {
       await api.delete(`/nutrition/log/${id}`);
+      toast.success('Entry removed');
       fetchLogs();
       fetchSummary();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -225,6 +293,14 @@ export default function NutritionTracker() {
           ))}
         </div>
       </div>
+
+      {/* ── Macro Distribution Donut ── */}
+      {(totals.protein_g > 0 || totals.carbs_g > 0 || totals.fat_g > 0) && (
+        <div className="card glass" style={{ marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '16px', marginBottom: '16px' }}>Macro Distribution</h3>
+          <MacroDonut protein={totals.protein_g} carbs={totals.carbs_g} fat={totals.fat_g} />
+        </div>
+      )}
 
       {/* ── Add Food Button & Form ── */}
       {!showAddForm ? (

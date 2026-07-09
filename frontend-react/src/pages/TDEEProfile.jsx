@@ -32,22 +32,39 @@ export default function TDEEProfile() {
         body_fat_percent: userProfile.body_fat_percent || ''
       });
       if (userProfile.target_calories) {
+        const cal = userProfile.target_calories;
+        const prot = userProfile.target_protein || 0;
+        const carb = userProfile.target_carbs || 0;
+        const fat = userProfile.target_fat || 0;
+        const wt = userProfile.weight_kg || 70;
+        
+        // Calculate derived fields on the fly if missing from DB schema
+        const protPct = cal > 0 ? Math.round((prot * 4 / cal) * 100) : 0;
+        const carbPct = cal > 0 ? Math.round((carb * 4 / cal) * 100) : 0;
+        const fatPct = cal > 0 ? Math.round((fat * 9 / cal) * 100) : 0;
+        
+        const bmiVal = userProfile.bmi || (wt > 0 ? Math.round((wt / ((userProfile.height_cm / 100) ** 2)) * 10) / 10 : 0);
+        let bmiCat = 'Normal';
+        if (bmiVal < 18.5) bmiCat = 'Underweight';
+        else if (bmiVal >= 30) bmiCat = 'Obese';
+        else if (bmiVal >= 25) bmiCat = 'Overweight';
+
         setResults({
-          target_calories: userProfile.target_calories,
-          target_protein: userProfile.target_protein,
-          target_carbs: userProfile.target_carbs,
-          target_fat: userProfile.target_fat,
+          target_calories: cal,
+          target_protein: prot,
+          target_carbs: carb,
+          target_fat: fat,
           bmr: userProfile.bmr,
           tdee_maintenance: userProfile.tdee_maintenance,
-          bmi: userProfile.bmi,
-          bmi_category: userProfile.bmi_category,
-          formula_used: userProfile.formula_used,
+          bmi: bmiVal,
+          bmi_category: userProfile.bmi_category || bmiCat,
+          formula_used: userProfile.formula_used || 'Mifflin-St Jeor',
           target_fiber_g: userProfile.target_fiber_g,
           target_water_ml: userProfile.target_water_ml,
-          protein_pct: userProfile.protein_pct,
-          carbs_pct: userProfile.carbs_pct,
-          fat_pct: userProfile.fat_pct,
-          protein_per_kg: userProfile.protein_per_kg
+          protein_pct: userProfile.protein_pct || protPct,
+          carbs_pct: userProfile.carbs_pct || carbPct,
+          fat_pct: userProfile.fat_pct || fatPct,
+          protein_per_kg: userProfile.protein_per_kg || (wt > 0 ? (prot / wt).toFixed(1) : '2.0')
         });
       }
     }
@@ -96,6 +113,7 @@ export default function TDEEProfile() {
       </div>
 
       <div className="card glass">
+        <h3 style={{ fontSize: '15px', marginBottom: '18px', color: 'var(--text-secondary)' }}>Profile Details</h3>
         <form onSubmit={handleSubmit}>
           {/* Row 1: Age + Gender */}
           <div className="input-row">

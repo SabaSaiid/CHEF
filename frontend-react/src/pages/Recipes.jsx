@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import api from '../services/api';
+import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 
 export default function Recipes() {
   const location = useLocation();
+  const toast = useToast();
   const [ingredients, setIngredients] = useState(location.state?.ingredients || '');
   const [diet, setDiet] = useState('');
   const [region, setRegion] = useState('');
@@ -82,9 +84,9 @@ export default function Recipes() {
         ready_in_minutes: recipe.ready_in_minutes || null,
         servings: recipe.servings || null,
       });
-      alert(`"${recipe.title}" saved!`);
+      toast.success(`"${recipe.title}" saved to bookmarks ✓`);
     } catch (err) {
-      alert(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong");
     }
   };
 

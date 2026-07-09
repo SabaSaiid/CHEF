@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 
 export default function SavedRecipes() {
   const { token } = useContext(AuthContext);
+  const toast = useToast();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,18 +37,20 @@ export default function SavedRecipes() {
   const handleRate = async (id, rating) => {
     try {
       await api.put(`/recipes/saved/${id}/rate`, { rating });
+      toast.success(`Rated ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`);
       fetchRecipes();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
   const handleDelete = async (id) => {
     try {
       await api.delete(`/recipes/saved/${id}`);
+      toast.success('Recipe removed');
       fetchRecipes();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 

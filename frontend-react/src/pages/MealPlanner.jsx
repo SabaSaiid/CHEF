@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 
 export default function MealPlanner() {
   const { token } = useContext(AuthContext);
+  const toast = useToast();
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
     const day = today.getDay();
@@ -93,11 +95,12 @@ export default function MealPlanner() {
         date: selectedSlot.date,
         meal_slot: selectedSlot.slot
       });
+      toast.success(`Added to ${selectedSlot.slot} ✓`);
       setIsRecipePickerOpen(false);
       setSelectedSlot(null);
       fetchMealPlans();
     } catch (err) {
-      alert("Failed to assign meal: " + err.message);
+      toast.error("Failed to assign meal: " + err.message);
     }
   };
 
@@ -105,9 +108,10 @@ export default function MealPlanner() {
     e.stopPropagation();
     try {
       await api.delete(`/mealplan/${planId}`);
+      toast.success('Meal removed');
       fetchMealPlans();
     } catch (err) {
-      alert("Failed to remove meal: " + err.message);
+      toast.error("Failed to remove meal: " + err.message);
     }
   };
 
@@ -119,7 +123,7 @@ export default function MealPlanner() {
       setShoppingList(data);
     } catch (err) {
       console.error(err);
-      alert("Failed to generate shopping list");
+      toast.error("Failed to generate shopping list");
     } finally {
       setLoadingShoppingList(false);
     }

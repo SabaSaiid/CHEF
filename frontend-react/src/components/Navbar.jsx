@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import AuthModal from './AuthModal';
 
-export default function Navbar() {
+export default function Navbar({ onToggleSidebar }) {
   const { token, username, logout } = useContext(AuthContext);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const toast = useToast();
+  const navigate = useNavigate();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
   return (
@@ -33,24 +35,22 @@ export default function Navbar() {
         </div>
 
         <div className="nav-auth">
-          {/* Theme Toggle */}
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-
           {!token ? (
             <button className="btn-auth" onClick={() => setAuthModalOpen(true)}>🔐 Login</button>
           ) : (
             <div className="user-greeting">
               <span>👋 {username}</span>
-              <button className="btn-auth btn-logout" onClick={logout}>Logout</button>
             </div>
           )}
+
+          <button 
+            className="navbar-sidebar-toggle theme-toggle"
+            onClick={onToggleSidebar}
+            title="Toggle Chef Panel"
+            style={{ margin: 0 }}
+          >
+            ⚙️
+          </button>
         </div>
       </nav>
 

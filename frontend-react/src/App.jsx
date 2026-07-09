@@ -1,8 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Ingredients from './pages/Ingredients';
 import Recipes from './pages/Recipes';
@@ -14,26 +16,54 @@ import MealPlanner from './pages/MealPlanner';
 import NutritionTracker from './pages/NutritionTracker';
 import './index.css';
 
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <div key={location.pathname} className="page-transition-enter">
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/ingredients" element={<Ingredients />} />
+        <Route path="/recipes" element={<Recipes />} />
+        <Route path="/nutrition" element={<Nutrition />} />
+        <Route path="/detection" element={<Detection />} />
+        <Route path="/tdee" element={<TDEEProfile />} />
+        <Route path="/saved" element={<SavedRecipes />} />
+        <Route path="/planner" element={<MealPlanner />} />
+        <Route path="/tracker" element={<NutritionTracker />} />
+      </Routes>
+    </div>
+  );
+}
+
 function App() {
+  const [isSidebarOpen, setSidebarOpen] = React.useState(window.innerWidth > 1100);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1100) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <Navbar />
-          <main id="app-main">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/ingredients" element={<Ingredients />} />
-              <Route path="/recipes" element={<Recipes />} />
-              <Route path="/nutrition" element={<Nutrition />} />
-              <Route path="/detection" element={<Detection />} />
-              <Route path="/tdee" element={<TDEEProfile />} />
-              <Route path="/saved" element={<SavedRecipes />} />
-              <Route path="/planner" element={<MealPlanner />} />
-              <Route path="/tracker" element={<NutritionTracker />} />
-            </Routes>
-          </main>
-        </BrowserRouter>
+        <ToastProvider>
+          <BrowserRouter>
+            <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
+            <div className={`app-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+              <main id="app-main">
+                <AnimatedRoutes />
+              </main>
+              <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
+            </div>
+          </BrowserRouter>
+        </ToastProvider>
       </AuthProvider>
     </ThemeProvider>
   );

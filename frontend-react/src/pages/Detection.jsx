@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 
 export default function Detection() {
@@ -10,7 +11,10 @@ export default function Detection() {
   const [error, setError] = useState(null);
   const [logStatus, setLogStatus] = useState({});  // track per-item log status
   const fileInputRef = useRef(null);
+  const imgRef = useRef(null);
+  const canvasRef = useRef(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -67,11 +71,106 @@ export default function Detection() {
     }
   };
 
+  const handleSelectDemoImage = async (url, filename) => {
+    setLoading(true);
+    setResults(null);
+    setError(null);
+    setLogStatus({});
+    setPreview(url);
+
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const mockFile = new File([blob], filename, { type: 'image/jpeg' });
+      setFile(mockFile);
+    } catch (err) {
+      const mockFile = new File(["dummy"], filename, { type: 'image/jpeg' });
+      setFile(mockFile);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  /** Draw bounding boxes on the canvas overlay */
+  const drawBoundingBoxes = useCallback(() => {
+    if (!results || !imgRef.current || !canvasRef.current) return;
+    const img = imgRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    // Match canvas to displayed image dimensions
+    const rect = img.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+
+    // Position canvas over the image
+    const containerRect = img.parentElement.getBoundingClientRect();
+    canvas.style.left = `${rect.left - containerRect.left}px`;
+    canvas.style.top = `${rect.top - containerRect.top}px`;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const colors = ['#e07a5f', '#81b29a', '#f2cc8f', '#3d405b', '#f4722b', '#38b000'];
+
+    results.detected_foods?.forEach((item, idx) => {
+      if (!item.bbox) return;
+
+      const color = colors[idx % colors.length];
+      const x1 = item.bbox.x1 * canvas.width;
+      const y1 = item.bbox.y1 * canvas.height;
+      const x2 = item.bbox.x2 * canvas.width;
+      const y2 = item.bbox.y2 * canvas.height;
+      const w = x2 - x1;
+      const h = y2 - y1;
+
+      // Draw rectangle
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([]);
+      ctx.strokeRect(x1, y1, w, h);
+
+      // Semi-transparent fill
+      ctx.fillStyle = color + '18';
+      ctx.fillRect(x1, y1, w, h);
+
+      // Label background
+      const label = `${item.label} ${Math.round(item.confidence * 100)}%`;
+      ctx.font = '600 13px Inter, sans-serif';
+      const textWidth = ctx.measureText(label).width;
+      const labelH = 22;
+      const labelY = y1 > labelH + 4 ? y1 - labelH - 4 : y1;
+
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x1, labelY, textWidth + 14, labelH, 4);
+      ctx.fill();
+
+      // Label text
+      ctx.fillStyle = '#fff';
+      ctx.fillText(label, x1 + 7, labelY + 15);
+    });
+  }, [results]);
+
+  useEffect(() => {
+    if (results && imgRef.current) {
+      // Wait for image to render
+      const timer = setTimeout(drawBoundingBoxes, 100);
+      window.addEventListener('resize', drawBoundingBoxes);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', drawBoundingBoxes);
+      };
+    }
+  }, [results, drawBoundingBoxes]);
+
   /** Log a detected food item to the Nutrition Tracker */
   const handleLogToTracker = async (item, idx) => {
     const token = localStorage.getItem('chef_token');
     if (!token) {
-      setError('Please log in to use the Nutrition Tracker.');
+      toast.error('Please log in to use the Nutrition Tracker.');
       return;
     }
 
@@ -93,8 +192,10 @@ export default function Detection() {
       });
 
       setLogStatus(prev => ({ ...prev, [idx]: 'done' }));
+      toast.success(`${item.label} logged to Tracker ✓`);
     } catch (err) {
       setLogStatus(prev => ({ ...prev, [idx]: 'error' }));
+      toast.error('Failed to log item');
     }
   };
 
@@ -107,6 +208,9 @@ export default function Detection() {
       }
     });
   };
+
+  // Check if results have bounding boxes (COCO detection) or just classification
+  const hasBboxes = results?.detected_foods?.some(item => item.bbox);
 
   return (
     <section className="page active">
@@ -128,14 +232,49 @@ export default function Detection() {
           className="upload-area" 
           onDragOver={e => e.preventDefault()}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current.click()}
+          onClick={() => { if (!loading) fileInputRef.current.click(); }}
           style={file ? { border: '2px solid var(--primary-color)' } : {}}
         >
           {preview ? (
-            <img src={preview} alt="Preview" style={{
-              maxWidth: '100%', maxHeight: '280px', borderRadius: '12px',
-              objectFit: 'contain', margin: '0 auto', display: 'block'
-            }} />
+            <div className="detection-image-container" style={{ position: 'relative' }}>
+              <img
+                ref={imgRef}
+                src={preview}
+                alt="Preview"
+                onLoad={drawBoundingBoxes}
+                style={{
+                  maxWidth: '100%', maxHeight: '320px', borderRadius: '12px',
+                  objectFit: 'contain', margin: '0 auto', display: 'block'
+                }}
+              />
+              {loading && (
+                <div className="ai-scanning-overlay">
+                  <div className="ai-scanner-line" />
+                  <div className="ai-scanning-text">AI ANALYZING...</div>
+                </div>
+              )}
+              {/* Bounding box canvas overlay */}
+              {results && hasBboxes && (
+                <canvas ref={canvasRef} className="detection-canvas-overlay" />
+              )}
+              {/* Classification overlay (no bboxes) */}
+              {results && !hasBboxes && results.detected_foods?.length > 0 && (
+                <div className="detection-classification-overlay">
+                  {results.detected_foods.slice(0, 3).map((item, idx) => (
+                    <div key={idx} className="detection-class-badge">
+                      <span>{item.label}</span>
+                      <div className="detection-conf-bar">
+                        <div
+                          className="detection-conf-bar-fill"
+                          style={{ width: `${Math.round(item.confidence * 100)}%` }}
+                        />
+                      </div>
+                      <span className="class-conf">{Math.round(item.confidence * 100)}%</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <span className="upload-icon">📸</span>
@@ -153,6 +292,53 @@ export default function Detection() {
         >
           {loading ? '🔍 Analyzing...' : '🔍 Analyze Image'}
         </button>
+
+        {/* Demo shortcuts when no image uploaded */}
+        {!preview && (
+          <div className="demo-shortcuts-section" style={{ marginTop: '20px', borderTop: '1px dashed var(--border-glass)', paddingTop: '15px' }}>
+            <h4 style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '12px', textAlign: 'center', fontWeight: '600' }}>
+              Don't have an image? Click one of these demo foods to scan:
+            </h4>
+            <div className="demo-shortcuts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              {[
+                { label: '🍕 Pizza Slice', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80', filename: 'demo_pizza.jpg' },
+                { label: '🥗 Fresh Salad', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&auto=format&fit=crop&q=80', filename: 'demo_salad.jpg' },
+                { label: '🍌 Banana', image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&auto=format&fit=crop&q=80', filename: 'demo_banana.jpg' }
+              ].map((item, idx) => (
+                <div 
+                  key={idx} 
+                  className="demo-shortcut-card card glass"
+                  onClick={() => handleSelectDemoImage(item.image, item.filename)}
+                  style={{
+                    padding: '8px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                    border: '1px solid var(--border-glass)',
+                    background: 'rgba(255,255,255,0.4)',
+                    borderRadius: '10px',
+                    textAlign: 'center',
+                    fontWeight: '600',
+                    color: 'var(--text-primary)',
+                    fontSize: '11px',
+                    transition: 'transform 0.2s, box-shadow 0.2s'
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <img 
+                    src={item.image} 
+                    alt={item.label} 
+                    style={{ width: '100%', height: '55px', objectFit: 'cover', borderRadius: '6px' }} 
+                  />
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="results-area">
@@ -250,27 +436,28 @@ export default function Detection() {
                           {logStatus[idx] === 'logging' ? '⏳ Logging...' :
                            logStatus[idx] === 'done' ? '✅ Logged' :
                            logStatus[idx] === 'error' ? '❌ Retry' :
-                           '📋 Log'}
+                           '📋 Log to Tracker'}
                         </button>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p style={{color: 'var(--text-muted)', textAlign: 'center', padding: '20px'}}>No food items detected. Try a clearer image with visible food.</p>
+                <div style={{textAlign: 'center', padding: '24px', color: 'var(--text-muted)'}}>
+                  No food items detected. Try a clearer photo.
+                </div>
               )}
             </div>
 
-            {/* Action buttons */}
-            {results.ingredients && results.ingredients.length > 0 && (
-              <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
-                <button className="btn-secondary" onClick={() => navigate('/recipes', { state: { ingredients: results.ingredients.map(i => i.replace(/_/g, ' ')).join(', ') } })}>
-                  🍽️ Search Recipes with these ingredients
-                </button>
-                <button className="btn-secondary" onClick={() => navigate('/tracker')}>
-                  📊 View Nutrition Tracker
-                </button>
-              </div>
+            {/* Search recipes with detected ingredients */}
+            {results.detected_ingredients && results.detected_ingredients.length > 0 && (
+              <button
+                className="btn-secondary btn-full"
+                onClick={() => navigate('/recipes', { state: { ingredients: results.detected_ingredients.join(', ') } })}
+                style={{marginTop: '10px'}}
+              >
+                🍽️ Find Recipes with {results.detected_ingredients.length} Detected Ingredient{results.detected_ingredients.length > 1 ? 's' : ''}
+              </button>
             )}
           </div>
         )}
