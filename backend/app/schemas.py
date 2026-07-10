@@ -3,6 +3,7 @@ Pydantic schemas — all request/response models in one file.
 """
 
 from typing import Optional
+from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 
 
@@ -420,3 +421,108 @@ class DailyNutritionSummary(BaseModel):
     total_fat_g: float
     total_fiber_g: float = 0
     items_logged: int
+
+
+# ── User Profiles (Multi-Profile System) ────────────────────────
+
+class UserProfileCreate(BaseModel):
+    """Request body to create a new named profile."""
+    profile_name: str = Field("My Profile", min_length=1, max_length=100, description="A human-readable label for this profile")
+    display_name: Optional[str] = Field(None, max_length=100, description="Real name to display across the app")
+    diet_type: Optional[str] = Field(
+        None,
+        description="vegetarian | vegan | non-vegetarian | pescatarian | keto | gluten-free"
+    )
+    allergens: Optional[str] = Field(None, description="Comma-separated list of allergens")
+    age: Optional[int] = Field(None, gt=0, lt=120)
+    gender: Optional[str] = Field(None, pattern="^(male|female)$")
+    weight_kg: Optional[float] = Field(None, gt=0)
+    height_cm: Optional[float] = Field(None, gt=0)
+    activity_level: Optional[str] = None
+    goal: Optional[str] = None
+    goal_intensity: Optional[str] = Field("moderate", description="mild | moderate | aggressive")
+    body_fat_percent: Optional[float] = Field(None, gt=1, lt=70)
+
+
+class UserProfileUpdate(UserProfileCreate):
+    """Request body to update an existing profile (same fields, all optional)."""
+    pass
+
+
+class UserProfileResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    profile_name: str
+    display_name: Optional[str] = None
+    diet_type: Optional[str] = None
+    allergens: Optional[str] = None
+    is_active: bool
+
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    weight_kg: Optional[float] = None
+    height_cm: Optional[float] = None
+    activity_level: Optional[str] = None
+    goal: Optional[str] = None
+    goal_intensity: Optional[str] = None
+    body_fat_percent: Optional[float] = None
+
+    target_calories: Optional[int] = None
+    target_protein: Optional[int] = None
+    target_carbs: Optional[int] = None
+    target_fat: Optional[int] = None
+    bmr: Optional[int] = None
+    tdee_maintenance: Optional[int] = None
+    bmi: Optional[float] = None
+    target_fiber_g: Optional[int] = None
+    target_water_ml: Optional[int] = None
+
+
+# ── Water Logs (Hydration Tracking) ─────────────────────────────
+
+class WaterLogCreate(BaseModel):
+    """Request body to log water consumption."""
+    amount_ml: int = Field(..., gt=0, description="Amount of water logged in ml")
+    date: Optional[str] = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$", description="YYYY-MM-DD")
+
+class WaterLogResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    amount_ml: int
+    date: str
+    logged_at: datetime
+
+
+# ── Pantry Inventory ──────────────────────────────────────────
+
+class PantryItemCreate(BaseModel):
+    ingredient_name: str = Field(..., min_length=1, max_length=255, description="Name of the ingredient")
+    quantity: float = Field(1.0, gt=0, description="Amount of the item in stock")
+    unit: str = Field("serving", min_length=1, max_length=50, description="Unit of measurement")
+    category: Optional[str] = Field("Other", description="Ingredient category (Vegetables, Proteins, Dairy, etc.)")
+    days_fresh: Optional[int] = Field(7, description="Number of days the item stays fresh")
+
+class PantryItemUpdate(BaseModel):
+    quantity: Optional[float] = Field(None, gt=0)
+    unit: Optional[str] = Field(None, min_length=1, max_length=50)
+    category: Optional[str] = None
+    days_fresh: Optional[int] = None
+
+class PantryItemResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    ingredient_name: str
+    quantity: float
+    unit: str
+    category: str
+    days_fresh: int
+    updated_at: datetime
+
+
+

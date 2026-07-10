@@ -1,136 +1,286 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+
+const DIET_OPTIONS = [
+  { value: 'non-vegetarian', label: 'Non-Veg',     emoji: '🍗' },
+  { value: 'vegetarian',     label: 'Vegetarian',  emoji: '🥦' },
+  { value: 'vegan',          label: 'Vegan',        emoji: '🌱' },
+  { value: 'pescatarian',    label: 'Pescatarian', emoji: '🐟' },
+  { value: 'keto',           label: 'Keto',         emoji: '🥑' },
+  { value: 'gluten-free',    label: 'Gluten-Free', emoji: '🌾' },
+];
+
+const EMPTY_FORM = {
+  profile_name: 'My Profile',
+  display_name: '',
+  diet_type: 'non-vegetarian',
+  allergens: '',
+  age: '',
+  gender: 'male',
+  weight_kg: '',
+  height_cm: '',
+  activity_level: 'sedentary',
+  goal: 'maintain',
+  goal_intensity: 'moderate',
+  body_fat_percent: '',
+};
 
 export default function TDEEProfile() {
-  const { token, userProfile } = useContext(AuthContext);
-  const [formData, setFormData] = useState({
-    age: '',
-    gender: 'male',
-    weight_kg: '',
-    height_cm: '',
-    activity_level: 'sedentary',
-    goal: 'maintain',
-    goal_intensity: 'moderate',
-    body_fat_percent: ''
-  });
-  const [loading, setLoading] = useState(false);
+  const { token, refreshActiveProfile } = useContext(AuthContext);
+  const toast = useToast();
+
+  const [profiles, setProfiles] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [formData, setFormData] = useState({ ...EMPTY_FORM });
   const [results, setResults] = useState(null);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [showNewForm, setShowNewForm] = useState(false);
 
-  useEffect(() => {
-    // If the user profile is already loaded with values, pre-populate
-    if (userProfile && userProfile.age) {
-      setFormData({
-        age: userProfile.age || '',
-        gender: userProfile.gender || 'male',
-        weight_kg: userProfile.weight_kg || '',
-        height_cm: userProfile.height_cm || '',
-        activity_level: userProfile.activity_level || 'sedentary',
-        goal: userProfile.goal || 'maintain',
-        goal_intensity: userProfile.goal_intensity || 'moderate',
-        body_fat_percent: userProfile.body_fat_percent || ''
-      });
-      if (userProfile.target_calories) {
-        const cal = userProfile.target_calories;
-        const prot = userProfile.target_protein || 0;
-        const carb = userProfile.target_carbs || 0;
-        const fat = userProfile.target_fat || 0;
-        const wt = userProfile.weight_kg || 70;
-        
-        // Calculate derived fields on the fly if missing from DB schema
-        const protPct = cal > 0 ? Math.round((prot * 4 / cal) * 100) : 0;
-        const carbPct = cal > 0 ? Math.round((carb * 4 / cal) * 100) : 0;
-        const fatPct = cal > 0 ? Math.round((fat * 9 / cal) * 100) : 0;
-        
-        const bmiVal = userProfile.bmi || (wt > 0 ? Math.round((wt / ((userProfile.height_cm / 100) ** 2)) * 10) / 10 : 0);
-        let bmiCat = 'Normal';
-        if (bmiVal < 18.5) bmiCat = 'Underweight';
-        else if (bmiVal >= 30) bmiCat = 'Obese';
-        else if (bmiVal >= 25) bmiCat = 'Overweight';
-
-        setResults({
-          target_calories: cal,
-          target_protein: prot,
-          target_carbs: carb,
-          target_fat: fat,
-          bmr: userProfile.bmr,
-          tdee_maintenance: userProfile.tdee_maintenance,
-          bmi: bmiVal,
-          bmi_category: userProfile.bmi_category || bmiCat,
-          formula_used: userProfile.formula_used || 'Mifflin-St Jeor',
-          target_fiber_g: userProfile.target_fiber_g,
-          target_water_ml: userProfile.target_water_ml,
-          protein_pct: userProfile.protein_pct || protPct,
-          carbs_pct: userProfile.carbs_pct || carbPct,
-          fat_pct: userProfile.fat_pct || fatPct,
-          protein_per_kg: userProfile.protein_per_kg || (wt > 0 ? (prot / wt).toFixed(1) : '2.0')
-        });
+  const loadProfiles = async () => {
+    if (!token) return;
+    try {
+      const data = await api.get('/profiles/');
+      setProfiles(data);
+      const active = data.find(p => p.is_active);
+      if (active) {
+        setSelectedId(active.id);
+        populateForm(active);
+        setShowNewForm(false);
+      } else if (data.length === 0) {
+        setShowNewForm(true);
       }
-    }
-  }, [userProfile]);
+    } catch { /* non-fatal */ }
+  };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => { loadProfiles(); }, [token]);
+
+  const computeResults = (p) => {
+    const cal = p.target_calories;
+    const prot = p.target_protein || 0;
+    const carb = p.target_carbs || 0;
+    const fat = p.target_fat || 0;
+    const wt = p.weight_kg || 70;
+    const protPct = cal > 0 ? Math.round((prot * 4 / cal) * 100) : 0;
+    const carbPct = cal > 0 ? Math.round((carb * 4 / cal) * 100) : 0;
+    const fatPct  = cal > 0 ? Math.round((fat  * 9 / cal) * 100) : 0;
+    const bmiVal  = p.bmi || (wt > 0 ? Math.round((wt / ((p.height_cm / 100) ** 2)) * 10) / 10 : 0);
+    let bmiCat = 'Normal';
+    if (bmiVal < 18.5) bmiCat = 'Underweight';
+    else if (bmiVal >= 30) bmiCat = 'Obese';
+    else if (bmiVal >= 25) bmiCat = 'Overweight';
+    return {
+      target_calories: cal, target_protein: prot, target_carbs: carb, target_fat: fat,
+      bmr: p.bmr, tdee_maintenance: p.tdee_maintenance,
+      bmi: bmiVal, bmi_category: p.bmi_category || bmiCat,
+      formula_used: p.formula_used || 'Mifflin-St Jeor',
+      target_fiber_g: p.target_fiber_g, target_water_ml: p.target_water_ml,
+      protein_pct: p.protein_pct || protPct, carbs_pct: p.carbs_pct || carbPct, fat_pct: p.fat_pct || fatPct,
+      protein_per_kg: p.protein_per_kg || (wt > 0 ? (prot / wt).toFixed(1) : '2.0'),
+    };
+  };
+
+  const populateForm = (profile) => {
+    setFormData({
+      profile_name:     profile.profile_name || 'My Profile',
+      display_name:     profile.display_name || '',
+      diet_type:        profile.diet_type || 'non-vegetarian',
+      allergens:        profile.allergens || '',
+      age:              profile.age || '',
+      gender:           profile.gender || 'male',
+      weight_kg:        profile.weight_kg || '',
+      height_cm:        profile.height_cm || '',
+      activity_level:   profile.activity_level || 'sedentary',
+      goal:             profile.goal || 'maintain',
+      goal_intensity:   profile.goal_intensity || 'moderate',
+      body_fat_percent: profile.body_fat_percent || '',
+    });
+    setResults(profile.target_calories ? computeResults(profile) : null);
+  };
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleDiet   = (val) => setFormData({ ...formData, diet_type: val });
+  const handleAllergenToggle = (allergen) => {
+    const list = formData.allergens ? formData.allergens.split(',').map(s => s.trim()).filter(Boolean) : [];
+    let newList;
+    if (list.includes(allergen)) {
+      newList = list.filter(item => item !== allergen);
+    } else {
+      newList = [...list, allergen];
+    }
+    setFormData({ ...formData, allergens: newList.join(',') });
+  };
+
+  const handleSelectProfile = async (profile) => {
+    setSelectedId(profile.id);
+    setShowNewForm(false);
+    populateForm(profile);
+    if (!profile.is_active) {
+      try {
+        await api.post(`/profiles/${profile.id}/activate`);
+        await refreshActiveProfile();
+        loadProfiles();
+      } catch { /* non-fatal */ }
+    }
+  };
+
+  const handleDeleteProfile = async (e, profileId) => {
+    e.stopPropagation();
+    if (!window.confirm('Delete this profile?')) return;
+    try {
+      await api.delete(`/profiles/${profileId}`);
+      toast.success('Profile deleted.');
+      setSelectedId(null);
+      setResults(null);
+      setFormData({ ...EMPTY_FORM });
+      loadProfiles();
+      refreshActiveProfile();
+    } catch (err) { toast.error(err.message); }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
     try {
       const payload = {
         ...formData,
-        age: parseInt(formData.age, 10),
-        weight_kg: parseFloat(formData.weight_kg),
-        height_cm: parseFloat(formData.height_cm),
-        body_fat_percent: formData.body_fat_percent ? parseFloat(formData.body_fat_percent) : null
+        age:              parseInt(formData.age, 10)        || null,
+        weight_kg:        parseFloat(formData.weight_kg)    || null,
+        height_cm:        parseFloat(formData.height_cm)    || null,
+        body_fat_percent: formData.body_fat_percent ? parseFloat(formData.body_fat_percent) : null,
       };
-      const endpoint = token ? '/tdee/save' : '/tdee/calculate';
-      const data = await api.post(endpoint, payload);
-      setResults(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+      if (token) {
+        let saved;
+        if (selectedId && !showNewForm) {
+          saved = await api.put(`/profiles/${selectedId}`, payload);
+          toast.success('Profile updated.');
+        } else {
+          saved = await api.post('/profiles/', payload);
+          setSelectedId(saved.id);
+          setShowNewForm(false);
+          toast.success('Profile created.');
+        }
+        if (saved.target_calories) setResults(computeResults(saved));
+        loadProfiles();
+        refreshActiveProfile();
+      } else {
+        const data = await api.post('/tdee/calculate', payload);
+        setResults(data);
+      }
+    } catch (err) { toast.error(err.message); }
+    finally { setLoading(false); }
   };
 
-  const selectStyle = {
-    width: '100%',
-    borderRadius: '10px',
-    background: 'rgba(255,255,255,0.6)'
-  };
+  const selectStyle = { width: '100%', borderRadius: '10px', background: 'rgba(255,255,255,0.6)' };
 
   return (
     <section className="page active">
       <div className="page-header">
-        <h1>TDEE Calculator</h1>
-        <p className="subtitle">Clinically accurate caloric and macro targets powered by Mifflin-St Jeor & Katch-McArdle formulas.</p>
-        <div className="source-badge">
-          {token ? "Calculations will be saved automatically to your profile." : "Guest Mode: Calculations won't be saved. Log in to personalize."}
-        </div>
+        <h1>Calorie and Nutrition Profile</h1>
+        <p className="subtitle">Calculate your personalized daily calorie and macro targets.</p>
       </div>
 
+      {/* ── Profile Switcher ── */}
+      {token && (
+        <div className="profile-switcher-row">
+          {profiles.map(p => (
+            <div
+              key={p.id}
+              className={`profile-switcher-card ${p.is_active ? 'active' : ''}`}
+              onClick={() => handleSelectProfile(p)}
+            >
+              <div className="ps-card-name">{p.profile_name}</div>
+              <div className="ps-card-meta">
+                {p.diet_type && DIET_OPTIONS.find(d => d.value === p.diet_type)?.emoji}
+                {p.target_calories ? ` · ${p.target_calories} kcal` : ' · Not set'}
+              </div>
+              {p.is_active && <div className="ps-active-badge">Active</div>}
+              <button className="ps-delete-btn" onClick={(e) => handleDeleteProfile(e, p.id)} title="Delete">✕</button>
+            </div>
+          ))}
+          <button
+            className={`profile-switcher-card new-card ${showNewForm && !selectedId ? 'active' : ''}`}
+            onClick={() => { setShowNewForm(true); setSelectedId(null); setFormData({ ...EMPTY_FORM }); setResults(null); }}
+          >
+            <div className="ps-card-name">+ New Profile</div>
+          </button>
+        </div>
+      )}
+
+      {/* ── Profile Form ── */}
       <div className="card glass">
-        <h3 style={{ fontSize: '15px', marginBottom: '18px', color: 'var(--text-secondary)' }}>Profile Details</h3>
         <form onSubmit={handleSubmit}>
-          {/* Row 1: Age + Gender */}
+
+          {token && (
+            <div className="input-row">
+              <div className="form-group" style={{flex: 1}}>
+                <label>Profile Label</label>
+                <input type="text" name="profile_name" value={formData.profile_name} onChange={handleChange}
+                  className="form-input" placeholder="e.g. Cut Phase, Bulk 2024" maxLength={100} required />
+              </div>
+              <div className="form-group" style={{flex: 1}}>
+                <label>Display Name <span style={{opacity:0.5,fontSize:'0.8em'}}>(shown across the app)</span></label>
+                <input type="text" name="display_name" value={formData.display_name} onChange={handleChange}
+                  className="form-input" placeholder="Your first name" maxLength={100} />
+              </div>
+            </div>
+          )}
+
+          <div className="form-group">
+            <label>Dietary Preference</label>
+            <div className="diet-pill-selector">
+              {DIET_OPTIONS.map(opt => (
+                <button key={opt.value} type="button"
+                  className={`diet-pill ${formData.diet_type === opt.value ? 'active' : ''}`}
+                  onClick={() => handleDiet(opt.value)}
+                >
+                  {opt.emoji} {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group" style={{ marginTop: '15px' }}>
+            <label>Allergies & Dietary Restrictions</label>
+            <div className="diet-pill-selector" style={{ marginTop: '5px' }}>
+              {['Peanut', 'Gluten', 'Dairy', 'Soy', 'Egg', 'Shellfish', 'Fish', 'Tree Nuts'].map(allg => {
+                const list = formData.allergens ? formData.allergens.split(',').map(s => s.trim()) : [];
+                const isActive = list.includes(allg);
+                return (
+                  <button key={allg} type="button"
+                    className={`diet-pill ${isActive ? 'active' : ''}`}
+                    onClick={() => handleAllergenToggle(allg)}
+                    style={{ 
+                      borderColor: isActive ? '#e74c3c' : 'var(--border-glass)', 
+                      color: isActive ? '#e74c3c' : 'inherit',
+                      background: isActive ? 'rgba(231, 76, 60, 0.08)' : 'transparent'
+                    }}
+                  >
+                    ⚠️ {allg}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="profile-form-divider">Physical Details</div>
+
           <div className="input-row">
             <div className="form-group" style={{flex: 1}}>
               <label>Age (years)</label>
               <input type="number" name="age" value={formData.age} onChange={handleChange} min="15" max="100" className="form-input" required />
             </div>
             <div className="form-group" style={{flex: 1}}>
-              <label>Gender</label>
+              <label>Biological Sex</label>
               <select name="gender" value={formData.gender} onChange={handleChange} className="form-input" style={selectStyle} required>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
             </div>
           </div>
-          
-          {/* Row 2: Weight + Height */}
+
           <div className="input-row">
             <div className="form-group" style={{flex: 1}}>
               <label>Weight (kg)</label>
@@ -141,8 +291,7 @@ export default function TDEEProfile() {
               <input type="number" name="height_cm" value={formData.height_cm} onChange={handleChange} min="100" max="250" className="form-input" required />
             </div>
           </div>
-          
-          {/* Row 3: Activity Level + Body Fat % (optional) */}
+
           <div className="input-row">
             <div className="form-group" style={{flex: 2}}>
               <label>Activity Level</label>
@@ -155,18 +304,17 @@ export default function TDEEProfile() {
               </select>
             </div>
             <div className="form-group" style={{flex: 1}}>
-              <label>Body Fat % <span style={{opacity: 0.5, fontSize: '0.8em'}}>(optional)</span></label>
+              <label>Body Fat % <span style={{opacity:0.5,fontSize:'0.8em'}}>(optional)</span></label>
               <input type="number" name="body_fat_percent" value={formData.body_fat_percent} onChange={handleChange} min="3" max="60" step="0.1" className="form-input" placeholder="e.g. 20" />
             </div>
           </div>
 
-          {/* Row 4: Goal + Goal Intensity */}
           <div className="input-row">
             <div className="form-group" style={{flex: 1}}>
               <label>Goal</label>
               <select name="goal" value={formData.goal} onChange={handleChange} className="form-input" style={selectStyle} required>
                 <option value="lose">Lose Weight</option>
-                <option value="maintain">Maintain Weight</option>
+                <option value="maintain">Maintain</option>
                 <option value="gain">Gain Weight</option>
               </select>
             </div>
@@ -179,30 +327,33 @@ export default function TDEEProfile() {
               </select>
             </div>
           </div>
-          
-          {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>}
-          <button type="submit" className={`btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading} style={{marginTop: '15px'}}>
-            Calculate {token ? '& Save' : ''}
+
+          <button type="submit" className={`btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading} style={{marginTop: '18px'}}>
+            {loading ? 'Calculating...' : (token ? 'Calculate & Save' : 'Calculate')}
           </button>
+          {token && (
+            <p style={{fontSize:'12px', color:'var(--text-secondary)', textAlign:'center', marginTop:'8px'}}>
+              Results are saved to this profile automatically.
+            </p>
+          )}
         </form>
       </div>
 
+      {/* ── Results ── */}
       {results && (
         <div className="results-area">
-          {/* ── Diagnostic Summary ── */}
           {results.bmr && (
             <div className="nutrition-card" style={{marginBottom: '16px'}}>
-              <div className="nutrition-header">📊 Diagnostic Breakdown</div>
-              <div className="nutrition-source">Formula: {results.formula_used || 'Mifflin-St Jeor'}</div>
+              <div className="nutrition-header">Diagnostic Breakdown</div>
               <div className="nutrition-grid">
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color: '#e67e22'}}>{results.bmr}</div>
+                  <div className="nutrient-value" style={{color:'#e67e22'}}>{results.bmr}</div>
                   <div className="nutrient-label">BMR</div>
                   <div className="nutrient-unit">kcal/day</div>
                 </div>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color: '#3498db'}}>{results.tdee_maintenance}</div>
-                  <div className="nutrient-label">Maintenance TDEE</div>
+                  <div className="nutrient-value" style={{color:'#3498db'}}>{results.tdee_maintenance}</div>
+                  <div className="nutrient-label">Maintenance</div>
                   <div className="nutrient-unit">kcal/day</div>
                 </div>
                 <div className="nutrient-box">
@@ -214,9 +365,8 @@ export default function TDEEProfile() {
             </div>
           )}
 
-          {/* ── Daily Targets (primary) ── */}
           <div className="nutrition-card">
-            <div className="nutrition-header">🎯 Your Daily Targets</div>
+            <div className="nutrition-header">Daily Targets</div>
             <div className="nutrition-source">Adjusted for your goal — protein at {results.protein_per_kg ? `${results.protein_per_kg} g/kg` : '—'} body weight</div>
             <div className="nutrition-grid">
               <div className="nutrient-box">
@@ -242,26 +392,42 @@ export default function TDEEProfile() {
             </div>
           </div>
 
-          {/* ── Fiber & Water ── */}
           {results.target_fiber_g && (
             <div className="nutrition-card" style={{marginTop: '16px'}}>
-              <div className="nutrition-header">💧 Additional Targets</div>
+              <div className="nutrition-header">Additional Targets</div>
               <div className="nutrition-grid">
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color: '#8e44ad'}}>{results.target_fiber_g}</div>
+                  <div className="nutrient-value" style={{color:'#8e44ad'}}>{results.target_fiber_g}</div>
                   <div className="nutrient-label">Fiber</div>
                   <div className="nutrient-unit">g/day</div>
                 </div>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color: '#2980b9'}}>{results.target_water_ml}</div>
+                  <div className="nutrient-value" style={{color:'#2980b9'}}>{results.target_water_ml}</div>
                   <div className="nutrient-label">Water</div>
                   <div className="nutrient-unit">ml/day ({(results.target_water_ml / 1000).toFixed(1)} L)</div>
                 </div>
               </div>
             </div>
           )}
+
+          {/* Collapsible methodology */}
+          <div className="methodology-accordion" style={{marginTop:'16px'}}>
+            <button className="accordion-toggle" type="button" onClick={() => setAccordionOpen(o => !o)}>
+              <span>How is this calculated?</span>
+              <span className="accordion-arrow">{accordionOpen ? '▾' : '▸'}</span>
+            </button>
+            {accordionOpen && (
+              <div className="accordion-body">
+                <p><strong>Formula used:</strong> {results.formula_used || 'Mifflin-St Jeor'}</p>
+                <p>When body fat % is provided, the more precise <strong>Katch-McArdle</strong> formula is applied. Otherwise, <strong>Mifflin-St Jeor (1990)</strong> is used — the most clinically validated formula for the general population.</p>
+                <p>TDEE is derived by multiplying BMR by an activity factor. Goal adjustments use a percentage-based deficit/surplus for accuracy across body sizes. Protein targets follow <strong>ISSN position stand</strong> guidelines (1.2–2.2 g/kg).</p>
+                <p style={{opacity:0.6, fontSize:'0.85em', marginTop:'8px'}}>References: Mifflin et al. (1990) · Katch-McArdle (1996) · ISSN protein stand · WHO BMI classification</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </section>
   );
 }
+

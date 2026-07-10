@@ -71,29 +71,43 @@ def seed_demo_data(db: Session = Depends(get_db)):
         db.add(user)
         db.flush()
 
-    # ── 2. Set TDEE profile ─────────────────────────────────────
-    user.age = 21
-    user.gender = "male"
-    user.weight_kg = 70.0
-    user.height_cm = 178.0  # 5 feet 10 inches
-    user.activity_level = "moderately_active"
-    user.goal = "maintain"
-    user.goal_intensity = "moderate"
-    user.body_fat_percent = None
-
+    # ── 2. Create or Update TDEE profile ─────────────────────────────
     # Mifflin-St Jeor: BMR = (10 * 70) + (6.25 * 178) - (5 * 21) + 5 = 1712.5 ≈ 1713
     # TDEE = 1713 * 1.55 = 2655.15 ≈ 2655
     bmr = 1713
     tdee = 2655
-    user.bmr = bmr
-    user.tdee_maintenance = tdee
-    user.target_calories = tdee
-    user.target_protein = 140
-    user.target_carbs = 320
-    user.target_fat = 80
-    user.target_fiber_g = 30
-    user.target_water_ml = 3000
-    user.bmi = round(70.0 / (1.78 ** 2), 1)
+
+    # Look for an existing profile or create a new one
+    from app.models import UserProfile
+    profile = db.query(UserProfile).filter(UserProfile.user_id == user.id, UserProfile.profile_name == "Demo Profile").first()
+    if not profile:
+        profile = UserProfile(user_id=user.id, profile_name="Demo Profile")
+        db.add(profile)
+    
+    profile.display_name = "Saba"
+    profile.diet_type = "non-vegetarian"
+    profile.is_active = True
+    profile.age = 21
+    profile.gender = "male"
+    profile.weight_kg = 70.0
+    profile.height_cm = 178.0  # 5 feet 10 inches
+    profile.activity_level = "moderately_active"
+    profile.goal = "maintain"
+    profile.goal_intensity = "moderate"
+    profile.body_fat_percent = None
+
+    profile.bmr = bmr
+    profile.tdee_maintenance = tdee
+    profile.target_calories = tdee
+    profile.target_protein = 140
+    profile.target_carbs = 320
+    profile.target_fat = 80
+    profile.target_fiber_g = 30
+    profile.target_water_ml = 3000
+    profile.bmi = round(70.0 / (1.78 ** 2), 1)
+
+    # Deactivate any other profiles
+    db.query(UserProfile).filter(UserProfile.user_id == user.id, UserProfile.id != profile.id).update({"is_active": False})
 
     db.flush()
 

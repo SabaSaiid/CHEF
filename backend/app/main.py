@@ -28,7 +28,7 @@ from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from app.config import settings
 from app.database import Base, engine
 
-from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo
+from app.routers import ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo, profiles, pantry
 
 
 # ── Lifespan: run database migrations on startup ───────────────
@@ -66,6 +66,63 @@ async def lifespan(app: FastAPI):
         # If Alembic fails (e.g. first run on existing DB), fall back gracefully
         logger.warning("⚠️  Alembic migration failed (%s), falling back to create_all()", e)
         Base.metadata.create_all(bind=engine)
+
+    # ── Startup column/table migrations for SQLite ───────────────
+    try:
+        import sqlite3
+        import os
+        db_url = settings.DATABASE_URL
+        if db_url.startswith("sqlite:///"):
+            db_path = db_url.replace("sqlite:///", "")
+            # Resolve home directory
+            if db_path.startswith("~/"):
+                db_path = os.path.expanduser(db_path)
+            else:
+                db_path = os.path.abspath(db_path)
+                
+            logger.info(f"🔧 Verifying SQLite database schema at: {db_path}")
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            
+            # Check allergens column in user_profiles
+            cursor.execute("PRAGMA table_info(user_profiles);")
+            cols = [col[1] for col in cursor.fetchall()]
+            if "allergens" not in cols:
+                logger.info("🔧 Adding 'allergens' column to table 'user_profiles'")
+                cursor.execute("ALTER TABLE user_profiles ADD COLUMN allergens VARCHAR(500);")
+                
+            # Create pantry_items table
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS pantry_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                ingredient_name VARCHAR(255) NOT NULL,
+                quantity FLOAT NOT NULL DEFAULT 1.0,
+                unit VARCHAR(50) NOT NULL DEFAULT 'serving',
+                category VARCHAR(100) NOT NULL DEFAULT 'Other',
+                days_fresh INTEGER NOT NULL DEFAULT 7,
+                updated_at DATETIME NOT NULL,
+                FOREIGN KEY(user_id) REFERENCES users(id)
+            );
+            """)
+            cursor.execute("CREATE INDEX IF NOT EXISTS ix_pantry_items_user_id ON pantry_items (user_id);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS ix_pantry_items_ingredient_name ON pantry_items (ingredient_name);")
+            
+            # Check and upgrade existing pantry_items columns if table already existed
+            cursor.execute("PRAGMA table_info(pantry_items);")
+            p_cols = [col[1] for col in cursor.fetchall()]
+            if "category" not in p_cols:
+                logger.info("🔧 Upgrading table 'pantry_items' with 'category' column")
+                cursor.execute("ALTER TABLE pantry_items ADD COLUMN category VARCHAR(100) NOT NULL DEFAULT 'Other';")
+            if "days_fresh" not in p_cols:
+                logger.info("🔧 Upgrading table 'pantry_items' with 'days_fresh' column")
+                cursor.execute("ALTER TABLE pantry_items ADD COLUMN days_fresh INTEGER NOT NULL DEFAULT 7;")
+
+            conn.commit()
+            conn.close()
+            logger.info("✅ Database schema is up to date!")
+    except Exception as emig:
+        logger.error(f"⚠️  Startup migrations failed: {emig}")
 
     yield
 
@@ -129,6 +186,8 @@ app.include_router(mealplan.router)
 app.include_router(export.router)
 app.include_router(nutrition_tracker.router)
 app.include_router(demo.router)
+app.include_router(profiles.router)
+app.include_router(pantry.router)
 
 
 # ── Custom branded Swagger UI ──────────────────────────────────

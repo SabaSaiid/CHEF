@@ -45,7 +45,7 @@ function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
 }
 
 export default function Home() {
-  const { username } = useContext(AuthContext);
+  const { token, username, activeProfile } = useContext(AuthContext);
   const toast = useToast();
   const navigate = useNavigate();
   const [dailyRecipe, setDailyRecipe] = useState(null);
@@ -58,6 +58,11 @@ export default function Home() {
   const [activeFact, setActiveFact] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
+
+  const [todayLog, setTodayLog] = useState([]);
+  const [waterTotal, setWaterTotal] = useState(0);
+  const [todayMeals, setTodayMeals] = useState({ Breakfast: null, Lunch: null, Dinner: null, Snack: null });
+  const [fridgeQuery, setFridgeQuery] = useState('');
 
   const greeting = useMemo(() => getGreeting(), []);
 
@@ -86,6 +91,123 @@ export default function Home() {
     timerRef.current = setInterval(nextFact, AUTO_ROTATE_MS);
     return () => clearInterval(timerRef.current);
   }, [isPaused, nextFact]);
+
+  const targets = useMemo(() => {
+    return {
+      calories: activeProfile?.target_calories || 2000,
+      protein: activeProfile?.target_protein || 150,
+      carbs: activeProfile?.target_carbs || 200,
+      fat: activeProfile?.target_fat || 65,
+      water: activeProfile?.target_water_ml || 2500,
+    };
+  }, [activeProfile]);
+
+  const fetchTodayStats = useCallback(async () => {
+    if (!token) return;
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    // 1. Fetch Nutrition Logs for today
+    try {
+      const logs = await api.get(`/nutrition/log?date=${todayStr}`);
+      setTodayLog(logs);
+    } catch (err) {
+      console.error("Failed to fetch today's nutrition logs:", err);
+    }
+
+    // 2. Fetch Water logs
+    try {
+      const waterData = await api.get(`/nutrition/log/water?date=${todayStr}`);
+      setWaterTotal(waterData.total_ml || 0);
+    } catch (err) {
+      console.error("Failed to fetch water log:", err);
+    }
+
+    // 3. Fetch Today's Meal Plan
+    try {
+      const meals = await api.get(`/mealplan?start_date=${todayStr}&end_date=${todayStr}`);
+      const mealMap = { Breakfast: null, Lunch: null, Dinner: null, Snack: null };
+      meals.forEach(m => {
+        if (m.meal_slot in mealMap) {
+          mealMap[m.meal_slot] = m;
+        }
+      });
+      setTodayMeals(mealMap);
+    } catch (err) {
+      console.error("Failed to fetch today's meals:", err);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchTodayStats();
+  }, [fetchTodayStats, token]);
+
+  useEffect(() => {
+    if (!token) {
+      setWaterTotal(parseInt(localStorage.getItem('chef_guest_water')) || 0);
+    }
+  }, [token]);
+
+  const totals = useMemo(() => {
+    if (!token) {
+      return { calories: 1250, protein: 95, carbs: 140, fat: 42 }; // Mock for guest
+    }
+    let cal = 0, prot = 0, carb = 0, fat = 0;
+    todayLog.forEach(item => {
+      cal += item.calories || 0;
+      prot += item.protein_g || 0;
+      carb += item.carbs_g || 0;
+      fat += item.fat_g || 0;
+    });
+    return {
+      calories: Math.round(cal),
+      protein: Math.round(prot),
+      carbs: Math.round(carb),
+      fat: Math.round(fat),
+    };
+  }, [todayLog, token]);
+
+  const strokeDashoffset = useMemo(() => {
+    const pct = Math.min(totals.calories / targets.calories, 1.0);
+    return 346 - (pct * 346);
+  }, [totals.calories, targets.calories]);
+
+  const handleLogWater = async (amount) => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (token) {
+      try {
+        if (amount < 0) {
+          const waterData = await api.get(`/nutrition/log/water?date=${todayStr}`);
+          if (waterData.logs && waterData.logs.length > 0) {
+            const lastLog = waterData.logs[0];
+            await api.delete(`/nutrition/log/water/${lastLog.id}`);
+            toast.success("Removed water entry");
+            fetchTodayStats();
+          }
+        } else {
+          await api.post('/nutrition/log/water', { amount_ml: amount, date: todayStr });
+          toast.success(`Added ${amount}ml water! 💧`);
+          fetchTodayStats();
+        }
+      } catch (err) {
+        toast.error("Failed to log water: " + err.message);
+      }
+    } else {
+      const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount);
+      localStorage.setItem('chef_guest_water', newTotal);
+      setWaterTotal(newTotal);
+      if (amount > 0) {
+        toast.success(`Logged ${amount}ml water (demo mode) 💧`);
+      } else {
+        toast.success(`Removed water (demo mode) 💧`);
+      }
+    }
+  };
+
+  const handleFridgeSearch = (e) => {
+    e.preventDefault();
+    if (!fridgeQuery.trim()) return;
+    navigate('/recipes', { state: { ingredients: fridgeQuery } });
+  };
 
   useEffect(() => {
     api.get('/recipes/daily')
@@ -140,39 +262,29 @@ export default function Home() {
     { icon: '💾', label: 'Saved Recipes', desc: 'Your bookmarked favorites', path: '/saved' },
   ];
 
+  const slots = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+  const slotEmojis = { Breakfast: '🍳', Lunch: '🍲', Dinner: '🥗', Snack: '🍎' };
+  const slotColors = { Breakfast: '#ff9f43', Lunch: '#10ac84', Dinner: '#ee5253', Snack: '#0abde3' };
+
+  const activeSlot = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 11) return 'Breakfast';
+    if (hour >= 11 && hour < 16) return 'Lunch';
+    if (hour >= 17 && hour < 23) return 'Dinner';
+    return 'Snack';
+  }, []);
+
   return (
     <section className="page active">
-      <div className="kitchen-hero-header">
-        <div className="hero-particles">
-          <span className="particle"></span>
-          <span className="particle"></span>
-          <span className="particle"></span>
-          <span className="particle"></span>
-          <span className="particle"></span>
-        </div>
-        <h1>{username ? `${greeting}, Chef ${username}!` : 'Welcome to the Kitchen'}</h1>
-        <p className="subtitle">Your AI-powered culinary companion</p>
+      <div className="page-header fade-in-up" style={{ '--delay': '0ms' }}>
+        <h1>{username ? `${greeting}, ${username}!` : 'My Kitchen'}</h1>
+        <p className="subtitle">Welcome to your hybrid eating framework dashboard.</p>
       </div>
 
-      {/* ── Stats Ribbon ── */}
-      <div className="stats-ribbon">
-        {[
-          { end: 7100, suffix: '+', label: 'Recipes' },
-          { end: 350, suffix: '+', label: 'Foods in DB' },
-          { end: 101, suffix: '', label: 'ML Classes' },
-          { end: 22, suffix: '', label: 'API Endpoints' },
-        ].map(stat => (
-          <div key={stat.label} className="stat-pill">
-            <span className="stat-number">
-              <AnimatedCounter end={stat.end} suffix={stat.suffix} />
-            </span>
-            <span className="stat-label">{stat.label}</span>
-          </div>
-        ))}
-      </div>
+
 
       {/* ── Recipe of the Day + Fun Fact ── */}
-      <div className="kitchen-layout">
+      <div className="kitchen-layout fade-in-up" style={{ '--delay': '200ms' }}>
         <div className="kitchen-main-col">
           <h2 className="section-title">✨ Recipe of the Day</h2>
           <div className="card glass daily-recipe-card">
@@ -292,16 +404,146 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── Dashboard Cards (Calorie & Water Tracker) ── */}
+      <div className="dashboard-row fade-in-up" style={{ '--delay': '300ms' }}>
+        {/* Calorie & Macro Tracker Card */}
+        <div className="card glass dashboard-widget-card">
+          <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>🔥 Daily Targets</h3>
+          <p className="subtitle" style={{ marginBottom: '15px' }}>
+            {token ? (activeProfile ? `Active Profile: ${activeProfile.profile_name}` : "Set up a profile in settings") : "Preview mode — Sign in to track stats"}
+          </p>
+
+          <div className="calorie-tracker-layout">
+            {/* SVG circular progress ring */}
+            <div className="progress-ring-container">
+              <svg width="140" height="140">
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="55"
+                  stroke="var(--border-glass)"
+                  strokeWidth="10"
+                  fill="transparent"
+                />
+                <circle
+                  className="progress-ring-circle"
+                  cx="70"
+                  cy="70"
+                  r="55"
+                  stroke="var(--primary)"
+                  strokeWidth="10"
+                  fill="transparent"
+                  strokeDasharray="346"
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="progress-ring-text">
+                <span className="progress-ring-val">{totals.calories}</span>
+                <span className="progress-ring-label">of {targets.calories} kcal</span>
+              </div>
+            </div>
+
+            {/* Macros mini bars */}
+            <div className="macro-bars-grid">
+              {[
+                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: '#e74c3c' },
+                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: '#f1c40f' },
+                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: '#2ecc71' }
+              ].map(macro => {
+                const pct = Math.min((macro.val / macro.target) * 100, 100);
+                return (
+                  <div key={macro.label} className="macro-bar-item">
+                    <div className="macro-bar-header">
+                      <span style={{ color: 'var(--text-secondary)' }}>{macro.label}</span>
+                      <span style={{ fontWeight: '700' }}>{macro.val}g / {macro.target}g</span>
+                    </div>
+                    <div className="macro-bar-container">
+                      <div
+                        className="macro-bar-fill"
+                        style={{ width: `${pct}%`, background: macro.color }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Water Tracker Card */}
+        <div className="card glass dashboard-widget-card water-widget">
+          <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>💧 Daily Hydration</h3>
+          <p className="subtitle" style={{ marginBottom: '10px' }}>Target: {targets.water} ml</p>
+
+          <div className="water-display">
+            <div
+              className="water-level"
+              style={{ height: `${Math.min((waterTotal / targets.water) * 100, 100)}%` }}
+            >
+              <div className="water-wave" />
+            </div>
+          </div>
+
+          <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)' }}>
+            {waterTotal} ml
+          </div>
+
+          <div className="water-controls">
+            <button className="water-btn primary-btn" onClick={() => handleLogWater(250)}>+250ml</button>
+            <button className="water-btn" onClick={() => handleLogWater(500)}>+500ml</button>
+            <button className="water-btn" onClick={() => handleLogWater(-250)} disabled={waterTotal <= 0} title="Remove 250ml">-250ml</button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Today's Meal Plan slots ── */}
+      <div className="card glass dashboard-widget-card today-plan-widget fade-in-up" style={{ marginBottom: '2rem', '--delay': '400ms' }}>
+        <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>📆 Today's Meal Plan</h3>
+        <p className="subtitle" style={{ marginBottom: '15px' }}>What you scheduled to eat today</p>
+
+        <div className="today-plan-grid">
+          {slots.map(slot => {
+            const entry = todayMeals[slot];
+            const recipe = entry?.recipe;
+            const isActive = slot === activeSlot;
+            return (
+              <div
+                key={slot}
+                className={`today-plan-slot-card ${isActive ? 'slot-active-glow' : ''}`}
+                onClick={() => recipe && setSelectedRecipe(recipe) && setModalOpen(true)}
+                style={{ cursor: recipe ? 'pointer' : 'default' }}
+              >
+                <span
+                  className="slot-label-badge"
+                  style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30` }}
+                >
+                  {slotEmojis[slot]} {slot}
+                </span>
+                {recipe ? (
+                  <>
+                    <p className="slot-recipe-title">{recipe.title}</p>
+                    {recipe.calories && <span className="slot-recipe-cals">🔥 {recipe.calories} kcal</span>}
+                  </>
+                ) : (
+                  <span className="slot-empty-text">Empty slot</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* ── Quick & Easy Grid ── */}
-      <h2 className="section-title" style={{ marginTop: '2rem' }}>⏱️ Quick & Easy (Under 30 Mins)</h2>
+      <h2 className="section-title fade-in-up" style={{ marginTop: '2rem', '--delay': '500ms' }}>⏱️ Quick & Easy (Under 30 Mins)</h2>
       {quickLoading ? (
-        <div className="quick-recipes-grid">
+        <div className="quick-recipes-grid fade-in-up" style={{ '--delay': '530ms' }}>
           {[...Array(4)].map((_, i) => (
             <div key={i} className="card glass skeleton" style={{ height: '180px' }}></div>
           ))}
         </div>
       ) : quickRecipes.length > 0 && (
-        <div className="quick-recipes-grid">
+        <div className="quick-recipes-grid fade-in-up" style={{ '--delay': '530ms' }}>
           {quickRecipes.map(recipe => (
             <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }}>
               <img src={recipe.image_url} alt={recipe.title} className="mini-recipe-image" />
@@ -315,8 +557,8 @@ export default function Home() {
       )}
 
       {/* ── Quick Actions Grid ── */}
-      <h2 className="section-title" style={{ marginTop: '2rem' }}>🚀 Explore</h2>
-      <div className="quick-actions-grid">
+      <h2 className="section-title fade-in-up" style={{ marginTop: '2rem', '--delay': '600ms' }}>🚀 Explore</h2>
+      <div className="quick-actions-grid fade-in-up" style={{ '--delay': '630ms' }}>
         {quickActions.map(action => (
           <button
             key={action.path}
@@ -329,7 +571,7 @@ export default function Home() {
           </button>
         ))}
       </div>
-      
+
       {isModalOpen && selectedRecipe && (
         <RecipeModal recipe={selectedRecipe} onClose={() => { setModalOpen(false); setSelectedRecipe(null); }} />
       )}

@@ -14,6 +14,7 @@ import TDEEProfile from './pages/TDEEProfile';
 import SavedRecipes from './pages/SavedRecipes';
 import MealPlanner from './pages/MealPlanner';
 import NutritionTracker from './pages/NutritionTracker';
+import Pantry from './pages/Pantry';
 import './index.css';
 
 function AnimatedRoutes() {
@@ -30,6 +31,7 @@ function AnimatedRoutes() {
         <Route path="/saved" element={<SavedRecipes />} />
         <Route path="/planner" element={<MealPlanner />} />
         <Route path="/tracker" element={<NutritionTracker />} />
+        <Route path="/pantry" element={<Pantry />} />
       </Routes>
     </div>
   );

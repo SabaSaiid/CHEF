@@ -4,7 +4,7 @@ ORM models — User authentication + recipe storage.
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Integer, String, Float, DateTime, Text, ForeignKey
+from sqlalchemy import Integer, String, Float, DateTime, Text, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -47,6 +47,11 @@ class User(Base):
     # Relationship: a user has many saved recipes
     saved_recipes: Mapped[list["SavedRecipe"]] = relationship(
         "SavedRecipe", back_populates="owner", cascade="all, delete-orphan"
+    )
+
+    # Relationship: a user has many named profiles
+    profiles: Mapped[list["UserProfile"]] = relationship(
+        "UserProfile", back_populates="owner", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:
@@ -126,3 +131,106 @@ class NutritionLog(Base):
 
     def __repr__(self) -> str:
         return f"<NutritionLog id={self.id} food={self.food_item!r} date={self.date}>"
+
+
+class UserProfile(Base):
+    """
+    Named nutrition/fitness profile for a user.
+    A single account can have multiple profiles (e.g. 'Cutting Phase', 'Bulk 2024').
+    Only one profile per user is active at a time.
+    """
+    __tablename__ = "user_profiles"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+
+    # ── Identity ──────────────────────────────────────────────────
+    profile_name: Mapped[str] = mapped_column(String(100), nullable=False, default="My Profile")
+    display_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    diet_type: Mapped[str | None] = mapped_column(String(50), nullable=True)  # vegetarian | vegan | non-vegetarian | etc.
+    allergens: Mapped[str | None] = mapped_column(String(500), nullable=True)  # Comma-separated list of allergens
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    # ── Physical Attributes ───────────────────────────────────────
+    age: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    gender: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    weight_kg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    height_cm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    activity_level: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    goal: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    goal_intensity: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    body_fat_percent: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    # ── Calculated Targets ────────────────────────────────────────
+    target_calories: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_protein: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_carbs: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_fat: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    bmr: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    tdee_maintenance: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    bmi: Mapped[float | None] = mapped_column(Float, nullable=True)
+    target_fiber_g: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_water_ml: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+    # ── Timestamps ────────────────────────────────────────────────
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    # Relationship: each profile belongs to a user
+    owner: Mapped["User"] = relationship("User", back_populates="profiles")
+
+    def __repr__(self) -> str:
+        return f"<UserProfile id={self.id} name={self.profile_name!r} active={self.is_active}>"
+
+
+class WaterLog(Base):
+    """A user's logged water intake in ml for hydration tracking."""
+    __tablename__ = "water_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    amount_ml: Mapped[int] = mapped_column(Integer, nullable=False)
+    date: Mapped[str] = mapped_column(String(10), nullable=False, index=True)  # YYYY-MM-DD
+    logged_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    # Relationship
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<WaterLog id={self.id} amount={self.amount_ml}ml date={self.date}>"
+
+
+class PantryItem(Base):
+    """A user's inventory of ingredients currently in stock at home."""
+    __tablename__ = "pantry_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    ingredient_name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    quantity: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    unit: Mapped[str] = mapped_column(String(50), nullable=False, default="serving")
+    category: Mapped[str] = mapped_column(String(100), nullable=False, default="Other")
+    days_fresh: Mapped[int] = mapped_column(Integer, nullable=False, default=7)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<PantryItem id={self.id} ingredient={self.ingredient_name!r} qty={self.quantity}>"
+
+
+

@@ -7,7 +7,7 @@ import api from '../services/api';
 import AuthModal from './AuthModal';
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  const { token, username, logout, seedDemo, userProfile } = useContext(AuthContext);
+  const { token, username, logout, seedDemo, userProfile, activeProfile } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const toast = useToast();
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     setDemoLoading(true);
     try {
       await seedDemo();
-      toast.success("Welcome, Chef Saba! Demo loaded successfully ✓");
+      toast.success("Demo profile loaded successfully.");
       navigate('/');
     } catch (err) {
       toast.error("Failed to load demo data: " + err.message);
@@ -42,10 +42,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     }
   };
 
+  const handleNav = (path) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   const getProfileSetupProgress = () => {
-    if (!userProfile) return 0;
+    if (!activeProfile) return 0;
     const fields = ['age', 'height_cm', 'weight_kg', 'gender', 'activity_level', 'goal'];
-    const filled = fields.filter(f => userProfile[f] !== null && userProfile[f] !== undefined && userProfile[f] !== '').length;
+    const filled = fields.filter(f => activeProfile[f] !== null && activeProfile[f] !== undefined && activeProfile[f] !== '').length;
     return Math.round((filled / fields.length) * 100);
   };
 
@@ -56,7 +61,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       <div className="sidebar-header">
         <div className="sidebar-title-group">
           <span className="sidebar-icon">⚙️</span>
-          <h3 className="sidebar-title">Chef Control</h3>
+          <h3 className="sidebar-title">Preferences</h3>
         </div>
         <button 
           className="sidebar-close-btn" 
@@ -71,14 +76,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       <div className="sidebar-body">
         {/* Profile / Auth Section */}
         <div className="sidebar-section">
-          <h4 className="sidebar-section-title">Chef Profile</h4>
+          <h4 className="sidebar-section-title">Account Details</h4>
           
           {!token ? (
             <div className="sidebar-profile-card guest">
               <div className="guest-header">
                 <span className="guest-avatar">👤</span>
                 <div className="guest-info">
-                  <div className="guest-title">Guest Chef</div>
+                  <div className="guest-title">Guest Profile</div>
                   <div className="guest-subtitle">Track macros & plan meals</div>
                 </div>
               </div>
@@ -88,29 +93,36 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </div>
           ) : (
             <div className="sidebar-profile-card">
-              <div className="sidebar-profile-user">👋 Chef {username}</div>
-              
-              {userProfile && userProfile.age && (
+              <div className="sidebar-profile-user">
+                👤 {activeProfile?.display_name || username}
+              </div>
+              {activeProfile?.diet_type && (
+                <div className="sidebar-diet-badge">
+                  {activeProfile.diet_type}
+                </div>
+              )}
+              {activeProfile && activeProfile.age && (
                 <div className="sidebar-profile-stats">
                   <div className="profile-details-grid">
                     <div className="profile-stat-box">
                       <span className="stat-label">Age</span>
-                      <span className="stat-value">{userProfile.age} <span className="stat-unit">yrs</span></span>
+                      <span className="stat-value">{activeProfile.age} <span className="stat-unit">yrs</span></span>
                     </div>
                     <div className="profile-stat-box">
                       <span className="stat-label">Height</span>
-                      <span className="stat-value">{userProfile.height_cm} <span className="stat-unit">cm</span></span>
+                      <span className="stat-value">{activeProfile.height_cm} <span className="stat-unit">cm</span></span>
                     </div>
                     <div className="profile-stat-box">
                       <span className="stat-label">Weight</span>
-                      <span className="stat-value">{userProfile.weight_kg} <span className="stat-unit">kg</span></span>
+                      <span className="stat-value">{activeProfile.weight_kg} <span className="stat-unit">kg</span></span>
                     </div>
                   </div>
                   
-                  {userProfile.target_calories && (
+                  {activeProfile.target_calories && (
+
                     <div className="profile-target-box">
                       <span className="target-label">Daily Target</span>
-                      <span className="target-value">🔥 {userProfile.target_calories} <span className="target-unit">kcal</span></span>
+                      <span className="target-value">🔥 {activeProfile.target_calories} <span className="target-unit">kcal</span></span>
                     </div>
                   )}
 
@@ -135,23 +147,39 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         </div>
 
         {/* Live Calories Progress Bar */}
-        {token && userProfile && userProfile.target_calories && (
+        {token && activeProfile && activeProfile.target_calories && (
           <div className="sidebar-section">
             <h4 className="sidebar-section-title">Today's Progress</h4>
             <div className="sidebar-tracker-glimpse">
               <div className="tracker-glimpse-info">
                 <span>Calories</span>
-                <strong>{todayCalories} / {userProfile.target_calories} kcal</strong>
+                <strong>{todayCalories} / {activeProfile.target_calories} kcal</strong>
               </div>
               <div className="tracker-glimpse-bar">
                 <div 
                   className="tracker-glimpse-bar-fill" 
-                  style={{ width: `${Math.min((todayCalories / userProfile.target_calories) * 100, 100)}%` }}
+                  style={{ width: `${Math.min((todayCalories / activeProfile.target_calories) * 100, 100)}%` }}
                 />
               </div>
             </div>
           </div>
         )}
+
+        {/* CHEF Utility Tools */}
+        <div className="sidebar-section">
+          <h4 className="sidebar-section-title">CHEF Tools</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/ingredients')}>
+              <span>🥦</span> Ingredients Directory
+            </button>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/detection')}>
+              <span>📷</span> Food Image Detector
+            </button>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/nutrition')}>
+              <span>🔍</span> Nutrition Lookup
+            </button>
+          </div>
+        </div>
 
         {/* Preferences & Demo Mode */}
         <div className="sidebar-section">

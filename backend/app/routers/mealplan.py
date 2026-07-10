@@ -9,7 +9,7 @@ from collections import defaultdict
 import datetime
 
 from app.database import get_db
-from app.models import MealPlan, SavedRecipe, User
+from app.models import MealPlan, SavedRecipe, User, PantryItem
 from app.auth import get_current_user
 from app.schemas import MealPlanCreate, MealPlanResponse, ShoppingListItem
 
@@ -133,3 +133,112 @@ def get_shopping_list(
     ]
     shopping_list.sort(key=lambda x: x.ingredient)
     return shopping_list
+
+
+def categorize_ingredient(name: str) -> str:
+    name_lower = name.lower()
+    
+    # Meat & Seafood
+    if any(k in name_lower for k in ["chicken", "beef", "pork", "fish", "salmon", "shrimp", "turkey", "lamb", "bacon", "tuna", "seafood", "steak", "meat"]):
+        return "Meat & Seafood"
+    
+    # Dairy & Eggs
+    if any(k in name_lower for k in ["milk", "cheese", "yogurt", "butter", "egg", "cream", "cheddar", "mozzarella", "parmesan", "dairy"]):
+        return "Dairy & Eggs"
+        
+    # Produce (Fruits & Veggies)
+    if any(k in name_lower for k in ["tomato", "onion", "garlic", "potato", "spinach", "lemon", "lime", "carrot", "apple", "banana", "pepper", "basil", "parsley", "ginger", "lettuce", "cucumber", "mushroom", "cilantro", "avocado", "broccoli", "cabbage", "zucchini", "vegetable", "fruit"]):
+        return "Produce"
+        
+    # Grains & Bakery
+    if any(k in name_lower for k in ["bread", "flour", "rice", "pasta", "noodle", "oats", "tortilla", "quinoa", "grain"]):
+        return "Grains & Bakery"
+        
+    # Pantry & Spices
+    if any(k in name_lower for k in ["salt", "pepper", "oil", "sugar", "sauce", "soy", "vinegar", "honey", "broth", "stock", "mustard", "mayo", "oregano", "cumin", "cinnamon", "vanilla", "powder", "spice", "herb"]):
+        return "Pantry & Spices"
+        
+    return "Other / Miscellaneous"
+
+
+@router.get("/grocery-list")
+def get_grocery_list(
+    start_date: str = Query(..., description="YYYY-MM-DD"),
+    end_date: str = Query(..., description="YYYY-MM-DD"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Generate a smart categorized grocery list from scheduled meals,
+    subtracting items already present in the user's pantry.
+    """
+    _parse_and_validate_dates(start_date, end_date)
+    plans = db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date >= start_date,
+        MealPlan.date <= end_date
+    ).all()
+
+    # Get user's pantry items in stock
+    pantry_items = db.query(PantryItem).filter(PantryItem.user_id == current_user.id).all()
+    pantry_set = {pi.ingredient_name.lower().strip() for pi in pantry_items if pi.quantity > 0}
+
+    # Aggregate ingredients from planned meals
+    raw_ingredients = defaultdict(list)  # ingredient -> list of recipe titles
+    for mp in plans:
+        if mp.recipe and mp.recipe.ingredients:
+            import json
+            items = []
+            try:
+                # If it's a JSON array
+                parsed = json.loads(mp.recipe.ingredients)
+                if isinstance(parsed, list):
+                    items = [str(x) for x in parsed]
+                else:
+                    items = [str(parsed)]
+            except Exception:
+                # Fallback to comma separated
+                items = [item.strip() for item in mp.recipe.ingredients.split(",") if item.strip()]
+
+            for item in items:
+                raw_ingredients[item.strip()].append(mp.recipe.title)
+
+    categories = {
+        "Produce": [],
+        "Meat & Seafood": [],
+        "Dairy & Eggs": [],
+        "Grains & Bakery": [],
+        "Pantry & Spices": [],
+        "Other / Miscellaneous": []
+    }
+    in_pantry_skipped = []
+
+    for ing_name, recipes in raw_ingredients.items():
+        ing_lower = ing_name.lower().strip()
+        if not ing_lower:
+            continue
+        
+        # Check if this exact ingredient name or a substantial substring is in the pantry
+        is_in_pantry = False
+        for p_item in pantry_set:
+            if p_item in ing_lower or ing_lower in p_item:
+                is_in_pantry = True
+                break
+                
+        if is_in_pantry:
+            in_pantry_skipped.append(ing_name)
+        else:
+            cat = categorize_ingredient(ing_name)
+            categories[cat].append({
+                "name": ing_name,
+                "recipes": list(set(recipes))
+            })
+
+    # Filter out empty categories
+    active_categories = {k: v for k, v in categories.items() if len(v) > 0}
+
+    return {
+        "categories": active_categories,
+        "in_pantry_skipped": in_pantry_skipped
+    }
+
