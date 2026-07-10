@@ -4,12 +4,12 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
 const DIET_OPTIONS = [
-  { value: 'non-vegetarian', label: 'Non-Veg',     emoji: '🍗' },
-  { value: 'vegetarian',     label: 'Vegetarian',  emoji: '🥦' },
-  { value: 'vegan',          label: 'Vegan',        emoji: '🌱' },
-  { value: 'pescatarian',    label: 'Pescatarian', emoji: '🐟' },
-  { value: 'keto',           label: 'Keto',         emoji: '🥑' },
-  { value: 'gluten-free',    label: 'Gluten-Free', emoji: '🌾' },
+  { value: 'non-vegetarian', label: 'Non-Veg' },
+  { value: 'vegetarian',     label: 'Vegetarian' },
+  { value: 'vegan',          label: 'Vegan' },
+  { value: 'pescatarian',    label: 'Pescatarian' },
+  { value: 'keto',           label: 'Keto' },
+  { value: 'gluten-free',    label: 'Gluten-Free' },
 ];
 
 const EMPTY_FORM = {
@@ -178,8 +178,8 @@ export default function TDEEProfile() {
   return (
     <section className="page active">
       <div className="page-header">
-        <h1>Calorie and Nutrition Profile</h1>
-        <p className="subtitle">Calculate your personalized daily calorie and macro targets.</p>
+        <h1>Profile Settings</h1>
+        <p className="subtitle">Configure your personalized daily calorie and nutrition targets.</p>
       </div>
 
       {/* ── Profile Switcher ── */}
@@ -193,7 +193,7 @@ export default function TDEEProfile() {
             >
               <div className="ps-card-name">{p.profile_name}</div>
               <div className="ps-card-meta">
-                {p.diet_type && DIET_OPTIONS.find(d => d.value === p.diet_type)?.emoji}
+                {p.diet_type && DIET_OPTIONS.find(d => d.value === p.diet_type)?.label}
                 {p.target_calories ? ` · ${p.target_calories} kcal` : ' · Not set'}
               </div>
               {p.is_active && <div className="ps-active-badge">Active</div>}
@@ -236,7 +236,7 @@ export default function TDEEProfile() {
                   className={`diet-pill ${formData.diet_type === opt.value ? 'active' : ''}`}
                   onClick={() => handleDiet(opt.value)}
                 >
-                  {opt.emoji} {opt.label}
+                  {opt.label}
                 </button>
               ))}
             </div>
@@ -253,12 +253,12 @@ export default function TDEEProfile() {
                     className={`diet-pill ${isActive ? 'active' : ''}`}
                     onClick={() => handleAllergenToggle(allg)}
                     style={{ 
-                      borderColor: isActive ? '#e74c3c' : 'var(--border-glass)', 
-                      color: isActive ? '#e74c3c' : 'inherit',
-                      background: isActive ? 'rgba(231, 76, 60, 0.08)' : 'transparent'
+                      borderColor: isActive ? 'var(--accent-1)' : 'var(--border-glass)', 
+                      color: isActive ? 'var(--accent-1)' : 'inherit',
+                      background: isActive ? 'rgba(var(--primary-rgb), 0.08)' : 'transparent'
                     }}
                   >
-                    ⚠️ {allg}
+                    {allg}
                   </button>
                 );
               })}
@@ -343,66 +343,122 @@ export default function TDEEProfile() {
       {results && (
         <div className="results-area">
           {results.bmr && (
-            <div className="nutrition-card" style={{marginBottom: '16px'}}>
-              <div className="nutrition-header">Diagnostic Breakdown</div>
-              <div className="nutrition-grid">
+            <div className="nutrition-card" style={{ marginBottom: '16px', padding: '20px' }}>
+              <div className="nutrition-header" style={{ marginBottom: '16px' }}>Diagnostic Breakdown</div>
+              <div className="nutrition-grid" style={{ marginBottom: '20px' }}>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color:'#e67e22'}}>{results.bmr}</div>
+                  <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.bmr}</div>
                   <div className="nutrient-label">BMR</div>
                   <div className="nutrient-unit">kcal/day</div>
                 </div>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color:'#3498db'}}>{results.tdee_maintenance}</div>
+                  <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.tdee_maintenance}</div>
                   <div className="nutrient-label">Maintenance</div>
                   <div className="nutrient-unit">kcal/day</div>
                 </div>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color: results.bmi >= 25 ? '#e74c3c' : results.bmi < 18.5 ? '#f39c12' : '#27ae60'}}>{results.bmi}</div>
-                  <div className="nutrient-label">BMI</div>
-                  <div className="nutrient-unit">{results.bmi_category || ''}</div>
+                  <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.bmi}</div>
+                  <div className="nutrient-label">BMI ({results.bmi_category || ''})</div>
+                  <div className="nutrient-unit">Index</div>
                 </div>
               </div>
+
+              {/* BMI Custom SVG Slider Scale */}
+              {(() => {
+                const bmi = results.bmi || 22;
+                const minBmi = 15;
+                const maxBmi = 35;
+                const posPct = Math.max(0, Math.min(100, ((bmi - minBmi) / (maxBmi - minBmi)) * 100));
+                return (
+                  <div style={{ padding: '0 10px', marginTop: '20px' }}>
+                    <div style={{ position: 'relative', height: '10px', width: '100%', borderRadius: '5px', background: 'linear-gradient(90deg, #3b82f6 0%, #10b981 35%, #f59e0b 65%, #ef4444 100%)' }}>
+                      <div style={{
+                        position: 'absolute',
+                        left: `${posPct}%`,
+                        top: '-4px',
+                        width: '18px',
+                        height: '18px',
+                        background: 'var(--text-primary)',
+                        border: '3px solid var(--bg-primary)',
+                        borderRadius: '50%',
+                        transform: 'translateX(-50%)',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                        transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }} />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', fontWeight: 'bold', color: 'var(--text-muted)', marginTop: '8px' }}>
+                      <span>15 (Underweight)</span>
+                      <span>20</span>
+                      <span>25 (Overweight)</span>
+                      <span>30</span>
+                      <span>35 (Obese)</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
 
-          <div className="nutrition-card">
+          <div className="nutrition-card" style={{ padding: '20px' }}>
             <div className="nutrition-header">Daily Targets</div>
-            <div className="nutrition-source">Adjusted for your goal — protein at {results.protein_per_kg ? `${results.protein_per_kg} g/kg` : '—'} body weight</div>
+            <div className="nutrition-source" style={{ marginBottom: '16px' }}>Adjusted for your goal — protein at {results.protein_per_kg ? `${results.protein_per_kg} g/kg` : '—'} body weight</div>
+            
+            {/* Custom Stacked Macro Bar */}
+            {(() => {
+              const protPct = results.protein_pct || 30;
+              const carbPct = results.carbs_pct || 40;
+              const fatPct = results.fat_pct || 30;
+              return (
+                <div style={{ marginBottom: '24px' }}>
+                  <div style={{ height: '14px', width: '100%', borderRadius: '7px', overflow: 'hidden', display: 'flex' }}>
+                    <div style={{ width: `${protPct}%`, background: '#81b29a', height: '100%', transition: 'width 0.5s' }} />
+                    <div style={{ width: `${carbPct}%`, background: '#f2cc8f', height: '100%', transition: 'width 0.5s' }} />
+                    <div style={{ width: `${fatPct}%`, background: '#e07a5f', height: '100%', transition: 'width 0.5s' }} />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', fontWeight: 'bold', marginTop: '8px', color: 'var(--text-muted)' }}>
+                    <span style={{ color: '#81b29a' }}>Protein: {protPct}%</span>
+                    <span style={{ color: '#f2cc8f' }}>Carbs: {carbPct}%</span>
+                    <span style={{ color: '#e07a5f' }}>Fat: {fatPct}%</span>
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="nutrition-grid">
               <div className="nutrient-box">
-                <div className="nutrient-value calories">{results.target_calories}</div>
+                <div className="nutrient-value calories" style={{ color: 'var(--text-primary)' }}>{results.target_calories}</div>
                 <div className="nutrient-label">Calories</div>
                 <div className="nutrient-unit">kcal</div>
               </div>
               <div className="nutrient-box">
-                <div className="nutrient-value">{results.target_protein}</div>
-                <div className="nutrient-label">Protein ({results.protein_pct || '—'}%)</div>
+                <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.target_protein}</div>
+                <div className="nutrient-label">Protein</div>
                 <div className="nutrient-unit">g</div>
               </div>
               <div className="nutrient-box">
-                <div className="nutrient-value">{results.target_carbs}</div>
-                <div className="nutrient-label">Carbs ({results.carbs_pct || '—'}%)</div>
+                <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.target_carbs}</div>
+                <div className="nutrient-label">Carbs</div>
                 <div className="nutrient-unit">g</div>
               </div>
               <div className="nutrient-box">
-                <div className="nutrient-value">{results.target_fat}</div>
-                <div className="nutrient-label">Fat ({results.fat_pct || '—'}%)</div>
+                <div className="nutrient-value" style={{ color: 'var(--text-primary)' }}>{results.target_fat}</div>
+                <div className="nutrient-label">Fat</div>
                 <div className="nutrient-unit">g</div>
               </div>
             </div>
           </div>
 
           {results.target_fiber_g && (
-            <div className="nutrition-card" style={{marginTop: '16px'}}>
+            <div className="nutrition-card" style={{ marginTop: '16px', padding: '20px' }}>
               <div className="nutrition-header">Additional Targets</div>
               <div className="nutrition-grid">
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color:'#8e44ad'}}>{results.target_fiber_g}</div>
+                  <div className="nutrient-value" style={{ color: '#8e44ad' }}>{results.target_fiber_g}</div>
                   <div className="nutrient-label">Fiber</div>
                   <div className="nutrient-unit">g/day</div>
                 </div>
                 <div className="nutrient-box">
-                  <div className="nutrient-value" style={{color:'#2980b9'}}>{results.target_water_ml}</div>
+                  <div className="nutrient-value" style={{ color: '#2980b9' }}>{results.target_water_ml}</div>
                   <div className="nutrient-label">Water</div>
                   <div className="nutrient-unit">ml/day ({(results.target_water_ml / 1000).toFixed(1)} L)</div>
                 </div>

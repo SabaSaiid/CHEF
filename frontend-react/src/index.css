@@ -502,10 +502,10 @@ body::before {
 }
 
 .sidebar-tool-btn:hover {
-    background: rgba(224, 122, 95, 0.08);
-    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.04);
+    border-color: var(--border-glass);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .sidebar-tool-btn:active {
@@ -515,7 +515,7 @@ body::before {
 /* Segmented Theme Selector */
 .theme-selector {
     display: flex;
-    background: rgba(180, 140, 100, 0.08);
+    background: var(--bg-secondary);
     border-radius: var(--radius-sm);
     padding: 4px;
     border: 1px solid var(--border-glass);
@@ -539,7 +539,7 @@ body::before {
 }
 
 .theme-opt:hover:not(.active) {
-    background: rgba(180, 140, 100, 0.04);
+    background: rgba(0, 0, 0, 0.02);
     color: var(--text-primary);
 }
 
@@ -557,16 +557,14 @@ body::before {
     border-radius: var(--radius-sm);
     font-weight: 700;
     border: none;
-    background: var(--gradient-primary);
-    color: #fff;
+    background: var(--text-primary);
+    color: var(--bg-primary);
     cursor: pointer;
-    box-shadow: var(--shadow-glow);
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: transform var(--transition);
 }
 
 .sidebar-btn-demo:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(224, 122, 95, 0.2);
 }
 
 .sidebar-btn-demo:active:not(:disabled) {
@@ -575,7 +573,7 @@ body::before {
 
 /* Profile Card in Sidebar */
 .sidebar-profile-card {
-    background: rgba(180, 140, 100, 0.04);
+    background: var(--bg-card);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius);
     padding: 20px;
@@ -637,8 +635,8 @@ body::before {
 
 /* Daily target box */
 .profile-target-box {
-    background: linear-gradient(135deg, rgba(224, 122, 95, 0.12), rgba(129, 178, 154, 0.08));
-    border: 1px solid rgba(224, 122, 95, 0.15);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-sm);
     padding: 12px;
     display: flex;
@@ -677,7 +675,7 @@ body::before {
 
 /* Guest Profile styling */
 .sidebar-profile-card.guest {
-    background: linear-gradient(135deg, rgba(180, 140, 100, 0.04), rgba(180, 140, 100, 0.08));
+    background: var(--bg-card);
     display: flex;
     flex-direction: column;
     gap: 16px;

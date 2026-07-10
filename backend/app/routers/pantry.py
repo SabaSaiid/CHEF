@@ -13,6 +13,9 @@ from app.database import get_db
 from app.models import PantryItem, User
 from app.auth import get_current_user
 from app.schemas import PantryItemCreate, PantryItemUpdate, PantryItemResponse
+from app.config import settings
+import httpx
+import json
 
 router = APIRouter(prefix="/api/pantry", tags=["pantry"])
 
@@ -216,3 +219,124 @@ def deduct_recipe_ingredients(
             not_found.append(ing.name)
             
     return {"message": "Deduction completed", "deducted": deducted, "not_found": not_found}
+
+class MagicImportRequest(BaseModel):
+    text: str
+
+@router.post("/magic-import")
+async def magic_import_pantry(
+    req: MagicImportRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Parses a messy grocery list or receipt text via Gemini API 
+    and returns a clean JSON list of pantry items.
+    """
+    if not settings.GEMINI_API_KEY:
+        raise HTTPException(status_code=500, detail="Gemini API Key is missing. Magic Import disabled.")
+
+    prompt = f"""
+    You are an expert culinary AI. Parse the following grocery list or receipt text and extract the ingredients.
+    Return ONLY a valid JSON array of objects. No markdown formatting, no code blocks, just raw JSON.
+    Each object must exactly match this schema:
+    - "ingredient_name" (string, capitalized)
+    - "quantity" (number)
+    - "unit" (string, e.g., 'pcs', 'g', 'ml', 'serving', etc.)
+    - "category" (string, EXACTLY ONE OF: 'Produce', 'Proteins', 'Dairy', 'Grains & Baking', 'Spices & Seasonings', 'Other')
+    - "days_fresh" (number, estimated shelf life in days)
+
+    Text to parse:
+    {req.text}
+    """
+
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            resp = await client.post(
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={settings.GEMINI_API_KEY}",
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.1}
+                }
+            )
+            
+            if resp.status_code != 200:
+                raise HTTPException(status_code=resp.status_code, detail="AI parsing failed")
+                
+            data = resp.json()
+            raw_text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            
+            if raw_text.startswith("```json"):
+                raw_text = raw_text[7:]
+            if raw_text.endswith("```"):
+                raw_text = raw_text[:-3]
+                
+            parsed_items = json.loads(raw_text.strip())
+            return {"items": parsed_items}
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/generate-recipe")
+async def generate_pantry_recipe(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Generates a recipe strictly using currently available pantry items.
+    """
+    if not settings.GEMINI_API_KEY:
+        raise HTTPException(status_code=500, detail="Gemini API Key is missing.")
+
+    all_items = db.query(PantryItem).filter(PantryItem.user_id == current_user.id).all()
+    available = []
+    for item in all_items:
+        expiry_time = item.updated_at.timestamp() + (item.days_fresh * 24 * 3600)
+        if expiry_time > datetime.now().timestamp() and item.quantity > 0:
+            available.append(f"{item.quantity} {item.unit} {item.ingredient_name}")
+            
+    if not available:
+        raise HTTPException(status_code=400, detail="Pantry is empty or all items expired.")
+
+    pantry_str = ", ".join(available)
+    
+    prompt = f"""
+    You are a Michelin-star chef. The user has the following ingredients in their pantry:
+    {pantry_str}
+    
+    Create a highly creative, delicious recipe that strictly uses ONLY these ingredients (plus basic staples like water, salt, pepper, cooking oil if absolutely necessary).
+    Return ONLY a valid JSON object. No markdown formatting, no code blocks, just raw JSON.
+    Schema:
+    - "title" (string, catchy name)
+    - "description" (string)
+    - "prep_time" (number in minutes)
+    - "ingredients" (array of strings, e.g. "2 pcs Eggs")
+    - "instructions" (array of strings, step-by-step)
+    - "macros" (object with "calories", "protein", "carbs", "fat" - all numbers)
+    """
+
+    try:
+        async with httpx.AsyncClient(timeout=25.0) as client:
+            resp = await client.post(
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={settings.GEMINI_API_KEY}",
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.7}
+                }
+            )
+            
+            if resp.status_code != 200:
+                raise HTTPException(status_code=resp.status_code, detail="Recipe generation failed")
+                
+            data = resp.json()
+            raw_text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            
+            if raw_text.startswith("```json"):
+                raw_text = raw_text[7:]
+            if raw_text.endswith("```"):
+                raw_text = raw_text[:-3]
+                
+            recipe = json.loads(raw_text.strip())
+            return recipe
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

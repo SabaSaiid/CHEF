@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import RecipeModal from '../components/RecipeModal';
 
 const PANTRY_CATEGORIES = ['All', 'Produce', 'Proteins', 'Dairy', 'Grains & Baking', 'Spices & Seasonings', 'Other'];
 
@@ -32,6 +33,12 @@ export default function Pantry() {
   const [unit, setUnit] = useState('serving');
   const [category, setCategory] = useState('Produce');
   const [daysFresh, setDaysFresh] = useState(7);
+
+  // AI Feature states
+  const [magicImportText, setMagicImportText] = useState('');
+  const [importing, setImporting] = useState(false);
+  const [generatingRecipe, setGeneratingRecipe] = useState(false);
+  const [generatedRecipe, setGeneratedRecipe] = useState(null);
 
   // Filter states
   const [selectedTab, setSelectedTab] = useState('All');
@@ -120,7 +127,59 @@ export default function Pantry() {
       toast.error(err.message);
     }
   };
+  const handleMagicImport = async () => {
+    if (!magicImportText.trim()) return;
+    setImporting(true);
+    try {
+      const data = await api.post('/pantry/magic-import', { text: magicImportText });
+      const items = data.items || [];
+      if (items.length === 0) {
+        toast.error("No ingredients found in text.");
+        return;
+      }
+      for (const item of items) {
+        await api.post('/pantry', item);
+      }
+      toast.success(`Magically imported ${items.length} items! ✨`);
+      setMagicImportText('');
+      fetchPantry();
+    } catch (err) {
+      toast.error(err.message || "Failed to parse text. Is your API key set?");
+    } finally {
+      setImporting(false);
+    }
+  };
 
+  const handleGenerateRecipe = async () => {
+    setGeneratingRecipe(true);
+    try {
+      const data = await api.get('/pantry/generate-recipe');
+      
+      // Map Gemini output to match RecipeModal expected format
+      const formattedRecipe = {
+        title: data.title,
+        image_url: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800', // Generic high quality food fallback
+        ready_in_minutes: data.prep_time || 30,
+        servings: 2,
+        diets: ['Pantry Creation'],
+        extended_ingredients: (data.ingredients || []).map(i => ({ original: i })),
+        instructions_text: (data.instructions || []).join('\n'),
+        nutrition: {
+          calories: data.macros?.calories || 0,
+          protein_g: data.macros?.protein || 0,
+          carbs_g: data.macros?.carbs || 0,
+          fat_g: data.macros?.fat || 0
+        }
+      };
+      
+      setGeneratedRecipe(formattedRecipe);
+      toast.success("AI Chef has created a recipe! 👨‍🍳");
+    } catch (err) {
+      toast.error(err.message || "Could not generate recipe.");
+    } finally {
+      setGeneratingRecipe(false);
+    }
+  };
   // Freshness calculation
   const getFreshnessStatus = (item) => {
     const updatedDate = new Date(item.updated_at).getTime();
@@ -234,8 +293,52 @@ export default function Pantry() {
               </form>
             </div>
 
+            {/* AI Magic Import Panel */}
+            <h2 className="section-title" style={{ marginTop: '10px' }}>
+              AI Magic Import
+            </h2>
+            <div className="card glass" style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
+                  Paste a messy grocery list or receipt text. Gemini AI will automatically extract quantities, units, and categories.
+                </p>
+                <textarea
+                  placeholder="e.g. 2 gallons of milk, a bunch of bananas, 500g chicken breast..."
+                  value={magicImportText}
+                  onChange={(e) => setMagicImportText(e.target.value)}
+                  style={{
+                    padding: '12px',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border-glass)',
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    minHeight: '80px',
+                    resize: 'vertical',
+                    fontFamily: 'inherit',
+                    fontSize: '14px'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleMagicImport}
+                  disabled={importing || !magicImportText.trim()}
+                  className="btn-primary"
+                  style={{
+                    padding: '10px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: 'bold',
+                    background: 'var(--text-primary)',
+                    color: 'var(--bg-primary)'
+                  }}
+                >
+                  {importing ? 'Parsing Data...' : 'Import Data'}
+                </button>
+              </div>
+            </div>
+
             {/* Quick Presets Panel */}
-            <h2 className="section-title" style={{ marginTop: '10px' }}>⚡ Quick Stock Presets</h2>
+            <h2 className="section-title" style={{ marginTop: '10px' }}>Quick Stock Presets</h2>
             <div className="card glass" style={{ padding: '15px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
               {QUICK_PRESETS.map((preset) => (
                 <button
@@ -243,9 +346,8 @@ export default function Pantry() {
                   type="button"
                   onClick={() => handlePresetClick(preset)}
                   className="sidebar-tool-btn"
-                  style={{ padding: '10px', fontSize: '13px', gap: '8px', justifyContent: 'center' }}
+                  style={{ padding: '10px', fontSize: '13px', fontWeight: '500', justifyContent: 'center', background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)' }}
                 >
-                  <span style={{ fontSize: '1.2rem' }}>{preset.emoji}</span>
                   {preset.name}
                 </button>
               ))}
@@ -255,17 +357,63 @@ export default function Pantry() {
           {/* Right Column: Inventory List with Tabs & Search */}
           <div className="kitchen-main-col fade-in-up" style={{ '--delay': '200ms', display: 'flex', flexDirection: 'column', gap: '15px' }}>
             
+            {/* Expiring Soon Carousel */}
+            {(() => {
+              const expiringItems = pantryItems.filter(item => {
+                const f = getFreshnessStatus(item);
+                return f.label.includes('Expired') || f.label.includes('Expires in');
+              });
+              if (expiringItems.length > 0) {
+                return (
+                  <div className="card glass" style={{ padding: '15px', borderLeft: '4px solid #e74c3c' }}>
+                    <h3 style={{ fontSize: '14px', margin: '0 0 10px 0', color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      Action Needed: Expiring Soon
+                    </h3>
+                    <div className="custom-scrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '8px' }}>
+                      {expiringItems.map(item => (
+                        <div key={item.id} style={{ flexShrink: 0, minWidth: '130px', background: 'var(--bg-secondary)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-glass)' }}>
+                          <strong style={{ fontSize: '13px', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-primary)' }}>{item.ingredient_name}</strong>
+                          <span style={{ fontSize: '11px', color: getFreshnessStatus(item).color, fontWeight: 'bold' }}>{getFreshnessStatus(item).label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })()}
+
             {/* Filter controls */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className="section-title" style={{ margin: 0 }}>🥦 My Food Stocks</h2>
-                <input
-                  type="text"
-                  placeholder="🔍 Search ingredients..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--border-glass)', minWidth: '220px', background: 'var(--glass-bg)' }}
-                />
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+                <h2 className="section-title" style={{ margin: 0, minWidth: 'max-content' }}>Pantry Inventory</h2>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flex: 1, justifyContent: 'flex-end' }}>
+                  <button
+                    className="btn-primary"
+                    onClick={handleGenerateRecipe}
+                    disabled={generatingRecipe || pantryItems.length === 0}
+                    style={{
+                      padding: '8px 16px',
+                      background: 'var(--text-primary)',
+                      color: 'var(--bg-primary)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontWeight: 'bold',
+                      opacity: generatingRecipe ? 0.7 : 1,
+                      cursor: generatingRecipe ? 'wait' : 'pointer',
+                      minWidth: '200px'
+                    }}
+                  >
+                    {generatingRecipe ? 'Generating Recipe...' : 'Generate AI Recipe'}
+                  </button>
+                  <input
+                    type="text"
+                    placeholder="Search ingredients..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--border-glass)', minWidth: '200px', flex: '1 1 200px', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                  />
+                </div>
               </div>
               
               {/* Category tabs */}
@@ -297,36 +445,74 @@ export default function Pantry() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '15px' }}>
                 {filteredItems.map((item, idx) => {
                   const freshness = getFreshnessStatus(item);
+                  
+                  // Premium Category Colors
+                  let catColor = 'var(--glass-bg)';
+                  let catBorder = 'var(--border-glass)';
+                  let catShadow = 'none';
+                  
+                  if (item.category === 'Produce') { catColor = 'rgba(39, 174, 96, 0.04)'; catBorder = 'rgba(39, 174, 96, 0.2)'; catShadow = '0 4px 20px rgba(39, 174, 96, 0.05)'; }
+                  else if (item.category === 'Proteins') { catColor = 'rgba(231, 76, 60, 0.04)'; catBorder = 'rgba(231, 76, 60, 0.2)'; catShadow = '0 4px 20px rgba(231, 76, 60, 0.05)'; }
+                  else if (item.category === 'Dairy') { catColor = 'rgba(52, 152, 219, 0.04)'; catBorder = 'rgba(52, 152, 219, 0.2)'; catShadow = '0 4px 20px rgba(52, 152, 219, 0.05)'; }
+                  else if (item.category === 'Spices & Seasonings') { catColor = 'rgba(243, 156, 18, 0.04)'; catBorder = 'rgba(243, 156, 18, 0.2)'; catShadow = '0 4px 20px rgba(243, 156, 18, 0.05)'; }
+                  else if (item.category === 'Grains & Baking') { catColor = 'rgba(211, 84, 0, 0.04)'; catBorder = 'rgba(211, 84, 0, 0.2)'; catShadow = '0 4px 20px rgba(211, 84, 0, 0.05)'; }
+
+                  // Fill-Level Logic
+                  let fillPercentage = 100;
+                  if (item.unit === 'g' || item.unit === 'ml') fillPercentage = Math.min(100, (item.quantity / 1000) * 100);
+                  else if (item.unit === 'pcs' || item.unit === 'slices') fillPercentage = Math.min(100, (item.quantity / 12) * 100);
+                  if (item.quantity > 0 && fillPercentage < 5) fillPercentage = 5;
+
                   return (
                     <div 
                       key={item.id} 
-                      className="card glass fade-in-up" 
+                      className="card fade-in-up" 
                       style={{ 
                         padding: '16px', 
                         display: 'flex', 
                         flexDirection: 'column', 
                         justifyContent: 'space-between', 
-                        minHeight: '130px', 
+                        minHeight: '140px', 
                         position: 'relative',
-                        animationDelay: `${idx * 40}ms`
+                        background: catColor,
+                        border: `1px solid ${catBorder}`,
+                        boxShadow: catShadow,
+                        borderRadius: '16px',
+                        animationDelay: `${idx * 40}ms`,
+                        transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease',
                       }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 8px 25px ${catBorder.replace('0.2', '0.4')}`; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = catShadow; }}
                     >
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                           <span style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '20px', background: freshness.bg, color: freshness.color, fontWeight: '700', textTransform: 'uppercase' }}>
                             {freshness.label}
                           </span>
-                          <span style={{ fontSize: '11px', opacity: 0.6, color: 'var(--text-muted)' }}>
+                          <span style={{ fontSize: '11px', opacity: 0.6, color: 'var(--text-muted)', fontWeight: 'bold' }}>
                             {item.category}
                           </span>
                         </div>
                         
-                        <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: '4px 0', textTransform: 'capitalize' }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)', margin: '4px 0', textTransform: 'capitalize' }}>
                           {item.ingredient_name}
                         </h3>
-                        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                          {item.quantity} {item.unit}
-                        </p>
+                        
+                        {/* Fill-Level Gauge */}
+                        <div style={{ marginTop: '10px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 'bold', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                            <span>{item.quantity} {item.unit}</span>
+                            <span>{Math.round(fillPercentage)}%</span>
+                          </div>
+                          <div style={{ height: '6px', width: '100%', background: 'rgba(0,0,0,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ 
+                              height: '100%', 
+                              width: `${fillPercentage}%`, 
+                              background: fillPercentage > 20 ? 'var(--gradient-primary)' : '#e74c3c',
+                              transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)' 
+                            }} />
+                          </div>
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px' }}>
@@ -369,6 +555,13 @@ export default function Pantry() {
             )}
           </div>
         </div>
+      )}
+
+      {generatedRecipe && (
+        <RecipeModal
+          recipe={generatedRecipe}
+          onClose={() => setGeneratedRecipe(null)}
+        />
       )}
     </section>
   );

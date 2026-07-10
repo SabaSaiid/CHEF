@@ -46,6 +46,7 @@ class Settings(BaseSettings):
     SPOONACULAR_API_KEY: str = ""
     EDAMAM_APP_ID: str = ""
     EDAMAM_APP_KEY: str = ""
+    GEMINI_API_KEY: str = ""
 
     # JWT Authentication — defaults to a per-process random secret so tokens
     # are never signed with a publicly known key.  Set JWT_SECRET_KEY in your

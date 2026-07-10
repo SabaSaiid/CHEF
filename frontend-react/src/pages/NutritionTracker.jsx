@@ -96,6 +96,7 @@ export default function NutritionTracker() {
   // Summary view
   const [summaryRange, setSummaryRange] = useState('week');
   const [summaryData, setSummaryData] = useState([]);
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   const [coachData, setCoachData] = useState(null);
   const [loadingCoach, setLoadingCoach] = useState(false);
@@ -218,22 +219,44 @@ export default function NutritionTracker() {
     }
   };
 
-  const handleAddWater = async () => {
+  const handleAddWaterCustom = async (amount) => {
     if (token) {
       try {
-        await api.post('/nutrition/log/water', { amount_ml: 250, date: selectedDate });
+        await api.post('/nutrition/log/water', { amount_ml: amount, date: selectedDate });
         fetchLogs();
         fetchSummary();
         fetchCoachInsights();
-        toast.success("💧 Hydration logged!");
+        toast.success(`Logged ${amount}ml water!`);
       } catch (err) {
         toast.error(err.message);
       }
     } else {
-      const newTotal = (parseInt(localStorage.getItem('chef_guest_water')) || 0) + 250;
+      const newTotal = (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount;
       localStorage.setItem('chef_guest_water', newTotal);
       setWaterTotal(newTotal);
-      toast.success("Logged 250ml water (demo mode) 💧");
+      toast.success(`Logged ${amount}ml water (demo mode)`);
+    }
+  };
+
+  const handleResetWater = async () => {
+    if (token) {
+      try {
+        const waterData = await api.get(`/nutrition/log/water?date=${selectedDate}`);
+        const logsToDelete = waterData.logs || [];
+        for (const log of logsToDelete) {
+          await api.delete(`/nutrition/log/water/${log.id}`);
+        }
+        fetchLogs();
+        fetchSummary();
+        fetchCoachInsights();
+        toast.success("Hydration reset!");
+      } catch (err) {
+        toast.error(err.message);
+      }
+    } else {
+      localStorage.setItem('chef_guest_water', 0);
+      setWaterTotal(0);
+      toast.success("Reset water (demo mode)");
     }
   };
 
@@ -258,6 +281,51 @@ export default function NutritionTracker() {
   };
 
   const pct = (val, target) => Math.min(Math.round((val / target) * 100), 100);
+
+  const calculateNutritionGrade = () => {
+    if (logs.length === 0) return { grade: 'N/A', label: 'No logs yet', color: 'var(--text-muted)', score: 0 };
+    
+    let score = 100;
+    
+    // 1. Calorie compliance
+    const calTarget = targets.calories || 2000;
+    const calDiffPct = Math.abs(totals.calories - calTarget) / calTarget;
+    score -= Math.min(30, calDiffPct * 100);
+    
+    // 2. Protein compliance
+    const protTarget = targets.protein_g || 150;
+    const protDiffPct = Math.abs(totals.protein_g - protTarget) / protTarget;
+    score -= Math.min(25, protDiffPct * 100);
+    
+    // 3. Fiber compliance
+    const fiberTarget = activeProfile?.target_fiber_g || 30;
+    if (totals.fiber_g < fiberTarget) {
+      const fiberDiffPct = (fiberTarget - totals.fiber_g) / fiberTarget;
+      score -= Math.min(15, fiberDiffPct * 15);
+    }
+    
+    const finalScore = Math.max(0, Math.round(score));
+    
+    let grade = 'D';
+    let color = '#ef4444';
+    let label = 'Needs Balance Adjustment';
+    
+    if (finalScore >= 90) {
+      grade = 'A';
+      color = '#10b981';
+      label = 'Optimal Nutrient Balance';
+    } else if (finalScore >= 75) {
+      grade = 'B';
+      color = '#3b82f6';
+      label = 'Good Nutrient Balance';
+    } else if (finalScore >= 60) {
+      grade = 'C';
+      color = '#f59e0b';
+      label = 'Moderate Balance';
+    }
+    
+    return { grade, score: finalScore, label, color };
+  };
 
   if (!token) {
     return (
@@ -298,22 +366,39 @@ export default function NutritionTracker() {
         />
       </div>
 
+      {/* Daily Health Grade Banner */}
+      {(() => {
+        const health = calculateNutritionGrade();
+        if (health.grade === 'N/A') return null;
+        return (
+          <div className="card glass" style={{ marginBottom: '20px', padding: '16px 20px', borderLeft: `4px solid ${health.color}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <h4 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--text-muted)', margin: 0, fontWeight: 'bold', letterSpacing: '0.5px' }}>Nutrition Balance Grade</h4>
+              <p style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)', margin: '4px 0 0' }}>{health.label}</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Score: {health.score}/100</span>
+              </div>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `2px solid ${health.color}` }}>
+                <span style={{ fontSize: '20px', fontWeight: '800', color: health.color }}>{health.grade}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── AI Coach Insights Card ── */}
       {coachData && coachData.insights && coachData.insights.length > 0 && (
         <div className="card glass fade-in-up" style={{ 
           marginBottom: '20px', 
           padding: '24px', 
-          borderLeft: '4px solid transparent',
-          borderImage: 'linear-gradient(to bottom, var(--accent-1), var(--accent-2)) 1',
-          background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%)',
+          borderLeft: '4px solid var(--accent-1)',
+          background: 'var(--bg-secondary)',
           '--delay': '50ms' 
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div style={{ position: 'relative' }}>
-              <span style={{ fontSize: '1.5rem', filter: 'drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.4))' }}>💡</span>
-              <span style={{ position: 'absolute', top: '-2px', right: '-2px', width: '8px', height: '8px', background: 'var(--accent-1)', borderRadius: '50%', boxShadow: '0 0 10px var(--accent-1)', animation: 'pulse 2s infinite' }}></span>
-            </div>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '800', background: 'linear-gradient(90deg, var(--text-primary), var(--accent-2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>
               AI Coach Insights
             </h3>
           </div>
@@ -395,15 +480,69 @@ export default function NutritionTracker() {
           </div>
         )}
         
-        <div className="card glass" style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ background: 'rgba(56, 189, 248, 0.1)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(56, 189, 248, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <h3 style={{ margin: 0, color: '#0369a1', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>💧 Hydration</h3>
-              <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: '#0ea5e9', fontWeight: '500' }}>
-                {waterTotal} ml / {activeProfile?.target_water_ml || 2500} ml ({Math.round(waterTotal / 250)} glasses)
+        <div className="card glass" style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px' }}>
+          <style>{`
+            @keyframes wave-slide {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-70px); }
+            }
+            .animated-wave-1 {
+              animation: wave-slide 4s linear infinite;
+            }
+            .animated-wave-2 {
+              animation: wave-slide 2.5s linear infinite reverse;
+            }
+          `}</style>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
+            <div style={{ flex: 1 }}>
+              <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '800' }}>Hydration</h3>
+              <p style={{ margin: '4px 0 16px', fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                {waterTotal} ml / {activeProfile?.target_water_ml || 2500} ml
               </p>
+              
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button 
+                  className="btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
+                  onClick={() => handleAddWaterCustom(250)}
+                >
+                  +250ml
+                </button>
+                <button 
+                  className="btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
+                  onClick={() => handleAddWaterCustom(500)}
+                >
+                  +500ml
+                </button>
+                <button 
+                  className="btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
+                  onClick={handleResetWater}
+                >
+                  Reset
+                </button>
+              </div>
             </div>
-            <button className="btn-primary" style={{ background: '#38bdf8', color: 'white', padding: '12px 20px', margin: 0, boxShadow: '0 4px 12px rgba(56, 189, 248, 0.3)' }} onClick={handleAddWater}>+1 Glass</button>
+
+            {/* The Fluid-Wave SVG Glass */}
+            {(() => {
+              const target = activeProfile?.target_water_ml || 2500;
+              const pctWater = Math.min(100, (waterTotal / target) * 100);
+              return (
+                <div style={{ position: 'relative', width: '70px', height: '100px', flexShrink: 0, borderRadius: '12px 12px 18px 18px', overflow: 'hidden', border: '2px solid var(--text-primary)', background: 'var(--bg-secondary)' }}>
+                  <svg width="140" height="100" viewBox="0 0 140 100" style={{ position: 'absolute', bottom: 0, left: 0, transform: `translateY(${100 - pctWater}px)`, transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+                    <path d="M0 10 Q 17.5 5, 35 10 T 70 10 T 105 10 T 140 10 L 140 100 L 0 100 Z" fill="#38bdf8" opacity="0.75" className="animated-wave-1" />
+                    <path d="M0 12 Q 17.5 8, 35 12 T 70 12 T 105 12 T 140 12 L 140 100 L 0 100 Z" fill="#0284c7" opacity="0.5" className="animated-wave-2" />
+                  </svg>
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+                    <span style={{ fontSize: '12px', fontWeight: '800', color: pctWater > 45 ? '#ffffff' : 'var(--text-primary)', mixBlendMode: 'difference' }}>
+                      {Math.round(pctWater)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
@@ -512,93 +651,169 @@ export default function NutritionTracker() {
         </div>
       )}
 
-      {/* ── 30-Day Consistency Heatmap ── */}
-      {summaryData.length > 0 && (
-        <div className="card glass" style={{ marginTop: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '18px', margin: 0 }}>30-Day Consistency</h3>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <button
-                className={`btn-secondary ${summaryRange === 'week' ? 'active' : ''}`}
-                onClick={() => setSummaryRange('week')}
-                style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'week' ? { background: 'rgba(var(--primary-rgb),0.1)', borderColor: 'var(--primary)', color: 'var(--primary)' } : {}) }}
+      {/* ── Trend Analytics Overhaul (SVG Line Chart) ── */}
+      {summaryData.length > 0 && (() => {
+        const width = 600;
+        const height = 200;
+        const paddingLeft = 40;
+        const paddingRight = 20;
+        const paddingTop = 20;
+        const paddingBottom = 30;
+
+        const maxCal = Math.max(
+          ...summaryData.map(d => d.total_calories || 0), 
+          targets.calories * 1.2, 
+          1000
+        );
+
+        const points = summaryData.map((d, index) => {
+          const x = paddingLeft + (index * (width - paddingLeft - paddingRight)) / (summaryData.length - 1 || 1);
+          const y = height - paddingBottom - ((d.total_calories || 0) * (height - paddingTop - paddingBottom)) / maxCal;
+          return { x, y, date: d.date, calories: d.total_calories };
+        });
+
+        const targetY = height - paddingBottom - (targets.calories * (height - paddingTop - paddingBottom)) / maxCal;
+        const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+        
+        const areaPath = points.length > 0 
+          ? `${linePath} L ${points[points.length - 1].x} ${height - paddingBottom} L ${points[0].x} ${height - paddingBottom} Z` 
+          : '';
+
+        return (
+          <div className="card glass" style={{ marginTop: '24px', padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '18px', margin: 0 }}>Trend Analytics</h3>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <button
+                  className={`btn-secondary ${summaryRange === 'week' ? 'active' : ''}`}
+                  onClick={() => { setSummaryRange('week'); setHoveredPoint(null); }}
+                  style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'week' ? { background: 'var(--text-primary)', color: 'var(--bg-primary)' } : {}) }}
+                >
+                  7 Days
+                </button>
+                <button
+                  className={`btn-secondary ${summaryRange === 'month' ? 'active' : ''}`}
+                  onClick={() => { setSummaryRange('month'); setHoveredPoint(null); }}
+                  style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'month' ? { background: 'var(--text-primary)', color: 'var(--bg-primary)' } : {}) }}
+                >
+                  30 Days
+                </button>
+              </div>
+            </div>
+
+            <div style={{ position: 'relative', width: '100%', overflowX: 'auto' }}>
+              <svg 
+                viewBox={`0 0 ${width} ${height}`} 
+                style={{ width: '100%', height: 'auto', background: 'transparent', overflow: 'visible' }}
+                onMouseLeave={() => setHoveredPoint(null)}
               >
-                7 Days
-              </button>
-              <button
-                className={`btn-secondary ${summaryRange === 'month' ? 'active' : ''}`}
-                onClick={() => setSummaryRange('month')}
-                style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'month' ? { background: 'rgba(var(--primary-rgb),0.1)', borderColor: 'var(--primary)', color: 'var(--primary)' } : {}) }}
-              >
-                30 Days
-              </button>
+                <defs>
+                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--accent-1)" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="var(--accent-1)" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+
+                <line 
+                  x1={paddingLeft} y1={targetY} 
+                  x2={width - paddingRight} y2={targetY} 
+                  stroke="var(--accent-1)" 
+                  strokeDasharray="4 4" 
+                  strokeWidth="1.5" 
+                />
+                
+                <line 
+                  x1={paddingLeft} y1={height - paddingBottom} 
+                  x2={width - paddingRight} y2={height - paddingBottom} 
+                  stroke="var(--border-glass)" 
+                  strokeWidth="1" 
+                />
+
+                {areaPath && <path d={areaPath} fill="url(#chartGradient)" />}
+
+                {linePath && (
+                  <path 
+                    d={linePath} 
+                    fill="none" 
+                    stroke="var(--accent-1)" 
+                    strokeWidth="3" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    style={{ transition: 'all 0.3s ease' }}
+                  />
+                )}
+
+                {points.map((p, i) => (
+                  <circle
+                    key={p.date}
+                    cx={p.x}
+                    cy={p.y}
+                    r={hoveredPoint?.date === p.date ? '6' : '4'}
+                    fill="var(--bg-secondary)"
+                    stroke="var(--accent-1)"
+                    strokeWidth="2.5"
+                    style={{ cursor: 'pointer', transition: 'r 0.1s ease, fill 0.1s ease' }}
+                    onMouseEnter={() => setHoveredPoint(p)}
+                    onClick={() => setSelectedDate(p.date)}
+                  />
+                ))}
+
+                <text 
+                  x={width - paddingRight} 
+                  y={targetY - 6} 
+                  fill="var(--accent-1)" 
+                  fontSize="10px" 
+                  fontWeight="bold" 
+                  textAnchor="end"
+                >
+                  Target: {targets.calories} kcal
+                </text>
+
+                {points.filter((_, idx) => summaryRange === 'month' ? idx % 5 === 0 : true).map(p => {
+                  const dateObj = new Date(p.date + 'T12:00:00');
+                  const label = summaryRange === 'month' ? `${dateObj.getMonth() + 1}/${dateObj.getDate()}` : dateObj.toLocaleDateString(undefined, { weekday: 'short' });
+                  return (
+                    <text 
+                      key={p.date} 
+                      x={p.x} 
+                      y={height - 10} 
+                      fill="var(--text-muted)" 
+                      fontSize="10px" 
+                      fontWeight="bold" 
+                      textAnchor="middle"
+                    >
+                      {label}
+                    </text>
+                  );
+                })}
+              </svg>
+
+              {hoveredPoint && (
+                <div style={{
+                  position: 'absolute',
+                  left: `${(hoveredPoint.x / width) * 100}%`,
+                  top: `${(hoveredPoint.y / height) * 100 - 30}%`,
+                  transform: 'translate(-50%, -100%)',
+                  background: 'var(--text-primary)',
+                  color: 'var(--bg-primary)',
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  fontSize: '11px',
+                  fontWeight: 'bold',
+                  boxShadow: 'var(--shadow-card)',
+                  pointerEvents: 'none',
+                  zIndex: 10,
+                  whiteSpace: 'nowrap',
+                  transition: 'left 0.15s ease, top 0.15s ease'
+                }}>
+                  <div style={{ fontSize: '9px', opacity: 0.7 }}>{hoveredPoint.date}</div>
+                  <div>{Math.round(hoveredPoint.calories)} kcal</div>
+                </div>
+              )}
             </div>
           </div>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: `repeat(${summaryRange === 'month' ? 10 : 7}, 1fr)`, 
-            gap: '8px',
-            animation: 'fadeInUp 0.4s ease forwards' 
-          }}>
-            {summaryData.map(day => {
-              const dateObj = new Date(day.date + 'T12:00:00'); // avoid timezone offset issues
-              const calPct = pct(day.total_calories, targets.calories);
-              let color = 'var(--bg-secondary)'; // empty/low
-              let title = `${day.date}: ${Math.round(day.total_calories)} kcal`;
-              let textColor = 'var(--text-muted)';
-              
-              if (calPct > 0) {
-                color = 'rgba(129, 178, 154, 0.2)'; // slight
-              }
-              if (calPct > 50) {
-                color = 'rgba(129, 178, 154, 0.5)'; // half
-              }
-              if (calPct >= 90 && calPct <= 110) {
-                color = '#81b29a'; // perfect
-                textColor = 'white';
-              }
-              if (calPct > 110) {
-                color = 'rgba(224, 122, 95, 0.8)'; // over
-                textColor = 'white';
-              }
-              
-              return (
-                <div 
-                  key={day.date} 
-                  title={title}
-                  style={{ 
-                    aspectRatio: '1', 
-                    background: color, 
-                    borderRadius: '8px', 
-                    border: '1px solid rgba(0,0,0,0.05)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: summaryRange === 'month' ? '0.75rem' : '0.9rem',
-                    fontWeight: '600',
-                    color: textColor,
-                    cursor: 'pointer',
-                    transition: 'transform 0.1s',
-                  }}
-                  onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
-                  onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-                  onClick={() => setSelectedDate(day.date)}
-                >
-                  {dateObj.getDate()}
-                </div>
-              );
-            })}
-          </div>
-          
-          <div style={{ display: 'flex', gap: '16px', marginTop: '20px', fontSize: '0.8rem', color: 'var(--text-muted)', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '14px', height: '14px', background: 'var(--bg-secondary)', borderRadius: '4px' }}/> No Data</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '14px', height: '14px', background: 'rgba(129, 178, 154, 0.5)', borderRadius: '4px' }}/> Logged</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '14px', height: '14px', background: '#81b29a', borderRadius: '4px' }}/> Perfect (±10%)</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '14px', height: '14px', background: 'rgba(224, 122, 95, 0.8)', borderRadius: '4px' }}/> Over</div>
-          </div>
-        </div>
-      )}
+        );
+      })()}
     </section>
   );
 }
