@@ -72,10 +72,10 @@ def seed_demo_data(db: Session = Depends(get_db)):
         db.flush()
 
     # ── 2. Create or Update TDEE profile ─────────────────────────────
-    # Mifflin-St Jeor: BMR = (10 * 67) + (6.25 * 183) - (5 * 21) + 5 = 1713.75 ≈ 1714
-    # TDEE = 1714 * 1.55 = 2656.7 ≈ 2657
-    bmr = 1714
-    tdee = 2657
+    from app.models import UserProfile
+    from app.schemas import TDEERequest
+    from app.routers.tdee import calculate_tdee_macros
+    from app.routers.health_engine import apply_health_adjustments
 
     # Look for an existing profile or create a new one
     from app.models import UserProfile
@@ -95,16 +95,46 @@ def seed_demo_data(db: Session = Depends(get_db)):
     profile.goal = "maintain"
     profile.goal_intensity = "moderate"
     profile.body_fat_percent = None
+    profile.health_conditions = "diabetes,hypertension"
+    profile.taste_preferences = "spicy,savory"
 
-    profile.bmr = bmr
-    profile.tdee_maintenance = tdee
-    profile.target_calories = tdee
-    profile.target_protein = 140
-    profile.target_carbs = 320
-    profile.target_fat = 80
-    profile.target_fiber_g = 30
-    profile.target_water_ml = 3000
-    profile.bmi = round(67.0 / (1.83 ** 2), 1)
+    # Calculate accurate baseline targets
+    req = TDEERequest(
+        age=profile.age,
+        gender=profile.gender,
+        weight_kg=profile.weight_kg,
+        height_cm=profile.height_cm,
+        activity_level=profile.activity_level,
+        goal=profile.goal,
+        goal_intensity=profile.goal_intensity,
+    )
+    result = calculate_tdee_macros(req)
+    profile.bmr = result.bmr
+    profile.tdee_maintenance = result.tdee_maintenance
+    profile.bmi = result.bmi
+    profile.target_calories = result.target_calories
+    profile.target_protein = result.target_protein
+    profile.target_carbs = result.target_carbs
+    profile.target_fat = result.target_fat
+    profile.target_fiber_g = result.target_fiber_g
+    profile.target_water_ml = result.target_water_ml
+
+    # Apply medical-grade health adjustments
+    adj = apply_health_adjustments(
+        base_calories=result.target_calories,
+        base_protein=result.target_protein,
+        base_carbs=result.target_carbs,
+        base_fat=result.target_fat,
+        base_fiber=result.target_fiber_g,
+        base_water=result.target_water_ml,
+        weight_kg=profile.weight_kg,
+        health_conditions_str=profile.health_conditions,
+    )
+    if adj.target_protein is not None: profile.target_protein = adj.target_protein
+    if adj.target_carbs is not None: profile.target_carbs = adj.target_carbs
+    if adj.target_fat is not None: profile.target_fat = adj.target_fat
+    if adj.target_fiber_g is not None: profile.target_fiber_g = adj.target_fiber_g
+    if adj.target_water_ml is not None: profile.target_water_ml = adj.target_water_ml
 
     # Deactivate any other profiles
     db.query(UserProfile).filter(UserProfile.user_id == user.id, UserProfile.id != profile.id).update({"is_active": False})

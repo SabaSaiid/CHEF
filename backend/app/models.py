@@ -149,6 +149,8 @@ class UserProfile(Base):
     display_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
     diet_type: Mapped[str | None] = mapped_column(String(50), nullable=True)  # vegetarian | vegan | non-vegetarian | etc.
     allergens: Mapped[str | None] = mapped_column(String(500), nullable=True)  # Comma-separated list of allergens
+    health_conditions: Mapped[str | None] = mapped_column(String(500), nullable=True)  # Comma-separated: diabetes,hypertension,high_cholesterol,etc.
+    taste_preferences: Mapped[str | None] = mapped_column(String(500), nullable=True)  # Comma-separated: spicy,mild,sweet,savory,tangy,smoky
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     # ── Physical Attributes ───────────────────────────────────────

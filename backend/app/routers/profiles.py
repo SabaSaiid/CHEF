@@ -12,6 +12,7 @@ from app.models import User, UserProfile
 from app.schemas import UserProfileCreate, UserProfileUpdate, UserProfileResponse, TDEERequest
 from app.auth import get_current_user
 from app.routers.tdee import calculate_tdee_macros
+from app.routers.health_engine import apply_health_adjustments
 
 router = APIRouter(prefix="/api/profiles", tags=["profiles"])
 
@@ -39,6 +40,8 @@ def create_profile(body: UserProfileCreate, current_user: User = Depends(get_cur
         display_name=body.display_name,
         diet_type=body.diet_type,
         allergens=body.allergens,
+        health_conditions=body.health_conditions,
+        taste_preferences=body.taste_preferences,
         age=body.age,
         gender=body.gender,
         weight_kg=body.weight_kg,
@@ -64,6 +67,8 @@ def update_profile(profile_id: int, body: UserProfileUpdate, current_user: User 
     profile.display_name = body.display_name
     profile.diet_type = body.diet_type
     profile.allergens = body.allergens
+    profile.health_conditions = body.health_conditions
+    profile.taste_preferences = body.taste_preferences
     profile.age = body.age
     profile.gender = body.gender
     profile.weight_kg = body.weight_kg
@@ -125,5 +130,29 @@ def _calculate_and_save_targets(profile: UserProfile, data) -> None:
         profile.bmi = result.bmi
         profile.target_fiber_g = result.target_fiber_g
         profile.target_water_ml = result.target_water_ml
+
+        # Apply health condition adjustments if any
+        health_conditions = getattr(data, 'health_conditions', None) or getattr(profile, 'health_conditions', None)
+        if health_conditions:
+            adj = apply_health_adjustments(
+                base_calories=result.target_calories,
+                base_protein=result.target_protein,
+                base_carbs=result.target_carbs,
+                base_fat=result.target_fat,
+                base_fiber=result.target_fiber_g,
+                base_water=result.target_water_ml,
+                weight_kg=data.weight_kg,
+                health_conditions_str=health_conditions,
+            )
+            if adj.target_protein is not None:
+                profile.target_protein = adj.target_protein
+            if adj.target_carbs is not None:
+                profile.target_carbs = adj.target_carbs
+            if adj.target_fat is not None:
+                profile.target_fat = adj.target_fat
+            if adj.target_fiber_g is not None:
+                profile.target_fiber_g = adj.target_fiber_g
+            if adj.target_water_ml is not None:
+                profile.target_water_ml = adj.target_water_ml
     except Exception:
         pass

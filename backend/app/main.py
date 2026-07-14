@@ -29,7 +29,7 @@ from app.config import settings
 from app.database import Base, engine
 
 from app.routers import (
-    ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo, profiles, pantry, weight, tdee_adaptive
+    ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo, profiles, pantry, weight, tdee_adaptive, diet_planner
 )
 
 
@@ -86,12 +86,18 @@ async def lifespan(app: FastAPI):
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
             
-            # Check allergens column in user_profiles
+            # Check columns in user_profiles
             cursor.execute("PRAGMA table_info(user_profiles);")
             cols = [col[1] for col in cursor.fetchall()]
             if "allergens" not in cols:
                 logger.info("🔧 Adding 'allergens' column to table 'user_profiles'")
                 cursor.execute("ALTER TABLE user_profiles ADD COLUMN allergens VARCHAR(500);")
+            if "health_conditions" not in cols:
+                logger.info("🔧 Adding 'health_conditions' column to table 'user_profiles'")
+                cursor.execute("ALTER TABLE user_profiles ADD COLUMN health_conditions VARCHAR(500);")
+            if "taste_preferences" not in cols:
+                logger.info("🔧 Adding 'taste_preferences' column to table 'user_profiles'")
+                cursor.execute("ALTER TABLE user_profiles ADD COLUMN taste_preferences VARCHAR(500);")
                 
             # Create pantry_items table
             cursor.execute("""
@@ -192,6 +198,7 @@ app.include_router(profiles.router)
 app.include_router(pantry.router)
 app.include_router(weight.router)
 app.include_router(tdee_adaptive.router)
+app.include_router(diet_planner.router)
 
 
 # ── Custom branded Swagger UI ──────────────────────────────────

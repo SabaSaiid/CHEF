@@ -434,6 +434,8 @@ class UserProfileCreate(BaseModel):
         description="vegetarian | vegan | non-vegetarian | pescatarian | keto | gluten-free"
     )
     allergens: Optional[str] = Field(None, description="Comma-separated list of allergens")
+    health_conditions: Optional[str] = Field(None, description="Comma-separated: diabetes,hypertension,hypotension,high_cholesterol,pcos,kidney_disease,thyroid,anemia")
+    taste_preferences: Optional[str] = Field(None, description="Comma-separated: spicy,mild,sweet,savory,tangy,smoky")
     age: Optional[int] = Field(None, gt=0, lt=120)
     gender: Optional[str] = Field(None, pattern="^(male|female)$")
     weight_kg: Optional[float] = Field(None, gt=0)
@@ -458,6 +460,8 @@ class UserProfileResponse(BaseModel):
     display_name: Optional[str] = None
     diet_type: Optional[str] = None
     allergens: Optional[str] = None
+    health_conditions: Optional[str] = None
+    taste_preferences: Optional[str] = None
     is_active: bool
 
     age: Optional[int] = None

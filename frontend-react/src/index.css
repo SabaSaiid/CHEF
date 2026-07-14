@@ -3454,31 +3454,64 @@ h6 {
 
 .profile-switcher-card {
     position: relative;
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 14px;
-    padding: 14px 18px;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 20px;
+    padding: 18px 22px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 130px;
-    max-width: 200px;
+    transition: var(--spring);
+    min-width: 140px;
+    max-width: 220px;
     text-align: left;
     font-family: inherit;
+    box-shadow: var(--shadow-card), var(--glass-highlight);
+    overflow: hidden;
+}
+
+.profile-switcher-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: var(--transition);
 }
 
 .profile-switcher-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.15);
+    transform: translateY(-4px) scale(1.02);
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow-card-hover), var(--glass-highlight);
+    border-color: transparent;
+}
+
+.profile-switcher-card:hover::before {
+    opacity: 1;
+    background: var(--gradient-primary);
 }
 
 .profile-switcher-card.active {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08), rgba(var(--primary-rgb), 0.02));
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--primary-rgb), 0.02));
+    border-color: transparent;
+    box-shadow: var(--shadow-glow), var(--glass-highlight);
+    transform: scale(1.02);
+}
+
+.profile-switcher-card.active::before {
+    opacity: 1;
+    background: var(--primary);
 }
 
 .profile-switcher-card.new-card {
-    border-style: dashed;
+    border: 2px dashed rgba(var(--primary-rgb), 0.3);
+    background: transparent;
+    box-shadow: none;
     opacity: 0.7;
     display: flex;
     align-items: center;
@@ -3546,48 +3579,70 @@ h6 {
 }
 
 .diet-pill {
-    padding: 8px 14px;
+    padding: 10px 18px;
     border-radius: 30px;
-    border: 2px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-primary);
+    border: var(--glass-border);
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    color: var(--text-primary) !important;
     font-family: inherit;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--spring);
+    box-shadow: var(--shadow-card), var(--glass-highlight);
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .diet-pill:hover {
-    border-color: var(--primary);
-    background: rgba(var(--primary-rgb), 0.06);
+    transform: translateY(-2px);
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow-card-hover);
 }
 
 .diet-pill.active {
-    border-color: var(--primary);
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+    border-color: transparent !important;
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.4), var(--glass-highlight);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* ── Profile Form Section Divider ───────────────────────────────── */
 .profile-form-divider {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--text-secondary);
-    margin: 20px 0 14px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-color);
+    color: var(--primary);
+    margin: 32px 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-form-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.3), transparent);
 }
 
 /* ── Methodology Accordion ──────────────────────────────────────── */
 .methodology-accordion {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: var(--shadow-card), var(--glass-highlight);
+    transition: var(--spring);
+}
+
+.methodology-accordion:hover {
+    box-shadow: var(--shadow-card-hover), var(--glass-highlight);
 }
 
 .accordion-toggle {
@@ -3595,24 +3650,25 @@ h6 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 18px;
-    background: none;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.1);
     border: none;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: background 0.3s ease;
 }
 
 .accordion-toggle:hover {
-    color: var(--text-primary);
+    background: rgba(var(--primary-rgb), 0.05);
 }
 
 .accordion-arrow {
-    font-size: 14px;
-    transition: transform 0.2s ease;
+    font-size: 16px;
+    color: var(--primary);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .accordion-body {

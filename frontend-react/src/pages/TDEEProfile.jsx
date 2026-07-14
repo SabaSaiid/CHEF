@@ -17,6 +17,8 @@ const EMPTY_FORM = {
   display_name: '',
   diet_type: 'non-vegetarian',
   allergens: '',
+  health_conditions: '',
+  taste_preferences: '',
   age: '',
   gender: 'male',
   weight_kg: '',
@@ -26,6 +28,26 @@ const EMPTY_FORM = {
   goal_intensity: 'moderate',
   body_fat_percent: '',
 };
+
+const HEALTH_CONDITIONS = [
+  { value: 'diabetes', label: 'Diabetes (Type 2)', icon: '🩸' },
+  { value: 'hypertension', label: 'High BP', icon: '❤️‍🔥' },
+  { value: 'hypotension', label: 'Low BP', icon: '💙' },
+  { value: 'high_cholesterol', label: 'High Cholesterol', icon: '🫀' },
+  { value: 'pcos', label: 'PCOS', icon: '🔬' },
+  { value: 'kidney_disease', label: 'Kidney Disease', icon: '🫘' },
+  { value: 'thyroid', label: 'Thyroid', icon: '🦋' },
+  { value: 'anemia', label: 'Anemia', icon: '🩺' },
+];
+
+const TASTE_PREFERENCES = [
+  { value: 'spicy', label: 'Spicy 🌶️' },
+  { value: 'mild', label: 'Mild 🌿' },
+  { value: 'sweet', label: 'Sweet 🍯' },
+  { value: 'savory', label: 'Savory 🧄' },
+  { value: 'tangy', label: 'Tangy 🍋' },
+  { value: 'smoky', label: 'Smoky 🔥' },
+];
 
 export default function TDEEProfile() {
   const { token, refreshActiveProfile } = useContext(AuthContext);
@@ -40,6 +62,7 @@ export default function TDEEProfile() {
   const [showNewForm, setShowNewForm] = useState(false);
   const [weightInput, setWeightInput] = useState('');
   const [adaptiveLoading, setAdaptiveLoading] = useState(false);
+  const [dietPlanLoading, setDietPlanLoading] = useState(false);
 
   const loadProfiles = async () => {
     if (!token) return;
@@ -90,6 +113,8 @@ export default function TDEEProfile() {
       display_name:     profile.display_name || '',
       diet_type:        profile.diet_type || 'non-vegetarian',
       allergens:        profile.allergens || '',
+      health_conditions: profile.health_conditions || '',
+      taste_preferences: profile.taste_preferences || '',
       age:              profile.age || '',
       gender:           profile.gender || 'male',
       weight_kg:        profile.weight_kg || '',
@@ -113,6 +138,11 @@ export default function TDEEProfile() {
       newList = [...list, allergen];
     }
     setFormData({ ...formData, allergens: newList.join(',') });
+  };
+  const handleToggle = (field, value) => {
+    const list = formData[field] ? formData[field].split(',').map(s => s.trim()).filter(Boolean) : [];
+    const newList = list.includes(value) ? list.filter(item => item !== value) : [...list, value];
+    setFormData({ ...formData, [field]: newList.join(',') });
   };
 
   const handleSelectProfile = async (profile) => {
@@ -199,13 +229,32 @@ export default function TDEEProfile() {
     }
   };
 
+  const handleGenerateDietPlan = async () => {
+    setDietPlanLoading(true);
+    try {
+      const data = await api.post('/diet-plan/generate');
+      toast.success(data.message);
+    } catch (err) {
+      toast.error(err.detail || err.message);
+    } finally {
+      setDietPlanLoading(false);
+    }
+  };
+
   const selectStyle = { width: '100%', borderRadius: '10px', background: 'rgba(255,255,255,0.6)' };
 
   return (
     <section className="page active">
-      <div className="page-header">
-        <h1>Profile Settings</h1>
-        <p className="subtitle">Configure your personalized daily calorie and nutrition targets.</p>
+      <div className="page-header" style={{ marginBottom: '32px' }}>
+        <h1 style={{ 
+          background: 'var(--gradient-primary)', 
+          WebkitBackgroundClip: 'text', 
+          WebkitTextFillColor: 'transparent',
+          display: 'inline-block',
+          fontSize: '2.4rem',
+          letterSpacing: '-0.03em'
+        }}>Profile Settings</h1>
+        <p className="subtitle" style={{ fontSize: '1.1rem', opacity: 0.8, marginTop: '8px' }}>Configure your personalized daily calorie and nutrition targets.</p>
       </div>
 
       {/* ── Profile Switcher ── */}
@@ -285,6 +334,52 @@ export default function TDEEProfile() {
                     }}
                   >
                     {allg}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="form-group" style={{ marginTop: '15px' }}>
+            <label>Health Conditions <span style={{opacity:0.5,fontSize:'0.8em'}}>(select all that apply)</span></label>
+            <div className="diet-pill-selector" style={{ marginTop: '5px' }}>
+              {HEALTH_CONDITIONS.map(cond => {
+                const list = formData.health_conditions ? formData.health_conditions.split(',').map(s => s.trim()) : [];
+                const isActive = list.includes(cond.value);
+                return (
+                  <button key={cond.value} type="button"
+                    className={`diet-pill ${isActive ? 'active' : ''}`}
+                    onClick={() => handleToggle('health_conditions', cond.value)}
+                    style={{ 
+                      borderColor: isActive ? '#e74c3c' : 'var(--border-glass)', 
+                      color: isActive ? '#e74c3c' : 'inherit',
+                      background: isActive ? 'rgba(231, 76, 60, 0.08)' : 'transparent'
+                    }}
+                  >
+                    {cond.icon} {cond.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="form-group" style={{ marginTop: '15px' }}>
+            <label>Taste Preferences</label>
+            <div className="diet-pill-selector" style={{ marginTop: '5px' }}>
+              {TASTE_PREFERENCES.map(taste => {
+                const list = formData.taste_preferences ? formData.taste_preferences.split(',').map(s => s.trim()) : [];
+                const isActive = list.includes(taste.value);
+                return (
+                  <button key={taste.value} type="button"
+                    className={`diet-pill ${isActive ? 'active' : ''}`}
+                    onClick={() => handleToggle('taste_preferences', taste.value)}
+                    style={{ 
+                      borderColor: isActive ? '#f39c12' : 'var(--border-glass)', 
+                      color: isActive ? '#f39c12' : 'inherit',
+                      background: isActive ? 'rgba(243, 156, 18, 0.08)' : 'transparent'
+                    }}
+                  >
+                    {taste.label}
                   </button>
                 );
               })}
@@ -546,6 +641,28 @@ export default function TDEEProfile() {
               </div>
             )}
           </div>
+
+          {/* Generate Weekly Diet Plan */}
+          {token && selectedId && !showNewForm && (
+            <div className="card glass" style={{ marginTop: '16px', padding: '20px' }}>
+              <div className="nutrition-header" style={{ marginBottom: '8px' }}>🍽️ Auto Weekly Diet Plan</div>
+              <p style={{fontSize:'13px', color:'var(--text-secondary)', marginBottom:'16px'}}>
+                Generate a full 7-day meal plan (Breakfast, Lunch, Snack, Dinner) tailored to your targets, health conditions, and taste preferences from our 5,250+ recipe database.
+              </p>
+              <button
+                type="button"
+                onClick={handleGenerateDietPlan}
+                className={`btn-primary btn-full ${dietPlanLoading ? 'loading' : ''}`}
+                disabled={dietPlanLoading}
+                style={{ background: 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)' }}
+              >
+                {dietPlanLoading ? 'Generating...' : 'Generate Weekly Diet Plan'}
+              </button>
+              <p style={{fontSize:'11px', color:'var(--text-secondary)', textAlign:'center', marginTop:'8px'}}>
+                This will replace your current week's meal plan. View it in the Meal Planner page.
+              </p>
+            </div>
+          )}
         </div>
       )}
     </section>
