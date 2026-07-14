@@ -497,6 +497,23 @@ class WaterLogResponse(BaseModel):
     logged_at: datetime
 
 
+# ── Weight Logs (Adaptive TDEE Tracking) ─────────────────────────
+
+class WeightLogCreate(BaseModel):
+    """Request body to log daily weight."""
+    weight_kg: float = Field(..., gt=0, description="Weight in kg")
+    date: Optional[str] = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$", description="YYYY-MM-DD")
+
+class WeightLogResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    weight_kg: float
+    date: str
+    logged_at: datetime
+
+
 # ── Pantry Inventory ──────────────────────────────────────────
 
 class PantryItemCreate(BaseModel):

@@ -6,6 +6,8 @@ weight-based protein targets.
 References:
   • Mifflin-St Jeor (1990)  — doi:10.1093/ajcn/51.2.241
   • Katch-McArdle (1996)    — uses lean body mass when body-fat % is known
+  • Cunningham (1980)       — alternative for athletes with known LBM
+  • Dynamic TEF Adjustment  — factors in thermic effect of high-protein diets
   • ISSN position stand     — protein 1.4–2.2 g/kg for active individuals
   • WHO BMI classification  — https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index
 """
@@ -92,12 +94,18 @@ def _bmr_katch_mcardle(weight_kg: float, body_fat_pct: float) -> float:
     return 370 + (21.6 * lean_body_mass)
 
 
+def _bmr_cunningham(weight_kg: float, body_fat_pct: float) -> float:
+    """Cunningham equation — heavily favored for athletic/muscular individuals."""
+    lean_body_mass = weight_kg * (1 - body_fat_pct / 100)
+    return 500 + (22 * lean_body_mass)
+
+
 def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
     """
     Core TDEE engine with clinical-grade accuracy.
 
     Pipeline:
-      1. BMR  — Katch-McArdle (if body fat known) or Mifflin-St Jeor
+      1. BMR  — Cunningham / Katch-McArdle (if body fat known) or Mifflin-St Jeor
       2. TDEE — BMR × activity multiplier
       3. Goal — percentage-based deficit/surplus (not flat ±500)
       4. Safety — never drop below BMR
@@ -109,8 +117,13 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
 
     # ─── 1. Basal Metabolic Rate ─────────────────────────────────────
     if req.body_fat_percent is not None:
-        bmr = _bmr_katch_mcardle(req.weight_kg, req.body_fat_percent)
-        formula_used = "Katch-McArdle"
+        # If very active/athletic, use Cunningham, else Katch-McArdle
+        if req.activity_level in ["very_active", "extra_active"]:
+            bmr = _bmr_cunningham(req.weight_kg, req.body_fat_percent)
+            formula_used = "Cunningham"
+        else:
+            bmr = _bmr_katch_mcardle(req.weight_kg, req.body_fat_percent)
+            formula_used = "Katch-McArdle"
     else:
         bmr = _bmr_mifflin(req.weight_kg, req.height_cm, req.age, req.gender)
         formula_used = "Mifflin-St Jeor"
@@ -166,9 +179,22 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
         carbs_calories = 0
     target_carbs = int(round(carbs_calories / 4))
 
+    # ─── Dynamic TEF Adjustment (Thermic Effect of Food) ─────────────
+    # Standard multipliers assume a mixed diet with ~10% TEF.
+    # If the diet is very high protein, TEF increases, meaning we can
+    # slightly increase the target calories to account for calories burned digesting.
+    protein_ratio = protein_calories / target_calories if target_calories > 0 else 0
+    if protein_ratio > 0.25:
+        # For every 5% protein above 25%, add ~1% to total caloric expenditure
+        tef_bonus_pct = ((protein_ratio - 0.25) / 0.05) * 0.01
+        tef_adjustment = target_calories * tef_bonus_pct
+        target_calories += int(round(tef_adjustment))
+        # Add the bonus calories to carbs to fuel workouts
+        target_carbs += int(round(tef_adjustment / 4))
+        
     # ─── Actual macro percentages ────────────────────────────────────
     protein_pct_actual = int(round((protein_calories / target_calories) * 100)) if target_calories > 0 else 0
-    carbs_pct_actual = int(round((carbs_calories / target_calories) * 100)) if target_calories > 0 else 0
+    carbs_pct_actual = int(round(((target_carbs * 4) / target_calories) * 100)) if target_calories > 0 else 0
     fat_pct_actual = 100 - protein_pct_actual - carbs_pct_actual  # ensure they sum to 100
 
     # ─── 8. Fiber & Water ────────────────────────────────────────────

@@ -38,6 +38,8 @@ export default function TDEEProfile() {
   const [loading, setLoading] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [showNewForm, setShowNewForm] = useState(false);
+  const [weightInput, setWeightInput] = useState('');
+  const [adaptiveLoading, setAdaptiveLoading] = useState(false);
 
   const loadProfiles = async () => {
     if (!token) return;
@@ -171,6 +173,30 @@ export default function TDEEProfile() {
       }
     } catch (err) { toast.error(err.message); }
     finally { setLoading(false); }
+  };
+
+  const handleLogWeight = async (e) => {
+    e.preventDefault();
+    if (!weightInput) return;
+    try {
+      await api.post('/weight/log', { weight_kg: parseFloat(weightInput) });
+      toast.success('Weight logged for today!');
+      setWeightInput('');
+    } catch (err) { toast.error(err.message); }
+  };
+
+  const handleAdaptiveCalculate = async () => {
+    setAdaptiveLoading(true);
+    try {
+      const data = await api.post('/tdee/adaptive/calculate');
+      toast.success(data.message);
+      loadProfiles();
+      refreshActiveProfile();
+    } catch (err) {
+      toast.error(err.detail || err.message);
+    } finally {
+      setAdaptiveLoading(false);
+    }
   };
 
   const selectStyle = { width: '100%', borderRadius: '10px', background: 'rgba(255,255,255,0.6)' };
@@ -338,6 +364,45 @@ export default function TDEEProfile() {
           )}
         </form>
       </div>
+
+      {/* ── Adaptive TDEE Tools ── */}
+      {token && selectedId && !showNewForm && (
+        <div className="card glass" style={{ marginTop: '20px' }}>
+          <div className="nutrition-header" style={{ marginBottom: '16px' }}>Adaptive TDEE Tracking</div>
+          <p style={{fontSize:'13px', color:'var(--text-secondary)', marginBottom:'16px'}}>
+            Log your weight daily. The algorithm will cross-reference it with your food logs to calculate your true, 100% precise metabolic rate.
+          </p>
+          <form onSubmit={handleLogWeight} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+            <input 
+              type="number" 
+              value={weightInput} 
+              onChange={(e) => setWeightInput(e.target.value)} 
+              step="0.1" 
+              min="30" 
+              max="300" 
+              placeholder="Today's Weight (kg)" 
+              className="form-input" 
+              required 
+            />
+            <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>Log Weight</button>
+          </form>
+
+          <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px' }}>
+            <button 
+              type="button" 
+              onClick={handleAdaptiveCalculate} 
+              className={`btn-primary btn-full ${adaptiveLoading ? 'loading' : ''}`}
+              disabled={adaptiveLoading}
+              style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
+            >
+              {adaptiveLoading ? 'Calculating...' : 'Recalculate True Adaptive TDEE'}
+            </button>
+            <p style={{fontSize:'11px', color:'var(--text-secondary)', textAlign:'center', marginTop:'8px'}}>
+              Requires at least 7-14 days of combined food and weight logs.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ── Results ── */}
       {results && (

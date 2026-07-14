@@ -56,8 +56,8 @@ def seed_demo_data(db: Session = Depends(get_db)):
     """
 
     # ── 1. Create or find demo user ─────────────────────────────
-    DEMO_USERNAME = "Saba"
-    DEMO_EMAIL = "saba@demo.chef"
+    DEMO_USERNAME = "ZamZam"
+    DEMO_EMAIL = "zamzam@demo.chef"
     DEMO_PASSWORD = "demo123"
 
     user = db.query(User).filter(User.username == DEMO_USERNAME).first()
@@ -72,10 +72,10 @@ def seed_demo_data(db: Session = Depends(get_db)):
         db.flush()
 
     # ── 2. Create or Update TDEE profile ─────────────────────────────
-    # Mifflin-St Jeor: BMR = (10 * 70) + (6.25 * 178) - (5 * 21) + 5 = 1712.5 ≈ 1713
-    # TDEE = 1713 * 1.55 = 2655.15 ≈ 2655
-    bmr = 1713
-    tdee = 2655
+    # Mifflin-St Jeor: BMR = (10 * 67) + (6.25 * 183) - (5 * 21) + 5 = 1713.75 ≈ 1714
+    # TDEE = 1714 * 1.55 = 2656.7 ≈ 2657
+    bmr = 1714
+    tdee = 2657
 
     # Look for an existing profile or create a new one
     from app.models import UserProfile
@@ -84,13 +84,13 @@ def seed_demo_data(db: Session = Depends(get_db)):
         profile = UserProfile(user_id=user.id, profile_name="Demo Profile")
         db.add(profile)
     
-    profile.display_name = "Saba"
+    profile.display_name = "ZamZam"
     profile.diet_type = "non-vegetarian"
     profile.is_active = True
     profile.age = 21
     profile.gender = "male"
-    profile.weight_kg = 70.0
-    profile.height_cm = 178.0  # 5 feet 10 inches
+    profile.weight_kg = 67.0
+    profile.height_cm = 183.0
     profile.activity_level = "moderately_active"
     profile.goal = "maintain"
     profile.goal_intensity = "moderate"
@@ -104,7 +104,7 @@ def seed_demo_data(db: Session = Depends(get_db)):
     profile.target_fat = 80
     profile.target_fiber_g = 30
     profile.target_water_ml = 3000
-    profile.bmi = round(70.0 / (1.78 ** 2), 1)
+    profile.bmi = round(67.0 / (1.83 ** 2), 1)
 
     # Deactivate any other profiles
     db.query(UserProfile).filter(UserProfile.user_id == user.id, UserProfile.id != profile.id).update({"is_active": False})

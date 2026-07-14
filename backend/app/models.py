@@ -209,6 +209,25 @@ class WaterLog(Base):
         return f"<WaterLog id={self.id} amount={self.amount_ml}ml date={self.date}>"
 
 
+class WeightLog(Base):
+    """A user's logged daily weight for adaptive TDEE calculation."""
+    __tablename__ = "weight_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    weight_kg: Mapped[float] = mapped_column(Float, nullable=False)
+    date: Mapped[str] = mapped_column(String(10), nullable=False, index=True)  # YYYY-MM-DD
+    logged_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    # Relationship
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<WeightLog id={self.id} weight={self.weight_kg}kg date={self.date}>"
+
+
 class PantryItem(Base):
     """A user's inventory of ingredients currently in stock at home."""
     __tablename__ = "pantry_items"
