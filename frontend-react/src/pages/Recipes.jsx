@@ -20,7 +20,26 @@ export default function Recipes() {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState('best_match');
   const didInitRef = useRef(false);
+
+  const loadPantry = async () => {
+    try {
+      setLoading(true);
+      const data = await api.get('/pantry');
+      if (data && data.length > 0) {
+        const pantryIngs = data.map(item => item.name).join(', ');
+        setIngredients(pantryIngs);
+        toast.success("Loaded ingredients from pantry!");
+      } else {
+        toast.info("Your pantry is empty.");
+      }
+    } catch (err) {
+      toast.error("Failed to load pantry.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearch = useCallback(async (pageNum = 1) => {
     const actualPage = typeof pageNum === 'number' ? pageNum : 1;
@@ -37,6 +56,7 @@ export default function Recipes() {
       if (mealType) body.meal_type = mealType;
       if (maxCal) body.max_calories = parseInt(maxCal, 10);
       if (maxTime) body.max_time = parseInt(maxTime, 10);
+      if (sortBy && sortBy !== 'best_match') body.sort_by = sortBy;
 
       const data = await api.post('/recipes/search', body);
       setResults(data);
@@ -50,7 +70,7 @@ export default function Recipes() {
     } finally {
       setLoading(false);
     }
-  }, [ingredients, diet, region, mealType, maxCal, maxTime]);
+  }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy]);
 
   useEffect(() => {
     if (location.state?.ingredients && !didInitRef.current) {
@@ -65,6 +85,7 @@ export default function Recipes() {
     setMealType('');
     setMaxCal('');
     setMaxTime('');
+    setSortBy('best_match');
     setError(null);
     setPage(1);
   };
@@ -109,6 +130,9 @@ export default function Recipes() {
           <button className={`btn-primary ${loading ? 'loading' : ''}`} onClick={() => handleSearch(1)} disabled={loading}>
             <span className="btn-icon">🍽️</span> Search
           </button>
+          <button className="btn-secondary" onClick={loadPantry} disabled={loading} style={{marginLeft: '10px'}}>
+            <span className="btn-icon">🛒</span> Use My Pantry
+          </button>
         </div>
         <div className="constraints-row">
           <span className="constraints-label">⚙️ Filters</span>
@@ -140,6 +164,12 @@ export default function Recipes() {
             <option value="gluten-free">🌾 Gluten-Free</option>
             <option value="high-protein">💪 High-Protein</option>
             <option value="non-vegetarian">🍖 Non-Vegetarian</option>
+          </select>
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+            <option value="best_match">Sort by: Best Match</option>
+            <option value="fastest">Sort by: Fastest</option>
+            <option value="lowest_calories">Sort by: Lowest Calories</option>
+            <option value="highest_protein">Sort by: Highest Protein</option>
           </select>
           <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
           <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />

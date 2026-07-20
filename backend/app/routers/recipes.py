@@ -348,6 +348,13 @@ async def search_recipes(req: RecipeSearchRequest):
         total_needed = req.max_results * req.page
         api_results = await _search_spoonacular(req.ingredients, total_needed, req.diet, req.max_time)
         if api_results is not None:
+            if req.sort_by == "fastest":
+                api_results.sort(key=lambda r: r.ready_in_minutes or 9999)
+            elif req.sort_by == "lowest_calories":
+                api_results.sort(key=lambda r: r.nutrition.calories if r.nutrition else 99999)
+            elif req.sort_by == "highest_protein":
+                api_results.sort(key=lambda r: r.nutrition.protein_g if r.nutrition and r.nutrition.protein_g else 0, reverse=True)
+            
             start_idx = (req.page - 1) * req.max_results
             end_idx = start_idx + req.max_results
             return RecipeSearchResponse(
@@ -402,13 +409,20 @@ async def search_recipes(req: RecipeSearchRequest):
         scored.append(recipe.model_copy(update={"match_score": score}))
 
     # Step 5: Sort
-    if not req.ingredients:
-        scored.sort(
-            key=lambda r: (1 if r.region and r.region.lower() == "bihar" else 0, r.popularity),
-            reverse=True
-        )
+    if req.sort_by == "fastest":
+        scored.sort(key=lambda r: (r.ready_in_minutes or 9999, -r.match_score))
+    elif req.sort_by == "lowest_calories":
+        scored.sort(key=lambda r: (r.nutrition.calories if r.nutrition else 99999, -r.match_score))
+    elif req.sort_by == "highest_protein":
+        scored.sort(key=lambda r: (r.nutrition.protein_g if r.nutrition and r.nutrition.protein_g else 0), reverse=True)
     else:
-        scored.sort(key=lambda r: (r.match_score, r.popularity), reverse=True)
+        if not req.ingredients:
+            scored.sort(
+                key=lambda r: (1 if r.region and r.region.lower() == "bihar" else 0, r.popularity),
+                reverse=True
+            )
+        else:
+            scored.sort(key=lambda r: (r.match_score, r.popularity), reverse=True)
 
     start_idx = (req.page - 1) * req.max_results
     end_idx = start_idx + req.max_results

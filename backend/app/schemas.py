@@ -218,6 +218,7 @@ class RecipeSearchRequest(BaseModel):
     )
     region: Optional[str] = Field(None, description="Region filter e.g. Bihar, Punjab, South Indian")
     meal_type: Optional[str] = Field(None, description="Breakfast | Lunch | Dinner | Snack")
+    sort_by: Optional[str] = Field(None, description="best_match | fastest | lowest_calories | highest_protein")
 
 
 class RecipeSearchResponse(BaseModel):

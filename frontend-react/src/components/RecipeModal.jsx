@@ -114,6 +114,17 @@ export default function RecipeModal({ recipe, onClose }) {
   const [showDeductModal, setShowDeductModal] = useState(false);
   const [deductList, setDeductList] = useState([]);
 
+  // Servings state
+  const [targetServings, setTargetServings] = useState(recipe.servings || 1);
+  const defaultServings = recipe.servings || 1;
+  const servingRatio = targetServings / defaultServings;
+
+  useEffect(() => {
+    if (recipe) {
+      setTargetServings(recipe.servings || 1);
+    }
+  }, [recipe]);
+
   useEffect(() => {
     if (token) {
       api.get('/pantry')
@@ -454,6 +465,26 @@ export default function RecipeModal({ recipe, onClose }) {
               <img src={recipe.image_url} alt={recipe.title} style={{width: '100%', height: '250px', objectFit: 'cover', borderRadius: '12px', marginTop: '15px', marginBottom: '15px'}} />
             ) : null}
 
+            {/* Servings Adjuster */}
+            {recipe.ingredients && recipe.ingredients.length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '15px', padding: '10px 15px', background: 'rgba(242, 204, 143, 0.1)', borderRadius: '10px' }}>
+                <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>Servings:</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <button 
+                    className="nav-btn" 
+                    onClick={() => setTargetServings(prev => Math.max(1, prev - 1))}
+                    style={{ padding: '4px 10px', fontSize: '14px' }}
+                  >-</button>
+                  <span style={{ fontWeight: '700', fontSize: '1.1rem', minWidth: '30px', textAlign: 'center' }}>{targetServings}</span>
+                  <button 
+                    className="nav-btn" 
+                    onClick={() => setTargetServings(prev => prev + 1)}
+                    style={{ padding: '4px 10px', fontSize: '14px' }}
+                  >+</button>
+                </div>
+              </div>
+            )}
+
             {/* Ingredients Check List */}
             {recipe.ingredients && recipe.ingredients.length > 0 && (
               <div className="modal-section" style={{marginTop: '15px'}}>
@@ -465,7 +496,15 @@ export default function RecipeModal({ recipe, onClose }) {
                       <li key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
                           <span style={{ color: check.inStock ? '#27ae60' : 'var(--text-primary)', fontWeight: check.inStock ? '600' : 'normal' }}>
-                            {check.inStock ? '🟢' : '🔴'} {ing} {check.inStock && <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>(In Pantry)</span>}
+                            {check.inStock ? '🟢' : '🔴'} {ing.replace(/^([\d\.\/\s\-–]+)?/, (match) => {
+                               // Extract the quantity part and scale it
+                               const parsed = parseIngredient(ing);
+                               if (parsed.qty > 0) {
+                                  const scaledQty = Number((parsed.qty * servingRatio).toFixed(2));
+                                  return `${scaledQty} `;
+                               }
+                               return match;
+                            })} {check.inStock && <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>(In Pantry)</span>}
                           </span>
                           {!check.inStock && (
                             <button 
@@ -493,25 +532,45 @@ export default function RecipeModal({ recipe, onClose }) {
 
             {recipe.nutrition && (
               <div className="modal-section" style={{marginTop: '15px'}}>
-                <h3>Nutrition</h3>
-                <div className="nutrition-grid" style={{marginTop: '8px'}}>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value calories">{recipe.nutrition.calories}<span className="nutrient-unit"> kcal</span></div>
-                    <div className="nutrient-label">Calories</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{recipe.nutrition.protein_g || recipe.protein_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Protein</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{recipe.nutrition.carbs_g || recipe.carbs_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Carbs</div>
-                  </div>
-                  <div className="nutrient-box">
-                    <div className="nutrient-value">{recipe.nutrition.fat_g || recipe.fat_g}<span className="nutrient-unit">g</span></div>
-                    <div className="nutrient-label">Fat</div>
-                  </div>
-                </div>
+                <h3>Nutrition (per {targetServings} serving{targetServings > 1 ? 's' : ''})</h3>
+                
+                {(() => {
+                  const protein = recipe.nutrition.protein_g || recipe.protein_g || 0;
+                  const carbs = recipe.nutrition.carbs_g || recipe.carbs_g || 0;
+                  const fat = recipe.nutrition.fat_g || recipe.fat_g || 0;
+                  const totalMacros = protein + carbs + fat;
+                  const pPct = totalMacros ? (protein / totalMacros) * 100 : 0;
+                  const cPct = totalMacros ? (carbs / totalMacros) * 100 : 0;
+                  const fPct = totalMacros ? (fat / totalMacros) * 100 : 0;
+                  
+                  return (
+                    <>
+                      <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', marginTop: '10px', marginBottom: '15px' }}>
+                        {pPct > 0 && <div style={{ width: `${pPct}%`, background: '#e07a5f' }} title={`Protein: ${Math.round(pPct)}%`} />}
+                        {cPct > 0 && <div style={{ width: `${cPct}%`, background: '#f2cc8f' }} title={`Carbs: ${Math.round(cPct)}%`} />}
+                        {fPct > 0 && <div style={{ width: `${fPct}%`, background: '#81b29a' }} title={`Fat: ${Math.round(fPct)}%`} />}
+                      </div>
+                      <div className="nutrition-grid" style={{marginTop: '8px'}}>
+                        <div className="nutrient-box">
+                          <div className="nutrient-value calories">{Math.round((recipe.nutrition.calories || 0) * servingRatio)}<span className="nutrient-unit"> kcal</span></div>
+                          <div className="nutrient-label">Calories</div>
+                        </div>
+                        <div className="nutrient-box">
+                          <div className="nutrient-value" style={{ color: '#e07a5f' }}>{Math.round(protein * servingRatio)}<span className="nutrient-unit">g</span></div>
+                          <div className="nutrient-label">Protein</div>
+                        </div>
+                        <div className="nutrient-box">
+                          <div className="nutrient-value" style={{ color: '#e6a836' }}>{Math.round(carbs * servingRatio)}<span className="nutrient-unit">g</span></div>
+                          <div className="nutrient-label">Carbs</div>
+                        </div>
+                        <div className="nutrient-box">
+                          <div className="nutrient-value" style={{ color: '#81b29a' }}>{Math.round(fat * servingRatio)}<span className="nutrient-unit">g</span></div>
+                          <div className="nutrient-label">Fat</div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             )}
 
