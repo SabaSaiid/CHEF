@@ -19,6 +19,12 @@ export const AuthProvider = ({ children }) => {
         .then(data => setActiveProfile(data))
         .catch(() => setActiveProfile(null)); // 404 is fine — user may have no profiles yet
     }
+
+    const handleUnauthorized = () => {
+      logout();
+    };
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
   }, [token]);
 
   const refreshActiveProfile = async () => {

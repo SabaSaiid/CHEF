@@ -20,6 +20,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    if (error.response?.status === 401) {
+      window.dispatchEvent(new Event('auth:unauthorized'));
+    }
     const message = error.response?.data?.detail || error.message || 'Request failed';
     return Promise.reject(new Error(message));
   }
