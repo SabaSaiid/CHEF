@@ -168,8 +168,8 @@ export default function Recipes() {
         </div>
 
         {/* Advanced Filters (collapsible) */}
-        {showAdvanced && (
-          <div className="card glass fade-in-up" style={{ padding: '20px', marginBottom: '30px' }}>
+        <div className={`advanced-filters-drawer ${showAdvanced ? 'open' : ''}`}>
+          <div className="card glass fade-in-up" style={{ padding: '20px', marginBottom: '30px', marginTop: '10px' }}>
             <div className="constraints-row" style={{ marginTop: 0 }}>
               <select value={region} onChange={e => setRegion(e.target.value)}>
                 <option value="">Any Region</option>
@@ -195,26 +195,34 @@ export default function Recipes() {
               <button className="btn-secondary" onClick={clearFilters}>Clear filters</button>
             </div>
           </div>
-        )}
+        </div>
 
       </div>
 
       {/* Results Area */}
       <div className="results-area" style={{ maxWidth: '1000px', margin: '0 auto', paddingTop: '20px' }}>
         {error && <div style={{color: 'red', marginBottom: '20px'}}>{error}</div>}
-        
-        {!hasSearched && !loading && (
-          <div className="empty-state">
-            <span className="empty-icon" style={{ fontSize: '48px', opacity: 0.5 }}>👨‍🍳</span>
-            <p style={{ fontSize: '18px', fontWeight: 500 }}>Ready to cook?</p>
-            <p style={{ color: 'var(--text-muted)' }}>Enter ingredients above or click "Use My Pantry" to begin.</p>
+        {loading && !results && (
+          <div className="magazine-grid">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+              <div key={i} className="skeleton-card"></div>
+            ))}
           </div>
         )}
 
-        {hasSearched && results && results.recipes.length === 0 && (
-          <div className="empty-state">
-            <span className="empty-icon">🍳</span>
-            <p>No matching recipes found. Try different ingredients or relax your filters.</p>
+        {!hasSearched && !loading && (
+          <div className="stylized-empty-state">
+            <div className="empty-state-graphic">👨‍🍳</div>
+            <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>Ready to cook?</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>Enter ingredients above or click "Use My Pantry" to begin.</p>
+          </div>
+        )}
+
+        {hasSearched && results && results.recipes.length === 0 && !loading && (
+          <div className="stylized-empty-state">
+            <div className="empty-state-graphic" style={{ filter: 'grayscale(1)' }}>🍽️</div>
+            <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>No recipes found</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>Try different ingredients or relax your filters.</p>
           </div>
         )}
 
@@ -241,6 +249,17 @@ export default function Recipes() {
                       {Math.round(recipe.match_score * 100)}% match
                     </div>
                   )}
+
+                  <button 
+                    className="quick-save-btn" 
+                    title="Save Recipe"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      saveRecipe(recipe);
+                    }}
+                  >
+                    🔖
+                  </button>
                   
                   {recipe.image_url ? (
                     <img className="magazine-card-img" src={recipe.image_url} alt={recipe.title} loading="lazy" />

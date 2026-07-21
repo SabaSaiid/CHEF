@@ -4277,15 +4277,18 @@ h6 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 30px 20px;
     background: var(--gradient-primary);
     border-radius: var(--radius);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     box-shadow: var(--shadow-glow);
     text-align: center;
     color: white;
     position: relative;
     overflow: hidden;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-search-container::before {
@@ -4298,17 +4301,17 @@ h6 {
 }
 
 .hero-search-title {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 800;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     position: relative;
     z-index: 1;
 }
 
 .hero-search-subtitle {
-    font-size: 16px;
+    font-size: 15px;
     opacity: 0.9;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     position: relative;
     z-index: 1;
 }
@@ -4488,4 +4491,118 @@ h6 {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 24px;
     margin-top: 24px;
+}
+
+/* ── Recipe UX Enhancements Phase 2 ────────────────────────── */
+
+/* Skeleton Loader */
+.skeleton-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    aspect-ratio: 4/5;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+
+.skeleton-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.05) 20%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+[data-theme="light"] .skeleton-card::after {
+    background-image: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0) 0,
+        rgba(0, 0, 0, 0.03) 20%,
+        rgba(0, 0, 0, 0.06) 60%,
+        rgba(0, 0, 0, 0)
+    );
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Quick-Save Floating Button */
+.quick-save-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    z-index: 3;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+    font-size: 16px;
+}
+
+.quick-save-btn:hover {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.quick-save-btn:active {
+    transform: scale(0.9);
+}
+
+/* Advanced Filters Drawer Expansion */
+.advanced-filters-drawer {
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    max-height: 0;
+    opacity: 0;
+}
+
+.advanced-filters-drawer.open {
+    max-height: 500px; /* arbitrary large enough number */
+    opacity: 1;
+}
+
+/* Stylized Empty State Layout */
+.stylized-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: var(--glass-bg);
+    border: var(--glass-border);
+    border-radius: var(--radius);
+    margin-top: 20px;
+    text-align: center;
+    animation: slideUp 0.5s ease-out;
+}
+
+.empty-state-graphic {
+    font-size: 64px;
+    margin-bottom: 16px;
+    animation: floatUpDown 3s ease-in-out infinite;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+}
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
