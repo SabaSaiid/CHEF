@@ -27,7 +27,7 @@ RUN npm run build
 # ══════════════════════════════════════════════════════════════
 #  Stage 2: Backend base (shared between dev and prod)
 # ══════════════════════════════════════════════════════════════
-FROM python:3.14-slim AS backend-base
+FROM python:3.11-slim AS backend-base
 WORKDIR /app/backend
 
 # Install Python dependencies
@@ -48,6 +48,21 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload
 
 
 # ══════════════════════════════════════════════════════════════
+#  Stage 4: Production frontend (nginx static server)
+# ══════════════════════════════════════════════════════════════
+FROM nginx:alpine AS frontend-prod
+
+# Copy built React app into nginx
+COPY --from=frontend-builder /app/frontend-react/dist /usr/share/nginx/html
+
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
+# ══════════════════════════════════════════════════════════════
 #  Stage 3b: Production backend (frontend embedded, non-root)
 # ══════════════════════════════════════════════════════════════
 FROM backend-base AS backend-prod
@@ -63,18 +78,3 @@ ENV HOME=/home/user
 EXPOSE 7860
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "2"]
-
-
-# ══════════════════════════════════════════════════════════════
-#  Stage 4: Production frontend (nginx static server)
-# ══════════════════════════════════════════════════════════════
-FROM nginx:alpine AS frontend-prod
-
-# Copy built React app into nginx
-COPY --from=frontend-builder /app/frontend-react/dist /usr/share/nginx/html
-
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
