@@ -222,19 +222,42 @@ export default function NutritionTracker() {
   const handleAddWaterCustom = async (amount) => {
     if (token) {
       try {
-        await api.post('/nutrition/log/water', { amount_ml: amount, date: selectedDate });
+        if (amount < 0) {
+          const waterData = await api.get(`/nutrition/log/water?date=${selectedDate}`);
+          if (waterData.logs && waterData.logs.length > 0) {
+            let remainingToSubtract = Math.abs(amount);
+            for (const log of waterData.logs) {
+              if (remainingToSubtract <= 0) break;
+              if (log.amount_ml <= remainingToSubtract) {
+                await api.delete(`/nutrition/log/water/${log.id}`);
+                remainingToSubtract -= log.amount_ml;
+              } else {
+                const newAmount = log.amount_ml - remainingToSubtract;
+                await api.put(`/nutrition/log/water/${log.id}`, { amount_ml: newAmount });
+                remainingToSubtract = 0;
+              }
+            }
+            toast.success(`Removed ${Math.abs(amount)}ml water! 💧`);
+          }
+        } else {
+          await api.post('/nutrition/log/water', { amount_ml: amount, date: selectedDate });
+          toast.success(`Logged ${amount}ml water! 💧`);
+        }
         fetchLogs();
         fetchSummary();
         fetchCoachInsights();
-        toast.success(`Logged ${amount}ml water!`);
       } catch (err) {
         toast.error(err.message);
       }
     } else {
-      const newTotal = (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount;
+      const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount);
       localStorage.setItem('chef_guest_water', newTotal);
       setWaterTotal(newTotal);
-      toast.success(`Logged ${amount}ml water (demo mode)`);
+      if (amount > 0) {
+        toast.success(`Logged ${amount}ml water (demo mode) 💧`);
+      } else {
+        toast.success(`Removed ${Math.abs(amount)}ml water (demo mode) 💧`);
+      }
     }
   };
 
@@ -480,70 +503,68 @@ export default function NutritionTracker() {
           </div>
         )}
         
-        <div className="card glass" style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px' }}>
-          <style>{`
-            @keyframes wave-slide {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-70px); }
-            }
-            .animated-wave-1 {
-              animation: wave-slide 4s linear infinite;
-            }
-            .animated-wave-2 {
-              animation: wave-slide 2.5s linear infinite reverse;
-            }
-          `}</style>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
-            <div style={{ flex: 1 }}>
-              <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '800' }}>Hydration</h3>
-              <p style={{ margin: '4px 0 16px', fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                {waterTotal} ml / {activeProfile?.target_water_ml || 2500} ml
-              </p>
-              
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <button 
-                  className="btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
-                  onClick={() => handleAddWaterCustom(250)}
-                >
-                  +250ml
-                </button>
-                <button 
-                  className="btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
-                  onClick={() => handleAddWaterCustom(500)}
-                >
-                  +500ml
-                </button>
-                <button 
-                  className="btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '12px', marginTop: 0, background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '6px', fontWeight: '600' }}
-                  onClick={handleResetWater}
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
+        <div className="card glass water-widget" style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px' }}>
+          {(() => {
+            const targetWater = activeProfile?.target_water_ml || 2500;
+            const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
+            const isGoalReached = waterTotal >= targetWater;
 
-            {/* The Fluid-Wave SVG Glass */}
-            {(() => {
-              const target = activeProfile?.target_water_ml || 2500;
-              const pctWater = Math.min(100, (waterTotal / target) * 100);
-              return (
-                <div style={{ position: 'relative', width: '70px', height: '100px', flexShrink: 0, borderRadius: '12px 12px 18px 18px', overflow: 'hidden', border: '2px solid var(--text-primary)', background: 'var(--bg-secondary)' }}>
-                  <svg width="140" height="100" viewBox="0 0 140 100" style={{ position: 'absolute', bottom: 0, left: 0, transform: `translateY(${100 - pctWater}px)`, transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}>
-                    <path d="M0 10 Q 17.5 5, 35 10 T 70 10 T 105 10 T 140 10 L 140 100 L 0 100 Z" fill="#38bdf8" opacity="0.75" className="animated-wave-1" />
-                    <path d="M0 12 Q 17.5 8, 35 12 T 70 12 T 105 12 T 140 12 L 140 100 L 0 100 Z" fill="#0284c7" opacity="0.5" className="animated-wave-2" />
-                  </svg>
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                    <span style={{ fontSize: '12px', fontWeight: '800', color: pctWater > 45 ? '#ffffff' : 'var(--text-primary)', mixBlendMode: 'difference' }}>
-                      {Math.round(pctWater)}%
-                    </span>
+            return (
+              <div style={{ width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '4px' }}>
+                  <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '800' }}>💧 Hydration</h3>
+                  {isGoalReached && (
+                    <span className="water-goal-badge">🎉 Goal Met!</span>
+                  )}
+                </div>
+
+                <p style={{ margin: '2px 0 10px', fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                  {waterTotal} ml / {targetWater} ml <span style={{ color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginLeft: '6px' }}>({pctWater}%)</span>
+                </p>
+
+                {/* Progress bar background */}
+                <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginBottom: '16px' }}>
+                  <div style={{ width: `${pctWater}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
+                  <div style={{ flex: 1 }}>
+                    <div className="water-controls" style={{ marginTop: 0 }}>
+                      <button className="water-btn primary-btn" onClick={() => handleAddWaterCustom(250)} title="Add 250ml water">
+                        💧 +250ml
+                      </button>
+                      <button className="water-btn" onClick={() => handleAddWaterCustom(500)} title="Add 500ml water">
+                        🌊 +500ml
+                      </button>
+                      <button className="water-btn danger-btn" onClick={() => handleAddWaterCustom(-250)} disabled={waterTotal <= 0} title="Remove 250ml water">
+                        ➖ -250ml
+                      </button>
+                      <button className="water-btn" onClick={handleResetWater} title="Reset hydration tracker">
+                        🔄 Reset
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* The Fluid Glass Tumbler */}
+                  <div className="water-display" style={{ margin: 0, width: '70px', height: '90px', borderRadius: '4px 4px 24px 24px' }}>
+                    <div
+                      className="water-level"
+                      style={{ height: `${pctWater}%` }}
+                    >
+                      <div className="water-wave" />
+                      <div className="water-bubble" />
+                      <div className="water-bubble" />
+                    </div>
+                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 6 }}>
+                      <span style={{ fontSize: '11px', fontWeight: '800', color: pctWater > 45 ? '#ffffff' : 'var(--text-primary)', textShadow: pctWater > 45 ? '0 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
+                        {pctWater}%
+                      </span>
+                    </div>
                   </div>
                 </div>
-              );
-            })()}
-          </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

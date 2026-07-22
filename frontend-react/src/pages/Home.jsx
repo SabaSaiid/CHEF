@@ -178,9 +178,19 @@ export default function Home() {
         if (amount < 0) {
           const waterData = await api.get(`/nutrition/log/water?date=${todayStr}`);
           if (waterData.logs && waterData.logs.length > 0) {
-            const lastLog = waterData.logs[0];
-            await api.delete(`/nutrition/log/water/${lastLog.id}`);
-            toast.success("Removed water entry");
+            let remainingToSubtract = Math.abs(amount);
+            for (const log of waterData.logs) {
+              if (remainingToSubtract <= 0) break;
+              if (log.amount_ml <= remainingToSubtract) {
+                await api.delete(`/nutrition/log/water/${log.id}`);
+                remainingToSubtract -= log.amount_ml;
+              } else {
+                const newAmount = log.amount_ml - remainingToSubtract;
+                await api.put(`/nutrition/log/water/${log.id}`, { amount_ml: newAmount });
+                remainingToSubtract = 0;
+              }
+            }
+            toast.success(`Removed ${Math.abs(amount)}ml water! 💧`);
             fetchTodayStats();
           }
         } else {
@@ -198,7 +208,7 @@ export default function Home() {
       if (amount > 0) {
         toast.success(`Logged ${amount}ml water (demo mode) 💧`);
       } else {
-        toast.success(`Removed water (demo mode) 💧`);
+        toast.success(`Removed ${Math.abs(amount)}ml water (demo mode) 💧`);
       }
     }
   };
@@ -472,29 +482,60 @@ export default function Home() {
         </div>
 
         {/* Water Tracker Card */}
-        <div className="card glass dashboard-widget-card water-widget">
-          <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>💧 Daily Hydration</h3>
-          <p className="subtitle" style={{ marginBottom: '10px' }}>Target: {targets.water} ml</p>
+        {(() => {
+          const targetWater = targets.water || 2500;
+          const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
+          const isGoalReached = waterTotal >= targetWater;
 
-          <div className="water-display">
-            <div
-              className="water-level"
-              style={{ height: `${Math.min((waterTotal / targets.water) * 100, 100)}%` }}
-            >
-              <div className="water-wave" />
+          return (
+            <div className="card glass dashboard-widget-card water-widget">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '4px' }}>
+                <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0 }}>💧 Daily Hydration</h3>
+                {isGoalReached && (
+                  <span className="water-goal-badge">🎉 Goal Met!</span>
+                )}
+              </div>
+              
+              <p className="subtitle" style={{ marginBottom: '8px', alignSelf: 'flex-start' }}>Target: {targetWater} ml</p>
+
+              {/* Progress bar background */}
+              <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginBottom: '12px' }}>
+                <div style={{ width: `${pctWater}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
+              </div>
+
+              <div className="water-display">
+                <div
+                  className="water-level"
+                  style={{ height: `${pctWater}%` }}
+                >
+                  <div className="water-wave" />
+                  <div className="water-bubble" />
+                  <div className="water-bubble" />
+                  <div className="water-bubble" />
+                </div>
+              </div>
+
+              <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)', marginTop: '4px' }}>
+                {waterTotal} <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>/ {targetWater} ml</span>
+                <div style={{ fontSize: '0.8rem', color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginTop: '2px' }}>
+                  {pctWater}% Completed
+                </div>
+              </div>
+
+              <div className="water-controls">
+                <button className="water-btn primary-btn" onClick={() => handleLogWater(250)} title="Add 250ml water">
+                  💧 +250ml
+                </button>
+                <button className="water-btn" onClick={() => handleLogWater(500)} title="Add 500ml water">
+                  🌊 +500ml
+                </button>
+                <button className="water-btn danger-btn" onClick={() => handleLogWater(-250)} disabled={waterTotal <= 0} title="Remove 250ml water">
+                  ➖ -250ml
+                </button>
+              </div>
             </div>
-          </div>
-
-          <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)' }}>
-            {waterTotal} ml
-          </div>
-
-          <div className="water-controls">
-            <button className="water-btn primary-btn" onClick={() => handleLogWater(250)}>+250ml</button>
-            <button className="water-btn" onClick={() => handleLogWater(500)}>+500ml</button>
-            <button className="water-btn" onClick={() => handleLogWater(-250)} disabled={waterTotal <= 0} title="Remove 250ml">-250ml</button>
-          </div>
-        </div>
+          );
+        })()}
       </div>
 
       {/* ── Today's Meal Plan slots ── */}

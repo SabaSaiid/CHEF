@@ -501,6 +501,10 @@ class WaterLogCreate(BaseModel):
     amount_ml: int = Field(..., gt=0, description="Amount of water logged in ml")
     date: Optional[str] = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$", description="YYYY-MM-DD")
 
+class WaterLogUpdate(BaseModel):
+    """Request body to update a water log entry."""
+    amount_ml: int = Field(..., gt=0, description="Updated amount of water logged in ml")
+
 class WaterLogResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

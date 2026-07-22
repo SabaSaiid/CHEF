@@ -16,6 +16,7 @@ from app.schemas import (
     NutritionLogResponse,
     DailyNutritionSummary,
     WaterLogCreate,
+    WaterLogUpdate,
     WaterLogResponse,
 )
 
@@ -174,6 +175,26 @@ def get_daily_water(
             for log in logs
         ]
     }
+
+
+@router.put("/water/{log_id}", response_model=WaterLogResponse)
+def update_water_log(
+    log_id: int,
+    req: WaterLogUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Update a water log entry amount. Requires authentication."""
+    log = db.query(WaterLog).filter(
+        WaterLog.id == log_id,
+        WaterLog.user_id == current_user.id
+    ).first()
+    if not log:
+        raise HTTPException(status_code=404, detail="Water log entry not found")
+    log.amount_ml = req.amount_ml
+    db.commit()
+    db.refresh(log)
+    return log
 
 
 @router.delete("/water/{log_id}", status_code=200)
