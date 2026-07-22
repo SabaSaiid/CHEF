@@ -1,22 +1,2393 @@
 {
-  "Butter": ["Ghee", "Margarine", "Coconut oil", "Applesauce (baking)"],
-  "Egg": ["Flax meal (1 tbsp + 3 tbsp water)", "Chia seeds", "Mashed banana", "Applesauce"],
-  "Heavy Cream": ["Coconut milk", "Greek yogurt (diluted)", "Milk + Butter mixture", "Cashew cream"],
-  "Milk": ["Almond milk", "Soy milk", "Oat milk", "Coconut milk"],
-  "Sugar": ["Honey", "Maple syrup", "Stevia", "Coconut sugar", "Jaggery (Gud)"],
-  "Paneer": ["Tofu", "Ricotta cheese (drained)", "Halloumi"],
-  "Rice": ["Cauliflower rice", "Quinoa", "Brown rice", "Millets"],
-  "All-purpose Flour (Maida)": ["Whole wheat flour (Atta)", "Oat flour", "Almond flour", "Gluten-free flour blend"],
-  "Bread Crumbs": ["Crushed cornflakes", "Oatmeal", "Almond meal"],
-  "Buttermilk": ["Milk + 1 tbsp Lemon juice/Vinegar", "Yogurt + Water"],
-  "Sour Cream": ["Greek yogurt", "Hung curd"],
-  "Soy Sauce": ["Tamari (gluten-free)", "Coconut aminos"],
-  "Vinegar": ["Lemon juice", "Lime juice", "Apple cider vinegar"],
-  "Honey": ["Maple syrup", "Agave nectar"],
-  "Yogurt": ["Coconut yogurt", "Soy yogurt", "Silken tofu (blended)"],
-  "Cheese": ["Nutritional yeast (for flavor)", "Vegan cheese", "Cashew cheese"],
-  "Potato": ["Sweet potato", "Cauliflower (mashed)", "Turnips"],
-  "Mayonnaise": ["Greek yogurt + Mustard", "Mashed avocado"],
-  "Oil": ["Applesauce (in baking)", "Mashed banana", "Yogurt"],
-  "Peanut Butter": ["Almond butter", "Sunbutter (sunflower seed butter)", "Soy nut butter"]
+  "garlic": {
+    "general": [
+      "Garlic powder (1/8 tsp per clove)",
+      "Shallots",
+      "Garlic chives"
+    ],
+    "allergy_friendly": [
+      "Asafoetida / Hing (pinch in hot oil)"
+    ],
+    "notes": "Hing mimics garlic/onion umami for allium allergies. Not recommended for raw salads; best bloomed in hot fat."
+  },
+  "onion": {
+    "general": [
+      "Shallots",
+      "Scallions / Green onions",
+      "Leeks"
+    ],
+    "allergy_friendly": [
+      "Fennel bulb",
+      "Celery",
+      "Asafoetida / Hing"
+    ],
+    "notes": "Fennel gives crunch but adds anise notes. Not recommended as direct raw substitute in guacamole unless using shallots."
+  },
+  "onions": {
+    "general": [
+      "Shallots",
+      "Scallions / Green onions",
+      "Leeks"
+    ],
+    "allergy_friendly": [
+      "Fennel bulb",
+      "Celery",
+      "Asafoetida / Hing"
+    ],
+    "notes": "Fennel gives crunch but adds anise notes. Not recommended as direct raw substitute in guacamole unless using shallots."
+  },
+  "shallots": {
+    "general": [
+      "Yellow onion + small garlic clove",
+      "Scallions (white part)"
+    ],
+    "notes": "Shallots are sweeter and milder. Yellow onions are sharper; reduce quantity when replacing raw shallots."
+  },
+  "scallions": {
+    "general": [
+      "Chives",
+      "Green onion",
+      "Shallots (finely chopped)"
+    ],
+    "notes": "Chives are delicate and best used as a finishing garnish rather than cooked long."
+  },
+  "leeks": {
+    "general": [
+      "Sweet onions",
+      "Shallots",
+      "Green onions (white part)"
+    ],
+    "notes": "Leeks are mild. Clean thoroughly to remove grit before cooking."
+  },
+  "coriander": {
+    "general": [
+      "Cumin (ground)",
+      "Caraway seeds",
+      "Garam masala"
+    ],
+    "healthy": [
+      "Cilantro leaves (fresh garnish only)"
+    ],
+    "notes": "Ground coriander seeds are earthy/citrusy. Fresh cilantro leaves cannot replace ground coriander in cooked spice blends."
+  },
+  "cilantro": {
+    "general": [
+      "Fresh parsley",
+      "Fresh mint",
+      "Thai basil"
+    ],
+    "notes": "Parsley offers identical texture without the soap taste for sensitive palates. Not recommended for cooking into curries long-term."
+  },
+  "cumin": {
+    "general": [
+      "Ground coriander",
+      "Caraway seeds",
+      "Chili powder"
+    ],
+    "notes": "Cumin is warm and smoky. Caraway is stronger; use 1/2 amount in European/Indian stews."
+  },
+  "ginger": {
+    "general": [
+      "Ground ginger (1/4 tsp per tbsp fresh)",
+      "Allspice",
+      "Galangal"
+    ],
+    "notes": "Galangal is piney and sharp. Not recommended as a 1:1 substitute in sweet baking recipes."
+  },
+  "turmeric": {
+    "general": [
+      "Saffron",
+      "Curry powder",
+      "Yellow food color"
+    ],
+    "notes": "Curry powder adds spices; reduce other spices if substituting."
+  },
+  "garam masala": {
+    "general": [
+      "Allspice + Cumin + Cardamom blend",
+      "Curry powder + Cinnamon"
+    ],
+    "notes": "Finishing spice blend. Do not boil for long durations to preserve aromatic top notes."
+  },
+  "cinnamon": {
+    "general": [
+      "Nutmeg",
+      "Allspice",
+      "Cardamom",
+      "Pumpkin pie spice"
+    ],
+    "notes": "Nutmeg and allspice are very potent; use 1/2 amount in sweet baked goods."
+  },
+  "chili": {
+    "general": [
+      "Chili powder",
+      "Paprika + Cayenne",
+      "Red pepper flakes"
+    ],
+    "notes": "Adjust for heat tolerance. Paprika adds color without intense heat."
+  },
+  "chili powder": {
+    "general": [
+      "Paprika + Cumin",
+      "Cayenne pepper (use 1/4 quantity)"
+    ],
+    "notes": "Pure cayenne is exponentially hotter than American chili powder blends."
+  },
+  "saffron": {
+    "general": [
+      "Turmeric (for color)",
+      "Safflower"
+    ],
+    "notes": "Turmeric provides yellow hue but lacks saffron floral aroma. Not recommended in delicate desserts."
+  },
+  "fennel": {
+    "general": [
+      "Anise seed",
+      "Dill (for fronds)",
+      "Celery (for bulb crunch)"
+    ],
+    "notes": "Anise is stronger; use half the measure in sauces and soups."
+  },
+  "oil": {
+    "healthy": [
+      "Olive oil",
+      "Avocado oil"
+    ],
+    "baking": [
+      "Applesauce",
+      "Melted butter"
+    ],
+    "vegan": [
+      "Coconut oil",
+      "Vegetable oil"
+    ],
+    "notes": "Avocado oil has high smoke point (good for searing). Applesauce only works in baking."
+  },
+  "olive oil": {
+    "healthy": [
+      "Avocado oil",
+      "Walnut oil"
+    ],
+    "general": [
+      "Canola oil",
+      "Sunflower oil"
+    ],
+    "notes": "Extra virgin olive oil has strong flavor; not recommended for high-heat frying or neutral baking."
+  },
+  "sesame oil": {
+    "general": [
+      "Toasted sesame seeds in neutral oil",
+      "Perilla oil",
+      "Peanut oil"
+    ],
+    "notes": "Toasted sesame oil is used primarily as a finishing oil. Do not use as a high-heat frying oil."
+  },
+  "ghee": {
+    "vegan": [
+      "Coconut oil",
+      "Vegan butter"
+    ],
+    "general": [
+      "Clarified butter",
+      "Unsalted butter"
+    ],
+    "notes": "Coconut oil provides similar high-heat stability but adds subtle coconut flavor."
+  },
+  "butter": {
+    "vegan": [
+      "Coconut oil",
+      "Vegan butter"
+    ],
+    "healthy": [
+      "Greek yogurt",
+      "Mashed avocado"
+    ],
+    "baking": [
+      "Applesauce (1:1 ratio)"
+    ],
+    "notes": "Applesauce produces denser baked goods. Avocado alters color in light cakes."
+  },
+  "milk": {
+    "vegan": [
+      "Almond milk",
+      "Soy milk",
+      "Oat milk"
+    ],
+    "general": [
+      "Evaporated milk diluted",
+      "Coconut milk"
+    ],
+    "notes": "Soy milk mimics dairy protein best in savory cooking. Coconut milk adds tropical flavor."
+  },
+  "cream": {
+    "vegan": [
+      "Coconut cream",
+      "Cashew cream"
+    ],
+    "healthy": [
+      "Greek yogurt",
+      "Silken tofu (blended)"
+    ],
+    "general": [
+      "Evaporated milk"
+    ],
+    "notes": "Yogurt can curdle if boiled; stir in off heat. Coconut cream works great in curries."
+  },
+  "sour cream": {
+    "healthy": [
+      "Greek yogurt",
+      "Hung curd"
+    ],
+    "vegan": [
+      "Cashew cream + lemon juice"
+    ],
+    "notes": "Greek yogurt is an exact 1:1 substitute in dips and toppings."
+  },
+  "yogurt": {
+    "vegan": [
+      "Coconut yogurt",
+      "Soy yogurt"
+    ],
+    "general": [
+      "Sour cream",
+      "Buttermilk"
+    ],
+    "notes": "Ensure substitute is unsweetened and unflavored for savory Indian/Middle Eastern dishes."
+  },
+  "cheese": {
+    "vegan": [
+      "Nutritional yeast",
+      "Vegan cheese",
+      "Cashew cheese"
+    ],
+    "notes": "Nutritional yeast provides cheesy umami flavor for pasta and popcorn."
+  },
+  "coconut milk": {
+    "general": [
+      "Heavy cream + coconut extract",
+      "Cashew cream"
+    ],
+    "vegan": [
+      "Soy milk + coconut oil"
+    ],
+    "notes": "Heavy cream matches richness but lacks tropical coconut flavor profile."
+  },
+  "chicken": {
+    "vegan": [
+      "Tofu (extra firm)",
+      "Seitan",
+      "Jackfruit",
+      "Chickpeas"
+    ],
+    "general": [
+      "Turkey",
+      "Pork loin"
+    ],
+    "notes": "Green jackfruit replicates shredded chicken texture. Tofu requires pressing before searing."
+  },
+  "beef": {
+    "vegan": [
+      "Portobello mushrooms",
+      "Lentils",
+      "Black beans",
+      "Tempeh"
+    ],
+    "general": [
+      "Lamb",
+      "Venison"
+    ],
+    "notes": "Lentils mimic ground beef in bolognese. Mushrooms provide meaty umami in stews."
+  },
+  "pork": {
+    "general": [
+      "Chicken thighs",
+      "Turkey",
+      "Veal"
+    ],
+    "vegan": [
+      "Jackfruit",
+      "King oyster mushrooms"
+    ],
+    "notes": "Chicken thighs retain moisture similarly to pork in braises."
+  },
+  "shrimp": {
+    "vegan": [
+      "King oyster mushroom rounds",
+      "Heart of palm"
+    ],
+    "general": [
+      "Scallops",
+      "Firm white fish"
+    ],
+    "notes": "King oyster mushrooms scored in cross-hatch pattern replicate bite of cooked shrimp."
+  },
+  "tofu": {
+    "general": [
+      "Paneer",
+      "Halloumi",
+      "Tempeh"
+    ],
+    "notes": "Paneer does not absorb marinades as deeply as tofu; halloumi is much saltier."
+  },
+  "eggs": {
+    "vegan": [
+      "Flax meal (1 tbsp + 3 tbsp water)",
+      "Chia egg",
+      "Aquafaba (3 tbsp)"
+    ],
+    "baking": [
+      "Applesauce (1/4 cup)",
+      "Mashed banana (1/4 cup)"
+    ],
+    "notes": "Flax egg binds well in baked goods. Aquafaba whips into meringues like egg whites."
+  },
+  "egg": {
+    "vegan": [
+      "Flax meal (1 tbsp + 3 tbsp water)",
+      "Aquafaba (3 tbsp)"
+    ],
+    "baking": [
+      "Applesauce (1/4 cup)"
+    ],
+    "notes": "Flax egg binds well in baked goods."
+  },
+  "tomatoes": {
+    "general": [
+      "Canned diced tomatoes",
+      "Roasted red bell peppers",
+      "Tomato paste + water"
+    ],
+    "healthy": [
+      "Tamarind paste (for sour curries)"
+    ],
+    "notes": "Roasted bell peppers match red color and body but lack natural tomato acidity."
+  },
+  "tomato": {
+    "general": [
+      "Canned diced tomatoes",
+      "Roasted red bell peppers",
+      "Tomato paste + water"
+    ],
+    "notes": "Roasted bell peppers match color but lack natural tomato tartness."
+  },
+  "potatoes": {
+    "healthy": [
+      "Sweet potatoes",
+      "Cauliflower florets",
+      "Turnips",
+      "Parsnips"
+    ],
+    "notes": "Cauliflower cooks faster and has lower starch; not suitable for crispy French fries."
+  },
+  "carrots": {
+    "healthy": [
+      "Parsnips",
+      "Sweet potato",
+      "Butternut squash"
+    ],
+    "notes": "Parsnips are starchier and slightly spicier than sweet carrots."
+  },
+  "bell peppers": {
+    "general": [
+      "Poblano peppers",
+      "Anaheim peppers",
+      "Zucchini"
+    ],
+    "notes": "Poblanos add mild heat; sweet bell peppers have zero heat."
+  },
+  "mushroom": {
+    "vegan": [
+      "Zucchini",
+      "Eggplant",
+      "Tofu"
+    ],
+    "notes": "Eggplant absorbs oil quickly like mushrooms; dry-sear first for best texture."
+  },
+  "bean sprouts": {
+    "general": [
+      "Shredded cabbage",
+      "Enoki mushrooms",
+      "Julienned cucumber"
+    ],
+    "notes": "Cabbage stays crisp longer in stir-fries. Cucumber is for raw salads only."
+  },
+  "spinach": {
+    "general": [
+      "Kale",
+      "Swiss chard",
+      "Asian greens (Bok choy)"
+    ],
+    "notes": "Kale requires longer cooking time to soften compared to tender baby spinach."
+  },
+  "cabbage": {
+    "general": [
+      "Napa cabbage",
+      "Kale",
+      "Brussels sprouts"
+    ],
+    "notes": "Brussels sprouts shredded finely mimic green cabbage flavor closely."
+  },
+  "celery": {
+    "general": [
+      "Fennel stalks",
+      "Bok choy stems",
+      "Green pepper"
+    ],
+    "notes": "Fennel adds distinct anise aroma to soups."
+  },
+  "soy sauce": {
+    "gluten_free": [
+      "Tamari",
+      "Coconut aminos"
+    ],
+    "general": [
+      "Worcestershire sauce (check gluten)",
+      "Liquid aminos"
+    ],
+    "notes": "Coconut aminos are sweeter and 50% lower in sodium than soy sauce."
+  },
+  "vinegar": {
+    "general": [
+      "Lemon juice",
+      "Lime juice",
+      "Apple cider vinegar"
+    ],
+    "notes": "Citrus provides fruity acidity. Rice vinegar is milder than white distilled vinegar."
+  },
+  "sugar": {
+    "healthy": [
+      "Stevia",
+      "Monkfruit",
+      "Erythritol"
+    ],
+    "general": [
+      "Honey",
+      "Maple syrup",
+      "Jaggery / Gud"
+    ],
+    "notes": "Liquid sweeteners require reducing other recipe liquids by 2-4 tbsp per cup."
+  },
+  "honey": {
+    "vegan": [
+      "Maple syrup",
+      "Agave nectar",
+      "Date syrup"
+    ],
+    "notes": "Agave has lower glycemic index and neutral sweetness similar to light honey."
+  },
+  "beef broth": {
+    "vegan": [
+      "Mushroom stock",
+      "Rich vegetable broth + Marmite/Soy sauce"
+    ],
+    "notes": "Mushroom broth mimics dark savory beef notes perfectly."
+  },
+  "rice": {
+    "healthy": [
+      "Cauliflower rice",
+      "Quinoa",
+      "Bulgur wheat",
+      "Millets"
+    ],
+    "notes": "Cauliflower rice cooks in 3 mins. Do not boil in excess water like grain rice."
+  },
+  "flour": {
+    "gluten_free": [
+      "1:1 GF Flour Blend",
+      "Almond flour",
+      "Oat flour"
+    ],
+    "healthy": [
+      "Whole wheat flour (Atta)",
+      "Spelt flour"
+    ],
+    "notes": "Whole wheat flour absorbs more liquid. Add 1-2 tbsp extra water per cup."
+  },
+  "salt": {
+    "general": [
+      "Sea salt",
+      "Kosher salt",
+      "Himalayan pink salt"
+    ],
+    "notes": "Kosher salt flakes are larger; use 1.25x volume if replacing fine table salt."
+  },
+  "garlic powder": {
+    "general": [
+      "Fresh minced garlic (1 clove per 1/8 tsp)",
+      "Shallots"
+    ],
+    "allergy_friendly": [
+      "Asafoetida / Hing"
+    ],
+    "notes": "Garlic powder is concentrated. Use fresh garlic or a pinch of hing bloomed in oil."
+  },
+  "lemon": {
+    "general": [
+      "Standard culinary substitute for lemon"
+    ],
+    "notes": "For lemon, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "vegetable": {
+    "general": [
+      "Standard culinary substitute for vegetable"
+    ],
+    "notes": "For vegetable, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lime": {
+    "general": [
+      "Standard culinary substitute for lime"
+    ],
+    "notes": "For lime, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mushrooms": {
+    "general": [
+      "Standard culinary substitute for mushrooms"
+    ],
+    "notes": "For mushrooms, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "cardamom": {
+    "general": [
+      "Standard culinary substitute for cardamom"
+    ],
+    "notes": "For cardamom, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "peanuts": {
+    "general": [
+      "Standard culinary substitute for peanuts"
+    ],
+    "notes": "For peanuts, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "curd": {
+    "general": [
+      "Standard culinary substitute for curd"
+    ],
+    "notes": "For curd, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "hard-boiled eggs": {
+    "general": [
+      "Standard culinary substitute for hard-boiled eggs"
+    ],
+    "notes": "For hard-boiled eggs, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "thyme": {
+    "general": [
+      "Dried herb equivalent (use 1/3 amount of fresh)",
+      "Italian seasoning"
+    ],
+    "notes": "Swap suggestion for thyme. Fresh herbs are best added near the end of cooking; dried herbs should cook with the dish."
+  },
+  "gochujang": {
+    "general": [
+      "Standard culinary substitute for gochujang"
+    ],
+    "notes": "For gochujang, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "rice noodles": {
+    "general": [
+      "Standard culinary substitute for rice noodles"
+    ],
+    "notes": "For rice noodles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lamb": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for lamb. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "cornstarch": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for cornstarch. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "paneer": {
+    "general": [
+      "Standard culinary substitute for paneer"
+    ],
+    "notes": "For paneer, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "water": {
+    "general": [
+      "Water + 1 tsp soy sauce / pinch of salt"
+    ],
+    "notes": "Swap suggestion for water. Broth adds umami background depth. Plain water requires adjusting salt and seasoning.",
+    "vegan": [
+      "Vegetable broth",
+      "Mushroom stock"
+    ]
+  },
+  "white wine": {
+    "general": [
+      "Standard culinary substitute for white wine"
+    ],
+    "notes": "For white wine, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "chickpeas": {
+    "general": [
+      "Standard culinary substitute for chickpeas"
+    ],
+    "notes": "For chickpeas, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "spring onion": {
+    "general": [
+      "Standard culinary substitute for spring onion"
+    ],
+    "notes": "For spring onion, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "black pepper": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for black pepper. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "eggplant": {
+    "general": [
+      "Standard culinary substitute for eggplant"
+    ],
+    "notes": "For eggplant, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "fish sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for fish sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "bell pepper": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for bell pepper. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "almonds": {
+    "general": [
+      "Standard culinary substitute for almonds"
+    ],
+    "notes": "For almonds, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pork belly": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for pork belly. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "tahini": {
+    "general": [
+      "Standard culinary substitute for tahini"
+    ],
+    "notes": "For tahini, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "sichuan peppercorns": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for sichuan peppercorns. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "zucchini": {
+    "general": [
+      "Standard culinary substitute for zucchini"
+    ],
+    "notes": "For zucchini, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "duck": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for duck. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "breadcrumbs": {
+    "general": [
+      "Standard culinary substitute for breadcrumbs"
+    ],
+    "notes": "For breadcrumbs, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lemongrass": {
+    "general": [
+      "Standard culinary substitute for lemongrass"
+    ],
+    "notes": "For lemongrass, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "kashmiri chili": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for kashmiri chili. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "green chili": {
+    "general": [
+      "Serrano pepper",
+      "Jalape\u00f1o pepper",
+      "Red chili flakes"
+    ],
+    "notes": "Serrano peppers match the heat level of Indian green chilies closely."
+  },
+  "curry leaves": {
+    "general": [
+      "Standard culinary substitute for curry leaves"
+    ],
+    "notes": "For curry leaves, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "fish": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for fish. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "peas": {
+    "general": [
+      "Standard culinary substitute for peas"
+    ],
+    "notes": "For peas, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mustard seeds": {
+    "general": [
+      "Cumin seeds",
+      "Caraway seeds",
+      "Horseradish (small pinch)"
+    ],
+    "notes": "Mustard seeds add a sharp, pungent pop when bloomed in hot oil. Cumin seeds work well in tempering."
+  },
+  "chicken broth": {
+    "general": [
+      "Water + 1 tsp soy sauce / pinch of salt"
+    ],
+    "notes": "Swap suggestion for chicken broth. Broth adds umami background depth. Plain water requires adjusting salt and seasoning.",
+    "vegan": [
+      "Vegetable broth",
+      "Mushroom stock"
+    ]
+  },
+  "spaghetti": {
+    "general": [
+      "Standard culinary substitute for spaghetti"
+    ],
+    "notes": "For spaghetti, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "parsley": {
+    "general": [
+      "Dried herb equivalent (use 1/3 amount of fresh)",
+      "Italian seasoning"
+    ],
+    "notes": "Swap suggestion for parsley. Fresh herbs are best added near the end of cooking; dried herbs should cook with the dish."
+  },
+  "veal": {
+    "general": [
+      "Standard culinary substitute for veal"
+    ],
+    "notes": "For veal, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "galangal": {
+    "general": [
+      "Standard culinary substitute for galangal"
+    ],
+    "notes": "For galangal, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pita bread": {
+    "general": [
+      "Standard culinary substitute for pita bread"
+    ],
+    "notes": "For pita bread, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "green chilies": {
+    "general": [
+      "Serrano pepper",
+      "Jalape\u00f1o pepper",
+      "Red chili flakes"
+    ],
+    "notes": "Serrano peppers match the heat level of Indian green chilies closely. Remove seeds to reduce spicy heat."
+  },
+  "mint": {
+    "general": [
+      "Dried herb equivalent (use 1/3 amount of fresh)",
+      "Italian seasoning"
+    ],
+    "notes": "Swap suggestion for mint. Fresh herbs are best added near the end of cooking; dried herbs should cook with the dish."
+  },
+  "sesame seeds": {
+    "general": [
+      "Standard culinary substitute for sesame seeds"
+    ],
+    "notes": "For sesame seeds, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "black beans": {
+    "general": [
+      "Standard culinary substitute for black beans"
+    ],
+    "notes": "For black beans, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "white pepper": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for white pepper. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "red chili": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for red chili. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "chicken thighs": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for chicken thighs. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "potato": {
+    "general": [
+      "Standard culinary substitute for potato"
+    ],
+    "notes": "For potato, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "coriander seeds": {
+    "general": [
+      "Standard culinary substitute for coriander seeds"
+    ],
+    "notes": "For coriander seeds, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "seafood": {
+    "general": [
+      "Standard culinary substitute for seafood"
+    ],
+    "notes": "For seafood, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lemon juice": {
+    "general": [
+      "Standard culinary substitute for lemon juice"
+    ],
+    "notes": "For lemon juice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pecorino romano": {
+    "general": [
+      "Standard culinary substitute for pecorino romano"
+    ],
+    "notes": "For pecorino romano, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "paprika": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for paprika. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "carrot": {
+    "general": [
+      "Standard culinary substitute for carrot"
+    ],
+    "notes": "For carrot, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "orange zest": {
+    "general": [
+      "Standard culinary substitute for orange zest"
+    ],
+    "notes": "For orange zest, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "corn": {
+    "general": [
+      "Standard culinary substitute for corn"
+    ],
+    "notes": "For corn, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "guanciale": {
+    "general": [
+      "Standard culinary substitute for guanciale"
+    ],
+    "notes": "For guanciale, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "red wine (burgundy)": {
+    "general": [
+      "Standard culinary substitute for red wine (burgundy)"
+    ],
+    "notes": "For red wine (burgundy), substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "bacon (lardons)": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for bacon (lardons). Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "pearl onions": {
+    "general": [
+      "Standard culinary substitute for pearl onions"
+    ],
+    "notes": "For pearl onions, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "herbes de provence": {
+    "general": [
+      "Dried herb equivalent (use 1/3 amount of fresh)",
+      "Italian seasoning"
+    ],
+    "notes": "Swap suggestion for herbes de provence. Fresh herbs are best added near the end of cooking; dried herbs should cook with the dish."
+  },
+  "basil": {
+    "general": [
+      "Standard culinary substitute for basil"
+    ],
+    "notes": "For basil, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "beetroot": {
+    "general": [
+      "Standard culinary substitute for beetroot"
+    ],
+    "notes": "For beetroot, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "dill": {
+    "general": [
+      "Dried herb equivalent (use 1/3 amount of fresh)",
+      "Italian seasoning"
+    ],
+    "notes": "Swap suggestion for dill. Fresh herbs are best added near the end of cooking; dried herbs should cook with the dish."
+  },
+  "veal shanks": {
+    "general": [
+      "Standard culinary substitute for veal shanks"
+    ],
+    "notes": "For veal shanks, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "tomato paste": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for tomato paste. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "dashi": {
+    "general": [
+      "Standard culinary substitute for dashi"
+    ],
+    "notes": "For dashi, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "bamboo shoots": {
+    "general": [
+      "Standard culinary substitute for bamboo shoots"
+    ],
+    "notes": "For bamboo shoots, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pizza dough": {
+    "general": [
+      "Standard culinary substitute for pizza dough"
+    ],
+    "notes": "For pizza dough, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "san marzano tomatoes": {
+    "general": [
+      "Standard culinary substitute for san marzano tomatoes"
+    ],
+    "notes": "For san marzano tomatoes, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "fresh mozzarella": {
+    "general": [
+      "Similar alternative ingredient"
+    ],
+    "notes": "Swap suggestion for fresh mozzarella. Vegan cheeses melt differently than dairy cheese. Nutritional yeast adds flavor but does not melt.",
+    "vegan": [
+      "Nutritional yeast",
+      "Vegan cheese shreds"
+    ],
+    "healthy": [
+      "Low-fat cottage cheese",
+      "Greek yogurt"
+    ]
+  },
+  "fresh basil": {
+    "general": [
+      "Standard culinary substitute for fresh basil"
+    ],
+    "notes": "For fresh basil, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mixed seafood (monkfish": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for mixed seafood (monkfish. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "red mullet": {
+    "general": [
+      "Standard culinary substitute for red mullet"
+    ],
+    "notes": "For red mullet, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mussels": {
+    "general": [
+      "Standard culinary substitute for mussels"
+    ],
+    "notes": "For mussels, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "clams)": {
+    "general": [
+      "Standard culinary substitute for clams)"
+    ],
+    "notes": "For clams), substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "olives": {
+    "general": [
+      "Standard culinary substitute for olives"
+    ],
+    "notes": "For olives, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "prawn": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for prawn. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "cashews": {
+    "general": [
+      "Standard culinary substitute for cashews"
+    ],
+    "notes": "For cashews, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "veal cutlets": {
+    "general": [
+      "Standard culinary substitute for veal cutlets"
+    ],
+    "notes": "For veal cutlets, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "basmati rice": {
+    "general": [
+      "Standard culinary substitute for basmati rice"
+    ],
+    "notes": "For basmati rice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "coconut": {
+    "general": [
+      "Standard culinary substitute for coconut"
+    ],
+    "notes": "For coconut, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "silken tofu": {
+    "general": [
+      "Standard culinary substitute for silken tofu"
+    ],
+    "notes": "For silken tofu, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "dry red chilies": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for dry red chilies. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "kasuri methi": {
+    "general": [
+      "Standard culinary substitute for kasuri methi"
+    ],
+    "notes": "For kasuri methi, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "aged kimchi": {
+    "general": [
+      "Standard culinary substitute for aged kimchi"
+    ],
+    "notes": "For aged kimchi, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lettuce": {
+    "general": [
+      "Baby spinach",
+      "Mixed salad greens",
+      "Kale"
+    ],
+    "notes": "Swap suggestion for lettuce. Tender greens wilt fast; tough greens (kale) require extra braising time."
+  },
+  "avocado": {
+    "general": [
+      "Standard culinary substitute for avocado"
+    ],
+    "notes": "For avocado, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "tamarind": {
+    "general": [
+      "Standard culinary substitute for tamarind"
+    ],
+    "notes": "For tamarind, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "nori": {
+    "general": [
+      "Standard culinary substitute for nori"
+    ],
+    "notes": "For nori, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "star anise": {
+    "general": [
+      "Standard culinary substitute for star anise"
+    ],
+    "notes": "For star anise, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "sweet potato": {
+    "general": [
+      "Standard culinary substitute for sweet potato"
+    ],
+    "notes": "For sweet potato, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "short-grain rice": {
+    "general": [
+      "Standard culinary substitute for short-grain rice"
+    ],
+    "notes": "For short-grain rice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "beef ribeye": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for beef ribeye. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "shiitake mushrooms": {
+    "general": [
+      "Standard culinary substitute for shiitake mushrooms"
+    ],
+    "notes": "For shiitake mushrooms, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pork shoulder": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for pork shoulder. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "hoisin sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for hoisin sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "five spice powder": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for five spice powder. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "shaoxing wine": {
+    "general": [
+      "Standard culinary substitute for shaoxing wine"
+    ],
+    "notes": "For shaoxing wine, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "cashew": {
+    "general": [
+      "Standard culinary substitute for cashew"
+    ],
+    "notes": "For cashew, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "heavy cream": {
+    "general": [
+      "Standard culinary substitute for heavy cream"
+    ],
+    "notes": "For heavy cream, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "lime juice": {
+    "general": [
+      "Standard culinary substitute for lime juice"
+    ],
+    "notes": "For lime juice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "sesame": {
+    "general": [
+      "Standard culinary substitute for sesame"
+    ],
+    "notes": "For sesame, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "cajun seasoning": {
+    "general": [
+      "Standard culinary substitute for cajun seasoning"
+    ],
+    "notes": "For cajun seasoning, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "allspice": {
+    "general": [
+      "Standard culinary substitute for allspice"
+    ],
+    "notes": "For allspice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pork bones": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for pork bones. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "ramen noodles": {
+    "general": [
+      "Standard culinary substitute for ramen noodles"
+    ],
+    "notes": "For ramen noodles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "chashu (braised pork belly)": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for chashu (braised pork belly). Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "soft boiled egg": {
+    "general": [
+      "Standard culinary substitute for soft boiled egg"
+    ],
+    "notes": "For soft boiled egg, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "fish cake": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for fish cake. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "gochugaru (korean chili flakes)": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for gochugaru (korean chili flakes). Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "arborio rice": {
+    "general": [
+      "Standard culinary substitute for arborio rice"
+    ],
+    "notes": "For arborio rice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "parmesan cheese": {
+    "general": [
+      "Similar alternative ingredient"
+    ],
+    "notes": "Swap suggestion for parmesan cheese. Vegan cheeses melt differently than dairy cheese. Nutritional yeast adds flavor but does not melt.",
+    "vegan": [
+      "Nutritional yeast",
+      "Vegan cheese shreds"
+    ],
+    "healthy": [
+      "Low-fat cottage cheese",
+      "Greek yogurt"
+    ]
+  },
+  "dark soy sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for dark soy sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "laksa paste": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for laksa paste. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "minced pork": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for minced pork. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "doubanjiang (chili bean paste)": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for doubanjiang (chili bean paste). Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "farmer's cheese": {
+    "general": [
+      "Similar alternative ingredient"
+    ],
+    "notes": "Swap suggestion for farmer's cheese. Vegan cheeses melt differently than dairy cheese. Nutritional yeast adds flavor but does not melt.",
+    "vegan": [
+      "Nutritional yeast",
+      "Vegan cheese shreds"
+    ],
+    "healthy": [
+      "Low-fat cottage cheese",
+      "Greek yogurt"
+    ]
+  },
+  "mustard greens": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for mustard greens. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "glutinous rice flour (shiratamako)": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for glutinous rice flour (shiratamako). Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "sweet red bean paste (anko)": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for sweet red bean paste (anko). Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "dangmyeon (sweet potato noodles)": {
+    "general": [
+      "Standard culinary substitute for dangmyeon (sweet potato noodles)"
+    ],
+    "notes": "For dangmyeon (sweet potato noodles), substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "parmesan": {
+    "general": [
+      "Similar alternative ingredient"
+    ],
+    "notes": "Swap suggestion for parmesan. Vegan cheeses melt differently than dairy cheese. Nutritional yeast adds flavor but does not melt.",
+    "vegan": [
+      "Nutritional yeast",
+      "Vegan cheese shreds"
+    ],
+    "healthy": [
+      "Low-fat cottage cheese",
+      "Greek yogurt"
+    ]
+  },
+  "clams": {
+    "general": [
+      "Standard culinary substitute for clams"
+    ],
+    "notes": "For clams, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "chickpea": {
+    "general": [
+      "Standard culinary substitute for chickpea"
+    ],
+    "notes": "For chickpea, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mustard oil": {
+    "healthy": [
+      "Avocado oil",
+      "Sesame oil"
+    ],
+    "general": [
+      "Ghee",
+      "Peanut oil",
+      "Canola oil"
+    ],
+    "notes": "Mustard oil has a distinct pungent, smoky aroma. Substitute with ghee or toasted sesame oil for authentic warmth, or neutral oil for mild dishes."
+  },
+  "okonomiyaki sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for okonomiyaki sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "kewpie mayo": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for kewpie mayo. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "bonito flakes": {
+    "general": [
+      "Standard culinary substitute for bonito flakes"
+    ],
+    "notes": "For bonito flakes, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "bacon": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for bacon. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "clam juice": {
+    "general": [
+      "Standard culinary substitute for clam juice"
+    ],
+    "notes": "For clam juice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "white fish": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for white fish. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "salsa": {
+    "general": [
+      "Standard culinary substitute for salsa"
+    ],
+    "notes": "For salsa, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pre-cooked cornmeal (masarepa)": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for pre-cooked cornmeal (masarepa). Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "shredded beef": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for shredded beef. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "andouille sausage": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for andouille sausage. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "red onion": {
+    "general": [
+      "Standard culinary substitute for red onion"
+    ],
+    "notes": "For red onion, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "rocoto pepper": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for rocoto pepper. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "chocolate": {
+    "general": [
+      "Standard culinary substitute for chocolate"
+    ],
+    "notes": "For chocolate, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "baking powder": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for baking powder. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "chicken breast": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for chicken breast. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "garaetteok (cylindrical rice cakes)": {
+    "general": [
+      "Standard culinary substitute for garaetteok (cylindrical rice cakes)"
+    ],
+    "notes": "For garaetteok (cylindrical rice cakes), substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "scotch bonnet peppers": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for scotch bonnet peppers. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "flat rice noodles": {
+    "general": [
+      "Standard culinary substitute for flat rice noodles"
+    ],
+    "notes": "For flat rice noodles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "flank steak": {
+    "general": [
+      "Standard culinary substitute for flank steak"
+    ],
+    "notes": "For flank steak, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "light soy sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for light soy sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "dried chili peppers": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for dried chili peppers. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "mulato chiles": {
+    "general": [
+      "Standard culinary substitute for mulato chiles"
+    ],
+    "notes": "For mulato chiles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "ancho chiles": {
+    "general": [
+      "Standard culinary substitute for ancho chiles"
+    ],
+    "notes": "For ancho chiles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pasilla chiles": {
+    "general": [
+      "Standard culinary substitute for pasilla chiles"
+    ],
+    "notes": "For pasilla chiles, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "plantains": {
+    "general": [
+      "Standard culinary substitute for plantains"
+    ],
+    "notes": "For plantains, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pepper": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for pepper. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "ground lamb": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for ground lamb. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "walnuts": {
+    "general": [
+      "Standard culinary substitute for walnuts"
+    ],
+    "notes": "For walnuts, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "tofu puffs": {
+    "general": [
+      "Standard culinary substitute for tofu puffs"
+    ],
+    "notes": "For tofu puffs, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "cod": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for cod. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "beer": {
+    "general": [
+      "Standard culinary substitute for beer"
+    ],
+    "notes": "For beer, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "malt vinegar": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for malt vinegar. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "tartar sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for tartar sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "wheat starch": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for wheat starch. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "tapioca starch": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for tapioca starch. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "ginger powder": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for ginger powder. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "mirin": {
+    "general": [
+      "Standard culinary substitute for mirin"
+    ],
+    "notes": "For mirin, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "sake": {
+    "general": [
+      "Standard culinary substitute for sake"
+    ],
+    "notes": "For sake, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "urad dal": {
+    "general": [
+      "Standard culinary substitute for urad dal"
+    ],
+    "notes": "For urad dal, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "ground lamb or beef": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for ground lamb or beef. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "b\u00e9chamel sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for b\u00e9chamel sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "lamb shoulder": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for lamb shoulder. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "apricots": {
+    "general": [
+      "Standard culinary substitute for apricots"
+    ],
+    "notes": "For apricots, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pistachios": {
+    "general": [
+      "Standard culinary substitute for pistachios"
+    ],
+    "notes": "For pistachios, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "berbere spice": {
+    "general": [
+      "Standard culinary substitute for berbere spice"
+    ],
+    "notes": "For berbere spice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "filo pastry": {
+    "general": [
+      "Standard culinary substitute for filo pastry"
+    ],
+    "notes": "For filo pastry, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "teff flour": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for teff flour. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "red onions": {
+    "general": [
+      "Standard culinary substitute for red onions"
+    ],
+    "notes": "For red onions, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "niter kibbeh (spiced butter)": {
+    "general": [
+      "Standard culinary substitute for niter kibbeh (spiced butter)"
+    ],
+    "notes": "For niter kibbeh (spiced butter), substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "kaffir lime": {
+    "general": [
+      "Standard culinary substitute for kaffir lime"
+    ],
+    "notes": "For kaffir lime, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "scotch bonnet": {
+    "general": [
+      "Standard culinary substitute for scotch bonnet"
+    ],
+    "notes": "For scotch bonnet, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "red chili powder": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for red chili powder. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "cloves": {
+    "general": [
+      "Standard culinary substitute for cloves"
+    ],
+    "notes": "For cloves, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "parboiled rice": {
+    "general": [
+      "Standard culinary substitute for parboiled rice"
+    ],
+    "notes": "For parboiled rice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "red bell peppers": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for red bell peppers. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "veal or pork": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for veal or pork. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "beetroots": {
+    "general": [
+      "Standard culinary substitute for beetroots"
+    ],
+    "notes": "For beetroots, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "tamarind paste": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for tamarind paste. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "coconut oil": {
+    "healthy": [
+      "Avocado oil",
+      "Olive oil"
+    ],
+    "general": [
+      "Ghee",
+      "Vegetable oil"
+    ],
+    "notes": "Coconut oil adds a subtle sweet coconut aroma. Use ghee or avocado oil for high-heat cooking."
+  },
+  "baguette": {
+    "general": [
+      "Standard culinary substitute for baguette"
+    ],
+    "notes": "For baguette, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "mace": {
+    "general": [
+      "Standard culinary substitute for mace"
+    ],
+    "notes": "For mace, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "kaffir lime leaves": {
+    "general": [
+      "Standard culinary substitute for kaffir lime leaves"
+    ],
+    "notes": "For kaffir lime leaves, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pork pate": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for pork pate. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "sliced pork": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for sliced pork. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "pickled carrots": {
+    "general": [
+      "Standard culinary substitute for pickled carrots"
+    ],
+    "notes": "For pickled carrots, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "daikon": {
+    "general": [
+      "Standard culinary substitute for daikon"
+    ],
+    "notes": "For daikon, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "jalapeno": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for jalapeno. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "bay leaf": {
+    "general": [
+      "Baby spinach",
+      "Mixed salad greens",
+      "Kale"
+    ],
+    "notes": "Swap suggestion for bay leaf. Tender greens wilt fast; tough greens (kale) require extra braising time."
+  },
+  "cucumber": {
+    "general": [
+      "Standard culinary substitute for cucumber"
+    ],
+    "notes": "For cucumber, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "maida": {
+    "general": [
+      "Standard culinary substitute for maida"
+    ],
+    "notes": "For maida, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "prawns": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for prawns. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "mustard": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for mustard. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "soya chunks": {
+    "general": [
+      "Standard culinary substitute for soya chunks"
+    ],
+    "notes": "For soya chunks, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "oyster sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for oyster sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "kecap manis (sweet soy sauce)": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for kecap manis (sweet soy sauce). Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "chili sauce": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for chili sauce. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "beef slices": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for beef slices. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "thai basil": {
+    "general": [
+      "Standard culinary substitute for thai basil"
+    ],
+    "notes": "For thai basil, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "turkey": {
+    "general": [
+      "Turkey breast",
+      "Chicken thigh"
+    ],
+    "notes": "Swap suggestion for turkey. Plant proteins require thorough seasoning and marinating to absorb meat-like flavors.",
+    "vegan": [
+      "Seitan",
+      "Extra firm tofu",
+      "Tempeh",
+      "Lentils"
+    ]
+  },
+  "flour tortilla": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for flour tortilla. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "coriander powder": {
+    "general": [
+      "Ground cumin",
+      "Garam masala",
+      "Caraway powder"
+    ],
+    "notes": "Ground coriander powder adds a warm citrusy earthiness. Do not replace with fresh cilantro leaves in warm curries or baking."
+  },
+  "rice vinegar": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for rice vinegar. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "chili flakes": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for chili flakes. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "green cardamom": {
+    "general": [
+      "Standard culinary substitute for green cardamom"
+    ],
+    "notes": "For green cardamom, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "raisins": {
+    "general": [
+      "Standard culinary substitute for raisins"
+    ],
+    "notes": "For raisins, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "fried shallots": {
+    "general": [
+      "Standard culinary substitute for fried shallots"
+    ],
+    "notes": "For fried shallots, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "corn tortilla": {
+    "general": [
+      "Standard culinary substitute for corn tortilla"
+    ],
+    "notes": "For corn tortilla, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "red chili flakes": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for red chili flakes. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "pine nuts": {
+    "general": [
+      "Standard culinary substitute for pine nuts"
+    ],
+    "notes": "For pine nuts, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "rose water": {
+    "general": [
+      "Water + 1 tsp soy sauce / pinch of salt"
+    ],
+    "notes": "Swap suggestion for rose water. Broth adds umami background depth. Plain water requires adjusting salt and seasoning.",
+    "vegan": [
+      "Vegetable broth",
+      "Mushroom stock"
+    ]
+  },
+  "kokum": {
+    "general": [
+      "Standard culinary substitute for kokum"
+    ],
+    "notes": "For kokum, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "biryani masala": {
+    "general": [
+      "Standard culinary substitute for biryani masala"
+    ],
+    "notes": "For biryani masala, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "salmon": {
+    "general": [
+      "Firm white fish (halibut, tilapia)"
+    ],
+    "notes": "Swap suggestion for salmon. Seafood cooks very rapidly. Do not overcook substitutes to maintain texture.",
+    "vegan": [
+      "King oyster mushroom",
+      "Pressed tofu + kelp flakes"
+    ]
+  },
+  "palm sugar": {
+    "general": [
+      "Standard culinary substitute for palm sugar"
+    ],
+    "notes": "For palm sugar, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "shallot": {
+    "general": [
+      "Standard culinary substitute for shallot"
+    ],
+    "notes": "For shallot, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "maida (all-purpose flour)": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for maida (all-purpose flour). Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "shrimp paste": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for shrimp paste. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "gochugaru": {
+    "general": [
+      "Standard culinary substitute for gochugaru"
+    ],
+    "notes": "For gochugaru, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "guacamole": {
+    "general": [
+      "Standard culinary substitute for guacamole"
+    ],
+    "notes": "For guacamole, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "cauliflower": {
+    "general": [
+      "Standard culinary substitute for cauliflower"
+    ],
+    "notes": "For cauliflower, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "tamarind chutney": {
+    "general": [
+      "Standard culinary substitute for tamarind chutney"
+    ],
+    "notes": "For tamarind chutney, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "rice flour": {
+    "general": [
+      "All-purpose flour",
+      "Oat flour"
+    ],
+    "notes": "Swap suggestion for rice flour. Starch/flour swaps alter moisture absorption. Add 1-2 tbsp liquid if using whole grain flours.",
+    "gluten_free": [
+      "1:1 Gluten-Free baking flour",
+      "Almond flour",
+      "Cornstarch"
+    ]
+  },
+  "seeraga samba rice": {
+    "general": [
+      "Standard culinary substitute for seeraga samba rice"
+    ],
+    "notes": "For seeraga samba rice, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "jalape\u00f1o": {
+    "general": [
+      "Standard culinary substitute for jalape\u00f1o"
+    ],
+    "notes": "For jalape\u00f1o, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "beans": {
+    "general": [
+      "Standard culinary substitute for beans"
+    ],
+    "notes": "For beans, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "atta": {
+    "general": [
+      "Standard culinary substitute for atta"
+    ],
+    "notes": "For atta, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "chaat masala": {
+    "general": [
+      "Standard culinary substitute for chaat masala"
+    ],
+    "notes": "For chaat masala, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "banana": {
+    "general": [
+      "Standard culinary substitute for banana"
+    ],
+    "notes": "For banana, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "bok choy": {
+    "general": [
+      "Standard culinary substitute for bok choy"
+    ],
+    "notes": "For bok choy, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "kofta": {
+    "general": [
+      "Standard culinary substitute for kofta"
+    ],
+    "notes": "For kofta, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "toor dal": {
+    "general": [
+      "Standard culinary substitute for toor dal"
+    ],
+    "notes": "For toor dal, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "nutmeg": {
+    "general": [
+      "Standard culinary substitute for nutmeg"
+    ],
+    "notes": "For nutmeg, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "edamame": {
+    "general": [
+      "Standard culinary substitute for edamame"
+    ],
+    "notes": "For edamame, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "pita": {
+    "general": [
+      "Standard culinary substitute for pita"
+    ],
+    "notes": "For pita, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "ketchup": {
+    "general": [
+      "Similar tangy condiment or citrus juice + salt"
+    ],
+    "notes": "Swap suggestion for ketchup. Adjust salt/acid balance when swapping liquid condiments. Not recommended as direct dry seasoning."
+  },
+  "chili oil": {
+    "general": [
+      "Black pepper",
+      "Red pepper flakes",
+      "Paprika"
+    ],
+    "notes": "Swap suggestion for chili oil. Adjust quantity according to heat level. Not recommended in large amounts for mild dishes."
+  },
+  "sumac": {
+    "general": [
+      "Standard culinary substitute for sumac"
+    ],
+    "notes": "For sumac, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "roasted vegetables": {
+    "general": [
+      "Standard culinary substitute for roasted vegetables"
+    ],
+    "notes": "For roasted vegetables, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "romaine": {
+    "general": [
+      "Standard culinary substitute for romaine"
+    ],
+    "notes": "For romaine, substitute with a similar flavor/textural match from your pantry. Not recommended to omit if central to dish flavor."
+  },
+  "desi ghee": {
+    "vegan": [
+      "Coconut oil",
+      "Vegan butter"
+    ],
+    "healthy": [
+      "Olive oil",
+      "Avocado oil"
+    ],
+    "general": [
+      "Unsalted butter",
+      "Clarified butter"
+    ],
+    "notes": "Desi ghee provides a rich, nutty flavor and high smoke point. Coconut oil is the best vegan substitute for high-heat Indian cooking."
+  }
 }

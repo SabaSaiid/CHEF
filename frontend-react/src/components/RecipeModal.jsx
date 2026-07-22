@@ -1,23 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
+import { AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 
-const SUB_MAP = {
-  'milk': 'Almond milk, Soy milk, or Coconut milk',
-  'butter': 'Applesauce, Coconut oil, or Avocado oil',
-  'egg': 'Flaxseed meal + water, Chia seeds, or applesauce',
-  'sugar': 'Stevia, Honey, Maple syrup, or Erythritol',
-  'flour': 'Almond flour, Coconut flour, or Gluten-free flour blend',
-  'soy sauce': 'Coconut aminos or Tamari',
-  'cheese': 'Nutritional yeast or vegan cheese substitute',
-  'peanut': 'Almond butter or Sunflower seed butter',
-  'chicken': 'Tofu, Tempeh, or Seitan',
-  'beef': 'Lentils, Portobello mushrooms, or Beyond meat',
-  'cream': 'Coconut cream or silken tofu blend'
-};
 
 function InstructionSteps({ instructions }) {
   if (!instructions) {
@@ -100,6 +88,22 @@ export default function RecipeModal({ recipe, onClose }) {
   const toast = useToast();
   const [pantry, setPantry] = useState([]);
   const [substitution, setSubstitution] = useState({});
+  const [loadingSub, setLoadingSub] = useState({});
+  const [appliedSwaps, setAppliedSwaps] = useState({});
+
+  const handleApplySwap = (originalIng, substituteItem) => {
+    setAppliedSwaps(prev => ({
+      ...prev,
+      [originalIng]: substituteItem
+    }));
+    toast({
+      title: "Swap Applied! 💡",
+      description: `Replaced '${originalIng}' with '${substituteItem}' in your recipe view.`,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   // Cooking Mode states
   const [isCookingMode, setIsCookingMode] = useState(false);
@@ -287,19 +291,36 @@ export default function RecipeModal({ recipe, onClose }) {
       .catch(err => console.error("Error reloading pantry", err));
   };
 
-  const handleSuggestSubstitute = (ingName) => {
-    const normalized = ingName.toLowerCase();
-    let foundSub = null;
-    for (const [key, value] of Object.entries(SUB_MAP)) {
-      if (normalized.includes(key)) {
-        foundSub = value;
-        break;
+  const handleSuggestSubstitute = async (ingName) => {
+    try {
+      setLoadingSub(prev => ({ ...prev, [ingName]: true }));
+      const parsed = parseIngredient(ingName);
+      let queryName = parsed.name || ingName;
+      const titleParam = recipe?.title ? `?recipe_title=${encodeURIComponent(recipe.title)}` : '';
+      const res = await api.get(`/ingredients/substitutes/${encodeURIComponent(queryName)}${titleParam}`);
+      
+      const hasSub = res && Object.keys(res).some(k => res[k] && (!Array.isArray(res[k]) || res[k].length > 0) && k !== 'notes');
+      
+      if (hasSub) {
+        setSubstitution(prev => ({
+          ...prev,
+          [ingName]: res
+        }));
+      } else {
+        setSubstitution(prev => ({
+          ...prev,
+          [ingName]: { fallback: "Try using a similar alternative (e.g. olive oil for butter, tofu for meat) or search online." }
+        }));
       }
+    } catch (error) {
+      console.error("Failed to fetch substitute", error);
+      setSubstitution(prev => ({
+        ...prev,
+        [ingName]: { fallback: "Try using a similar alternative (e.g. olive oil for butter, tofu for meat) or search online." }
+      }));
+    } finally {
+      setLoadingSub(prev => ({ ...prev, [ingName]: false }));
     }
-    setSubstitution(prev => ({
-      ...prev,
-      [ingName]: foundSub || "Try using a similar alternative (e.g. olive oil for butter, tofu for meat) or search online."
-    }));
   };
 
   // Cooking step TTS helper
@@ -447,10 +468,10 @@ export default function RecipeModal({ recipe, onClose }) {
             
             {/* Allergen Warning Banner */}
             {detectedAllergens.length > 0 && (
-              <div style={{ background: '#fdf2f2', border: '1px solid #f8b4b4', borderRadius: '12px', padding: '12px', marginBottom: '15px', color: '#c81e1e', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '1.25rem' }}>⚠️</span>
-                <span style={{ fontWeight: '700', fontSize: '14px' }}>
-                  Allergen Caution: Contains {detectedAllergens.join(', ')} (violates active profile).
+              <div className="allergen-warning-banner">
+                <AlertTriangle size={18} className="allergen-icon" />
+                <span className="allergen-text">
+                  <strong>Allergen Caution:</strong> Contains {detectedAllergens.join(', ')} (violates active profile).
                 </span>
               </div>
             )}
@@ -494,31 +515,106 @@ export default function RecipeModal({ recipe, onClose }) {
                     const check = getPantryStatus(ing);
                     return (
                       <li key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
-                          <span style={{ color: check.inStock ? '#27ae60' : 'var(--text-primary)', fontWeight: check.inStock ? '600' : 'normal' }}>
-                            {check.inStock ? '🟢' : '🔴'} {ing.replace(/^([\d\.\/\s\-–]+)?/, (match) => {
-                               // Extract the quantity part and scale it
-                               const parsed = parseIngredient(ing);
-                               if (parsed.qty > 0) {
-                                  const scaledQty = Number((parsed.qty * servingRatio).toFixed(2));
-                                  return `${scaledQty} `;
-                               }
-                               return match;
-                            })} {check.inStock && <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>(In Pantry)</span>}
-                          </span>
+                        <div className="recipe-ing-row">
+                          <div className="recipe-ing-text">
+                            <span style={{ color: check.inStock ? '#27ae60' : 'var(--text-primary)', fontWeight: check.inStock ? '600' : 'normal' }}>
+                              {check.inStock ? '🟢' : '🔴'}{' '}
+                              {appliedSwaps[ing] ? (
+                                <span>
+                                  <span style={{ textDecoration: 'line-through', opacity: 0.55, marginRight: '6px' }}>
+                                    {ing}
+                                  </span>
+                                  <span style={{ color: '#059669', fontWeight: '700' }}>
+                                    ✨ {appliedSwaps[ing]}
+                                  </span>
+                                </span>
+                              ) : (
+                                ing.replace(/^([\d\.\/\s\-–]+)?/, (match) => {
+                                  const parsed = parseIngredient(ing);
+                                  if (parsed.qty > 0) {
+                                     const scaledQty = Number((parsed.qty * servingRatio).toFixed(2));
+                                     return `${scaledQty} `;
+                                  }
+                                  return match;
+                                })
+                              )}{' '}
+                              {check.inStock && <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>(In Pantry)</span>}
+                            </span>
+                          </div>
                           {!check.inStock && (
                             <button 
-                              className="water-btn" 
-                              onClick={() => handleSuggestSubstitute(ing)}
-                              style={{ padding: '2px 8px', fontSize: '0.75rem', width: 'auto', margin: 0 }}
+                              className={`swap-btn-trigger ${substitution[ing] ? 'active' : ''}`}
+                              onClick={() => {
+                                if (substitution[ing]) {
+                                  setSubstitution(prev => {
+                                    const next = { ...prev };
+                                    delete next[ing];
+                                    return next;
+                                  });
+                                } else {
+                                  handleSuggestSubstitute(ing);
+                                }
+                              }}
+                              disabled={loadingSub[ing]}
                             >
-                              💡 Suggest Swap
+                              {loadingSub[ing] ? '⏳ Finding...' : substitution[ing] ? '✕ Close' : '💡 Suggest Swap'}
                             </button>
                           )}
                         </div>
                         {substitution[ing] && (
-                          <div style={{ marginLeft: '20px', padding: '8px 12px', background: 'rgba(242, 204, 143, 0.12)', border: '1px dashed #f2cc8f', borderRadius: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                            👉 <strong>Substitute:</strong> {substitution[ing]}
+                          <div className="swap-glass-card">
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid rgba(249, 115, 22, 0.15)', paddingBottom: '6px' }}>
+                              <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--accent-1)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                💡 Ingredient Alternatives
+                              </div>
+                              <span style={{ fontSize: '0.75rem', opacity: 0.7, color: 'var(--text-muted)' }}>
+                                Click any badge to apply swap
+                              </span>
+                            </div>
+
+                            {substitution[ing].fallback ? (
+                               <div style={{ fontSize: '0.86rem', color: 'var(--text-secondary)' }}>{substitution[ing].fallback}</div>
+                            ) : (
+                               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                  {[
+                                    { key: 'vegan', label: 'Vegan', emoji: '🌱', className: 'swap-pill-vegan' },
+                                    { key: 'healthy', label: 'Healthy', emoji: '❤️', className: 'swap-pill-healthy' },
+                                    { key: 'baking', label: 'Baking', emoji: '🍰', className: 'swap-pill-baking' },
+                                    { key: 'gluten_free', label: 'Gluten-Free', emoji: '🌾', className: 'swap-pill-gluten_free' },
+                                    { key: 'allergy_friendly', label: 'Allergy Friendly', emoji: '🛡️', className: 'swap-pill-allergy_friendly' },
+                                    { key: 'general', label: 'General', emoji: '🧑‍🍳', className: 'swap-pill-general' },
+                                  ].map(cat => {
+                                    const items = substitution[ing][cat.key];
+                                    if (!items || items.length === 0) return null;
+                                    return (
+                                      <div key={cat.key} style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                                        <span style={{ fontSize: '0.78rem', fontWeight: '700', minWidth: '95px', color: 'var(--text-secondary)' }}>
+                                          {cat.emoji} {cat.label}:
+                                        </span>
+                                        {items.map((subItem, sIdx) => (
+                                          <span 
+                                            key={sIdx} 
+                                            className={`swap-badge-pill ${cat.className}`}
+                                            onClick={() => handleApplySwap(ing, subItem)}
+                                            title={`Click to substitute '${ing}' with '${subItem}'`}
+                                          >
+                                            {subItem}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    );
+                                  })}
+
+                                  {substitution[ing].notes && (
+                                    <div className="swap-chef-note">
+                                      <div style={{ fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px', color: '#d97706' }}>
+                                        👨‍🍳 Chef Note & Dish Recommendation:
+                                      </div>
+                                      <div>{substitution[ing].notes}</div>
+                                    </div>
+                                  )}
+                               </div>
+                            )}
                           </div>
                         )}
                       </li>

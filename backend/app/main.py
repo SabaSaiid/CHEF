@@ -9,7 +9,7 @@ Capstone project: a Python 3.14-compatible food assistant API with JWT auth.
   • JWT authentication (signup, login, user profiles)
   • TDEE calculator (Mifflin-St Jeor formula)
   • Weekly meal planner + shopping list generator
-  • Ingredient substitutions (20 common swaps)
+  • Ingredient substitutions (50+ common swaps)
   • Recipe ratings (1-5 stars)
 
 Run:  python -m uvicorn app.main:app --reload --port 8001

@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Bell, Trash2, CheckCircle2, AlertCircle, AlertTriangle, Info, CheckCheck } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
@@ -8,6 +9,36 @@ import AuthModal from './AuthModal';
 export default function Navbar({ onToggleSidebar }) {
   const { token, username } = useContext(AuthContext);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const { history, unreadCount, markAllAsRead, clearHistory } = useToast();
+  const notifRef = useRef(null);
+
+  // Close popover when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setIsNotifOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleToggleNotif = () => {
+    if (!isNotifOpen && unreadCount > 0) {
+      markAllAsRead();
+    }
+    setIsNotifOpen(!isNotifOpen);
+  };
+
+  const getNotifIcon = (type) => {
+    switch (type) {
+      case 'success': return <CheckCircle2 size={15} style={{ color: '#10b981' }} />;
+      case 'error': return <AlertCircle size={15} style={{ color: '#ef4444' }} />;
+      case 'warning': return <AlertTriangle size={15} style={{ color: '#f59e0b' }} />;
+      default: return <Info size={15} style={{ color: '#3b82f6' }} />;
+    }
+  };
 
   return (
     <>
@@ -31,6 +62,67 @@ export default function Navbar({ onToggleSidebar }) {
         </div>
 
         <div className="nav-auth">
+          {/* Notification Center Trigger */}
+          <div className="notif-center-wrapper" ref={notifRef}>
+            <button 
+              type="button"
+              className={`nav-icon-btn ${unreadCount > 0 ? 'has-unread' : ''}`}
+              onClick={handleToggleNotif}
+              title="Notifications"
+              aria-label="Toggle notification center"
+            >
+              <Bell size={18} />
+              {unreadCount > 0 && (
+                <span className="notif-badge-counter">{unreadCount > 9 ? '9+' : unreadCount}</span>
+              )}
+            </button>
+
+            {/* Notification Center Popover */}
+            {isNotifOpen && (
+              <div className="notif-popover">
+                <div className="notif-popover-header">
+                  <div className="notif-popover-title">
+                    <Bell size={15} />
+                    <span>Notifications</span>
+                    {history.length > 0 && <span className="notif-count-tag">{history.length}</span>}
+                  </div>
+                  {history.length > 0 && (
+                    <button 
+                      type="button" 
+                      className="notif-clear-btn" 
+                      onClick={clearHistory}
+                      title="Clear notification history"
+                    >
+                      <Trash2 size={13} />
+                      <span>Clear</span>
+                    </button>
+                  )}
+                </div>
+
+                <div className="notif-popover-body">
+                  {history.length === 0 ? (
+                    <div className="notif-empty-state">
+                      <CheckCheck size={28} className="empty-icon" />
+                      <p>No recent notifications</p>
+                    </div>
+                  ) : (
+                    <div className="notif-list">
+                      {history.map(item => (
+                        <div key={item.id} className="notif-item">
+                          <span className="notif-item-icon">{getNotifIcon(item.type)}</span>
+                          <div className="notif-item-content">
+                            <p className="notif-item-message">{item.message}</p>
+                            <span className="notif-item-time">{item.time}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
           {!token ? (
             <button className="btn-auth" onClick={() => setAuthModalOpen(true)}>🔐 Login</button>
           ) : (
@@ -54,3 +146,4 @@ export default function Navbar({ onToggleSidebar }) {
     </>
   );
 }
+

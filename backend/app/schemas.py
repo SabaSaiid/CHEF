@@ -137,12 +137,21 @@ class TDEEResponse(BaseModel):
 
 # ── Ingredients ─────────────────────────────────────────────────
 
+class IngredientSubstitute(BaseModel):
+    vegan: Optional[list[str]] = None
+    healthy: Optional[list[str]] = None
+    baking: Optional[list[str]] = None
+    general: Optional[list[str]] = None
+    gluten_free: Optional[list[str]] = None
+    allergy_friendly: Optional[list[str]] = None
+    notes: Optional[str] = None
+
 class IngredientItem(BaseModel):
     name: str
     quantity: Optional[float] = None
     unit: Optional[str] = None
     raw_text: str = ""
-    substitutes: list[str] = []
+    substitutes: Optional[IngredientSubstitute] = None
 
 
 class IngredientParseRequest(BaseModel):
