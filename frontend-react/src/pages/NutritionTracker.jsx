@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { calculateMacroPercentages } from '../utils/nutrition';
 
 const MEAL_SLOTS = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
@@ -14,9 +15,7 @@ function MacroDonut({ protein, carbs, fat }) {
 
   if (total === 0) return null;
 
-  const proteinPct = Math.round((proteinCal / total) * 100);
-  const carbsPct = Math.round((carbsCal / total) * 100);
-  const fatPct = 100 - proteinPct - carbsPct;
+  const { proteinPct, carbsPct, fatPct } = calculateMacroPercentages(protein, carbs, fat, total);
 
   const radius = 45;
   const circumference = 2 * Math.PI * radius;

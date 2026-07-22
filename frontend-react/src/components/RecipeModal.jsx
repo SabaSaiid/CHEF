@@ -5,6 +5,7 @@ import { AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import api from '../services/api';
+import { calculateMacroPercentages } from '../utils/nutrition';
 
 
 function InstructionSteps({ instructions }) {
@@ -634,17 +635,15 @@ export default function RecipeModal({ recipe, onClose }) {
                   const protein = recipe.nutrition.protein_g || recipe.protein_g || 0;
                   const carbs = recipe.nutrition.carbs_g || recipe.carbs_g || 0;
                   const fat = recipe.nutrition.fat_g || recipe.fat_g || 0;
-                  const totalMacros = protein + carbs + fat;
-                  const pPct = totalMacros ? (protein / totalMacros) * 100 : 0;
-                  const cPct = totalMacros ? (carbs / totalMacros) * 100 : 0;
-                  const fPct = totalMacros ? (fat / totalMacros) * 100 : 0;
+                  const cals = recipe.nutrition.calories || 0;
+                  const { proteinPct: pPct, carbsPct: cPct, fatPct: fPct } = calculateMacroPercentages(protein, carbs, fat, cals);
                   
                   return (
                     <>
                       <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', marginTop: '10px', marginBottom: '15px' }}>
-                        {pPct > 0 && <div style={{ width: `${pPct}%`, background: '#e07a5f' }} title={`Protein: ${Math.round(pPct)}%`} />}
-                        {cPct > 0 && <div style={{ width: `${cPct}%`, background: '#f2cc8f' }} title={`Carbs: ${Math.round(cPct)}%`} />}
-                        {fPct > 0 && <div style={{ width: `${fPct}%`, background: '#81b29a' }} title={`Fat: ${Math.round(fPct)}%`} />}
+                        {pPct > 0 && <div style={{ width: `${pPct}%`, background: '#e07a5f' }} title={`Protein: ${pPct}%`} />}
+                        {cPct > 0 && <div style={{ width: `${cPct}%`, background: '#f2cc8f' }} title={`Carbs: ${cPct}%`} />}
+                        {fPct > 0 && <div style={{ width: `${fPct}%`, background: '#81b29a' }} title={`Fat: ${fPct}%`} />}
                       </div>
                       <div className="nutrition-grid" style={{marginTop: '8px'}}>
                         <div className="nutrient-box">

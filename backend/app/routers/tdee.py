@@ -100,6 +100,43 @@ def _bmr_cunningham(weight_kg: float, body_fat_pct: float) -> float:
     return 500 + (22 * lean_body_mass)
 
 
+def calculate_macro_percentages(protein_g: float | None, carbs_g: float | None, fat_g: float | None, total_calories: float | None) -> tuple[int, int, int]:
+    """Calculates normalized integer macro percentages using the Largest Remainder Method (Hare-Niemeyer)."""
+    p_g = max(0.0, float(protein_g or 0))
+    c_g = max(0.0, float(carbs_g or 0))
+    f_g = max(0.0, float(fat_g or 0))
+    p_cal = p_g * 4
+    c_cal = c_g * 4
+    f_cal = f_g * 9
+    macro_total = p_cal + c_cal + f_cal
+    total = macro_total if macro_total > 0 else (float(total_calories) if total_calories and float(total_calories) > 0 else 0.0)
+
+    if total <= 0:
+        return 0, 0, 0
+
+    items = [
+        {"key": "p", "val": (p_cal / total) * 100},
+        {"key": "c", "val": (c_cal / total) * 100},
+        {"key": "f", "val": (f_cal / total) * 100},
+    ]
+
+    floor_sum = sum(int(item["val"]) for item in items)
+    deficit = max(0, min(100, 100 - floor_sum))
+
+    sorted_items = sorted(
+        [{"key": item["key"], "floor": int(item["val"]), "rem": item["val"] - int(item["val"])} for item in items],
+        key=lambda x: x["rem"],
+        reverse=True
+    )
+
+    res = {}
+    for idx, item in enumerate(sorted_items):
+        bonus = 1 if idx < deficit else 0
+        res[item["key"]] = item["floor"] + bonus
+
+    return res["p"], res["c"], res["f"]
+
+
 def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
     """
     Core TDEE engine with clinical-grade accuracy.
@@ -193,9 +230,9 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
         target_carbs += int(round(tef_adjustment / 4))
         
     # ─── Actual macro percentages ────────────────────────────────────
-    protein_pct_actual = int(round((protein_calories / target_calories) * 100)) if target_calories > 0 else 0
-    carbs_pct_actual = int(round(((target_carbs * 4) / target_calories) * 100)) if target_calories > 0 else 0
-    fat_pct_actual = 100 - protein_pct_actual - carbs_pct_actual  # ensure they sum to 100
+    protein_pct_actual, carbs_pct_actual, fat_pct_actual = calculate_macro_percentages(
+        target_protein, target_carbs, target_fat, target_calories
+    )
 
     # ─── 8. Fiber & Water ────────────────────────────────────────────
     # Academy of Nutrition and Dietetics: 14 g fiber per 1000 kcal

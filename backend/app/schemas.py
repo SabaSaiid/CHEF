@@ -4,7 +4,7 @@ Pydantic schemas — all request/response models in one file.
 
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
+from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator, model_validator
 
 
 # ── Authentication ──────────────────────────────────────────────
@@ -489,9 +489,26 @@ class UserProfileResponse(BaseModel):
     target_fat: Optional[int] = None
     bmr: Optional[int] = None
     tdee_maintenance: Optional[int] = None
-    bmi: Optional[float] = None
     target_fiber_g: Optional[int] = None
     target_water_ml: Optional[int] = None
+    protein_pct: Optional[int] = None
+    carbs_pct: Optional[int] = None
+    fat_pct: Optional[int] = None
+
+    @model_validator(mode="after")
+    def compute_macro_percentages(self):
+        if self.target_calories and self.target_calories > 0 and (self.target_protein or self.target_carbs or self.target_fat):
+            from app.routers.tdee import calculate_macro_percentages
+            p, c, f = calculate_macro_percentages(
+                self.target_protein,
+                self.target_carbs,
+                self.target_fat,
+                self.target_calories
+            )
+            self.protein_pct = p
+            self.carbs_pct = c
+            self.fat_pct = f
+        return self
 
 
 # ── Water Logs (Hydration Tracking) ─────────────────────────────

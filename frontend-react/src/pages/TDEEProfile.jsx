@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { calculateMacroPercentages } from '../utils/nutrition';
 
 const DIET_OPTIONS = [
   { value: 'non-vegetarian', label: 'Non-Veg' },
@@ -88,9 +89,7 @@ export default function TDEEProfile() {
     const carb = p.target_carbs || 0;
     const fat = p.target_fat || 0;
     const wt = p.weight_kg || 70;
-    const protPct = cal > 0 ? Math.round((prot * 4 / cal) * 100) : 0;
-    const carbPct = cal > 0 ? Math.round((carb * 4 / cal) * 100) : 0;
-    const fatPct  = cal > 0 ? Math.round((fat  * 9 / cal) * 100) : 0;
+    const { proteinPct, carbsPct, fatPct } = calculateMacroPercentages(prot, carb, fat, cal);
     const bmiVal  = p.bmi || (wt > 0 ? Math.round((wt / ((p.height_cm / 100) ** 2)) * 10) / 10 : 0);
     let bmiCat = 'Normal';
     if (bmiVal < 18.5) bmiCat = 'Underweight';
@@ -102,7 +101,9 @@ export default function TDEEProfile() {
       bmi: bmiVal, bmi_category: p.bmi_category || bmiCat,
       formula_used: p.formula_used || 'Mifflin-St Jeor',
       target_fiber_g: p.target_fiber_g, target_water_ml: p.target_water_ml,
-      protein_pct: p.protein_pct || protPct, carbs_pct: p.carbs_pct || carbPct, fat_pct: p.fat_pct || fatPct,
+      protein_pct: p.protein_pct ?? proteinPct,
+      carbs_pct: p.carbs_pct ?? carbsPct,
+      fat_pct: p.fat_pct ?? fatPct,
       protein_per_kg: p.protein_per_kg || (wt > 0 ? (prot / wt).toFixed(1) : '2.0'),
     };
   };
@@ -565,9 +566,15 @@ export default function TDEEProfile() {
             
             {/* Custom Stacked Macro Bar */}
             {(() => {
-              const protPct = results.protein_pct || 30;
-              const carbPct = results.carbs_pct || 40;
-              const fatPct = results.fat_pct || 30;
+              const norm = calculateMacroPercentages(
+                results.target_protein,
+                results.target_carbs,
+                results.target_fat,
+                results.target_calories
+              );
+              const protPct = results.protein_pct ?? norm.proteinPct;
+              const carbPct = results.carbs_pct ?? norm.carbsPct;
+              const fatPct = results.fat_pct ?? norm.fatPct;
               return (
                 <div style={{ marginBottom: '24px' }}>
                   <div style={{ height: '14px', width: '100%', borderRadius: '7px', overflow: 'hidden', display: 'flex' }}>
