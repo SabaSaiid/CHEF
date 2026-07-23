@@ -4,15 +4,197 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 import AuthModal from '../components/AuthModal';
-import { Plus, Wand2, Trash2, Search, AlertTriangle, ChefHat, Info, AlertCircle, Package } from 'lucide-react';
+import { Plus, Wand2, Trash2, Search, AlertTriangle, ChefHat, Info, AlertCircle, Package, Clock, Leaf, Minus } from 'lucide-react';
 import useHoldToRepeat from '../hooks/useHoldToRepeat';
 
-function HoldablePantryQtyBtn({ item, amount, onAdjust, label, title }) {
+/**
+ * Returns a sensible increment/decrement step based on unit type.
+ * e.g., grams → 50, ml → 100, pcs → 1, kg → 0.25
+ */
+function getStepForUnit(unit) {
+  if (!unit) return 1;
+  const u = unit.trim().toLowerCase();
+  const stepMap = {
+    'pcs': 1, 'pieces': 1, 'piece': 1, 'whole': 1, 'nos': 1,
+    'slices': 1, 'slice': 1,
+    'g': 50, 'gram': 50, 'grams': 50,
+    'ml': 100, 'milliliter': 100, 'milliliters': 100,
+    'kg': 0.25, 'kilogram': 0.25, 'kilograms': 0.25,
+    'l': 0.25, 'liter': 0.25, 'liters': 0.25, 'litre': 0.25, 'litres': 0.25,
+    'tbsp': 1, 'tablespoon': 1, 'tablespoons': 1,
+    'tsp': 0.5, 'teaspoon': 0.5, 'teaspoons': 0.5,
+    'cup': 0.25, 'cups': 0.25,
+    'oz': 1, 'ounce': 1, 'ounces': 1,
+    'lb': 0.25, 'pound': 0.25, 'pounds': 0.25,
+    'serving': 1, 'servings': 1,
+    'dozen': 1,
+    'bunch': 1, 'bunches': 1,
+    'can': 1, 'cans': 1,
+    'packet': 1, 'packets': 1,
+    'bottle': 1, 'bottles': 1,
+    'box': 1, 'boxes': 1,
+  };
+  return stepMap[u] || 1;
+}
+
+/**
+ * Formats a step value + unit for display on buttons (e.g., "+50g", "-100ml", "+1")
+ */
+function formatStepLabel(step, unit, direction) {
+  const prefix = direction > 0 ? '+' : '−';
+  const u = (unit || '').trim().toLowerCase();
+  // For mass/volume units, show unit suffix
+  const showUnit = ['g', 'gram', 'grams', 'ml', 'milliliter', 'milliliters', 'kg', 'kilogram', 'kilograms', 'l', 'liter', 'liters', 'litre', 'litres', 'oz', 'ounce', 'ounces', 'lb', 'pound', 'pounds', 'tsp', 'teaspoon', 'teaspoons', 'tbsp', 'tablespoon', 'tablespoons', 'cup', 'cups'].includes(u);
+  const displayStep = step % 1 === 0 ? step.toString() : step.toFixed(step < 1 ? 2 : 1).replace(/0+$/, '').replace(/\.$/, '');
+  return showUnit ? `${prefix}${displayStep}${u}` : `${prefix}${displayStep}`;
+}
+
+/**
+ * Returns an emoji for a pantry item based on its name (keyword matching).
+ * Falls back to a category-based emoji if no name match is found.
+ */
+function getItemEmoji(ingredientName, category) {
+  const name = (ingredientName || '').toLowerCase();
+
+  // Item-specific keyword → emoji mapping (checked in order, first match wins)
+  const itemKeywords = [
+    // Proteins
+    { keywords: ['egg'], emoji: '🥚' },
+    { keywords: ['chicken'], emoji: '🍗' },
+    { keywords: ['beef', 'steak'], emoji: '🥩' },
+    { keywords: ['pork', 'bacon', 'ham'], emoji: '🥓' },
+    { keywords: ['fish', 'salmon', 'tuna', 'cod', 'tilapia'], emoji: '🐟' },
+    { keywords: ['shrimp', 'prawn', 'seafood', 'crab', 'lobster'], emoji: '🦐' },
+    { keywords: ['lamb', 'mutton', 'goat'], emoji: '🍖' },
+    { keywords: ['turkey'], emoji: '🦃' },
+    { keywords: ['tofu', 'paneer', 'tempeh'], emoji: '🧊' },
+    { keywords: ['sausage'], emoji: '🌭' },
+
+    // Dairy
+    { keywords: ['milk'], emoji: '🥛' },
+    { keywords: ['butter'], emoji: '🧈' },
+    { keywords: ['cheese', 'cheddar', 'mozzarella', 'parmesan', 'feta'], emoji: '🧀' },
+    { keywords: ['yogurt', 'yoghurt', 'curd', 'dahi'], emoji: '🥣' },
+    { keywords: ['cream', 'whip'], emoji: '🍦' },
+    { keywords: ['ice cream'], emoji: '🍨' },
+
+    // Produce — Fruits
+    { keywords: ['apple'], emoji: '🍎' },
+    { keywords: ['banana'], emoji: '🍌' },
+    { keywords: ['orange'], emoji: '🍊' },
+    { keywords: ['lemon', 'lime'], emoji: '🍋' },
+    { keywords: ['grape'], emoji: '🍇' },
+    { keywords: ['strawberr'], emoji: '🍓' },
+    { keywords: ['blueberr', 'berr'], emoji: '🫐' },
+    { keywords: ['watermelon', 'melon'], emoji: '🍉' },
+    { keywords: ['peach', 'apricot', 'nectarine'], emoji: '🍑' },
+    { keywords: ['pineapple'], emoji: '🍍' },
+    { keywords: ['mango'], emoji: '🥭' },
+    { keywords: ['avocado'], emoji: '🥑' },
+    { keywords: ['coconut'], emoji: '🥥' },
+    { keywords: ['cherry', 'cherries'], emoji: '🍒' },
+    { keywords: ['pear'], emoji: '🍐' },
+    { keywords: ['kiwi'], emoji: '🥝' },
+
+    // Produce — Vegetables
+    { keywords: ['tomato'], emoji: '🍅' },
+    { keywords: ['potato'], emoji: '🥔' },
+    { keywords: ['sweet potato', 'yam'], emoji: '🍠' },
+    { keywords: ['carrot'], emoji: '🥕' },
+    { keywords: ['corn'], emoji: '🌽' },
+    { keywords: ['broccoli'], emoji: '🥦' },
+    { keywords: ['lettuce', 'salad'], emoji: '🥗' },
+    { keywords: ['cucumber'], emoji: '🥒' },
+    { keywords: ['pepper', 'capsicum', 'bell pepper'], emoji: '🫑' },
+    { keywords: ['chili', 'chilli', 'jalapeno'], emoji: '🌶️' },
+    { keywords: ['mushroom'], emoji: '🍄' },
+    { keywords: ['onion'], emoji: '🧅' },
+    { keywords: ['garlic'], emoji: '🧄' },
+    { keywords: ['ginger'], emoji: '🫚' },
+    { keywords: ['spinach', 'kale', 'greens', 'chard', 'lettuce'], emoji: '🥬' },
+    { keywords: ['pea', 'bean', 'lentil', 'chickpea', 'dal'], emoji: '🫘' },
+    { keywords: ['eggplant', 'aubergine', 'brinjal'], emoji: '🍆' },
+    { keywords: ['cabbage'], emoji: '🥬' },
+    { keywords: ['celery'], emoji: '🥬' },
+    { keywords: ['pumpkin', 'squash', 'zucchini', 'gourd'], emoji: '🎃' },
+
+    // Grains & Baking
+    { keywords: ['bread', 'toast', 'bun', 'roll', 'naan', 'roti', 'pita'], emoji: '🍞' },
+    { keywords: ['rice', 'basmati', 'jasmine'], emoji: '🍚' },
+    { keywords: ['pasta', 'spaghetti', 'noodle', 'penne', 'macaroni'], emoji: '🍝' },
+    { keywords: ['flour', 'wheat', 'atta', 'maida'], emoji: '🌾' },
+    { keywords: ['oat', 'cereal', 'granola', 'muesli'], emoji: '🥣' },
+    { keywords: ['cookie', 'biscuit'], emoji: '🍪' },
+    { keywords: ['cake'], emoji: '🍰' },
+    { keywords: ['sugar'], emoji: '🍬' },
+    { keywords: ['tortilla', 'wrap'], emoji: '🌯' },
+    { keywords: ['cracker'], emoji: '🍘' },
+
+    // Spices & Seasonings
+    { keywords: ['olive oil'], emoji: '🫒' },
+    { keywords: ['oil', 'cooking oil', 'vegetable oil', 'sunflower'], emoji: '🛢️' },
+    { keywords: ['vinegar'], emoji: '🫗' },
+    { keywords: ['soy sauce', 'sauce', 'ketchup', 'mayo', 'mustard'], emoji: '🧴' },
+    { keywords: ['salt'], emoji: '🧂' },
+    { keywords: ['honey'], emoji: '🍯' },
+    { keywords: ['spice', 'cumin', 'turmeric', 'coriander', 'paprika', 'cinnamon', 'pepper'], emoji: '🫙' },
+    { keywords: ['herb', 'basil', 'parsley', 'mint', 'thyme', 'rosemary', 'oregano', 'cilantro', 'dill'], emoji: '🌿' },
+
+    // Beverages
+    { keywords: ['coffee'], emoji: '☕' },
+    { keywords: ['tea'], emoji: '🍵' },
+    { keywords: ['juice'], emoji: '🧃' },
+    { keywords: ['water'], emoji: '💧' },
+    { keywords: ['soda', 'cola', 'drink'], emoji: '🥤' },
+    { keywords: ['wine'], emoji: '🍷' },
+    { keywords: ['beer'], emoji: '🍺' },
+
+    // Nuts & Dried
+    { keywords: ['nut', 'almond', 'walnut', 'cashew', 'pistachio', 'peanut', 'hazelnut'], emoji: '🥜' },
+    { keywords: ['chocolate', 'cocoa'], emoji: '🍫' },
+  ];
+
+  for (const entry of itemKeywords) {
+    if (entry.keywords.some(kw => name.includes(kw))) {
+      return entry.emoji;
+    }
+  }
+
+  // Fallback: category-based emoji
+  const categoryFallback = {
+    'Produce': '🥬',
+    'Proteins': '🥩',
+    'Dairy': '🧈',
+    'Grains & Baking': '🌾',
+    'Spices & Seasonings': '🫙',
+    'Other': '📦',
+  };
+  return categoryFallback[category] || '📦';
+}
+
+/**
+ * Returns the CSS class suffix for a category's accent strip.
+ */
+function getCategoryAccentClass(category) {
+  const map = {
+    'Produce': 'produce',
+    'Proteins': 'proteins',
+    'Dairy': 'dairy',
+    'Grains & Baking': 'grains',
+    'Spices & Seasonings': 'spices',
+    'Other': 'other',
+  };
+  return map[category] || 'other';
+}
+
+function HoldablePantryQtyBtn({ item, step, direction, onAdjust, title }) {
+  const amount = direction * step;
   const handlers = useHoldToRepeat(() => onAdjust(item, amount), 350, 100);
+  const label = formatStepLabel(step, item?.unit, direction);
   return (
     <button
       type="button"
-      style={{ border: 'none', background: 'transparent', padding: '4px 8px', fontSize: '16px', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 'bold' }}
+      className={`pantry-qty-btn ${direction < 0 ? 'minus' : 'plus'}`}
       title={title}
       {...handlers}
     >
@@ -124,7 +306,9 @@ export default function Pantry() {
   const handleQuantityAdjust = async (item, amount) => {
     if (!item) return;
     const currentQty = item.quantity || 0;
-    const newQty = Math.max(0, currentQty + amount);
+    // Round to avoid floating-point drift (e.g., 0.25 + 0.25 = 0.5000000001)
+    const rawNew = currentQty + amount;
+    const newQty = Math.max(0, Math.round(rawNew * 100) / 100);
     if (newQty === 0) {
       handleDelete(item.id, item.ingredient_name);
       return;
@@ -271,39 +455,37 @@ export default function Pantry() {
       ) : (
         <div style={{ marginTop: '20px' }}>
           
-          {/* Dashboard Summary Row */}
           <div className="fade-in-up" style={{ '--delay': '50ms', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginBottom: '20px' }}>
-             <div className="card glass" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', borderRadius: '16px' }}>
-                <div style={{ background: 'rgba(52, 152, 219, 0.1)', padding: '15px', borderRadius: '12px', color: '#3498db' }}>
-                   <Package size={28} />
+             <div className="card glass pantry-summary-card">
+                <div className="pantry-summary-icon total">
+                   <Package size={26} />
                 </div>
                 <div>
-                   <h4 style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>Total Ingredients</h4>
-                   <span style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{totalItems}</span>
+                   <h4 className="pantry-summary-label">Total Items</h4>
+                   <span className="pantry-summary-value">{totalItems}</span>
                 </div>
              </div>
-             <div className="card glass" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', borderRadius: '16px' }}>
-                <div style={{ background: 'rgba(231, 76, 60, 0.1)', padding: '15px', borderRadius: '12px', color: '#e74c3c' }}>
-                   <AlertCircle size={28} />
+             <div className="card glass pantry-summary-card">
+                <div className="pantry-summary-icon expiring">
+                   <Clock size={26} />
                 </div>
                 <div>
-                   <h4 style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>Expiring Soon</h4>
-                   <span style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{expiringSoonCount}</span>
+                   <h4 className="pantry-summary-label">Expiring Soon</h4>
+                   <span className="pantry-summary-value">{expiringSoonCount}</span>
                 </div>
              </div>
-             <div className="card glass" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', borderRadius: '16px' }}>
-                <div style={{ background: 'rgba(243, 156, 18, 0.1)', padding: '15px', borderRadius: '12px', color: '#f39c12' }}>
-                   <AlertTriangle size={28} />
+             <div className="card glass pantry-summary-card">
+                <div className="pantry-summary-icon low-stock">
+                   <AlertTriangle size={26} />
                 </div>
                 <div>
-                   <h4 style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>Low Stock</h4>
-                   <span style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{lowStockCount}</span>
+                   <h4 className="pantry-summary-label">Low Stock</h4>
+                   <span className="pantry-summary-value">{lowStockCount}</span>
                 </div>
              </div>
           </div>
 
           <div className="kitchen-layout">
-            {/* Left Column: Form & Presets */}
             <div className="kitchen-side-col fade-in-up" style={{ '--delay': '100ms', display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
                 <Plus size={20} /> Add Ingredient
@@ -385,7 +567,6 @@ export default function Pantry() {
                 </form>
               </div>
 
-              {/* Magic Import Box */}
               <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, marginTop: '10px' }}>
                 <Wand2 size={20} /> Smart Quick Import
               </h2>
@@ -427,27 +608,23 @@ export default function Pantry() {
                 </div>
               </div>
 
-              {/* Quick Presets Panel */}
               <h2 className="section-title" style={{ margin: 0, marginTop: '10px' }}>Quick Stock Presets</h2>
               <div className="card glass" style={{ padding: '15px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-                {QUICK_PRESETS.map((preset) => (
-                  <button
-                    key={preset.name}
-                    type="button"
-                    onClick={() => handlePresetClick(preset)}
-                    className="sidebar-tool-btn"
-                    style={{ padding: '10px', fontSize: '13px', fontWeight: '500', justifyContent: 'center', background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)' }}
-                  >
-                    <span style={{ marginRight: '6px' }}>{preset.emoji}</span> {preset.name}
-                  </button>
-                ))}
-              </div>
+                 {QUICK_PRESETS.map((preset) => (
+                   <button
+                     key={preset.name}
+                     type="button"
+                     onClick={() => handlePresetClick(preset)}
+                     className="pantry-preset-btn"
+                   >
+                     <span className="pantry-preset-emoji">{preset.emoji}</span> {preset.name}
+                   </button>
+                 ))}
+               </div>
             </div>
 
-            {/* Right Column: Inventory List with Tabs & Search */}
             <div className="kitchen-main-col fade-in-up" style={{ '--delay': '200ms', display: 'flex', flexDirection: 'column', gap: '15px' }}>
               
-              {/* Filter controls */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
                   <h2 className="section-title" style={{ margin: 0, minWidth: 'max-content' }}>Inventory Grid</h2>
@@ -489,7 +666,6 @@ export default function Pantry() {
                   </div>
                 </div>
                 
-                {/* Category tabs & Sort */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                   <div className="diet-pill-selector" style={{ overflowX: 'auto', whiteSpace: 'nowrap', paddingBottom: '4px', flex: 1, paddingRight: '10px' }}>
                     {PANTRY_CATEGORIES.map(tab => (
@@ -538,100 +714,80 @@ export default function Pantry() {
                   <p>No ingredients found. Add items to build your stock!</p>
                 </div>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '15px' }}>
-                  {filteredItems.map((item, idx) => {
-                    const freshness = getFreshnessStatus(item);
-                    
-                    let catColor = 'var(--glass-bg)';
-                    let catBorder = 'var(--border-glass)';
-                    let catShadow = 'none';
-                    
-                    if (item.category === 'Produce') { catColor = 'rgba(39, 174, 96, 0.04)'; catBorder = 'rgba(39, 174, 96, 0.2)'; catShadow = '0 4px 20px rgba(39, 174, 96, 0.05)'; }
-                    else if (item.category === 'Proteins') { catColor = 'rgba(231, 76, 60, 0.04)'; catBorder = 'rgba(231, 76, 60, 0.2)'; catShadow = '0 4px 20px rgba(231, 76, 60, 0.05)'; }
-                    else if (item.category === 'Dairy') { catColor = 'rgba(52, 152, 219, 0.04)'; catBorder = 'rgba(52, 152, 219, 0.2)'; catShadow = '0 4px 20px rgba(52, 152, 219, 0.05)'; }
-                    else if (item.category === 'Spices & Seasonings') { catColor = 'rgba(243, 156, 18, 0.04)'; catBorder = 'rgba(243, 156, 18, 0.2)'; catShadow = '0 4px 20px rgba(243, 156, 18, 0.05)'; }
-                    else if (item.category === 'Grains & Baking') { catColor = 'rgba(211, 84, 0, 0.04)'; catBorder = 'rgba(211, 84, 0, 0.2)'; catShadow = '0 4px 20px rgba(211, 84, 0, 0.05)'; }
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: '16px' }}>
+                   {filteredItems.map((item, idx) => {
+                     const freshness = getFreshnessStatus(item);
+                     const fillPercentage = getFillPercentage(item);
+                     const isLowStock = fillPercentage <= 25;
+                     const accentClass = getCategoryAccentClass(item.category);
+                     const emoji = getItemEmoji(item.ingredient_name, item.category);
+                     const step = getStepForUnit(item.unit);
+                     const stockLevel = fillPercentage > 50 ? 'high' : fillPercentage > 25 ? 'medium' : 'low';
+                     const freshnessClass = freshness.label === 'Fresh' ? 'fresh' : freshness.label.includes('Expired') ? 'expired' : 'expiring';
 
-                    const fillPercentage = getFillPercentage(item);
-                    const isLowStock = fillPercentage <= 25;
+                     return (
+                       <div 
+                         key={item.id} 
+                         className="card pantry-item-card fade-in-up" 
+                         style={{ 
+                           animationDelay: `${idx * 40}ms`,
+                           border: `1px solid var(--border-glass)`,
+                         }}
+                       >
+                         <div className={`pantry-card-accent ${accentClass}`} />
 
-                    return (
-                      <div 
-                        key={item.id} 
-                        className="card fade-in-up" 
-                        style={{ 
-                          padding: '16px', 
-                          display: 'flex', 
-                          flexDirection: 'column', 
-                          justifyContent: 'space-between', 
-                          minHeight: '150px', 
-                          position: 'relative',
-                          background: catColor,
-                          border: `1px solid ${catBorder}`,
-                          boxShadow: catShadow,
-                          borderRadius: '16px',
-                          animationDelay: `${idx * 40}ms`,
-                          transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease',
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 8px 25px ${catBorder.replace('0.2', '0.4')}`; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = catShadow; }}
-                      >
-                        <div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                            <span style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '20px', background: freshness.bg, color: freshness.color, fontWeight: '700', textTransform: 'uppercase' }}>
-                              {freshness.label}
-                            </span>
-                            <span style={{ fontSize: '11px', opacity: 0.6, color: 'var(--text-muted)', fontWeight: 'bold' }}>
-                              {item.category}
-                            </span>
-                          </div>
-                          
-                          <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)', margin: '4px 0', textTransform: 'capitalize' }}>
-                            {item.ingredient_name}
-                          </h3>
-                          
-                          {/* Fill-Level Gauge */}
-                          <div style={{ marginTop: '12px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 'bold', color: isLowStock ? '#f39c12' : 'var(--text-secondary)', marginBottom: '4px' }}>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                {isLowStock && <AlertTriangle size={12} />}
-                                {item.quantity} {item.unit}
-                              </span>
-                              <span>{Math.round(fillPercentage)}%</span>
-                            </div>
-                            <div style={{ height: '6px', width: '100%', background: 'rgba(0,0,0,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
-                              <div style={{ 
-                                height: '100%', 
-                                width: `${fillPercentage}%`, 
-                                background: isLowStock ? '#f39c12' : 'var(--gradient-primary)',
-                                transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)' 
-                              }} />
-                            </div>
-                          </div>
-                        </div>
+                         <div className="pantry-category-emoji">{emoji}</div>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '18px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-secondary)', borderRadius: '8px', padding: '2px', border: '1px solid var(--border-glass)' }}>
-                            <HoldablePantryQtyBtn item={item} amount={-1} onAdjust={handleQuantityAdjust} label="-" title="Hold to subtract quantity" />
-                            <span style={{ fontSize: '12px', fontWeight: 'bold', padding: '0 8px', color: 'var(--text-secondary)' }}>
-                              qty
-                            </span>
-                            <HoldablePantryQtyBtn item={item} amount={1} onAdjust={handleQuantityAdjust} label="+" title="Hold to add quantity" />
-                          </div>
+                         <div className="pantry-card-body">
+                           <div className={`pantry-freshness-badge ${freshnessClass}`}>
+                             {freshnessClass === 'fresh' && <Leaf size={10} />}
+                             {freshnessClass === 'expiring' && <Clock size={10} />}
+                             {freshnessClass === 'expired' && <AlertCircle size={10} />}
+                             {freshness.label}
+                           </div>
+                           
+                           <h3 className="pantry-item-name">
+                             {item.ingredient_name}
+                           </h3>
+                           
+                           <div className="pantry-stock-gauge">
+                             <div className="pantry-stock-label" style={{ color: isLowStock ? '#f39c12' : 'var(--text-secondary)' }}>
+                               <span className="pantry-stock-qty">
+                                 {isLowStock && <AlertTriangle size={11} />}
+                                 {item.quantity} {item.unit}
+                               </span>
+                               <span>{Math.round(fillPercentage)}%</span>
+                             </div>
+                             <div className="pantry-stock-bar-bg">
+                               <div 
+                                 className={`pantry-stock-bar-fill ${stockLevel}`}
+                                 style={{ width: `${fillPercentage}%` }} 
+                               />
+                             </div>
+                           </div>
 
-                          
-                          <button 
-                            onClick={() => handleDelete(item.id, item.ingredient_name)}
-                            style={{ border: 'none', background: 'rgba(231, 76, 60, 0.1)', color: '#e74c3c', cursor: 'pointer', padding: '6px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            title="Remove item"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                           <div className="pantry-card-footer">
+                             <div className="pantry-qty-stepper">
+                               <HoldablePantryQtyBtn item={item} step={step} direction={-1} onAdjust={handleQuantityAdjust} title={`Decrease by ${step} ${item.unit}`} />
+                               <div className="pantry-qty-divider" />
+                               <span className="pantry-qty-label">qty</span>
+                               <div className="pantry-qty-divider" />
+                               <HoldablePantryQtyBtn item={item} step={step} direction={1} onAdjust={handleQuantityAdjust} title={`Increase by ${step} ${item.unit}`} />
+                             </div>
+
+                             <button 
+                               onClick={() => handleDelete(item.id, item.ingredient_name)}
+                               className="pantry-delete-btn"
+                               title="Remove item"
+                             >
+                               <Trash2 size={15} />
+                             </button>
+                           </div>
+                         </div>
+                       </div>
+                     );
+                   })}
+                 </div>
               )}
             </div>
           </div>

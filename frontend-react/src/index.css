@@ -5625,7 +5625,372 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   PANTRY UI ENHANCEMENTS — Premium Cards, Steppers, Badges
+   ═══════════════════════════════════════════════════════════════ */
 
+/* --- Pantry Item Card --- */
+.pantry-item-card {
+    position: relative;
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 195px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s ease;
+    cursor: default;
+}
+
+.pantry-item-card:hover {
+    transform: translateY(-4px) scale(1.01);
+}
+
+/* Gradient accent strip at top of card */
+.pantry-card-accent {
+    height: 4px;
+    width: 100%;
+    border-radius: 18px 18px 0 0;
+    flex-shrink: 0;
+}
+
+.pantry-card-accent.produce    { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+.pantry-card-accent.proteins   { background: linear-gradient(90deg, #e74c3c, #ff6b6b); }
+.pantry-card-accent.dairy      { background: linear-gradient(90deg, #3498db, #74b9ff); }
+.pantry-card-accent.spices     { background: linear-gradient(90deg, #f39c12, #fdcb6e); }
+.pantry-card-accent.grains     { background: linear-gradient(90deg, #d35400, #e67e22); }
+.pantry-card-accent.other      { background: linear-gradient(90deg, #9b59b6, #a29bfe); }
+
+.pantry-card-body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 6px;
+}
+
+/* --- Category Emoji Badge --- */
+.pantry-category-emoji {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 22px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-glass);
+    opacity: 0.85;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pantry-item-card:hover .pantry-category-emoji {
+    transform: scale(1.1) rotate(-5deg);
+    opacity: 1;
+}
+
+/* --- Freshness Badge --- */
+.pantry-freshness-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.pantry-freshness-badge.fresh {
+    background: rgba(39, 174, 96, 0.12);
+    color: #27ae60;
+}
+.pantry-freshness-badge.expiring {
+    background: rgba(243, 156, 18, 0.12);
+    color: #f39c12;
+}
+.pantry-freshness-badge.expired {
+    background: rgba(231, 76, 60, 0.12);
+    color: #e74c3c;
+    animation: pulse-soft 2s infinite;
+}
+
+@keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* --- Item Name --- */
+.pantry-item-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 2px 0;
+    text-transform: capitalize;
+    line-height: 1.3;
+    max-width: calc(100% - 44px);
+}
+
+/* --- Stock Gauge --- */
+.pantry-stock-gauge {
+    margin-top: 8px;
+}
+
+.pantry-stock-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.pantry-stock-qty {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pantry-stock-bar-bg {
+    height: 6px;
+    width: 100%;
+    background: rgba(128, 128, 128, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.pantry-stock-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pantry-stock-bar-fill.high {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+.pantry-stock-bar-fill.medium {
+    background: linear-gradient(90deg, #f39c12, #fdcb6e);
+}
+.pantry-stock-bar-fill.low {
+    background: linear-gradient(90deg, #e74c3c, #ff6b6b);
+}
+
+/* --- Quantity Stepper (Pill-Shaped) --- */
+.pantry-qty-stepper {
+    display: flex;
+    align-items: center;
+    background: var(--glass-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    padding: 2px;
+    gap: 0;
+    overflow: hidden;
+}
+
+.pantry-qty-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    border-radius: 10px;
+    white-space: nowrap;
+    min-width: 42px;
+    line-height: 1;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.pantry-qty-btn:hover {
+    background: rgba(128, 128, 128, 0.12);
+    color: var(--text-primary);
+}
+
+.pantry-qty-btn:active {
+    transform: scale(0.92);
+    background: rgba(128, 128, 128, 0.2);
+}
+
+.pantry-qty-btn.minus:hover {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.pantry-qty-btn.plus:hover {
+    background: rgba(39, 174, 96, 0.1);
+    color: #27ae60;
+}
+
+.pantry-qty-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-glass);
+    flex-shrink: 0;
+}
+
+.pantry-qty-label {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 0 8px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* --- Card Footer (stepper + delete) --- */
+.pantry-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.pantry-delete-btn {
+    border: none;
+    background: rgba(231, 76, 60, 0.08);
+    color: #e74c3c;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.pantry-delete-btn:hover {
+    background: rgba(231, 76, 60, 0.18);
+    transform: scale(1.08);
+}
+
+/* --- Dashboard Summary Cards --- */
+.pantry-summary-card {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-glass);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pantry-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.pantry-summary-icon {
+    padding: 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pantry-summary-icon.total {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.12), rgba(52, 152, 219, 0.04));
+    color: #3498db;
+}
+.pantry-summary-icon.expiring {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.12), rgba(231, 76, 60, 0.04));
+    color: #e74c3c;
+}
+.pantry-summary-icon.low-stock {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.12), rgba(243, 156, 18, 0.04));
+    color: #f39c12;
+}
+
+.pantry-summary-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.pantry-summary-label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Quick Preset Button --- */
+.pantry-preset-btn {
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    border: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.pantry-preset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background: var(--bg-secondary);
+}
+
+.pantry-preset-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.pantry-preset-emoji {
+    font-size: 18px;
+}
+
+/* --- Category Tag (small label on card) --- */
+.pantry-category-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* Responsive tweaks for pantry grid */
+@media (max-width: 600px) {
+    .pantry-qty-btn {
+        padding: 5px 7px;
+        font-size: 10px;
+        min-width: 36px;
+    }
+    .pantry-item-card {
+        min-height: 175px;
+    }
+    .pantry-category-emoji {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+}
 
 
 
