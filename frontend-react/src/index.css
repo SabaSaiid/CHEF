@@ -5311,3 +5311,111 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+/* ── Enhanced Theme-Aware Nutrition UI/UX ── */
+.nutrition-tab-btn {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nutrition-tab-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-1);
+  transform: translateY(-2px);
+}
+
+.nutrition-tab-btn.active {
+  background: var(--gradient-primary);
+  color: #ffffff !important;
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(255, 90, 54, 0.3);
+}
+
+.chip-btn {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 20px !important;
+  padding: 7px 16px !important;
+  color: var(--text-primary) !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  backdrop-filter: blur(8px);
+}
+
+.chip-btn:hover {
+  background: var(--gradient-primary) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) scale(1.03) !important;
+  box-shadow: 0 6px 16px rgba(255, 90, 54, 0.3) !important;
+}
+
+.chip-btn:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+.nutrition-select {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 10px !important;
+  color: var(--text-primary) !important;
+  padding: 0 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.nutrition-select:focus {
+  border-color: var(--accent-1) !important;
+}
+
+.nutrition-select option {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.suggestions-dropdown {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.suggestion-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-glass);
+  text-transform: capitalize;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+.suggestion-item:hover {
+  background: rgba(255, 90, 54, 0.12) !important;
+  color: var(--accent-1) !important;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+

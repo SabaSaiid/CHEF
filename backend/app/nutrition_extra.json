@@ -1,1458 +1,6718 @@
 {
-  "bajra": {
-    "calories": 361,
-    "protein_g": 12,
-    "carbs_g": 67,
-    "fat_g": 5,
-    "fiber_g": 1.2,
-    "sugar_g": 0
-  },
-  "bajra roti": {
-    "calories": 120,
-    "protein_g": 3,
-    "carbs_g": 22,
-    "fat_g": 3,
-    "fiber_g": 2,
-    "sugar_g": 0
-  },
-  "jowar": {
-    "calories": 349,
-    "protein_g": 11,
-    "carbs_g": 73,
-    "fat_g": 3,
-    "fiber_g": 1.6,
-    "sugar_g": 0
-  },
-  "jowar roti": {
-    "calories": 115,
-    "protein_g": 3,
-    "carbs_g": 21,
-    "fat_g": 2,
-    "fiber_g": 1.8,
-    "sugar_g": 0
-  },
-  "ragi": {
-    "calories": 328,
-    "protein_g": 7,
-    "carbs_g": 72,
-    "fat_g": 1.3,
-    "fiber_g": 3.6,
-    "sugar_g": 0
-  },
-  "ragi dosa": {
-    "calories": 110,
-    "protein_g": 3,
-    "carbs_g": 20,
-    "fat_g": 2,
-    "fiber_g": 1,
-    "sugar_g": 0
-  },
-  "makka": {
-    "calories": 342,
-    "protein_g": 9,
-    "carbs_g": 73,
-    "fat_g": 4,
-    "fiber_g": 2,
-    "sugar_g": 0
-  },
-  "makki roti": {
-    "calories": 130,
-    "protein_g": 3,
-    "carbs_g": 25,
-    "fat_g": 3,
-    "fiber_g": 2.5,
-    "sugar_g": 0
-  },
-  "besan": {
-    "calories": 387,
-    "protein_g": 22,
-    "carbs_g": 58,
-    "fat_g": 7,
-    "fiber_g": 10,
-    "sugar_g": 0
-  },
-  "besan chilla": {
-    "calories": 180,
-    "protein_g": 8,
-    "carbs_g": 20,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 0
-  },
-  "sabudana": {
-    "calories": 332,
-    "protein_g": 0.2,
-    "carbs_g": 83,
-    "fat_g": 0.2,
-    "fiber_g": 0.5,
-    "sugar_g": 0
-  },
-  "sabudana khichdi": {
-    "calories": 200,
-    "protein_g": 4,
-    "carbs_g": 35,
-    "fat_g": 5,
-    "fiber_g": 1,
-    "sugar_g": 0
-  },
-  "makhana": {
-    "calories": 347,
-    "protein_g": 9.7,
-    "carbs_g": 77,
-    "fat_g": 0.1,
-    "fiber_g": 14.5,
-    "sugar_g": 0
-  },
-  "murmura": {
-    "calories": 390,
-    "protein_g": 6,
-    "carbs_g": 85,
-    "fat_g": 1,
-    "fiber_g": 1,
-    "sugar_g": 0
-  },
-  "thepla": {
-    "calories": 250,
-    "protein_g": 6,
-    "carbs_g": 32,
-    "fat_g": 11,
-    "fiber_g": 2.5,
-    "sugar_g": 1
-  },
-  "mathri": {
-    "calories": 450,
-    "protein_g": 8,
-    "carbs_g": 50,
-    "fat_g": 24,
-    "fiber_g": 2,
-    "sugar_g": 0
-  },
-  "kachori": {
-    "calories": 380,
-    "protein_g": 7,
-    "carbs_g": 40,
-    "fat_g": 21,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "bhajiyas": {
-    "calories": 300,
-    "protein_g": 6,
-    "carbs_g": 30,
-    "fat_g": 18,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "pakora": {
-    "calories": 290,
-    "protein_g": 6,
-    "carbs_g": 28,
-    "fat_g": 17,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "vada": {
-    "calories": 260,
-    "protein_g": 7,
-    "carbs_g": 25,
-    "fat_g": 15,
-    "fiber_g": 2,
-    "sugar_g": 0.5
-  },
-  "medu vada": {
-    "calories": 250,
-    "protein_g": 8,
-    "carbs_g": 22,
-    "fat_g": 15,
-    "fiber_g": 3,
-    "sugar_g": 0
-  },
-  "bonda": {
-    "calories": 280,
-    "protein_g": 5,
-    "carbs_g": 30,
-    "fat_g": 16,
-    "fiber_g": 1,
-    "sugar_g": 0
-  },
-  "uttapam": {
-    "calories": 150,
-    "protein_g": 4,
-    "carbs_g": 25,
-    "fat_g": 3,
-    "fiber_g": 1,
-    "sugar_g": 0.5
-  },
-  "appam": {
-    "calories": 160,
-    "protein_g": 3,
-    "carbs_g": 30,
-    "fat_g": 2,
-    "fiber_g": 0.5,
-    "sugar_g": 0.5
-  },
-  "puttu": {
-    "calories": 180,
-    "protein_g": 4,
-    "carbs_g": 35,
-    "fat_g": 2,
-    "fiber_g": 1,
-    "sugar_g": 0
-  },
-  "pesarattu": {
-    "calories": 150,
-    "protein_g": 7,
-    "carbs_g": 22,
-    "fat_g": 3,
-    "fiber_g": 3,
-    "sugar_g": 0
-  },
-  "pongal": {
-    "calories": 180,
-    "protein_g": 5,
-    "carbs_g": 30,
-    "fat_g": 4,
-    "fiber_g": 1,
-    "sugar_g": 0.5
-  },
-  "bisibelebath": {
-    "calories": 200,
-    "protein_g": 6,
-    "carbs_g": 32,
-    "fat_g": 5,
-    "fiber_g": 2,
-    "sugar_g": 0.5
-  },
-  "puliyogare": {
-    "calories": 210,
-    "protein_g": 4,
-    "carbs_g": 35,
-    "fat_g": 6,
-    "fiber_g": 1,
-    "sugar_g": 1
-  },
-  "curd rice": {
-    "calories": 160,
-    "protein_g": 4,
-    "carbs_g": 25,
-    "fat_g": 4,
-    "fiber_g": 0.5,
-    "sugar_g": 3
-  },
-  "khichdi": {
-    "calories": 150,
-    "protein_g": 5,
-    "carbs_g": 25,
-    "fat_g": 2,
-    "fiber_g": 1.5,
-    "sugar_g": 0
-  },
-  "dal fry": {
-    "calories": 130,
-    "protein_g": 7,
-    "carbs_g": 18,
-    "fat_g": 3,
-    "fiber_g": 4,
-    "sugar_g": 0.5
-  },
-  "dal tadka": {
-    "calories": 140,
-    "protein_g": 7,
-    "carbs_g": 20,
-    "fat_g": 3,
-    "fiber_g": 4,
-    "sugar_g": 0.5
-  },
-  "sambhar powder": {
-    "calories": 280,
-    "protein_g": 15,
-    "carbs_g": 40,
-    "fat_g": 8,
-    "fiber_g": 25,
-    "sugar_g": 3
-  },
-  "rasam": {
-    "calories": 30,
-    "protein_g": 1,
-    "carbs_g": 5,
-    "fat_g": 0.5,
-    "fiber_g": 0.5,
-    "sugar_g": 0.5
-  },
-  "kadhi": {
-    "calories": 90,
-    "protein_g": 3,
-    "carbs_g": 8,
-    "fat_g": 5,
-    "fiber_g": 0.5,
-    "sugar_g": 2
-  },
-  "kadhi pakora": {
-    "calories": 150,
-    "protein_g": 5,
-    "carbs_g": 12,
-    "fat_g": 9,
-    "fiber_g": 1,
-    "sugar_g": 2
-  },
-  "paneer butter masala": {
-    "calories": 280,
-    "protein_g": 12,
-    "carbs_g": 10,
-    "fat_g": 22,
-    "fiber_g": 1,
-    "sugar_g": 3
-  },
-  "shahi paneer": {
-    "calories": 310,
-    "protein_g": 13,
-    "carbs_g": 12,
-    "fat_g": 24,
-    "fiber_g": 1,
-    "sugar_g": 4
-  },
-  "malai kofta": {
-    "calories": 350,
-    "protein_g": 10,
-    "carbs_g": 20,
-    "fat_g": 26,
-    "fiber_g": 2,
-    "sugar_g": 5
-  },
-  "navratan korma": {
-    "calories": 250,
-    "protein_g": 8,
-    "carbs_g": 22,
-    "fat_g": 15,
-    "fiber_g": 3,
-    "sugar_g": 4
-  },
-  "dum aloo": {
-    "calories": 200,
-    "protein_g": 4,
-    "carbs_g": 25,
-    "fat_g": 10,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "baingan bharta": {
-    "calories": 120,
-    "protein_g": 3,
-    "carbs_g": 10,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 2
-  },
-  "bharwa bhindi": {
-    "calories": 140,
-    "protein_g": 3,
-    "carbs_g": 12,
-    "fat_g": 9,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "tinda masala": {
-    "calories": 80,
-    "protein_g": 2,
-    "carbs_g": 10,
-    "fat_g": 3,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "lauki sabji": {
-    "calories": 60,
-    "protein_g": 1.5,
-    "carbs_g": 8,
-    "fat_g": 2,
-    "fiber_g": 1,
-    "sugar_g": 2
-  },
-  "karela sabji": {
-    "calories": 90,
-    "protein_g": 2,
-    "carbs_g": 8,
-    "fat_g": 5,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "parwal sabji": {
-    "calories": 80,
-    "protein_g": 2,
-    "carbs_g": 9,
-    "fat_g": 3,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "aamras": {
-    "calories": 90,
-    "protein_g": 1,
-    "carbs_g": 22,
-    "fat_g": 0.5,
-    "fiber_g": 1.5,
-    "sugar_g": 18
-  },
-  "raita": {
-    "calories": 70,
-    "protein_g": 3,
-    "carbs_g": 5,
-    "fat_g": 4,
-    "fiber_g": 0.5,
-    "sugar_g": 3
-  },
-  "boondi raita": {
-    "calories": 100,
-    "protein_g": 3,
-    "carbs_g": 10,
-    "fat_g": 5,
-    "fiber_g": 0.5,
-    "sugar_g": 3
-  },
-  "pickle": {
-    "calories": 150,
-    "protein_g": 1,
-    "carbs_g": 10,
-    "fat_g": 12,
-    "fiber_g": 1,
-    "sugar_g": 3
-  },
-  "papad": {
-    "calories": 350,
-    "protein_g": 20,
-    "carbs_g": 55,
-    "fat_g": 3,
-    "fiber_g": 5,
-    "sugar_g": 0
-  },
-  "chutney green": {
-    "calories": 50,
-    "protein_g": 2,
-    "carbs_g": 5,
-    "fat_g": 2,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "tamarind chutney": {
-    "calories": 200,
-    "protein_g": 1,
-    "carbs_g": 50,
-    "fat_g": 0.5,
-    "fiber_g": 2,
-    "sugar_g": 35
-  },
-  "coconut chutney": {
-    "calories": 180,
-    "protein_g": 3,
-    "carbs_g": 8,
-    "fat_g": 15,
-    "fiber_g": 4,
-    "sugar_g": 3
-  },
-  "peanut chutney": {
-    "calories": 350,
-    "protein_g": 14,
-    "carbs_g": 15,
-    "fat_g": 28,
-    "fiber_g": 5,
-    "sugar_g": 3
-  },
-  "schezwan chutney": {
-    "calories": 120,
-    "protein_g": 2,
-    "carbs_g": 15,
-    "fat_g": 6,
-    "fiber_g": 3,
-    "sugar_g": 5
-  },
-  "halwa": {
-    "calories": 350,
-    "protein_g": 5,
-    "carbs_g": 45,
-    "fat_g": 17,
-    "fiber_g": 1,
-    "sugar_g": 25
-  },
-  "gajar halwa": {
-    "calories": 280,
-    "protein_g": 4,
-    "carbs_g": 35,
-    "fat_g": 14,
-    "fiber_g": 2,
-    "sugar_g": 22
-  },
-  "moong dal halwa": {
-    "calories": 400,
-    "protein_g": 8,
-    "carbs_g": 40,
-    "fat_g": 24,
-    "fiber_g": 2,
-    "sugar_g": 20
-  },
-  "suji halwa": {
-    "calories": 340,
-    "protein_g": 4,
-    "carbs_g": 45,
-    "fat_g": 16,
-    "fiber_g": 1,
-    "sugar_g": 28
-  },
-  "besan ladoo": {
-    "calories": 480,
-    "protein_g": 10,
-    "carbs_g": 50,
-    "fat_g": 27,
-    "fiber_g": 3,
-    "sugar_g": 25
-  },
-  "motichoor ladoo": {
-    "calories": 450,
-    "protein_g": 8,
-    "carbs_g": 55,
-    "fat_g": 22,
-    "fiber_g": 1,
-    "sugar_g": 30
-  },
-  "barfi": {
-    "calories": 400,
-    "protein_g": 8,
-    "carbs_g": 45,
-    "fat_g": 22,
-    "fiber_g": 0,
-    "sugar_g": 30
-  },
-  "peda": {
-    "calories": 380,
-    "protein_g": 7,
-    "carbs_g": 50,
-    "fat_g": 18,
-    "fiber_g": 0,
-    "sugar_g": 35
-  },
-  "jalebi": {
-    "calories": 380,
-    "protein_g": 3,
-    "carbs_g": 60,
-    "fat_g": 15,
-    "fiber_g": 0,
-    "sugar_g": 40
-  },
-  "imarti": {
-    "calories": 370,
-    "protein_g": 4,
-    "carbs_g": 58,
-    "fat_g": 14,
-    "fiber_g": 1,
-    "sugar_g": 35
-  },
-  "rabri": {
-    "calories": 250,
-    "protein_g": 6,
-    "carbs_g": 25,
-    "fat_g": 14,
-    "fiber_g": 0,
-    "sugar_g": 18
-  },
-  "basundi": {
-    "calories": 220,
-    "protein_g": 5,
-    "carbs_g": 22,
-    "fat_g": 12,
-    "fiber_g": 0,
-    "sugar_g": 15
-  },
-  "rasmalai": {
-    "calories": 280,
-    "protein_g": 8,
-    "carbs_g": 30,
-    "fat_g": 14,
-    "fiber_g": 0,
-    "sugar_g": 20
-  },
-  "rasgulla": {
-    "calories": 186,
-    "protein_g": 5,
-    "carbs_g": 30,
-    "fat_g": 4,
-    "fiber_g": 0,
-    "sugar_g": 22
-  },
-  "sandesh": {
-    "calories": 300,
-    "protein_g": 8,
-    "carbs_g": 35,
-    "fat_g": 14,
-    "fiber_g": 0,
-    "sugar_g": 25
-  },
-  "mishti doi": {
-    "calories": 150,
-    "protein_g": 4,
-    "carbs_g": 22,
-    "fat_g": 5,
-    "fiber_g": 0,
-    "sugar_g": 15
-  },
-  "kulfi": {
-    "calories": 240,
-    "protein_g": 6,
-    "carbs_g": 28,
-    "fat_g": 12,
-    "fiber_g": 0,
-    "sugar_g": 20
-  },
-  "falooda": {
-    "calories": 200,
-    "protein_g": 4,
-    "carbs_g": 35,
-    "fat_g": 5,
-    "fiber_g": 1,
-    "sugar_g": 22
-  },
-  "thandai": {
-    "calories": 150,
-    "protein_g": 5,
-    "carbs_g": 18,
-    "fat_g": 6,
-    "fiber_g": 1,
-    "sugar_g": 12
-  },
-  "shrikhand": {
-    "calories": 280,
-    "protein_g": 6,
-    "carbs_g": 30,
-    "fat_g": 15,
-    "fiber_g": 0,
-    "sugar_g": 22
-  },
-  "puran poli": {
-    "calories": 280,
-    "protein_g": 6,
-    "carbs_g": 45,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 18
-  },
-  "modak": {
-    "calories": 300,
-    "protein_g": 5,
-    "carbs_g": 48,
-    "fat_g": 10,
-    "fiber_g": 2,
-    "sugar_g": 22
-  },
-  "anarsa": {
-    "calories": 450,
-    "protein_g": 5,
-    "carbs_g": 65,
-    "fat_g": 18,
-    "fiber_g": 1,
-    "sugar_g": 30
-  },
-  "tilgul": {
-    "calories": 480,
-    "protein_g": 8,
-    "carbs_g": 50,
-    "fat_g": 28,
-    "fiber_g": 4,
-    "sugar_g": 35
-  },
-  "pav": {
-    "calories": 280,
-    "protein_g": 8,
-    "carbs_g": 50,
-    "fat_g": 5,
-    "fiber_g": 2,
-    "sugar_g": 5
-  },
-  "ladi pav": {
-    "calories": 280,
-    "protein_g": 8,
-    "carbs_g": 50,
-    "fat_g": 5,
-    "fiber_g": 2,
-    "sugar_g": 5
-  },
-  "veg biryani": {
-    "calories": 220,
-    "protein_g": 5,
-    "carbs_g": 35,
-    "fat_g": 6,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "pulao": {
-    "calories": 180,
-    "protein_g": 4,
-    "carbs_g": 30,
-    "fat_g": 4,
-    "fiber_g": 1,
-    "sugar_g": 0.5
-  },
-  "tahari": {
-    "calories": 190,
-    "protein_g": 4,
-    "carbs_g": 32,
-    "fat_g": 4,
-    "fiber_g": 1,
-    "sugar_g": 0.5
-  },
-  "tehri": {
-    "calories": 185,
-    "protein_g": 4,
-    "carbs_g": 30,
-    "fat_g": 5,
-    "fiber_g": 1,
-    "sugar_g": 0.5
-  },
-  "lemon pickle": {
-    "calories": 180,
-    "protein_g": 1,
-    "carbs_g": 12,
-    "fat_g": 15,
-    "fiber_g": 1,
-    "sugar_g": 5
-  },
-  "mango pickle": {
-    "calories": 200,
-    "protein_g": 1,
-    "carbs_g": 15,
-    "fat_g": 16,
-    "fiber_g": 1,
-    "sugar_g": 8
-  },
-  "chaat masala": {
-    "calories": 250,
-    "protein_g": 8,
-    "carbs_g": 40,
-    "fat_g": 6,
-    "fiber_g": 15,
-    "sugar_g": 5
-  },
-  "pani puri": {
-    "calories": 200,
-    "protein_g": 4,
-    "carbs_g": 30,
-    "fat_g": 7,
-    "fiber_g": 2,
-    "sugar_g": 3
-  },
-  "sev puri": {
-    "calories": 280,
-    "protein_g": 5,
-    "carbs_g": 35,
-    "fat_g": 13,
-    "fiber_g": 2,
-    "sugar_g": 4
-  },
-  "bhel puri": {
-    "calories": 250,
-    "protein_g": 5,
-    "carbs_g": 40,
-    "fat_g": 8,
-    "fiber_g": 2,
-    "sugar_g": 3
-  },
-  "dahi puri": {
-    "calories": 220,
-    "protein_g": 5,
-    "carbs_g": 28,
-    "fat_g": 10,
-    "fiber_g": 1,
-    "sugar_g": 5
-  },
-  "ragda pattice": {
-    "calories": 280,
-    "protein_g": 7,
-    "carbs_g": 38,
-    "fat_g": 11,
-    "fiber_g": 3,
-    "sugar_g": 2
-  },
-  "misal pav": {
-    "calories": 280,
-    "protein_g": 10,
-    "carbs_g": 35,
-    "fat_g": 11,
-    "fiber_g": 5,
-    "sugar_g": 2
-  },
-  "dabeli": {
-    "calories": 280,
-    "protein_g": 6,
-    "carbs_g": 40,
-    "fat_g": 10,
-    "fiber_g": 2,
-    "sugar_g": 5
-  },
-  "vada pav": {
-    "calories": 300,
-    "protein_g": 7,
-    "carbs_g": 35,
-    "fat_g": 15,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "khandvi": {
-    "calories": 180,
-    "protein_g": 8,
-    "carbs_g": 20,
-    "fat_g": 7,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "dhokla": {
-    "calories": 160,
-    "protein_g": 7,
-    "carbs_g": 25,
-    "fat_g": 3,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "handvo": {
-    "calories": 200,
-    "protein_g": 6,
-    "carbs_g": 28,
-    "fat_g": 7,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "undhiyu": {
-    "calories": 180,
-    "protein_g": 5,
-    "carbs_g": 22,
-    "fat_g": 8,
-    "fiber_g": 4,
-    "sugar_g": 3
-  },
-  "dal baati": {
-    "calories": 350,
-    "protein_g": 10,
-    "carbs_g": 45,
-    "fat_g": 14,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "gatte ki sabji": {
-    "calories": 200,
-    "protein_g": 7,
-    "carbs_g": 25,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "ker sangri": {
-    "calories": 120,
-    "protein_g": 4,
-    "carbs_g": 15,
-    "fat_g": 5,
-    "fiber_g": 5,
-    "sugar_g": 2
-  },
-  "laal maas": {
-    "calories": 300,
-    "protein_g": 22,
-    "carbs_g": 5,
-    "fat_g": 21,
-    "fiber_g": 1,
-    "sugar_g": 1
-  },
-  "keema": {
-    "calories": 250,
-    "protein_g": 20,
-    "carbs_g": 5,
-    "fat_g": 17,
-    "fiber_g": 0.5,
-    "sugar_g": 0
-  },
-  "mutton rogan josh": {
-    "calories": 280,
-    "protein_g": 22,
-    "carbs_g": 6,
-    "fat_g": 19,
-    "fiber_g": 1,
-    "sugar_g": 1
-  },
-  "biryani masala": {
-    "calories": 350,
-    "protein_g": 12,
-    "carbs_g": 45,
-    "fat_g": 14,
-    "fiber_g": 20,
-    "sugar_g": 3
-  },
-  "tandoori chicken": {
-    "calories": 200,
-    "protein_g": 25,
-    "carbs_g": 5,
-    "fat_g": 9,
-    "fiber_g": 0.5,
-    "sugar_g": 1
-  },
-  "chicken tikka": {
-    "calories": 180,
-    "protein_g": 26,
-    "carbs_g": 4,
-    "fat_g": 7,
-    "fiber_g": 0.5,
-    "sugar_g": 0.5
-  },
-  "seekh kebab": {
-    "calories": 250,
-    "protein_g": 18,
-    "carbs_g": 8,
-    "fat_g": 16,
-    "fiber_g": 1,
-    "sugar_g": 1
-  },
-  "shammi kebab": {
-    "calories": 240,
-    "protein_g": 16,
-    "carbs_g": 12,
-    "fat_g": 14,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "butter naan": {
-    "calories": 320,
-    "protein_g": 9,
-    "carbs_g": 48,
-    "fat_g": 10,
-    "fiber_g": 2,
-    "sugar_g": 4
-  },
-  "garlic naan": {
-    "calories": 300,
-    "protein_g": 9,
-    "carbs_g": 45,
-    "fat_g": 9,
-    "fiber_g": 2,
-    "sugar_g": 3
-  },
-  "rumali roti": {
-    "calories": 240,
-    "protein_g": 7,
-    "carbs_g": 42,
-    "fat_g": 5,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "laccha paratha": {
-    "calories": 310,
-    "protein_g": 6,
-    "carbs_g": 38,
-    "fat_g": 14,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "missi roti": {
-    "calories": 200,
-    "protein_g": 8,
-    "carbs_g": 32,
-    "fat_g": 5,
-    "fiber_g": 4,
-    "sugar_g": 1
-  },
-  "tandoori roti": {
-    "calories": 130,
-    "protein_g": 4,
-    "carbs_g": 24,
-    "fat_g": 2,
-    "fiber_g": 2,
-    "sugar_g": 0.5
-  },
-  "bhakri": {
-    "calories": 140,
-    "protein_g": 4,
-    "carbs_g": 28,
-    "fat_g": 1.5,
-    "fiber_g": 2,
-    "sugar_g": 0
-  },
-  "thalipeeth": {
-    "calories": 220,
-    "protein_g": 7,
-    "carbs_g": 30,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "pizza": {
-    "calories": 266,
-    "protein_g": 11,
-    "carbs_g": 33,
-    "fat_g": 10,
-    "fiber_g": 2,
-    "sugar_g": 4
-  },
-  "burger": {
-    "calories": 295,
-    "protein_g": 17,
-    "carbs_g": 24,
-    "fat_g": 14,
-    "fiber_g": 1,
-    "sugar_g": 5
-  },
-  "french fries": {
-    "calories": 312,
-    "protein_g": 3,
-    "carbs_g": 41,
-    "fat_g": 15,
-    "fiber_g": 4,
-    "sugar_g": 0.3
-  },
-  "hot dog": {
-    "calories": 290,
-    "protein_g": 10,
-    "carbs_g": 24,
-    "fat_g": 18,
-    "fiber_g": 1,
-    "sugar_g": 4
-  },
-  "sushi": {
-    "calories": 143,
-    "protein_g": 6,
-    "carbs_g": 28,
-    "fat_g": 1,
-    "fiber_g": 0.5,
-    "sugar_g": 5
-  },
-  "ramen": {
-    "calories": 436,
-    "protein_g": 10,
-    "carbs_g": 56,
-    "fat_g": 19,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "croissant": {
-    "calories": 406,
-    "protein_g": 8,
-    "carbs_g": 46,
-    "fat_g": 21,
-    "fiber_g": 2,
-    "sugar_g": 7
-  },
-  "pancake": {
-    "calories": 227,
-    "protein_g": 6,
-    "carbs_g": 28,
-    "fat_g": 10,
-    "fiber_g": 1,
-    "sugar_g": 7
-  },
-  "waffle": {
-    "calories": 291,
-    "protein_g": 8,
-    "carbs_g": 33,
-    "fat_g": 14,
-    "fiber_g": 1,
-    "sugar_g": 5
-  },
-  "bagel": {
-    "calories": 250,
-    "protein_g": 10,
-    "carbs_g": 49,
-    "fat_g": 1.5,
-    "fiber_g": 2,
-    "sugar_g": 5
-  },
-  "tortilla": {
-    "calories": 318,
-    "protein_g": 8,
-    "carbs_g": 52,
-    "fat_g": 8,
-    "fiber_g": 3,
-    "sugar_g": 1
-  },
-  "taco": {
-    "calories": 226,
-    "protein_g": 9,
-    "carbs_g": 20,
-    "fat_g": 12,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "burrito": {
-    "calories": 206,
-    "protein_g": 8,
-    "carbs_g": 25,
-    "fat_g": 8,
-    "fiber_g": 2,
-    "sugar_g": 1
-  },
-  "nachos": {
-    "calories": 500,
-    "protein_g": 7,
-    "carbs_g": 58,
-    "fat_g": 27,
-    "fiber_g": 4,
-    "sugar_g": 1
-  },
-  "hummus": {
-    "calories": 166,
-    "protein_g": 8,
-    "carbs_g": 14,
-    "fat_g": 10,
-    "fiber_g": 6,
-    "sugar_g": 0
-  },
-  "falafel": {
-    "calories": 333,
-    "protein_g": 13,
-    "carbs_g": 32,
-    "fat_g": 18,
-    "fiber_g": 5,
-    "sugar_g": 0
-  },
-  "pita bread": {
-    "calories": 275,
-    "protein_g": 9,
-    "carbs_g": 55,
-    "fat_g": 1.2,
-    "fiber_g": 2,
-    "sugar_g": 2
-  },
-  "couscous": {
-    "calories": 112,
-    "protein_g": 4,
-    "carbs_g": 23,
-    "fat_g": 0.2,
-    "fiber_g": 1.4,
-    "sugar_g": 0
-  },
-  "quinoa": {
-    "calories": 120,
-    "protein_g": 4,
-    "carbs_g": 21,
-    "fat_g": 2,
-    "fiber_g": 2.8,
-    "sugar_g": 0.9
-  },
-  "granola": {
-    "calories": 471,
-    "protein_g": 10,
-    "carbs_g": 64,
-    "fat_g": 20,
-    "fiber_g": 7,
-    "sugar_g": 25
-  },
-  "mac and cheese": {
-    "calories": 350,
-    "protein_g": 12,
-    "carbs_g": 40,
-    "fat_g": 16,
-    "fiber_g": 1,
-    "sugar_g": 4
-  },
-  "lasagna": {
-    "calories": 135,
-    "protein_g": 8,
-    "carbs_g": 16,
-    "fat_g": 5,
-    "fiber_g": 1,
-    "sugar_g": 3
-  },
-  "spaghetti": {
-    "calories": 131,
-    "protein_g": 5,
-    "carbs_g": 25,
-    "fat_g": 1.1,
-    "fiber_g": 1.8,
-    "sugar_g": 0.6
-  },
-  "meatball": {
-    "calories": 250,
-    "protein_g": 15,
-    "carbs_g": 10,
-    "fat_g": 17,
-    "fiber_g": 0.5,
-    "sugar_g": 3
-  },
-  "steak": {
-    "calories": 271,
-    "protein_g": 26,
+  "water": {
+    "calories": 0,
+    "protein_g": 0,
     "carbs_g": 0,
-    "fat_g": 18,
+    "fat_g": 0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 5,
+    "potassium_mg": 0,
+    "calcium_mg": 3,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 250,
+    "gi": 0,
+    "health_score": 100,
+    "tags": [
+      "Zero Calorie",
+      "Hydration"
+    ]
   },
-  "bacon": {
-    "calories": 541,
-    "protein_g": 37,
-    "carbs_g": 1,
-    "fat_g": 42,
+  "green tea": {
+    "calories": 1,
+    "protein_g": 0,
+    "carbs_g": 0.2,
+    "fat_g": 0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 1,
+    "potassium_mg": 27,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 240,
+    "gi": 0,
+    "health_score": 98,
+    "tags": [
+      "Antioxidant",
+      "Zero Calorie"
+    ]
   },
-  "sausage": {
-    "calories": 301,
-    "protein_g": 12,
-    "carbs_g": 2,
-    "fat_g": 27,
+  "black tea": {
+    "calories": 1,
+    "protein_g": 0,
+    "carbs_g": 0.2,
+    "fat_g": 0,
     "fiber_g": 0,
-    "sugar_g": 1
+    "sugar_g": 0,
+    "sodium_mg": 3,
+    "potassium_mg": 37,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 240,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "Zero Calorie"
+    ]
   },
-  "ham": {
-    "calories": 145,
-    "protein_g": 21,
-    "carbs_g": 1,
-    "fat_g": 6,
+  "black coffee": {
+    "calories": 2,
+    "protein_g": 0.3,
+    "carbs_g": 0,
+    "fat_g": 0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 5,
+    "potassium_mg": 116,
+    "calcium_mg": 5,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 240,
+    "gi": 0,
+    "health_score": 92,
+    "tags": [
+      "Energy Boost",
+      "Zero Calorie"
+    ]
+  },
+  "coconut water": {
+    "calories": 19,
+    "protein_g": 0.7,
+    "carbs_g": 3.7,
+    "fat_g": 0.2,
+    "fiber_g": 1.1,
+    "sugar_g": 2.6,
+    "sodium_mg": 105,
+    "potassium_mg": 250,
+    "calcium_mg": 24,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 2.4,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 240,
+    "gi": 3,
+    "health_score": 90,
+    "tags": [
+      "Electrolytes",
+      "Hydration"
+    ]
+  },
+  "orange juice": {
+    "calories": 45,
+    "protein_g": 0.7,
+    "carbs_g": 10.0,
+    "fat_g": 0.2,
+    "fiber_g": 0.2,
+    "sugar_g": 8.4,
+    "sodium_mg": 1,
+    "potassium_mg": 200,
+    "calcium_mg": 11,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 50,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 240,
+    "gi": 50,
+    "health_score": 75,
+    "tags": [
+      "Vitamin C",
+      "Natural Juice"
+    ]
+  },
+  "apple juice": {
+    "calories": 46,
+    "protein_g": 0.1,
+    "carbs_g": 11.3,
+    "fat_g": 0.1,
+    "fiber_g": 0.2,
+    "sugar_g": 9.6,
+    "sodium_mg": 4,
+    "potassium_mg": 101,
+    "calcium_mg": 7,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0.9,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 240,
+    "gi": 44,
+    "health_score": 70,
+    "tags": [
+      "Natural Juice"
+    ]
+  },
+  "chicken": {
+    "calories": 165,
+    "protein_g": 31.0,
+    "carbs_g": 0,
+    "fat_g": 3.6,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 74,
+    "potassium_mg": 256,
+    "calcium_mg": 15,
+    "iron_mg": 1.0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.0,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "High Protein",
+      "Lean Meat"
+    ]
+  },
+  "chicken breast": {
+    "calories": 165,
+    "protein_g": 31.0,
+    "carbs_g": 0,
+    "fat_g": 3.6,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 74,
+    "potassium_mg": 256,
+    "calcium_mg": 15,
+    "iron_mg": 1.0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.0,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 98,
+    "tags": [
+      "High Protein",
+      "Lean Meat",
+      "Keto Friendly"
+    ]
+  },
+  "chicken thigh": {
+    "calories": 209,
+    "protein_g": 26.0,
+    "carbs_g": 0,
+    "fat_g": 10.9,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 84,
+    "potassium_mg": 220,
+    "calcium_mg": 11,
+    "iron_mg": 1.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.0,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 88,
+    "tags": [
+      "High Protein",
+      "Keto Friendly"
+    ]
   },
   "turkey": {
     "calories": 135,
-    "protein_g": 30,
+    "protein_g": 30.0,
     "carbs_g": 0,
-    "fat_g": 1,
+    "fat_g": 1.5,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 290,
+    "calcium_mg": 21,
+    "iron_mg": 1.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.4,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 97,
+    "tags": [
+      "High Protein",
+      "Lean Meat"
+    ]
   },
   "duck": {
-    "calories": 337,
-    "protein_g": 19,
+    "calories": 201,
+    "protein_g": 23.5,
     "carbs_g": 0,
-    "fat_g": 28,
+    "fat_g": 11.2,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 65,
+    "potassium_mg": 250,
+    "calcium_mg": 12,
+    "iron_mg": 2.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 4.0,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 85,
+    "tags": [
+      "High Protein",
+      "Iron Rich"
+    ]
   },
-  "lobster": {
-    "calories": 89,
-    "protein_g": 19,
+  "beef": {
+    "calories": 250,
+    "protein_g": 26.0,
     "carbs_g": 0,
-    "fat_g": 1,
+    "fat_g": 15.0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 72,
+    "potassium_mg": 318,
+    "calcium_mg": 18,
+    "iron_mg": 2.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 6.0,
+    "serving_weight_g": 180,
+    "gi": 0,
+    "health_score": 85,
+    "tags": [
+      "High Protein",
+      "Iron Rich"
+    ]
   },
-  "crab": {
-    "calories": 97,
-    "protein_g": 19,
+  "beef ribeye": {
+    "calories": 271,
+    "protein_g": 25.0,
     "carbs_g": 0,
-    "fat_g": 2,
+    "fat_g": 19.0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 60,
+    "potassium_mg": 315,
+    "calcium_mg": 18,
+    "iron_mg": 2.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 8.0,
+    "serving_weight_g": 200,
+    "gi": 0,
+    "health_score": 82,
+    "tags": [
+      "High Protein",
+      "Iron Rich",
+      "Keto Friendly"
+    ]
   },
-  "oyster": {
-    "calories": 68,
-    "protein_g": 7,
-    "carbs_g": 4,
-    "fat_g": 2,
+  "pork": {
+    "calories": 242,
+    "protein_g": 27.0,
+    "carbs_g": 0,
+    "fat_g": 14.0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 62,
+    "potassium_mg": 340,
+    "calcium_mg": 19,
+    "iron_mg": 1.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 5.0,
+    "serving_weight_g": 180,
+    "gi": 0,
+    "health_score": 84,
+    "tags": [
+      "High Protein",
+      "Keto Friendly"
+    ]
   },
-  "scallop": {
-    "calories": 69,
-    "protein_g": 12,
-    "carbs_g": 3,
+  "bacon": {
+    "calories": 541,
+    "protein_g": 37.0,
+    "carbs_g": 1.4,
+    "fat_g": 42.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 1717,
+    "potassium_mg": 565,
+    "calcium_mg": 13,
+    "iron_mg": 1.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 14.0,
+    "serving_weight_g": 30,
+    "gi": 0,
+    "health_score": 55,
+    "tags": [
+      "Keto Friendly"
+    ]
+  },
+  "lamb": {
+    "calories": 294,
+    "protein_g": 25.0,
+    "carbs_g": 0,
+    "fat_g": 21.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 72,
+    "potassium_mg": 310,
+    "calcium_mg": 17,
+    "iron_mg": 1.9,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 9.0,
+    "serving_weight_g": 180,
+    "gi": 0,
+    "health_score": 80,
+    "tags": [
+      "High Protein",
+      "Iron Rich"
+    ]
+  },
+  "mutton": {
+    "calories": 294,
+    "protein_g": 25.0,
+    "carbs_g": 0,
+    "fat_g": 21.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 72,
+    "potassium_mg": 310,
+    "calcium_mg": 17,
+    "iron_mg": 1.9,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 9.0,
+    "serving_weight_g": 180,
+    "gi": 0,
+    "health_score": 80,
+    "tags": [
+      "High Protein",
+      "Iron Rich"
+    ]
+  },
+  "egg": {
+    "calories": 155,
+    "protein_g": 13.0,
+    "carbs_g": 1.1,
+    "fat_g": 11.0,
+    "fiber_g": 0,
+    "sugar_g": 1.1,
+    "sodium_mg": 124,
+    "potassium_mg": 126,
+    "calcium_mg": 50,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.3,
+    "serving_weight_g": 50,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "High Protein",
+      "Keto Friendly"
+    ]
+  },
+  "egg white": {
+    "calories": 52,
+    "protein_g": 11.0,
+    "carbs_g": 0.7,
+    "fat_g": 0.2,
+    "fiber_g": 0,
+    "sugar_g": 0.7,
+    "sodium_mg": 166,
+    "potassium_mg": 163,
+    "calcium_mg": 7,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 33,
+    "gi": 0,
+    "health_score": 99,
+    "tags": [
+      "High Protein",
+      "Fat Free"
+    ]
+  },
+  "boiled egg": {
+    "calories": 155,
+    "protein_g": 13.0,
+    "carbs_g": 1.1,
+    "fat_g": 11.0,
+    "fiber_g": 0,
+    "sugar_g": 1.1,
+    "sodium_mg": 124,
+    "potassium_mg": 126,
+    "calcium_mg": 50,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.3,
+    "serving_weight_g": 50,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "fried egg": {
+    "calories": 196,
+    "protein_g": 14.0,
+    "carbs_g": 0.8,
+    "fat_g": 15.0,
+    "fiber_g": 0,
+    "sugar_g": 0.4,
+    "sodium_mg": 200,
+    "potassium_mg": 140,
+    "calcium_mg": 56,
+    "iron_mg": 1.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 4.5,
+    "serving_weight_g": 50,
+    "gi": 0,
+    "health_score": 88,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "omelette": {
+    "calories": 154,
+    "protein_g": 11.0,
+    "carbs_g": 0.6,
+    "fat_g": 12.0,
+    "fiber_g": 0,
+    "sugar_g": 0.4,
+    "sodium_mg": 170,
+    "potassium_mg": 135,
+    "calcium_mg": 52,
+    "iron_mg": 1.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.8,
+    "serving_weight_g": 100,
+    "gi": 0,
+    "health_score": 90,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "salmon": {
+    "calories": 208,
+    "protein_g": 20.0,
+    "carbs_g": 0,
+    "fat_g": 13.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 59,
+    "potassium_mg": 363,
+    "calcium_mg": 9,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.1,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 98,
+    "tags": [
+      "Omega 3",
+      "High Protein"
+    ]
+  },
+  "tuna": {
+    "calories": 132,
+    "protein_g": 28.0,
+    "carbs_g": 0,
+    "fat_g": 1.3,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 47,
+    "potassium_mg": 527,
+    "calcium_mg": 8,
+    "iron_mg": 1.0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.4,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 97,
+    "tags": [
+      "High Protein",
+      "Lean Fish"
+    ]
+  },
+  "cod": {
+    "calories": 82,
+    "protein_g": 18.0,
+    "carbs_g": 0,
+    "fat_g": 0.7,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 54,
+    "potassium_mg": 413,
+    "calcium_mg": 16,
+    "iron_mg": 0.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 96,
+    "tags": [
+      "Lean Fish"
+    ]
+  },
+  "shrimp": {
+    "calories": 99,
+    "protein_g": 24.0,
+    "carbs_g": 0.2,
+    "fat_g": 0.3,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 111,
+    "potassium_mg": 259,
+    "calcium_mg": 70,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 100,
+    "gi": 0,
+    "health_score": 94,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "prawn": {
+    "calories": 99,
+    "protein_g": 24.0,
+    "carbs_g": 0.2,
+    "fat_g": 0.3,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 111,
+    "potassium_mg": 259,
+    "calcium_mg": 70,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 100,
+    "gi": 0,
+    "health_score": 94,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "fish": {
+    "calories": 206,
+    "protein_g": 22.0,
+    "carbs_g": 0,
+    "fat_g": 12.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 60,
+    "potassium_mg": 350,
+    "calcium_mg": 15,
+    "iron_mg": 0.8,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 2.5,
+    "serving_weight_g": 150,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "milk": {
+    "calories": 42,
+    "protein_g": 3.4,
+    "carbs_g": 5.0,
+    "fat_g": 1.0,
+    "fiber_g": 0,
+    "sugar_g": 5.0,
+    "sodium_mg": 44,
+    "potassium_mg": 150,
+    "calcium_mg": 125,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.6,
+    "serving_weight_g": 240,
+    "gi": 39,
+    "health_score": 90,
+    "tags": [
+      "Calcium Rich"
+    ]
+  },
+  "coconut milk": {
+    "calories": 230,
+    "protein_g": 2.3,
+    "carbs_g": 6.0,
+    "fat_g": 24.0,
+    "fiber_g": 2.2,
+    "sugar_g": 3.3,
+    "sodium_mg": 15,
+    "potassium_mg": 263,
+    "calcium_mg": 16,
+    "iron_mg": 1.6,
+    "vitamin_c_mg": 1.0,
+    "saturated_fat_g": 21.0,
+    "serving_weight_g": 240,
+    "gi": 40,
+    "health_score": 75,
+    "tags": [
+      "Dairy Free",
+      "Vegan"
+    ]
+  },
+  "almond milk": {
+    "calories": 15,
+    "protein_g": 0.6,
+    "carbs_g": 0.3,
+    "fat_g": 1.2,
+    "fiber_g": 0.2,
+    "sugar_g": 0,
+    "sodium_mg": 70,
+    "potassium_mg": 67,
+    "calcium_mg": 180,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 240,
+    "gi": 25,
+    "health_score": 88,
+    "tags": [
+      "Dairy Free",
+      "Low Calorie"
+    ]
+  },
+  "soy milk": {
+    "calories": 43,
+    "protein_g": 3.3,
+    "carbs_g": 3.0,
+    "fat_g": 1.8,
+    "fiber_g": 0.5,
+    "sugar_g": 2.0,
+    "sodium_mg": 47,
+    "potassium_mg": 140,
+    "calcium_mg": 120,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 240,
+    "gi": 34,
+    "health_score": 90,
+    "tags": [
+      "Plant Protein"
+    ]
+  },
+  "curd": {
+    "calories": 61,
+    "protein_g": 3.5,
+    "carbs_g": 4.7,
+    "fat_g": 3.3,
+    "fiber_g": 0,
+    "sugar_g": 4.7,
+    "sodium_mg": 46,
+    "potassium_mg": 155,
+    "calcium_mg": 121,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0.5,
+    "saturated_fat_g": 2.1,
+    "serving_weight_g": 150,
+    "gi": 35,
+    "health_score": 94,
+    "tags": [
+      "Probiotic"
+    ]
+  },
+  "yogurt": {
+    "calories": 59,
+    "protein_g": 10.0,
+    "carbs_g": 3.6,
+    "fat_g": 0.7,
+    "fiber_g": 0,
+    "sugar_g": 3.2,
+    "sodium_mg": 36,
+    "potassium_mg": 141,
+    "calcium_mg": 110,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.4,
+    "serving_weight_g": 170,
+    "gi": 35,
+    "health_score": 96,
+    "tags": [
+      "High Protein",
+      "Probiotic"
+    ]
+  },
+  "greek yogurt": {
+    "calories": 59,
+    "protein_g": 10.0,
+    "carbs_g": 3.6,
+    "fat_g": 0.4,
+    "fiber_g": 0,
+    "sugar_g": 3.2,
+    "sodium_mg": 36,
+    "potassium_mg": 141,
+    "calcium_mg": 110,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 170,
+    "gi": 30,
+    "health_score": 98,
+    "tags": [
+      "High Protein",
+      "Probiotic"
+    ]
+  },
+  "paneer": {
+    "calories": 265,
+    "protein_g": 18.0,
+    "carbs_g": 1.2,
+    "fat_g": 21.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 18,
+    "potassium_mg": 110,
+    "calcium_mg": 480,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 13.0,
+    "serving_weight_g": 100,
+    "gi": 0,
+    "health_score": 90,
+    "tags": [
+      "High Protein",
+      "Calcium Rich"
+    ]
+  },
+  "butter": {
+    "calories": 717,
+    "protein_g": 0.9,
+    "carbs_g": 0.1,
+    "fat_g": 81.0,
+    "fiber_g": 0,
+    "sugar_g": 0.1,
+    "sodium_mg": 643,
+    "potassium_mg": 24,
+    "calcium_mg": 24,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 51.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 65,
+    "tags": [
+      "Fats"
+    ]
+  },
+  "peanut butter": {
+    "calories": 588,
+    "protein_g": 25.0,
+    "carbs_g": 20.0,
+    "fat_g": 50.0,
+    "fiber_g": 6.0,
+    "sugar_g": 9.0,
+    "sodium_mg": 429,
+    "potassium_mg": 649,
+    "calcium_mg": 43,
+    "iron_mg": 1.9,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 10.0,
+    "serving_weight_g": 32,
+    "gi": 14,
+    "health_score": 88,
+    "tags": [
+      "High Protein",
+      "Healthy Fats"
+    ]
+  },
+  "ghee": {
+    "calories": 900,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 0,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 60.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 70,
+    "tags": [
+      "Ayurvedic Fat"
+    ]
+  },
+  "cheese": {
+    "calories": 402,
+    "protein_g": 25.0,
+    "carbs_g": 1.3,
+    "fat_g": 33.0,
+    "fiber_g": 0,
+    "sugar_g": 0.5,
+    "sodium_mg": 621,
+    "potassium_mg": 98,
+    "calcium_mg": 721,
+    "iron_mg": 0.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 21.0,
+    "serving_weight_g": 28,
+    "gi": 0,
+    "health_score": 80,
+    "tags": [
+      "High Protein",
+      "Calcium Rich"
+    ]
+  },
+  "cottage cheese": {
+    "calories": 98,
+    "protein_g": 11.0,
+    "carbs_g": 3.4,
+    "fat_g": 4.3,
+    "fiber_g": 0,
+    "sugar_g": 2.7,
+    "sodium_mg": 364,
+    "potassium_mg": 104,
+    "calcium_mg": 83,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.7,
+    "serving_weight_g": 113,
+    "gi": 10,
+    "health_score": 95,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "rice": {
+    "calories": 130,
+    "protein_g": 2.7,
+    "carbs_g": 28.0,
+    "fat_g": 0.3,
+    "fiber_g": 0.4,
+    "sugar_g": 0,
+    "sodium_mg": 1,
+    "potassium_mg": 35,
+    "calcium_mg": 10,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 158,
+    "gi": 73,
+    "health_score": 78,
+    "tags": [
+      "Carb Source"
+    ]
+  },
+  "basmati rice": {
+    "calories": 121,
+    "protein_g": 3.5,
+    "carbs_g": 25.0,
+    "fat_g": 0.4,
+    "fiber_g": 0.4,
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 32,
+    "calcium_mg": 11,
+    "iron_mg": 0.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 158,
+    "gi": 57,
+    "health_score": 82,
+    "tags": [
+      "Aromatic Grain"
+    ]
+  },
+  "brown rice": {
+    "calories": 111,
+    "protein_g": 2.6,
+    "carbs_g": 23.0,
+    "fat_g": 0.9,
+    "fiber_g": 1.8,
+    "sugar_g": 0.4,
+    "sodium_mg": 5,
+    "potassium_mg": 86,
+    "calcium_mg": 10,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 158,
+    "gi": 68,
+    "health_score": 92,
+    "tags": [
+      "Whole Grain",
+      "Fiber Rich"
+    ]
+  },
+  "oats": {
+    "calories": 389,
+    "protein_g": 17.0,
+    "carbs_g": 66.0,
+    "fat_g": 7.0,
+    "fiber_g": 11.0,
+    "sugar_g": 0,
+    "sodium_mg": 2,
+    "potassium_mg": 429,
+    "calcium_mg": 54,
+    "iron_mg": 4.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.2,
+    "serving_weight_g": 50,
+    "gi": 55,
+    "health_score": 98,
+    "tags": [
+      "Fiber Rich",
+      "Heart Healthy"
+    ]
+  },
+  "oatmeal": {
+    "calories": 71,
+    "protein_g": 2.5,
+    "carbs_g": 12.0,
+    "fat_g": 1.4,
+    "fiber_g": 1.7,
+    "sugar_g": 0.5,
+    "sodium_mg": 49,
+    "potassium_mg": 61,
+    "calcium_mg": 9,
+    "iron_mg": 0.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 234,
+    "gi": 55,
+    "health_score": 96,
+    "tags": [
+      "Fiber Rich"
+    ]
+  },
+  "roti": {
+    "calories": 260,
+    "protein_g": 7.0,
+    "carbs_g": 48.0,
+    "fat_g": 3.7,
+    "fiber_g": 7.0,
+    "sugar_g": 0.4,
+    "sodium_mg": 190,
+    "potassium_mg": 140,
+    "calcium_mg": 30,
+    "iron_mg": 2.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.8,
+    "serving_weight_g": 40,
+    "gi": 62,
+    "health_score": 88,
+    "tags": [
+      "Whole Wheat"
+    ]
+  },
+  "chapati": {
+    "calories": 260,
+    "protein_g": 7.0,
+    "carbs_g": 48.0,
+    "fat_g": 3.7,
+    "fiber_g": 7.0,
+    "sugar_g": 0.4,
+    "sodium_mg": 190,
+    "potassium_mg": 140,
+    "calcium_mg": 30,
+    "iron_mg": 2.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.8,
+    "serving_weight_g": 40,
+    "gi": 62,
+    "health_score": 88,
+    "tags": [
+      "Whole Wheat"
+    ]
+  },
+  "bread": {
+    "calories": 265,
+    "protein_g": 9.0,
+    "carbs_g": 49.0,
+    "fat_g": 3.2,
+    "fiber_g": 2.7,
+    "sugar_g": 5.0,
+    "sodium_mg": 491,
+    "potassium_mg": 115,
+    "calcium_mg": 144,
+    "iron_mg": 3.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.7,
+    "serving_weight_g": 30,
+    "gi": 75,
+    "health_score": 72,
+    "tags": [
+      "Bread Slice"
+    ]
+  },
+  "garlic bread": {
+    "calories": 350,
+    "protein_g": 8.4,
+    "carbs_g": 42.0,
+    "fat_g": 17.0,
+    "fiber_g": 2.1,
+    "sugar_g": 2.5,
+    "sodium_mg": 590,
+    "potassium_mg": 120,
+    "calcium_mg": 110,
+    "iron_mg": 2.1,
+    "vitamin_c_mg": 0.5,
+    "saturated_fat_g": 7.5,
+    "serving_weight_g": 60,
+    "gi": 70,
+    "health_score": 60,
+    "tags": [
+      "Snack"
+    ]
+  },
+  "chickpeas": {
+    "calories": 164,
+    "protein_g": 9.0,
+    "carbs_g": 27.0,
+    "fat_g": 2.6,
+    "fiber_g": 8.0,
+    "sugar_g": 4.8,
+    "sodium_mg": 24,
+    "potassium_mg": 291,
+    "calcium_mg": 49,
+    "iron_mg": 2.9,
+    "vitamin_c_mg": 1.3,
+    "saturated_fat_g": 0.3,
+    "serving_weight_g": 164,
+    "gi": 28,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein",
+      "Fiber Rich"
+    ]
+  },
+  "chana": {
+    "calories": 164,
+    "protein_g": 9.0,
+    "carbs_g": 27.0,
+    "fat_g": 2.6,
+    "fiber_g": 8.0,
+    "sugar_g": 4.8,
+    "sodium_mg": 24,
+    "potassium_mg": 291,
+    "calcium_mg": 49,
+    "iron_mg": 2.9,
+    "vitamin_c_mg": 1.3,
+    "saturated_fat_g": 0.3,
+    "serving_weight_g": 164,
+    "gi": 28,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein"
+    ]
+  },
+  "rajma": {
+    "calories": 127,
+    "protein_g": 9.0,
+    "carbs_g": 22.0,
     "fat_g": 0.5,
-    "fiber_g": 0,
-    "sugar_g": 0
+    "fiber_g": 7.0,
+    "sugar_g": 0.3,
+    "sodium_mg": 2,
+    "potassium_mg": 405,
+    "calcium_mg": 28,
+    "iron_mg": 2.9,
+    "vitamin_c_mg": 1.2,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 177,
+    "gi": 24,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein",
+      "Fiber Rich"
+    ]
   },
-  "mozzarella": {
-    "calories": 280,
-    "protein_g": 28,
-    "carbs_g": 3,
-    "fat_g": 17,
+  "dal": {
+    "calories": 116,
+    "protein_g": 9.0,
+    "carbs_g": 20.0,
+    "fat_g": 0.4,
+    "fiber_g": 8.0,
+    "sugar_g": 1.8,
+    "sodium_mg": 2,
+    "potassium_mg": 369,
+    "calcium_mg": 19,
+    "iron_mg": 3.3,
+    "vitamin_c_mg": 1.5,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 200,
+    "gi": 32,
+    "health_score": 97,
+    "tags": [
+      "Plant Protein",
+      "Indian Staple"
+    ]
+  },
+  "tofu": {
+    "calories": 76,
+    "protein_g": 8.0,
+    "carbs_g": 1.9,
+    "fat_g": 4.8,
+    "fiber_g": 0.3,
+    "sugar_g": 0.6,
+    "sodium_mg": 7,
+    "potassium_mg": 121,
+    "calcium_mg": 350,
+    "iron_mg": 5.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.7,
+    "serving_weight_g": 100,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein",
+      "Vegan"
+    ]
+  },
+  "potato": {
+    "calories": 77,
+    "protein_g": 2.0,
+    "carbs_g": 17.0,
+    "fat_g": 0.1,
+    "fiber_g": 2.2,
+    "sugar_g": 0.8,
+    "sodium_mg": 6,
+    "potassium_mg": 421,
+    "calcium_mg": 12,
+    "iron_mg": 0.8,
+    "vitamin_c_mg": 19.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 150,
+    "gi": 78,
+    "health_score": 85,
+    "tags": [
+      "Potassium Rich"
+    ]
+  },
+  "sweet potato": {
+    "calories": 86,
+    "protein_g": 1.6,
+    "carbs_g": 20.0,
+    "fat_g": 0.1,
+    "fiber_g": 3.0,
+    "sugar_g": 4.2,
+    "sodium_mg": 55,
+    "potassium_mg": 337,
+    "calcium_mg": 30,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 2.4,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 150,
+    "gi": 54,
+    "health_score": 96,
+    "tags": [
+      "Superfood",
+      "Fiber Rich"
+    ]
+  },
+  "spinach": {
+    "calories": 23,
+    "protein_g": 2.9,
+    "carbs_g": 3.6,
+    "fat_g": 0.4,
+    "fiber_g": 2.2,
+    "sugar_g": 0.4,
+    "sodium_mg": 79,
+    "potassium_mg": 558,
+    "calcium_mg": 99,
+    "iron_mg": 2.7,
+    "vitamin_c_mg": 28.1,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 100,
+    "gi": 15,
+    "health_score": 100,
+    "tags": [
+      "Superfood",
+      "Iron Rich"
+    ]
+  },
+  "palak": {
+    "calories": 23,
+    "protein_g": 2.9,
+    "carbs_g": 3.6,
+    "fat_g": 0.4,
+    "fiber_g": 2.2,
+    "sugar_g": 0.4,
+    "sodium_mg": 79,
+    "potassium_mg": 558,
+    "calcium_mg": 99,
+    "iron_mg": 2.7,
+    "vitamin_c_mg": 28.1,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 100,
+    "gi": 15,
+    "health_score": 100,
+    "tags": [
+      "Iron Rich"
+    ]
+  },
+  "tomato": {
+    "calories": 18,
+    "protein_g": 0.9,
+    "carbs_g": 3.9,
+    "fat_g": 0.2,
+    "fiber_g": 1.2,
+    "sugar_g": 2.6,
+    "sodium_mg": 5,
+    "potassium_mg": 237,
+    "calcium_mg": 10,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 13.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 123,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Lycopene"
+    ]
+  },
+  "onion": {
+    "calories": 40,
+    "protein_g": 1.1,
+    "carbs_g": 9.3,
+    "fat_g": 0.1,
+    "fiber_g": 1.7,
+    "sugar_g": 4.2,
+    "sodium_mg": 4,
+    "potassium_mg": 146,
+    "calcium_mg": 23,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 7.4,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 110,
+    "gi": 10,
+    "health_score": 95,
+    "tags": [
+      "Antioxidant"
+    ]
+  },
+  "avocado": {
+    "calories": 160,
+    "protein_g": 2.0,
+    "carbs_g": 8.5,
+    "fat_g": 14.7,
+    "fiber_g": 6.7,
+    "sugar_g": 0.7,
+    "sodium_mg": 7,
+    "potassium_mg": 485,
+    "calcium_mg": 12,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 10.0,
+    "saturated_fat_g": 2.1,
+    "serving_weight_g": 150,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Healthy Fats",
+      "Superfood"
+    ]
+  },
+  "broccoli": {
+    "calories": 34,
+    "protein_g": 2.8,
+    "carbs_g": 6.6,
+    "fat_g": 0.4,
+    "fiber_g": 2.6,
+    "sugar_g": 1.7,
+    "sodium_mg": 33,
+    "potassium_mg": 316,
+    "calcium_mg": 47,
+    "iron_mg": 0.7,
+    "vitamin_c_mg": 89.2,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 100,
+    "gi": 15,
+    "health_score": 100,
+    "tags": [
+      "Superfood",
+      "Vitamin C"
+    ]
+  },
+  "banana": {
+    "calories": 89,
+    "protein_g": 1.1,
+    "carbs_g": 22.8,
+    "fat_g": 0.3,
+    "fiber_g": 2.6,
+    "sugar_g": 12.2,
+    "sodium_mg": 1,
+    "potassium_mg": 358,
+    "calcium_mg": 5,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 8.7,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 118,
+    "gi": 51,
+    "health_score": 92,
+    "tags": [
+      "Potassium Rich"
+    ]
+  },
+  "apple": {
+    "calories": 52,
+    "protein_g": 0.3,
+    "carbs_g": 13.8,
+    "fat_g": 0.2,
+    "fiber_g": 2.4,
+    "sugar_g": 10.4,
+    "sodium_mg": 1,
+    "potassium_mg": 107,
+    "calcium_mg": 6,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 4.6,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 182,
+    "gi": 36,
+    "health_score": 96,
+    "tags": [
+      "Fiber Rich"
+    ]
+  },
+  "mango": {
+    "calories": 60,
+    "protein_g": 0.8,
+    "carbs_g": 15.0,
+    "fat_g": 0.4,
+    "fiber_g": 1.6,
+    "sugar_g": 13.7,
+    "sodium_mg": 1,
+    "potassium_mg": 168,
+    "calcium_mg": 11,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 36.4,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 165,
+    "gi": 51,
+    "health_score": 90,
+    "tags": [
+      "Vitamin C"
+    ]
+  },
+  "olive oil": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
     "fiber_g": 0,
-    "sugar_g": 1
+    "sugar_g": 0,
+    "sodium_mg": 2,
+    "potassium_mg": 1,
+    "calcium_mg": 1,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 14.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 95,
+    "tags": [
+      "Healthy Fat",
+      "Heart Healthy"
+    ]
+  },
+  "whey protein": {
+    "calories": 370,
+    "protein_g": 80.0,
+    "carbs_g": 6.0,
+    "fat_g": 3.0,
+    "fiber_g": 1.0,
+    "sugar_g": 2.0,
+    "sodium_mg": 160,
+    "potassium_mg": 420,
+    "calcium_mg": 500,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.5,
+    "serving_weight_g": 30,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "High Protein",
+      "Supplement"
+    ]
+  },
+  "salt": {
+    "calories": 0,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 38758,
+    "potassium_mg": 8,
+    "calcium_mg": 24,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 5,
+    "gi": 0,
+    "health_score": 60,
+    "tags": [
+      "Essential Mineral",
+      "Sodium Source"
+    ]
+  },
+  "garlic": {
+    "calories": 149,
+    "protein_g": 6.4,
+    "carbs_g": 33.0,
+    "fat_g": 0.5,
+    "fiber_g": 2.1,
+    "sugar_g": 1.0,
+    "sodium_mg": 17,
+    "potassium_mg": 401,
+    "calcium_mg": 181,
+    "iron_mg": 1.7,
+    "vitamin_c_mg": 31.2,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 5,
+    "gi": 10,
+    "health_score": 98,
+    "tags": [
+      "Allicin",
+      "Immunity Boost"
+    ]
+  },
+  "oil": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 0,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 14.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 75,
+    "tags": [
+      "Cooking Oil"
+    ]
+  },
+  "onions": {
+    "calories": 40,
+    "protein_g": 1.1,
+    "carbs_g": 9.3,
+    "fat_g": 0.1,
+    "fiber_g": 1.7,
+    "sugar_g": 4.2,
+    "sodium_mg": 4,
+    "potassium_mg": 146,
+    "calcium_mg": 23,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 7.4,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 110,
+    "gi": 10,
+    "health_score": 95,
+    "tags": [
+      "Antioxidant"
+    ]
+  },
+  "ginger": {
+    "calories": 80,
+    "protein_g": 1.8,
+    "carbs_g": 17.8,
+    "fat_g": 0.8,
+    "fiber_g": 2.0,
+    "sugar_g": 1.7,
+    "sodium_mg": 13,
+    "potassium_mg": 415,
+    "calcium_mg": 16,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 5.0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 5,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Digestive",
+      "Anti-inflammatory"
+    ]
+  },
+  "tomatoes": {
+    "calories": 18,
+    "protein_g": 0.9,
+    "carbs_g": 3.9,
+    "fat_g": 0.2,
+    "fiber_g": 1.2,
+    "sugar_g": 2.6,
+    "sodium_mg": 5,
+    "potassium_mg": 237,
+    "calcium_mg": 10,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 13.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 123,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Lycopene"
+    ]
+  },
+  "cumin": {
+    "calories": 375,
+    "protein_g": 17.8,
+    "carbs_g": 44.2,
+    "fat_g": 22.3,
+    "fiber_g": 10.5,
+    "sugar_g": 2.3,
+    "sodium_mg": 168,
+    "potassium_mg": 1788,
+    "calcium_mg": 931,
+    "iron_mg": 66.4,
+    "vitamin_c_mg": 7.7,
+    "saturated_fat_g": 1.5,
+    "serving_weight_g": 6,
+    "gi": 10,
+    "health_score": 95,
+    "tags": [
+      "Iron Rich",
+      "Spice"
+    ]
+  },
+  "soy sauce": {
+    "calories": 53,
+    "protein_g": 8.1,
+    "carbs_g": 4.9,
+    "fat_g": 0.6,
+    "fiber_g": 0.8,
+    "sugar_g": 0.4,
+    "sodium_mg": 5493,
+    "potassium_mg": 212,
+    "calcium_mg": 20,
+    "iron_mg": 2.4,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 16,
+    "gi": 0,
+    "health_score": 70,
+    "tags": [
+      "Sodium Source"
+    ]
+  },
+  "sugar": {
+    "calories": 387,
+    "protein_g": 0,
+    "carbs_g": 100.0,
+    "fat_g": 0,
+    "fiber_g": 0,
+    "sugar_g": 100.0,
+    "sodium_mg": 2,
+    "potassium_mg": 2,
+    "calcium_mg": 1,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 4,
+    "gi": 65,
+    "health_score": 40,
+    "tags": [
+      "Sweetener"
+    ]
+  },
+  "mushroom": {
+    "calories": 22,
+    "protein_g": 3.1,
+    "carbs_g": 3.3,
+    "fat_g": 0.3,
+    "fiber_g": 1.0,
+    "sugar_g": 2.0,
+    "sodium_mg": 5,
+    "potassium_mg": 318,
+    "calcium_mg": 3,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.1,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 70,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Vitamin D Source",
+      "Low Calorie"
+    ]
+  },
+  "potatoes": {
+    "calories": 77,
+    "protein_g": 2.0,
+    "carbs_g": 17.0,
+    "fat_g": 0.1,
+    "fiber_g": 2.2,
+    "sugar_g": 0.8,
+    "sodium_mg": 6,
+    "potassium_mg": 421,
+    "calcium_mg": 12,
+    "iron_mg": 0.8,
+    "vitamin_c_mg": 19.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 150,
+    "gi": 78,
+    "health_score": 85,
+    "tags": [
+      "Potassium Rich"
+    ]
+  },
+  "eggs": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "flour": {
+    "calories": 364,
+    "protein_g": 10.3,
+    "carbs_g": 76.3,
+    "fat_g": 1.0,
+    "fiber_g": 2.7,
+    "sugar_g": 0.3,
+    "sodium_mg": 2,
+    "potassium_mg": 107,
+    "calcium_mg": 15,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 125,
+    "gi": 70,
+    "health_score": 75,
+    "tags": [
+      "Carb Source"
+    ]
+  },
+  "carrots": {
+    "calories": 41,
+    "protein_g": 0.9,
+    "carbs_g": 9.6,
+    "fat_g": 0.2,
+    "fiber_g": 2.8,
+    "sugar_g": 4.7,
+    "sodium_mg": 69,
+    "potassium_mg": 320,
+    "calcium_mg": 33,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 5.9,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 61,
+    "gi": 39,
+    "health_score": 98,
+    "tags": [
+      "Beta Carotene"
+    ]
+  },
+  "coriander": {
+    "calories": 23,
+    "protein_g": 2.1,
+    "carbs_g": 3.7,
+    "fat_g": 0.5,
+    "fiber_g": 2.8,
+    "sugar_g": 0.9,
+    "sodium_mg": 46,
+    "potassium_mg": 521,
+    "calcium_mg": 67,
+    "iron_mg": 1.8,
+    "vitamin_c_mg": 27.0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 10,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Fresh Herb"
+    ]
+  },
+  "bell peppers": {
+    "calories": 31,
+    "protein_g": 1.0,
+    "carbs_g": 6.0,
+    "fat_g": 0.3,
+    "fiber_g": 2.1,
+    "sugar_g": 4.2,
+    "sodium_mg": 4,
+    "potassium_mg": 211,
+    "calcium_mg": 10,
+    "iron_mg": 0.4,
+    "vitamin_c_mg": 127.7,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 120,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Vitamin C Rich"
+    ]
+  },
+  "cream": {
+    "calories": 340,
+    "protein_g": 2.1,
+    "carbs_g": 2.8,
+    "fat_g": 36.1,
+    "fiber_g": 0,
+    "sugar_g": 2.8,
+    "sodium_mg": 38,
+    "potassium_mg": 95,
+    "calcium_mg": 66,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0.6,
+    "saturated_fat_g": 23.0,
+    "serving_weight_g": 15,
+    "gi": 0,
+    "health_score": 70,
+    "tags": [
+      "Dairy Fat"
+    ]
+  },
+  "bean sprouts": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "honey": {
+    "calories": 304,
+    "protein_g": 0.3,
+    "carbs_g": 82.4,
+    "fat_g": 0,
+    "fiber_g": 0.2,
+    "sugar_g": 82.1,
+    "sodium_mg": 4,
+    "potassium_mg": 52,
+    "calcium_mg": 6,
+    "iron_mg": 0.4,
+    "vitamin_c_mg": 0.5,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 21,
+    "gi": 58,
+    "health_score": 75,
+    "tags": [
+      "Natural Sweetener"
+    ]
+  },
+  "beef broth": {
+    "calories": 17,
+    "protein_g": 3.1,
+    "carbs_g": 0.9,
+    "fat_g": 0.2,
+    "fiber_g": 0,
+    "sugar_g": 0.4,
+    "sodium_mg": 360,
+    "potassium_mg": 180,
+    "calcium_mg": 8,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 240,
+    "gi": 0,
+    "health_score": 85,
+    "tags": [
+      "Broth",
+      "Low Calorie"
+    ]
+  },
+  "vinegar": {
+    "calories": 18,
+    "protein_g": 0,
+    "carbs_g": 0.4,
+    "fat_g": 0,
+    "fiber_g": 0,
+    "sugar_g": 0.4,
+    "sodium_mg": 2,
+    "potassium_mg": 2,
+    "calcium_mg": 6,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0,
+    "serving_weight_g": 15,
+    "gi": 0,
+    "health_score": 90,
+    "tags": [
+      "Acidic"
+    ]
+  },
+  "scallions": {
+    "calories": 32,
+    "protein_g": 1.8,
+    "carbs_g": 7.3,
+    "fat_g": 0.2,
+    "fiber_g": 2.6,
+    "sugar_g": 2.3,
+    "sodium_mg": 16,
+    "potassium_mg": 276,
+    "calcium_mg": 72,
+    "iron_mg": 1.5,
+    "vitamin_c_mg": 18.8,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 15,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Herb"
+    ]
+  },
+  "lemon": {
+    "calories": 29,
+    "protein_g": 1.1,
+    "carbs_g": 9.3,
+    "fat_g": 0.3,
+    "fiber_g": 2.8,
+    "sugar_g": 2.5,
+    "sodium_mg": 2,
+    "potassium_mg": 138,
+    "calcium_mg": 26,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 53.0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 58,
+    "gi": 25,
+    "health_score": 99,
+    "tags": [
+      "Vitamin C Rich"
+    ]
+  },
+  "chili": {
+    "calories": 40,
+    "protein_g": 2.0,
+    "carbs_g": 8.8,
+    "fat_g": 0.2,
+    "fiber_g": 1.5,
+    "sugar_g": 5.3,
+    "sodium_mg": 7,
+    "potassium_mg": 322,
+    "calcium_mg": 18,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 143.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 15,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "CapSaicin",
+      "Vitamin C"
+    ]
+  },
+  "celery": {
+    "calories": 16,
+    "protein_g": 0.7,
+    "carbs_g": 3.0,
+    "fat_g": 0.2,
+    "fiber_g": 1.6,
+    "sugar_g": 1.3,
+    "sodium_mg": 80,
+    "potassium_mg": 260,
+    "calcium_mg": 40,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 3.1,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 40,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Low Calorie"
+    ]
+  },
+  "cabbage": {
+    "calories": 25,
+    "protein_g": 1.3,
+    "carbs_g": 5.8,
+    "fat_g": 0.1,
+    "fiber_g": 2.5,
+    "sugar_g": 3.2,
+    "sodium_mg": 18,
+    "potassium_mg": 170,
+    "calcium_mg": 40,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 36.6,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 89,
+    "gi": 15,
+    "health_score": 97,
+    "tags": [
+      "Cruciferous"
+    ]
+  },
+  "garam masala": {
+    "calories": 375,
+    "protein_g": 15.0,
+    "carbs_g": 45.0,
+    "fat_g": 15.0,
+    "fiber_g": 25.0,
+    "sugar_g": 3.0,
+    "sodium_mg": 50,
+    "potassium_mg": 1100,
+    "calcium_mg": 400,
+    "iron_mg": 15.0,
+    "vitamin_c_mg": 5.0,
+    "saturated_fat_g": 1.5,
+    "serving_weight_g": 5,
+    "gi": 10,
+    "health_score": 95,
+    "tags": [
+      "Spice Blend"
+    ]
+  },
+  "sesame oil": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 0,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 14.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 88,
+    "tags": [
+      "Healthy Fat"
+    ]
+  },
+  "saffron": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cinnamon": {
+    "calories": 247,
+    "protein_g": 4.0,
+    "carbs_g": 80.6,
+    "fat_g": 1.2,
+    "fiber_g": 53.1,
+    "sugar_g": 2.2,
+    "sodium_mg": 10,
+    "potassium_mg": 431,
+    "calcium_mg": 1002,
+    "iron_mg": 8.3,
+    "vitamin_c_mg": 3.8,
+    "saturated_fat_g": 0.3,
+    "serving_weight_g": 3,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Antioxidant"
+    ]
+  },
+  "sour cream": {
+    "calories": 198,
+    "protein_g": 2.4,
+    "carbs_g": 4.6,
+    "fat_g": 19.4,
+    "fiber_g": 0,
+    "sugar_g": 3.4,
+    "sodium_mg": 31,
+    "potassium_mg": 125,
+    "calcium_mg": 110,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0.4,
+    "saturated_fat_g": 12.0,
+    "serving_weight_g": 30,
+    "gi": 0,
+    "health_score": 72,
+    "tags": [
+      "Dairy Fat"
+    ]
+  },
+  "fennel": {
+    "calories": 31,
+    "protein_g": 1.2,
+    "carbs_g": 7.3,
+    "fat_g": 0.2,
+    "fiber_g": 3.1,
+    "sugar_g": 3.9,
+    "sodium_mg": 52,
+    "potassium_mg": 414,
+    "calcium_mg": 49,
+    "iron_mg": 0.7,
+    "vitamin_c_mg": 12.0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 87,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Fiber Rich"
+    ]
+  },
+  "vegetable": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "turmeric": {
+    "calories": 312,
+    "protein_g": 9.7,
+    "carbs_g": 67.1,
+    "fat_g": 3.2,
+    "fiber_g": 21.1,
+    "sugar_g": 3.2,
+    "sodium_mg": 38,
+    "potassium_mg": 2080,
+    "calcium_mg": 183,
+    "iron_mg": 55.0,
+    "vitamin_c_mg": 25.9,
+    "saturated_fat_g": 1.8,
+    "serving_weight_g": 7,
+    "gi": 15,
+    "health_score": 100,
+    "tags": [
+      "Curcumin",
+      "Superfood"
+    ]
+  },
+  "lime": {
+    "calories": 30,
+    "protein_g": 0.7,
+    "carbs_g": 10.5,
+    "fat_g": 0.2,
+    "fiber_g": 2.8,
+    "sugar_g": 1.7,
+    "sodium_mg": 2,
+    "potassium_mg": 102,
+    "calcium_mg": 33,
+    "iron_mg": 0.6,
+    "vitamin_c_mg": 29.1,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 67,
+    "gi": 20,
+    "health_score": 98,
+    "tags": [
+      "Vitamin C"
+    ]
+  },
+  "cilantro": {
+    "calories": 23,
+    "protein_g": 2.1,
+    "carbs_g": 3.7,
+    "fat_g": 0.5,
+    "fiber_g": 2.8,
+    "sugar_g": 0.9,
+    "sodium_mg": 46,
+    "potassium_mg": 521,
+    "calcium_mg": 67,
+    "iron_mg": 1.8,
+    "vitamin_c_mg": 27.0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 10,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Fresh Herb"
+    ]
+  },
+  "mushrooms": {
+    "calories": 22,
+    "protein_g": 3.1,
+    "carbs_g": 3.3,
+    "fat_g": 0.3,
+    "fiber_g": 1.0,
+    "sugar_g": 2.0,
+    "sodium_mg": 5,
+    "potassium_mg": 318,
+    "calcium_mg": 3,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.1,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 70,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Low Calorie"
+    ]
+  },
+  "cardamom": {
+    "calories": 311,
+    "protein_g": 10.8,
+    "carbs_g": 68.5,
+    "fat_g": 6.7,
+    "fiber_g": 28.0,
+    "sugar_g": 0,
+    "sodium_mg": 18,
+    "potassium_mg": 1119,
+    "calcium_mg": 383,
+    "iron_mg": 14.0,
+    "vitamin_c_mg": 21.0,
+    "saturated_fat_g": 0.7,
+    "serving_weight_g": 2,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Aromatic Spice"
+    ]
+  },
+  "peanuts": {
+    "calories": 567,
+    "protein_g": 25.8,
+    "carbs_g": 16.1,
+    "fat_g": 49.2,
+    "fiber_g": 8.5,
+    "sugar_g": 4.7,
+    "sodium_mg": 18,
+    "potassium_mg": 705,
+    "calcium_mg": 92,
+    "iron_mg": 4.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 6.8,
+    "serving_weight_g": 28,
+    "gi": 14,
+    "health_score": 88,
+    "tags": [
+      "High Protein"
+    ]
+  },
+  "hard-boiled eggs": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 14,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "thyme": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "gochujang": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "rice noodles": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cornstarch": {
+    "calories": 381,
+    "protein_g": 0.3,
+    "carbs_g": 91.3,
+    "fat_g": 0.1,
+    "fiber_g": 0.9,
+    "sugar_g": 0,
+    "sodium_mg": 9,
+    "potassium_mg": 3,
+    "calcium_mg": 2,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 10,
+    "gi": 85,
+    "health_score": 55,
+    "tags": [
+      "Thickener"
+    ]
+  },
+  "white wine": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "spring onion": {
+    "calories": 32,
+    "protein_g": 1.8,
+    "carbs_g": 7.3,
+    "fat_g": 0.2,
+    "fiber_g": 2.6,
+    "sugar_g": 2.3,
+    "sodium_mg": 16,
+    "potassium_mg": 276,
+    "calcium_mg": 72,
+    "iron_mg": 1.5,
+    "vitamin_c_mg": 18.8,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 15,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Herb"
+    ]
+  },
+  "black pepper": {
+    "calories": 251,
+    "protein_g": 10.4,
+    "carbs_g": 64.0,
+    "fat_g": 3.3,
+    "fiber_g": 25.3,
+    "sugar_g": 0.6,
+    "sodium_mg": 20,
+    "potassium_mg": 1329,
+    "calcium_mg": 443,
+    "iron_mg": 9.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.4,
+    "serving_weight_g": 6,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Piperine",
+      "Spice"
+    ]
+  },
+  "eggplant": {
+    "calories": 25,
+    "protein_g": 1.0,
+    "carbs_g": 5.9,
+    "fat_g": 0.2,
+    "fiber_g": 3.0,
+    "sugar_g": 3.5,
+    "sodium_mg": 2,
+    "potassium_mg": 229,
+    "calcium_mg": 9,
+    "iron_mg": 0.2,
+    "vitamin_c_mg": 2.2,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 100,
+    "gi": 15,
+    "health_score": 95,
+    "tags": [
+      "Low Calorie"
+    ]
+  },
+  "fish sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bell pepper": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "almonds": {
+    "calories": 579,
+    "protein_g": 21.2,
+    "carbs_g": 21.7,
+    "fat_g": 49.9,
+    "fiber_g": 12.5,
+    "sugar_g": 4.4,
+    "sodium_mg": 1,
+    "potassium_mg": 733,
+    "calcium_mg": 269,
+    "iron_mg": 3.7,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 3.8,
+    "serving_weight_g": 28,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Superfood",
+      "Healthy Fats"
+    ]
+  },
+  "pork belly": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tahini": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "sichuan peppercorns": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "zucchini": {
+    "calories": 17,
+    "protein_g": 1.2,
+    "carbs_g": 3.1,
+    "fat_g": 0.3,
+    "fiber_g": 1.0,
+    "sugar_g": 2.5,
+    "sodium_mg": 8,
+    "potassium_mg": 261,
+    "calcium_mg": 16,
+    "iron_mg": 0.4,
+    "vitamin_c_mg": 17.9,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 196,
+    "gi": 15,
+    "health_score": 97,
+    "tags": [
+      "Low Calorie"
+    ]
+  },
+  "breadcrumbs": {
+    "calories": 395,
+    "protein_g": 13.0,
+    "carbs_g": 72.0,
+    "fat_g": 5.3,
+    "fiber_g": 4.5,
+    "sugar_g": 6.0,
+    "sodium_mg": 732,
+    "potassium_mg": 180,
+    "calcium_mg": 180,
+    "iron_mg": 4.5,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 1.2,
+    "serving_weight_g": 30,
+    "gi": 75,
+    "health_score": 65,
+    "tags": [
+      "Coating"
+    ]
+  },
+  "lemongrass": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kashmiri chili": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "green chili": {
+    "calories": 40,
+    "protein_g": 2.0,
+    "carbs_g": 8.8,
+    "fat_g": 0.2,
+    "fiber_g": 1.5,
+    "sugar_g": 5.3,
+    "sodium_mg": 7,
+    "potassium_mg": 322,
+    "calcium_mg": 18,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 143.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 15,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Vitamin C Rich"
+    ]
+  },
+  "curry leaves": {
+    "calories": 108,
+    "protein_g": 6.1,
+    "carbs_g": 18.7,
+    "fat_g": 1.0,
+    "fiber_g": 6.4,
+    "sugar_g": 0,
+    "sodium_mg": 38,
+    "potassium_mg": 600,
+    "calcium_mg": 830,
+    "iron_mg": 0.9,
+    "vitamin_c_mg": 4.0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 5,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Calcium Rich",
+      "Indian Herb"
+    ]
+  },
+  "peas": {
+    "calories": 81,
+    "protein_g": 5.4,
+    "carbs_g": 14.5,
+    "fat_g": 0.4,
+    "fiber_g": 5.7,
+    "sugar_g": 5.7,
+    "sodium_mg": 5,
+    "potassium_mg": 244,
+    "calcium_mg": 25,
+    "iron_mg": 1.5,
+    "vitamin_c_mg": 40.0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 145,
+    "gi": 51,
+    "health_score": 96,
+    "tags": [
+      "Plant Protein",
+      "Fiber Rich"
+    ]
+  },
+  "mustard seeds": {
+    "calories": 508,
+    "protein_g": 26.1,
+    "carbs_g": 28.1,
+    "fat_g": 36.2,
+    "fiber_g": 12.2,
+    "sugar_g": 6.8,
+    "sodium_mg": 13,
+    "potassium_mg": 738,
+    "calcium_mg": 266,
+    "iron_mg": 9.2,
+    "vitamin_c_mg": 7.1,
+    "saturated_fat_g": 2.0,
+    "serving_weight_g": 10,
+    "gi": 15,
+    "health_score": 94,
+    "tags": [
+      "Spice"
+    ]
+  },
+  "chicken broth": {
+    "calories": 15,
+    "protein_g": 2.5,
+    "carbs_g": 0.5,
+    "fat_g": 0.4,
+    "fiber_g": 0,
+    "sugar_g": 0.3,
+    "sodium_mg": 340,
+    "potassium_mg": 160,
+    "calcium_mg": 6,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 240,
+    "gi": 0,
+    "health_score": 88,
+    "tags": [
+      "Broth"
+    ]
+  },
+  "spaghetti": {
+    "calories": 131,
+    "protein_g": 5.0,
+    "carbs_g": 25.0,
+    "fat_g": 1.1,
+    "fiber_g": 1.8,
+    "sugar_g": 0.6,
+    "sodium_mg": 1,
+    "potassium_mg": 44,
+    "calcium_mg": 7,
+    "iron_mg": 1.3,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 140,
+    "gi": 49,
+    "health_score": 82,
+    "tags": [
+      "Pasta"
+    ]
+  },
+  "parsley": {
+    "calories": 36,
+    "protein_g": 3.0,
+    "carbs_g": 6.3,
+    "fat_g": 0.8,
+    "fiber_g": 3.3,
+    "sugar_g": 0.9,
+    "sodium_mg": 56,
+    "potassium_mg": 554,
+    "calcium_mg": 138,
+    "iron_mg": 6.2,
+    "vitamin_c_mg": 133.0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 10,
+    "gi": 15,
+    "health_score": 100,
+    "tags": [
+      "Vitamin C Rich"
+    ]
+  },
+  "veal": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "galangal": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pita bread": {
+    "calories": 275,
+    "protein_g": 9.1,
+    "carbs_g": 55.7,
+    "fat_g": 1.2,
+    "fiber_g": 2.2,
+    "sugar_g": 1.5,
+    "sodium_mg": 536,
+    "potassium_mg": 120,
+    "calcium_mg": 80,
+    "iron_mg": 3.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 60,
+    "gi": 57,
+    "health_score": 78,
+    "tags": [
+      "Bread"
+    ]
+  },
+  "green chilies": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mint": {
+    "calories": 44,
+    "protein_g": 3.3,
+    "carbs_g": 8.4,
+    "fat_g": 0.7,
+    "fiber_g": 6.8,
+    "sugar_g": 0,
+    "sodium_mg": 31,
+    "potassium_mg": 458,
+    "calcium_mg": 199,
+    "iron_mg": 11.9,
+    "vitamin_c_mg": 13.3,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 10,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Fresh Herb"
+    ]
+  },
+  "sesame seeds": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "black beans": {
+    "calories": 132,
+    "protein_g": 8.9,
+    "carbs_g": 23.7,
+    "fat_g": 0.5,
+    "fiber_g": 8.7,
+    "sugar_g": 0.3,
+    "sodium_mg": 1,
+    "potassium_mg": 355,
+    "calcium_mg": 27,
+    "iron_mg": 2.1,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.1,
+    "serving_weight_g": 172,
+    "gi": 30,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein",
+      "Fiber Rich"
+    ]
+  },
+  "white pepper": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red chili": {
+    "calories": 40,
+    "protein_g": 2.0,
+    "carbs_g": 8.8,
+    "fat_g": 0.2,
+    "fiber_g": 1.5,
+    "sugar_g": 5.3,
+    "sodium_mg": 7,
+    "potassium_mg": 322,
+    "calcium_mg": 18,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 143.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 15,
+    "gi": 15,
+    "health_score": 99,
+    "tags": [
+      "Capsaicin"
+    ]
+  },
+  "chicken thighs": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "coriander seeds": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shallots": {
+    "calories": 72,
+    "protein_g": 2.5,
+    "carbs_g": 16.8,
+    "fat_g": 0.1,
+    "fiber_g": 3.2,
+    "sugar_g": 7.9,
+    "sodium_mg": 12,
+    "potassium_mg": 334,
+    "calcium_mg": 37,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 8.0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 30,
+    "gi": 15,
+    "health_score": 96,
+    "tags": [
+      "Flavoring"
+    ]
+  },
+  "seafood": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "lemon juice": {
+    "calories": 22,
+    "protein_g": 0.4,
+    "carbs_g": 6.9,
+    "fat_g": 0.2,
+    "fiber_g": 0.3,
+    "sugar_g": 2.5,
+    "sodium_mg": 1,
+    "potassium_mg": 124,
+    "calcium_mg": 6,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 38.7,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 48,
+    "gi": 20,
+    "health_score": 98,
+    "tags": [
+      "Vitamin C"
+    ]
+  },
+  "pecorino romano": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "paprika": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "carrot": {
+    "calories": 41,
+    "protein_g": 0.9,
+    "carbs_g": 9.6,
+    "fat_g": 0.2,
+    "fiber_g": 2.8,
+    "sugar_g": 4.7,
+    "sodium_mg": 69,
+    "potassium_mg": 320,
+    "calcium_mg": 33,
+    "iron_mg": 0.3,
+    "vitamin_c_mg": 5.9,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 61,
+    "gi": 39,
+    "health_score": 98,
+    "tags": [
+      "Beta Carotene"
+    ]
+  },
+  "orange zest": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "corn": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "guanciale": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red wine (burgundy)": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bacon (lardons)": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pearl onions": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "herbes de provence": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "basil": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "beetroot": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dill": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "veal shanks": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tomato paste": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dashi": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bamboo shoots": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pizza dough": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "san marzano tomatoes": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "fresh mozzarella": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "fresh basil": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mixed seafood (monkfish": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red mullet": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mussels": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "clams)": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "leeks": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "olives": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cashews": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "veal cutlets": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "coconut": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "silken tofu": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dry red chilies": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kasuri methi": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "aged kimchi": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "lettuce": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tamarind": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "nori": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "star anise": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "short-grain rice": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shiitake mushrooms": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pork shoulder": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "hoisin sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "five spice powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shaoxing wine": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cashew": {
+    "calories": 553,
+    "protein_g": 18.2,
+    "carbs_g": 30.2,
+    "fat_g": 43.8,
+    "fiber_g": 3.3,
+    "sugar_g": 5.9,
+    "sodium_mg": 12,
+    "potassium_mg": 660,
+    "calcium_mg": 37,
+    "iron_mg": 6.7,
+    "vitamin_c_mg": 0.5,
+    "saturated_fat_g": 7.8,
+    "serving_weight_g": 28,
+    "gi": 25,
+    "health_score": 90,
+    "tags": [
+      "Healthy Nut"
+    ]
+  },
+  "heavy cream": {
+    "calories": 340,
+    "protein_g": 2.1,
+    "carbs_g": 2.8,
+    "fat_g": 36.1,
+    "fiber_g": 0,
+    "sugar_g": 2.8,
+    "sodium_mg": 38,
+    "potassium_mg": 95,
+    "calcium_mg": 66,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 0.6,
+    "saturated_fat_g": 23.0,
+    "serving_weight_g": 15,
+    "gi": 0,
+    "health_score": 70,
+    "tags": [
+      "Dairy Fat"
+    ]
+  },
+  "lime juice": {
+    "calories": 25,
+    "protein_g": 0.4,
+    "carbs_g": 8.4,
+    "fat_g": 0.1,
+    "fiber_g": 0.4,
+    "sugar_g": 1.7,
+    "sodium_mg": 2,
+    "potassium_mg": 117,
+    "calcium_mg": 14,
+    "iron_mg": 0.1,
+    "vitamin_c_mg": 30.0,
+    "saturated_fat_g": 0.0,
+    "serving_weight_g": 48,
+    "gi": 20,
+    "health_score": 98,
+    "tags": [
+      "Vitamin C"
+    ]
+  },
+  "sesame": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cajun seasoning": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "allspice": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pork bones": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "ramen noodles": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chashu (braised pork belly)": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "soft boiled egg": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 14,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "fish cake": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "gochugaru (korean chili flakes)": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "arborio rice": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "parmesan cheese": {
+    "calories": 180,
+    "protein_g": 10,
+    "carbs_g": 4,
+    "fat_g": 14,
+    "fiber_g": 0,
+    "sugar_g": 3,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 50,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dark soy sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "laksa paste": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "minced pork": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "doubanjiang (chili bean paste)": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "farmer's cheese": {
+    "calories": 180,
+    "protein_g": 10,
+    "carbs_g": 4,
+    "fat_g": 14,
+    "fiber_g": 0,
+    "sugar_g": 3,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 50,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mustard greens": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "glutinous rice flour (shiratamako)": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "sweet red bean paste (anko)": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dangmyeon (sweet potato noodles)": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
   "parmesan": {
     "calories": 431,
-    "protein_g": 38,
-    "carbs_g": 4,
-    "fat_g": 29,
+    "protein_g": 38.0,
+    "carbs_g": 4.1,
+    "fat_g": 29.0,
     "fiber_g": 0,
-    "sugar_g": 0.9
+    "sugar_g": 0.9,
+    "sodium_mg": 1529,
+    "potassium_mg": 125,
+    "calcium_mg": 1184,
+    "iron_mg": 0.8,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 17.0,
+    "serving_weight_g": 10,
+    "gi": 0,
+    "health_score": 84,
+    "tags": [
+      "Aged Cheese",
+      "High Protein",
+      "Calcium Rich"
+    ]
   },
-  "brie": {
-    "calories": 334,
-    "protein_g": 21,
+  "clams": {
+    "calories": 110,
+    "protein_g": 22,
     "carbs_g": 0.5,
-    "fat_g": 28,
+    "fat_g": 2,
     "fiber_g": 0,
-    "sugar_g": 0.5
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
-  "feta": {
-    "calories": 264,
-    "protein_g": 14,
-    "carbs_g": 4,
-    "fat_g": 21,
-    "fiber_g": 0,
-    "sugar_g": 4
-  },
-  "toasted bread": {
-    "calories": 313,
-    "protein_g": 11,
-    "carbs_g": 55,
-    "fat_g": 5,
-    "fiber_g": 3,
-    "sugar_g": 5
-  },
-  "corn tortilla": {
-    "calories": 218,
-    "protein_g": 6,
-    "carbs_g": 44,
-    "fat_g": 3,
-    "fiber_g": 6,
-    "sugar_g": 1
-  },
-  "jackfruit": {
-    "calories": 95,
-    "protein_g": 2,
-    "carbs_g": 23,
-    "fat_g": 0.6,
-    "fiber_g": 1.5,
-    "sugar_g": 19
-  },
-  "starfruit": {
-    "calories": 31,
-    "protein_g": 1,
+  "chickpea": {
+    "calories": 35,
+    "protein_g": 1.5,
     "carbs_g": 7,
     "fat_g": 0.3,
-    "fiber_g": 2.8,
-    "sugar_g": 4
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
-  "dragon fruit": {
-    "calories": 50,
-    "protein_g": 1,
-    "carbs_g": 11,
-    "fat_g": 0.4,
-    "fiber_g": 3,
-    "sugar_g": 8
-  },
-  "persimmon": {
-    "calories": 70,
-    "protein_g": 0.6,
-    "carbs_g": 19,
-    "fat_g": 0.2,
-    "fiber_g": 3.6,
-    "sugar_g": 13
-  },
-  "lychee": {
-    "calories": 66,
-    "protein_g": 0.8,
-    "carbs_g": 17,
-    "fat_g": 0.4,
-    "fiber_g": 1.3,
-    "sugar_g": 15
-  },
-  "rambutan": {
-    "calories": 68,
-    "protein_g": 0.9,
-    "carbs_g": 16,
-    "fat_g": 0.2,
-    "fiber_g": 0.9,
-    "sugar_g": 14
-  },
-  "tamarind": {
-    "calories": 239,
-    "protein_g": 2.8,
-    "carbs_g": 63,
-    "fat_g": 0.6,
-    "fiber_g": 5.1,
-    "sugar_g": 38
-  },
-  "raw banana": {
-    "calories": 89,
-    "protein_g": 1.3,
-    "carbs_g": 23,
-    "fat_g": 0.3,
-    "fiber_g": 2.6,
-    "sugar_g": 5
-  },
-  "moringa": {
-    "calories": 64,
-    "protein_g": 9,
-    "carbs_g": 8,
-    "fat_g": 1.4,
-    "fiber_g": 2,
-    "sugar_g": 0
-  },
-  "turmeric milk": {
-    "calories": 80,
-    "protein_g": 3,
-    "carbs_g": 10,
-    "fat_g": 3,
-    "fiber_g": 0.5,
-    "sugar_g": 6
-  },
-  "spirulina": {
-    "calories": 290,
-    "protein_g": 57,
-    "carbs_g": 24,
-    "fat_g": 8,
-    "fiber_g": 4,
-    "sugar_g": 3
-  },
-  "nutritional yeast": {
-    "calories": 325,
-    "protein_g": 50,
-    "carbs_g": 36,
-    "fat_g": 5,
-    "fiber_g": 21,
-    "sugar_g": 0
-  },
-  "tempeh": {
-    "calories": 192,
-    "protein_g": 20,
-    "carbs_g": 8,
-    "fat_g": 11,
+  "mustard oil": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
     "fiber_g": 0,
-    "sugar_g": 0
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 0,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 12.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 85,
+    "tags": [
+      "Indian Cooking Fat"
+    ]
   },
-  "seitan": {
-    "calories": 370,
-    "protein_g": 75,
-    "carbs_g": 14,
-    "fat_g": 2,
+  "okonomiyaki sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
     "fiber_g": 1,
-    "sugar_g": 0
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kewpie mayo": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bonito flakes": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "clam juice": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "white fish": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "salsa": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pre-cooked cornmeal (masarepa)": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shredded beef": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "andouille sausage": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red onion": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "rocoto pepper": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chocolate": {
+    "calories": 546,
+    "protein_g": 4.9,
+    "carbs_g": 60.0,
+    "fat_g": 31.0,
+    "fiber_g": 7.0,
+    "sugar_g": 48.0,
+    "sodium_mg": 24,
+    "potassium_mg": 559,
+    "calcium_mg": 73,
+    "iron_mg": 8.0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 19.0,
+    "serving_weight_g": 25,
+    "gi": 40,
+    "health_score": 70,
+    "tags": [
+      "Antioxidants"
+    ]
+  },
+  "baking powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "garaetteok (cylindrical rice cakes)": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "scotch bonnet peppers": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "flat rice noodles": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "flank steak": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "light soy sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "dried chili peppers": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mulato chiles": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "ancho chiles": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pasilla chiles": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "plantains": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pepper": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "ground lamb": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "walnuts": {
+    "calories": 654,
+    "protein_g": 15.2,
+    "carbs_g": 13.7,
+    "fat_g": 65.2,
+    "fiber_g": 6.7,
+    "sugar_g": 2.6,
+    "sodium_mg": 2,
+    "potassium_mg": 441,
+    "calcium_mg": 98,
+    "iron_mg": 2.9,
+    "vitamin_c_mg": 1.3,
+    "saturated_fat_g": 6.1,
+    "serving_weight_g": 28,
+    "gi": 15,
+    "health_score": 98,
+    "tags": [
+      "Omega 3",
+      "Brain Food"
+    ]
+  },
+  "tofu puffs": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "beer": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "malt vinegar": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tartar sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "wheat starch": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tapioca starch": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "ginger powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mirin": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "sake": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "urad dal": {
+    "calories": 341,
+    "protein_g": 25.2,
+    "carbs_g": 58.9,
+    "fat_g": 1.6,
+    "fiber_g": 18.3,
+    "sugar_g": 0,
+    "sodium_mg": 38,
+    "potassium_mg": 983,
+    "calcium_mg": 138,
+    "iron_mg": 7.6,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.3,
+    "serving_weight_g": 100,
+    "gi": 43,
+    "health_score": 98,
+    "tags": [
+      "Plant Protein"
+    ]
+  },
+  "ground lamb or beef": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "b\u00e9chamel sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "lamb shoulder": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "apricots": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pistachios": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "berbere spice": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "filo pastry": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "teff flour": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red onions": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "niter kibbeh (spiced butter)": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 14,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kaffir lime": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "scotch bonnet": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red chili powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cloves": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chili powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "parboiled rice": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 14,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red bell peppers": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "veal or pork": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "beetroots": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tamarind paste": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "coconut oil": {
+    "calories": 862,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100.0,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 0,
+    "potassium_mg": 0,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 87.0,
+    "serving_weight_g": 14,
+    "gi": 0,
+    "health_score": 70,
+    "tags": [
+      "MCT Fat"
+    ]
+  },
+  "baguette": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mace": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kaffir lime leaves": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pork pate": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "sliced pork": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pickled carrots": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "daikon": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "jalapeno": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bay leaf": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cucumber": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "maida": {
+    "calories": 364,
+    "protein_g": 10.3,
+    "carbs_g": 76.3,
+    "fat_g": 1.0,
+    "fiber_g": 2.7,
+    "sugar_g": 0.3,
+    "sodium_mg": 2,
+    "potassium_mg": 107,
+    "calcium_mg": 15,
+    "iron_mg": 1.2,
+    "vitamin_c_mg": 0,
+    "saturated_fat_g": 0.2,
+    "serving_weight_g": 125,
+    "gi": 70,
+    "health_score": 75,
+    "tags": [
+      "Refined Flour"
+    ]
+  },
+  "prawns": {
+    "calories": 110,
+    "protein_g": 22,
+    "carbs_g": 0.5,
+    "fat_g": 2,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "mustard": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "soya chunks": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "oyster sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kecap manis (sweet soy sauce)": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chili sauce": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "beef slices": {
+    "calories": 220,
+    "protein_g": 26,
+    "carbs_g": 0,
+    "fat_g": 12,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "thai basil": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "flour tortilla": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "coriander powder": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "rice vinegar": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chili flakes": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "green cardamom": {
+    "calories": 25,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 0.4,
+    "fiber_g": 2.5,
+    "sugar_g": 1,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 10,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "raisins": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "fried shallots": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "corn tortilla": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "red chili flakes": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "pine nuts": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "rose water": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kokum": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "biryani masala": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "palm sugar": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shallot": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "maida (all-purpose flour)": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "shrimp paste": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "gochugaru": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "guacamole": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "cauliflower": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "tamarind chutney": {
+    "calories": 80,
+    "protein_g": 2,
+    "carbs_g": 12,
+    "fat_g": 3,
+    "fiber_g": 1,
+    "sugar_g": 6,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 15,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "rice flour": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "seeraga samba rice": {
+    "calories": 130,
+    "protein_g": 3,
+    "carbs_g": 27,
+    "fat_g": 0.5,
+    "fiber_g": 1.5,
+    "sugar_g": 0.2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 150,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "jalape\u00f1o": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "beans": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "atta": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "chaat masala": {
+    "calories": 300,
+    "protein_g": 12,
+    "carbs_g": 50,
+    "fat_g": 10,
+    "fiber_g": 20,
+    "sugar_g": 2,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 5,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "bok choy": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "kofta": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "toor dal": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "nutmeg": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
   "edamame": {
-    "calories": 121,
-    "protein_g": 12,
-    "carbs_g": 9,
-    "fat_g": 5,
-    "fiber_g": 5,
-    "sugar_g": 2
-  },
-  "hemp seeds": {
-    "calories": 553,
-    "protein_g": 32,
-    "carbs_g": 9,
-    "fat_g": 49,
-    "fiber_g": 4,
-    "sugar_g": 1.5
-  },
-  "acai berry": {
-    "calories": 70,
+    "calories": 35,
     "protein_g": 1.5,
-    "carbs_g": 4,
-    "fat_g": 5,
-    "fiber_g": 3.3,
-    "sugar_g": 0
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
-  "goji berry": {
-    "calories": 349,
-    "protein_g": 14,
-    "carbs_g": 77,
-    "fat_g": 0.4,
-    "fiber_g": 13,
-    "sugar_g": 46
+  "pita": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
-  "truffle": {
-    "calories": 284,
-    "protein_g": 6,
-    "carbs_g": 47,
-    "fat_g": 0.5,
-    "fiber_g": 17,
-    "sugar_g": 0
+  "ketchup": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   },
-  "saffron": {
-    "calories": 310,
-    "protein_g": 11,
-    "carbs_g": 65,
-    "fat_g": 6,
-    "fiber_g": 4,
-    "sugar_g": 0
+  "chili oil": {
+    "calories": 884,
+    "protein_g": 0,
+    "carbs_g": 0,
+    "fat_g": 100,
+    "fiber_g": 0,
+    "sugar_g": 0,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 14,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "sumac": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "roasted vegetables": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
+  },
+  "romaine": {
+    "calories": 35,
+    "protein_g": 1.5,
+    "carbs_g": 7,
+    "fat_g": 0.3,
+    "fiber_g": 2.2,
+    "sugar_g": 2.5,
+    "sodium_mg": 50,
+    "potassium_mg": 150,
+    "calcium_mg": 20,
+    "iron_mg": 0.5,
+    "vitamin_c_mg": 2.0,
+    "saturated_fat_g": 0.5,
+    "serving_weight_g": 100,
+    "gi": 45,
+    "health_score": 85,
+    "tags": [
+      "Ingredient"
+    ]
   }
 }

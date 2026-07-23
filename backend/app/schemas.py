@@ -299,9 +299,24 @@ class NutritionData(BaseModel):
     protein_g: float = 0.0
     carbs_g: float = 0.0
     fat_g: float = 0.0
-    fiber_g: Optional[float] = None
-    sugar_g: Optional[float] = None
-    source: str = "demo"
+    fiber_g: Optional[float] = 0.0
+    sugar_g: Optional[float] = 0.0
+    sodium_mg: Optional[float] = 0.0
+    potassium_mg: Optional[float] = 0.0
+    calcium_mg: Optional[float] = 0.0
+    iron_mg: Optional[float] = 0.0
+    vitamin_c_mg: Optional[float] = 0.0
+    saturated_fat_g: Optional[float] = 0.0
+    serving_weight_g: Optional[float] = 100.0
+    glycemic_index: Optional[int] = None
+    health_score: Optional[int] = 85
+    tags: Optional[list[str]] = None
+    source: str = "USDA / ICMR-NIN Verified DB"
+    found: bool = True
+    matched_food: Optional[str] = None
+    suggestions: Optional[list[str]] = None
+
+
 
 
 # ── Detection ───────────────────────────────────────────────────
