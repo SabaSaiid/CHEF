@@ -62,24 +62,24 @@ export default function Pantry() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('name-asc');
 
-  const fetchPantry = async () => {
+  const fetchPantry = async (isInitial = false) => {
     if (!token) {
       setError('Please log in to manage your pantry inventory.');
       return;
     }
-    setLoading(true);
+    if (isInitial) setLoading(true);
     try {
       const data = await api.get('/pantry');
-      setPantryItems(data);
+      setPantryItems(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Failed to fetch pantry inventory');
     } finally {
-      setLoading(false);
+      if (isInitial) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPantry();
+    fetchPantry(true);
   }, [token]);
 
   const handleAdd = async (e) => {
@@ -89,18 +89,18 @@ export default function Pantry() {
     try {
       await api.post('/pantry', {
         ingredient_name: name.trim(),
-        quantity: parseFloat(quantity),
-        unit: unit.trim(),
-        category,
-        days_fresh: parseInt(daysFresh, 10)
+        quantity: parseFloat(quantity) || 1,
+        unit: unit.trim() || 'serving',
+        category: category || 'Produce',
+        days_fresh: parseInt(daysFresh, 10) || 7
       });
       toast.success(`Added "${name}" to pantry ✓`);
       setName('');
       setQuantity(1);
       setUnit('serving');
-      fetchPantry();
+      fetchPantry(false);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to add ingredient');
     }
   };
 
@@ -114,35 +114,42 @@ export default function Pantry() {
         days_fresh: preset.days_fresh
       });
       toast.success(`Logged ${preset.emoji} ${preset.name} (+${preset.amount} ${preset.unit})`);
-      fetchPantry();
+      fetchPantry(false);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to add preset');
     }
   };
 
   const handleQuantityAdjust = async (item, amount) => {
-    const newQty = Math.max(0, item.quantity + amount);
+    if (!item) return;
+    const currentQty = item.quantity || 0;
+    const newQty = Math.max(0, currentQty + amount);
     if (newQty === 0) {
       handleDelete(item.id, item.ingredient_name);
       return;
     }
+    // Optimistic UI update — immediate smooth adjustment
+    setPantryItems(prev => (prev || []).map(p => p.id === item.id ? { ...p, quantity: newQty } : p));
     try {
       await api.put(`/pantry/${item.id}`, {
         quantity: newQty
       });
-      fetchPantry();
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to update quantity');
+      fetchPantry(false);
     }
   };
 
   const handleDelete = async (id, itemName) => {
+    if (!id) return;
+    // Optimistic UI update — immediate removal
+    setPantryItems(prev => (prev || []).filter(p => p.id !== id));
     try {
       await api.delete(`/pantry/${id}`);
-      toast.success(`Removed "${itemName}"`);
-      fetchPantry();
+      toast.success(`Removed "${itemName || 'item'}"`);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to remove item');
+      fetchPantry(false);
     }
   };
 
@@ -150,98 +157,95 @@ export default function Pantry() {
     if (!magicImportText.trim()) return;
     setImporting(true);
     try {
-      const data = await api.post('/pantry/magic-import', { text: magicImportText });
-      const items = data.items || [];
-      if (items.length === 0) {
-        toast.error("No ingredients found in text.");
-        return;
-      }
-      for (const item of items) {
-        await api.post('/pantry', item);
-      }
-      toast.success(`Magically imported ${items.length} items! ✨`);
+      const data = await api.post('/pantry/magic-import', { raw_text: magicImportText });
+      toast.success(data.message || 'Pantry updated from text!');
       setMagicImportText('');
-      fetchPantry();
+      fetchPantry(false);
     } catch (err) {
-      toast.error(err.message || "Failed to parse text. Is your API key set?");
+      toast.error(err.message || 'Import failed.');
     } finally {
       setImporting(false);
     }
   };
 
-  const handleGenerateRecipe = async () => {
+  const handleGenerateAI = async () => {
     setGeneratingRecipe(true);
+    setGeneratedRecipe(null);
     try {
-      const data = await api.get('/pantry/generate-recipe');
-      
-      const formattedRecipe = {
-        title: data.title,
-        image_url: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
-        ready_in_minutes: data.prep_time || 30,
-        servings: 2,
-        diets: ['Pantry Creation'],
-        extended_ingredients: (data.ingredients || []).map(i => ({ original: i })),
-        instructions_text: (data.instructions || []).join('\n'),
-        nutrition: {
-          calories: data.macros?.calories || 0,
-          protein_g: data.macros?.protein || 0,
-          carbs_g: data.macros?.carbs || 0,
-          fat_g: data.macros?.fat || 0
-        }
-      };
-      
-      setGeneratedRecipe(formattedRecipe);
-      toast.success("AI Chef has created a recipe! 👨‍🍳");
+      const data = await api.post('/pantry/generate-recipe');
+      setGeneratedRecipe(data);
     } catch (err) {
-      toast.error(err.message || "Could not generate recipe.");
+      toast.error(err.message || 'Recipe generation failed.');
     } finally {
       setGeneratingRecipe(false);
     }
   };
 
+  const handleDeductRecipeIngredients = async (recipe) => {
+    if (!recipe || !recipe.ingredients) return;
+    try {
+      const ingList = recipe.ingredients.map(i => ({ name: i.name, qty: i.amount || 1, unit: i.unit || '' }));
+      const res = await api.post('/pantry/deduct-recipe', { ingredients: ingList });
+      toast.success(res.message || 'Updated pantry stock!');
+      setGeneratedRecipe(null);
+      fetchPantry(false);
+    } catch (err) {
+      toast.error(err.message || 'Failed to update pantry stock.');
+    }
+  };
+
   const getFreshnessStatus = (item) => {
-    const updatedDate = new Date(item.updated_at).getTime();
+    if (!item) return { label: 'Fresh', color: '#27ae60', bg: 'rgba(39,174,96,0.1)' };
+    const rawDate = item.updated_at ? new Date(item.updated_at).getTime() : Date.now();
+    const updatedDate = isNaN(rawDate) ? Date.now() : rawDate;
     const expiryTime = updatedDate + (item.days_fresh || 7) * 24 * 60 * 60 * 1000;
     const timeLeftMs = expiryTime - Date.now();
     const daysLeft = Math.ceil(timeLeftMs / (24 * 60 * 60 * 1000));
 
+    if (isNaN(daysLeft) || daysLeft > 2) {
+      return { label: 'Fresh', color: '#27ae60', bg: 'rgba(39,174,96,0.1)' };
+    }
     if (daysLeft <= 0) {
       return { label: 'Expired', color: '#e74c3c', bg: 'rgba(231,76,60,0.1)' };
     }
-    if (daysLeft <= 2) {
-      return { label: `Expires in ${daysLeft}d`, color: '#f39c12', bg: 'rgba(243,156,18,0.1)' };
-    }
-    return { label: 'Fresh', color: '#27ae60', bg: 'rgba(39,174,96,0.1)' };
+    return { label: `Expires in ${daysLeft}d`, color: '#f39c12', bg: 'rgba(243,156,18,0.1)' };
   };
 
   const getFillPercentage = (item) => {
+    if (!item || !item.quantity || isNaN(item.quantity)) return 0;
     let fill = 100;
     if (item.unit === 'g' || item.unit === 'ml') fill = Math.min(100, (item.quantity / 1000) * 100);
     else if (item.unit === 'pcs' || item.unit === 'slices') fill = Math.min(100, (item.quantity / 12) * 100);
     if (item.quantity > 0 && fill < 5) fill = 5;
-    return fill;
+    return isNaN(fill) ? 0 : fill;
   };
 
   // Metrics Logic
-  const totalItems = pantryItems.length;
-  const expiringSoonCount = pantryItems.filter(item => {
+  const safeItems = Array.isArray(pantryItems) ? pantryItems : [];
+  const totalItems = safeItems.length;
+  const expiringSoonCount = safeItems.filter(item => {
     const status = getFreshnessStatus(item);
     return status.label.includes('Expired') || status.label.includes('Expires in');
   }).length;
-  const lowStockCount = pantryItems.filter(item => getFillPercentage(item) <= 25 && item.quantity > 0).length;
+  const lowStockCount = safeItems.filter(item => getFillPercentage(item) <= 25 && (item.quantity || 0) > 0).length;
 
   // Client-side filtering & sorting
-  const filteredItems = pantryItems.filter(item => {
+  const filteredItems = safeItems.filter(item => {
+    if (!item || !item.ingredient_name) return false;
     const matchesTab = selectedTab === 'All' || item.category === selectedTab;
-    const matchesSearch = item.ingredient_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.ingredient_name.toLowerCase().includes((searchQuery || '').toLowerCase());
     return matchesTab && matchesSearch;
   }).sort((a, b) => {
-    if (sortOption === 'name-asc') return a.ingredient_name.localeCompare(b.ingredient_name);
-    if (sortOption === 'name-desc') return b.ingredient_name.localeCompare(a.ingredient_name);
-    if (sortOption === 'qty-asc') return a.quantity - b.quantity;
-    if (sortOption === 'qty-desc') return b.quantity - a.quantity;
+    if (sortOption === 'name-asc') return (a.ingredient_name || '').localeCompare(b.ingredient_name || '');
+    if (sortOption === 'name-desc') return (b.ingredient_name || '').localeCompare(a.ingredient_name || '');
+    if (sortOption === 'qty-asc') return (a.quantity || 0) - (b.quantity || 0);
+    if (sortOption === 'qty-desc') return (b.quantity || 0) - (a.quantity || 0);
     
-    const getExpiryTime = (item) => new Date(item.updated_at).getTime() + (item.days_fresh || 7) * 24 * 60 * 60 * 1000;
+    const getExpiryTime = (item) => {
+      const d = item && item.updated_at ? new Date(item.updated_at).getTime() : Date.now();
+      const validD = isNaN(d) ? Date.now() : d;
+      return validD + (item.days_fresh || 7) * 24 * 60 * 60 * 1000;
+    };
     if (sortOption === 'exp-soon') return getExpiryTime(a) - getExpiryTime(b);
     if (sortOption === 'exp-late') return getExpiryTime(b) - getExpiryTime(a);
     return 0;
