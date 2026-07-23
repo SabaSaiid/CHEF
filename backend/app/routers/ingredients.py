@@ -23,10 +23,10 @@ UNITS = (
     r"bunch(?:es)?|sprigs?|handfuls?"
 )
 
-# Pattern: optional quantity, optional unit, then the ingredient name
+# Pattern: optional quantity (including mixed fractions and ranges), optional unit, then ingredient name
 INGREDIENT_PATTERN = re.compile(
     rf"^\s*"
-    rf"(?P<qty>\d+(?:[./]\d+)?(?:\s*-\s*\d+(?:[./]\d+)?)?)?\s*"
+    rf"(?P<qty>(?:\d+(?:\s+\d+/\d+|\.\d+|/\d+)?|\d+/\d+)(?:\s*[-–]\s*(?:\d+(?:\s+\d+/\d+|\.\d+|/\d+)?|\d+/\d+))?)?\s*"
     rf"(?P<unit>{UNITS})?\s*"
     rf"(?:of\s+)?"
     rf"(?P<name>.+?)\s*$",
@@ -245,17 +245,36 @@ async def get_substitute(name: str, recipe_title: str | None = None):
 
 
 def _parse_quantity(raw: str) -> float | None:
-    """Parse a quantity string like '2', '1/2', '1.5', '1-2' into a float."""
+    """Parse a quantity string like '2', '1/2', '1 1/2', '1.5', '1-2' into a float."""
     if not raw:
         return None
     raw = raw.strip()
+    # Mixed fraction like "1 1/2"
+    if " " in raw and "/" in raw:
+        parts = raw.split()
+        sum_val = 0.0
+        for p in parts:
+            if "/" in p:
+                sub_p = p.split("/")
+                try:
+                    sum_val += float(sub_p[0]) / float(sub_p[1])
+                except (ValueError, ZeroDivisionError):
+                    pass
+            else:
+                try:
+                    sum_val += float(p)
+                except ValueError:
+                    pass
+        return sum_val if sum_val > 0 else None
+
     # Range like "1-2" → take the average
-    if "-" in raw:
-        parts = raw.split("-")
+    if "-" in raw or "–" in raw:
+        parts = re.split(r"[-–]", raw)
         try:
             return (float(parts[0]) + float(parts[1])) / 2
         except ValueError:
             return None
+
     # Fraction like "1/2"
     if "/" in raw:
         parts = raw.split("/")
@@ -263,6 +282,7 @@ def _parse_quantity(raw: str) -> float | None:
             return float(parts[0]) / float(parts[1])
         except (ValueError, ZeroDivisionError):
             return None
+
     try:
         return float(raw)
     except ValueError:

@@ -427,6 +427,12 @@ export default function Home() {
             {/* SVG circular progress ring */}
             <div className="progress-ring-container">
               <svg width="140" height="140">
+                <defs>
+                  <linearGradient id="homeRingGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="var(--accent-1)" />
+                    <stop offset="100%" stopColor="#10b981" />
+                  </linearGradient>
+                </defs>
                 <circle
                   cx="70"
                   cy="70"
@@ -440,12 +446,13 @@ export default function Home() {
                   cx="70"
                   cy="70"
                   r="55"
-                  stroke="var(--primary)"
+                  stroke="url(#homeRingGrad)"
                   strokeWidth="10"
                   fill="transparent"
                   strokeDasharray="346"
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
+                  style={{ transition: 'stroke-dashoffset 0.6s ease' }}
                 />
               </svg>
               <div className="progress-ring-text">
@@ -457,11 +464,11 @@ export default function Home() {
             {/* Macros mini bars */}
             <div className="macro-bars-grid">
               {[
-                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: '#e74c3c' },
-                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: '#f1c40f' },
-                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: '#2ecc71' }
+                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: '#10b981' },
+                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: '#3b82f6' },
+                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: '#f59e0b' }
               ].map(macro => {
-                const pct = Math.min((macro.val / macro.target) * 100, 100);
+                const pct = Math.min((macro.val / (macro.target || 1)) * 100, 100);
                 return (
                   <div key={macro.label} className="macro-bar-item">
                     <div className="macro-bar-header">

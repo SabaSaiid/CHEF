@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { formatQuantityValue } from '../utils/ingredientParser';
 
 export default function Ingredients() {
   const [text, setText] = useState('');
@@ -100,7 +101,7 @@ export default function Ingredients() {
                 {results.ingredients.map((ing, i) => (
                   <tr key={i}>
                     <td className="ingredient-name">{ing.name}</td>
-                    <td>{ing.quantity !== null ? ing.quantity : '—'}</td>
+                    <td>{ing.quantity !== null ? formatQuantityValue(ing.quantity) : '—'}</td>
                     <td>{ing.unit ? ing.unit : '—'}</td>
                     <td>
                       {!ing.substitutes || ing.substitutes.length === 0 ? (

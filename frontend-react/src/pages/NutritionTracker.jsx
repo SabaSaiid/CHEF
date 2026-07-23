@@ -17,13 +17,13 @@ function MacroDonut({ protein, carbs, fat }) {
 
   const { proteinPct, carbsPct, fatPct } = calculateMacroPercentages(protein, carbs, fat, total);
 
-  const radius = 45;
+  const radius = 46;
   const circumference = 2 * Math.PI * radius;
 
   const segments = [
-    { label: 'Protein', value: protein, pct: proteinPct, color: '#81b29a', cal: proteinCal },
-    { label: 'Carbs', value: carbs, pct: carbsPct, color: '#f2cc8f', cal: carbsCal },
-    { label: 'Fat', value: fat, pct: fatPct, color: '#e07a5f', cal: fatCal },
+    { label: 'Protein', value: protein, pct: proteinPct, color: '#10b981', gradId: 'proteinGrad', cal: proteinCal },
+    { label: 'Carbs', value: carbs, pct: carbsPct, color: '#3b82f6', gradId: 'carbsGrad', cal: carbsCal },
+    { label: 'Fat', value: fat, pct: fatPct, color: '#f59e0b', gradId: 'fatGrad', cal: fatCal },
   ];
 
   let offset = 0;
@@ -32,6 +32,20 @@ function MacroDonut({ protein, carbs, fat }) {
     <div className="macro-donut-card">
       <div className="macro-donut-svg-wrap">
         <svg className="macro-donut-svg" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="proteinGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#34d399" />
+              <stop offset="100%" stopColor="#10b981" />
+            </linearGradient>
+            <linearGradient id="carbsGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#60a5fa" />
+              <stop offset="100%" stopColor="#3b82f6" />
+            </linearGradient>
+            <linearGradient id="fatGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#fbbf24" />
+              <stop offset="100%" stopColor="#f59e0b" />
+            </linearGradient>
+          </defs>
           {segments.map((seg) => {
             const dash = (seg.pct / 100) * circumference;
             const gap = circumference - dash;
@@ -44,7 +58,10 @@ function MacroDonut({ protein, carbs, fat }) {
                 cx="60" cy="60" r={radius}
                 strokeDasharray={`${dash} ${gap}`}
                 strokeDashoffset={-currentOffset}
-                stroke={seg.color}
+                stroke={`url(#${seg.gradId})`}
+                strokeWidth="12"
+                strokeLinecap="round"
+                style={{ transition: 'all 0.4s ease' }}
               />
             );
           })}
@@ -58,9 +75,8 @@ function MacroDonut({ protein, carbs, fat }) {
         {segments.map(seg => (
           <div key={seg.label} className="macro-legend-item">
             <span className="macro-legend-dot" style={{ background: seg.color }} />
-            <span>{seg.label}</span>
-            <span className="macro-legend-value">{Math.round(seg.value)}g</span>
-            <span className="macro-legend-pct">{seg.pct}%</span>
+            <span className="macro-legend-name">{seg.label}</span>
+            <span className="macro-legend-val">{Math.round(seg.value)}g ({seg.pct}%)</span>
           </div>
         ))}
       </div>
@@ -452,44 +468,114 @@ export default function NutritionTracker() {
       )}
 
       {/* ── Daily Progress Rings ── */}
-      <div className="card glass" style={{ marginBottom: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 style={{ fontSize: '16px', margin: 0 }}>Daily Progress</h3>
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-            {selectedDate === new Date().toISOString().split('T')[0] ? 'Today' : selectedDate}
+      <div className="card glass" style={{ marginBottom: '20px', padding: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
+          <div>
+            <h3 style={{ fontSize: '18px', margin: 0, fontWeight: '700' }}>Daily Progress</h3>
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Nutrient Goals & Consumption Breakdown</span>
+          </div>
+          <span style={{ fontSize: '12px', padding: '4px 12px', background: 'var(--bg-secondary)', borderRadius: '20px', border: '1px solid var(--border-glass)', fontWeight: '600', color: 'var(--accent-1)' }}>
+            📅 {selectedDate === new Date().toISOString().split('T')[0] ? 'Today' : selectedDate}
           </span>
         </div>
+        
         <div className="tracker-progress-grid">
           {[
-            { label: 'Calories', value: totals.calories, target: targets.calories, unit: 'kcal', color: '#e07a5f' },
-            { label: 'Protein', value: totals.protein_g, target: targets.protein_g, unit: 'g', color: '#81b29a' },
-            { label: 'Carbs', value: totals.carbs_g, target: targets.carbs_g, unit: 'g', color: '#f2cc8f' },
-            { label: 'Fat', value: totals.fat_g, target: targets.fat_g, unit: 'g', color: '#e07a5f' },
-            { label: 'Fiber', value: totals.fiber_g, target: (activeProfile?.target_fiber_g || 30), unit: 'g', color: '#3b82f6' },
-          ].map(({ label, value, target, unit, color }) => (
-            <div key={label} className="tracker-ring-card">
-              <div className="tracker-ring" style={{ '--ring-pct': pct(value, target), '--ring-color': color }}>
-                <svg viewBox="0 0 36 36" className="tracker-ring-svg">
-                  <path
-                    className="tracker-ring-bg"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    className="tracker-ring-fill"
-                    strokeDasharray={`${pct(value, target)}, 100`}
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    style={{ stroke: color }}
-                  />
-                </svg>
-                <div className="tracker-ring-text">
-                  <span className="tracker-ring-value">{Math.round(value)}</span>
-                  <span className="tracker-ring-unit">{unit}</span>
+            { label: 'Calories', value: totals.calories, target: targets.calories, unit: 'kcal', icon: '🔥', gradStart: '#f97316', gradEnd: '#ef4444', gradId: 'calRingGrad' },
+            { label: 'Protein', value: totals.protein_g, target: targets.protein_g, unit: 'g', icon: '🥩', gradStart: '#34d399', gradEnd: '#10b981', gradId: 'protRingGrad' },
+            { label: 'Carbs', value: totals.carbs_g, target: targets.carbs_g, unit: 'g', icon: '🍞', gradStart: '#60a5fa', gradEnd: '#3b82f6', gradId: 'carbRingGrad' },
+            { label: 'Fat', value: totals.fat_g, target: targets.fat_g, unit: 'g', icon: '🥑', gradStart: '#fbbf24', gradEnd: '#f59e0b', gradId: 'fatRingGrad' },
+            { label: 'Fiber', value: totals.fiber_g, target: (activeProfile?.target_fiber_g || 30), unit: 'g', icon: '🌾', gradStart: '#c084fc', gradEnd: '#8b5cf6', gradId: 'fibRingGrad' },
+          ].map(({ label, value, target, unit, icon, gradStart, gradEnd, gradId }) => {
+            const rawPct = target > 0 ? Math.round((value / target) * 100) : 0;
+            const visualPct = Math.min(rawPct, 100);
+            const diff = Math.round(value - target);
+            const isExceeded = diff > 0;
+            const isTargetMet = rawPct >= 90 && rawPct <= 110;
+
+            return (
+              <div 
+                key={label} 
+                className="tracker-ring-card"
+                style={{
+                  position: 'relative',
+                  padding: '18px 12px 16px',
+                  borderRadius: '16px',
+                  background: 'var(--bg-secondary)',
+                  border: isExceeded ? '1px solid #f59e0b40' : (isTargetMet ? '1px solid #10b98140' : '1px solid var(--border-glass)'),
+                  transition: 'all 0.25s ease',
+                  cursor: 'default'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                {/* Percentage Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  padding: '2px 7px',
+                  borderRadius: '10px',
+                  background: isExceeded ? '#f59e0b20' : (isTargetMet ? '#10b98120' : 'var(--bg-primary)'),
+                  color: isExceeded ? '#f59e0b' : (isTargetMet ? '#10b981' : 'var(--text-muted)'),
+                  border: '1px solid var(--border-glass)'
+                }}>
+                  {rawPct}%
+                </div>
+
+                <div className="tracker-ring" style={{ width: '84px', height: '84px', margin: '8px auto 12px' }}>
+                  <svg viewBox="0 0 36 36" className="tracker-ring-svg" style={{ overflow: 'visible' }}>
+                    <defs>
+                      <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor={gradStart} />
+                        <stop offset="100%" stopColor={gradEnd} />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      className="tracker-ring-bg"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      stroke="var(--border-glass)"
+                      strokeWidth="3.2"
+                      fill="none"
+                    />
+                    <path
+                      className="tracker-ring-fill"
+                      strokeDasharray={`${visualPct}, 100`}
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      stroke={`url(#${gradId})`}
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      fill="none"
+                      style={{ transition: 'stroke-dasharray 0.6s ease' }}
+                    />
+                  </svg>
+                  <div className="tracker-ring-text">
+                    <span className="tracker-ring-value" style={{ fontSize: '15px', fontWeight: 'bold' }}>{Math.round(value)}</span>
+                    <span className="tracker-ring-unit" style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{unit}</span>
+                  </div>
+                </div>
+
+                <div className="tracker-ring-label" style={{ fontWeight: '700', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                  <span>{icon}</span> {label}
+                </div>
+                <div className="tracker-ring-target" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  of {target} {unit}
+                </div>
+
+                {/* Remaining / Exceeded status footnote */}
+                <div style={{
+                  fontSize: '10px',
+                  marginTop: '6px',
+                  fontWeight: '600',
+                  color: isExceeded ? '#f59e0b' : 'var(--text-muted)'
+                }}>
+                  {isExceeded ? `+${diff}${unit} over` : `${Math.abs(diff)}${unit} left`}
                 </div>
               </div>
-              <div className="tracker-ring-label">{label}</div>
-              <div className="tracker-ring-target">of {target}{unit}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -673,55 +759,83 @@ export default function NutritionTracker() {
 
       {/* ── Trend Analytics Overhaul (SVG Line Chart) ── */}
       {summaryData.length > 0 && (() => {
-        const width = 600;
-        const height = 200;
-        const paddingLeft = 40;
-        const paddingRight = 20;
-        const paddingTop = 20;
-        const paddingBottom = 30;
+        const width = 640;
+        const height = 250;
+        const paddingLeft = 55;
+        const paddingRight = 30;
+        const paddingTop = 45;
+        const paddingBottom = 40;
 
-        const maxCal = Math.max(
-          ...summaryData.map(d => d.total_calories || 0), 
-          targets.calories * 1.2, 
-          1000
-        );
+        const rawMax = Math.max(...summaryData.map(d => d.total_calories || 0), targets.calories || 0);
+        const maxCal = Math.max(Math.ceil((rawMax * 1.25) / 500) * 500, 1000);
+
+        const totalDays = summaryData.length;
+        const avgCals = Math.round(summaryData.reduce((acc, curr) => acc + (curr.total_calories || 0), 0) / totalDays);
+        const peakCals = Math.round(Math.max(...summaryData.map(d => d.total_calories || 0)));
+        const targetGoal = targets.calories || 2000;
+        const onTrackCount = summaryData.filter(d => (d.total_calories || 0) >= targetGoal * 0.85 && (d.total_calories || 0) <= targetGoal * 1.15).length;
+        const onTrackPct = Math.round((onTrackCount / totalDays) * 100);
 
         const points = summaryData.map((d, index) => {
-          const x = paddingLeft + (index * (width - paddingLeft - paddingRight)) / (summaryData.length - 1 || 1);
+          const x = paddingLeft + (index * (width - paddingLeft - paddingRight)) / (totalDays - 1 || 1);
           const y = height - paddingBottom - ((d.total_calories || 0) * (height - paddingTop - paddingBottom)) / maxCal;
-          return { x, y, date: d.date, calories: d.total_calories };
+          return { x, y, date: d.date, calories: d.total_calories || 0 };
         });
 
-        const targetY = height - paddingBottom - (targets.calories * (height - paddingTop - paddingBottom)) / maxCal;
+        const targetY = height - paddingBottom - (targetGoal * (height - paddingTop - paddingBottom)) / maxCal;
         const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
         
         const areaPath = points.length > 0 
           ? `${linePath} L ${points[points.length - 1].x} ${height - paddingBottom} L ${points[0].x} ${height - paddingBottom} Z` 
           : '';
 
+        const yTickValues = [0, Math.round(maxCal * 0.33 / 100) * 100, Math.round(maxCal * 0.66 / 100) * 100, maxCal];
+
+        const isHoveredNearTop = hoveredPoint && hoveredPoint.y < (height * 0.45);
+        const tooltipLeftPct = hoveredPoint ? Math.max(8, Math.min(92, (hoveredPoint.x / width) * 100)) : 50;
+
         return (
           <div className="card glass" style={{ marginTop: '24px', padding: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '18px', margin: 0 }}>Trend Analytics</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+              <div>
+                <h3 style={{ fontSize: '18px', margin: 0, fontWeight: '700' }}>Trend Analytics</h3>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Calorie Intake History & Goal Compliance</span>
+              </div>
               <div style={{ display: 'flex', gap: '6px' }}>
                 <button
                   className={`btn-secondary ${summaryRange === 'week' ? 'active' : ''}`}
                   onClick={() => { setSummaryRange('week'); setHoveredPoint(null); }}
-                  style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'week' ? { background: 'var(--text-primary)', color: 'var(--bg-primary)' } : {}) }}
+                  style={{ fontSize: '12px', padding: '6px 14px', marginTop: 0, borderRadius: '20px', ...(summaryRange === 'week' ? { background: 'var(--accent-1)', color: '#fff', fontWeight: 'bold' } : {}) }}
                 >
                   7 Days
                 </button>
                 <button
                   className={`btn-secondary ${summaryRange === 'month' ? 'active' : ''}`}
                   onClick={() => { setSummaryRange('month'); setHoveredPoint(null); }}
-                  style={{ fontSize: '12px', padding: '6px 12px', marginTop: 0, ...(summaryRange === 'month' ? { background: 'var(--text-primary)', color: 'var(--bg-primary)' } : {}) }}
+                  style={{ fontSize: '12px', padding: '6px 14px', marginTop: 0, borderRadius: '20px', ...(summaryRange === 'month' ? { background: 'var(--accent-1)', color: '#fff', fontWeight: 'bold' } : {}) }}
                 >
                   30 Days
                 </button>
               </div>
             </div>
 
-            <div style={{ position: 'relative', width: '100%', overflowX: 'auto' }}>
+            {/* Quick Metrics Bar */}
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+                <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Daily Avg</div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)', marginTop: '2px' }}>{avgCals} <span style={{ fontSize: '11px', fontWeight: 'normal' }}>kcal</span></div>
+              </div>
+              <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+                <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Goal Match</div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#10b981', marginTop: '2px' }}>{onTrackPct}% <span style={{ fontSize: '11px', fontWeight: 'normal', color: 'var(--text-muted)' }}>({onTrackCount}/{totalDays}d)</span></div>
+              </div>
+              <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+                <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Peak Intake</div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#f59e0b', marginTop: '2px' }}>{peakCals} <span style={{ fontSize: '11px', fontWeight: 'normal' }}>kcal</span></div>
+              </div>
+            </div>
+
+            <div style={{ position: 'relative', width: '100%', overflow: 'visible' }}>
               <svg 
                 viewBox={`0 0 ${width} ${height}`} 
                 style={{ width: '100%', height: 'auto', background: 'transparent', overflow: 'visible' }}
@@ -729,77 +843,166 @@ export default function NutritionTracker() {
               >
                 <defs>
                   <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--accent-1)" stopOpacity="0.2" />
+                    <stop offset="0%" stopColor="var(--accent-1)" stopOpacity="0.35" />
                     <stop offset="100%" stopColor="var(--accent-1)" stopOpacity="0.0" />
                   </linearGradient>
+                  <linearGradient id="chartLineGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="50%" stopColor="var(--accent-1)" />
+                    <stop offset="100%" stopColor="#10b981" />
+                  </linearGradient>
+                  <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="var(--accent-1)" floodOpacity="0.3" />
+                  </filter>
                 </defs>
 
+                {/* Y-Axis Horizontal Gridlines & Tick Labels */}
+                {yTickValues.map((tickVal) => {
+                  const tickY = height - paddingBottom - (tickVal * (height - paddingTop - paddingBottom)) / maxCal;
+                  return (
+                    <g key={tickVal}>
+                      <line 
+                        x1={paddingLeft} y1={tickY} 
+                        x2={width - paddingRight} y2={tickY} 
+                        stroke="var(--border-glass)" 
+                        strokeWidth="0.8" 
+                        strokeDasharray="3 3" 
+                        opacity="0.6"
+                      />
+                      <text 
+                        x={paddingLeft - 8} 
+                        y={tickY + 3} 
+                        fill="var(--text-muted)" 
+                        fontSize="9px" 
+                        fontWeight="600" 
+                        textAnchor="end"
+                      >
+                        {tickVal}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Target Calorie Line */}
                 <line 
                   x1={paddingLeft} y1={targetY} 
                   x2={width - paddingRight} y2={targetY} 
                   stroke="var(--accent-1)" 
-                  strokeDasharray="4 4" 
-                  strokeWidth="1.5" 
+                  strokeDasharray="5 4" 
+                  strokeWidth="1.8" 
                 />
                 
-                <line 
-                  x1={paddingLeft} y1={height - paddingBottom} 
-                  x2={width - paddingRight} y2={height - paddingBottom} 
-                  stroke="var(--border-glass)" 
-                  strokeWidth="1" 
+                {/* Target Badge */}
+                <rect 
+                  x={width - paddingRight - 105} 
+                  y={targetY - 14} 
+                  width="105" 
+                  height="16" 
+                  rx="4" 
+                  fill="var(--accent-1)" 
+                  fillOpacity="0.15" 
                 />
-
-                {areaPath && <path d={areaPath} fill="url(#chartGradient)" />}
-
-                {linePath && (
-                  <path 
-                    d={linePath} 
-                    fill="none" 
-                    stroke="var(--accent-1)" 
-                    strokeWidth="3" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    style={{ transition: 'all 0.3s ease' }}
-                  />
-                )}
-
-                {points.map((p, i) => (
-                  <circle
-                    key={p.date}
-                    cx={p.x}
-                    cy={p.y}
-                    r={hoveredPoint?.date === p.date ? '6' : '4'}
-                    fill="var(--bg-secondary)"
-                    stroke="var(--accent-1)"
-                    strokeWidth="2.5"
-                    style={{ cursor: 'pointer', transition: 'r 0.1s ease, fill 0.1s ease' }}
-                    onMouseEnter={() => setHoveredPoint(p)}
-                    onClick={() => setSelectedDate(p.date)}
-                  />
-                ))}
-
                 <text 
-                  x={width - paddingRight} 
-                  y={targetY - 6} 
+                  x={width - paddingRight - 6} 
+                  y={targetY - 2} 
                   fill="var(--accent-1)" 
                   fontSize="10px" 
                   fontWeight="bold" 
                   textAnchor="end"
                 >
-                  Target: {targets.calories} kcal
+                  🎯 Target: {targetGoal} kcal
                 </text>
 
-                {points.filter((_, idx) => summaryRange === 'month' ? idx % 5 === 0 : true).map(p => {
+                {/* Area Gradient Fill */}
+                {areaPath && <path d={areaPath} fill="url(#chartGradient)" />}
+
+                {/* Chart Polyline */}
+                {linePath && (
+                  <path 
+                    d={linePath} 
+                    fill="none" 
+                    stroke="url(#chartLineGrad)" 
+                    strokeWidth="3.5" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    filter="url(#glowEffect)"
+                    style={{ transition: 'all 0.3s ease' }}
+                  />
+                )}
+
+                {/* Interactive Points */}
+                {points.map((p) => {
+                  const isHovered = hoveredPoint?.date === p.date;
+                  const diff = p.calories - targetGoal;
+                  const isNearTarget = Math.abs(diff) <= targetGoal * 0.12;
+                  const pointColor = isNearTarget ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6');
+
+                  return (
+                    <g key={p.date}>
+                      {isHovered && (
+                        <circle
+                          cx={p.x}
+                          cy={p.y}
+                          r="9"
+                          fill={pointColor}
+                          fillOpacity="0.2"
+                        />
+                      )}
+                      <circle
+                        cx={p.x}
+                        cy={p.y}
+                        r={isHovered ? 6 : 4.5}
+                        fill="var(--bg-primary)"
+                        stroke={pointColor}
+                        strokeWidth="3"
+                        style={{ cursor: 'pointer', transition: 'r 0.15s ease, fill 0.15s ease' }}
+                        onMouseEnter={() => setHoveredPoint(p)}
+                        onClick={() => setSelectedDate(p.date)}
+                      />
+                      {/* Point-wise kcal text label */}
+                      {(isHovered || summaryRange === 'week') && (
+                        <g>
+                          <rect 
+                            x={p.x - 18} 
+                            y={p.y - (p.y < paddingTop + 20 ? -22 : 18)} 
+                            width="36" 
+                            height="14" 
+                            rx="4" 
+                            fill="var(--bg-secondary)" 
+                            stroke="var(--border-glass)" 
+                            strokeWidth="0.8" 
+                          />
+                          <text
+                            x={p.x}
+                            y={p.y - (p.y < paddingTop + 20 ? -12 : 8)}
+                            fill="var(--text-primary)"
+                            fontSize="9px"
+                            fontWeight="bold"
+                            textAnchor="middle"
+                            style={{ pointerEvents: 'none' }}
+                          >
+                            {Math.round(p.calories)}
+                          </text>
+                        </g>
+                      )}
+                    </g>
+                  );
+                })}
+
+                {/* X-Axis Date Labels */}
+                {points.filter((_, idx) => summaryRange === 'month' ? idx % 4 === 0 : true).map(p => {
                   const dateObj = new Date(p.date + 'T12:00:00');
-                  const label = summaryRange === 'month' ? `${dateObj.getMonth() + 1}/${dateObj.getDate()}` : dateObj.toLocaleDateString(undefined, { weekday: 'short' });
+                  const label = summaryRange === 'month' 
+                    ? `${dateObj.getMonth() + 1}/${dateObj.getDate()}` 
+                    : dateObj.toLocaleDateString(undefined, { weekday: 'short' });
                   return (
                     <text 
                       key={p.date} 
                       x={p.x} 
-                      y={height - 10} 
+                      y={height - 12} 
                       fill="var(--text-muted)" 
                       fontSize="10px" 
-                      fontWeight="bold" 
+                      fontWeight="600" 
                       textAnchor="middle"
                     >
                       {label}
@@ -808,28 +1011,41 @@ export default function NutritionTracker() {
                 })}
               </svg>
 
-              {hoveredPoint && (
-                <div style={{
-                  position: 'absolute',
-                  left: `${(hoveredPoint.x / width) * 100}%`,
-                  top: `${(hoveredPoint.y / height) * 100 - 30}%`,
-                  transform: 'translate(-50%, -100%)',
-                  background: 'var(--text-primary)',
-                  color: 'var(--bg-primary)',
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  fontSize: '11px',
-                  fontWeight: 'bold',
-                  boxShadow: 'var(--shadow-card)',
-                  pointerEvents: 'none',
-                  zIndex: 10,
-                  whiteSpace: 'nowrap',
-                  transition: 'left 0.15s ease, top 0.15s ease'
-                }}>
-                  <div style={{ fontSize: '9px', opacity: 0.7 }}>{hoveredPoint.date}</div>
-                  <div>{Math.round(hoveredPoint.calories)} kcal</div>
-                </div>
-              )}
+              {/* Dynamic Glassmorphism Tooltip */}
+              {hoveredPoint && (() => {
+                const diff = Math.round(hoveredPoint.calories - targetGoal);
+                const diffText = diff > 0 ? `+${diff} kcal over target` : `${Math.abs(diff)} kcal remaining`;
+                const diffColor = Math.abs(diff) <= targetGoal * 0.12 ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6');
+                const pctOfTarget = Math.round((hoveredPoint.calories / targetGoal) * 100);
+
+                return (
+                  <div style={{
+                    position: 'absolute',
+                    left: `${tooltipLeftPct}%`,
+                    top: isHoveredNearTop 
+                      ? `${(hoveredPoint.y / height) * 100 + 10}%`
+                      : `${(hoveredPoint.y / height) * 100 - 10}%`,
+                    transform: isHoveredNearTop ? 'translate(-50%, 0%)' : 'translate(-50%, -100%)',
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    border: '1px solid var(--border-glass)',
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                    pointerEvents: 'none',
+                    zIndex: 10,
+                    whiteSpace: 'nowrap',
+                    backdropFilter: 'blur(10px)',
+                    transition: 'left 0.15s ease, top 0.15s ease'
+                  }}>
+                    <div style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)', marginBottom: '2px' }}>{hoveredPoint.date}</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{Math.round(hoveredPoint.calories)} <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>kcal ({pctOfTarget}%)</span></div>
+                    <div style={{ fontSize: '10px', color: diffColor, marginTop: '2px' }}>{diffText}</div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         );

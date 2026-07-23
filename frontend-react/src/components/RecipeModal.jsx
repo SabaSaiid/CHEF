@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import { calculateMacroPercentages } from '../utils/nutrition';
+import { parseIngredient, formatIngredientForServings } from '../utils/ingredientParser';
 
 
 function InstructionSteps({ instructions }) {
@@ -185,61 +186,14 @@ export default function RecipeModal({ recipe, onClose }) {
     : [];
 
   // Pantry check
-  const getPantryStatus = (ingName) => {
-    const norm = ingName.toLowerCase().trim();
+  const getPantryStatus = (ingStr) => {
+    const parsed = parseIngredient(ingStr);
+    const targetName = (parsed.name || ingStr).toLowerCase().trim();
     const match = pantry.find(p => {
       const pNorm = p.ingredient_name.toLowerCase().trim();
-      return norm.includes(pNorm) || pNorm.includes(norm);
+      return targetName.includes(pNorm) || pNorm.includes(targetName);
     });
     return match ? { inStock: true, item: match } : { inStock: false };
-  };
-
-  // Parse ingredient strings to object { name, qty }
-  const parseIngredient = (ingStr) => {
-    const match = ingStr.match(/^([\d\.\/\s\-–]+)?(.*)$/);
-    let qty = 1.0;
-    let rest = ingStr;
-
-    if (match) {
-      let rawQty = match[1]?.trim();
-      if (rawQty) {
-        rawQty = rawQty.replace(/[–\-]/, ' ');
-        if (rawQty.includes('/')) {
-          const parts = rawQty.split(/\s+/);
-          let sum = 0;
-          for (const p of parts) {
-            if (p.includes('/')) {
-              const [num, den] = p.split('/');
-              const parsedPart = parseFloat(num) / parseFloat(den);
-              if (!isNaN(parsedPart)) sum += parsedPart;
-            } else {
-              const parsedPart = parseFloat(p);
-              if (!isNaN(parsedPart)) sum += parsedPart;
-            }
-          }
-          qty = sum || 1.0;
-        } else {
-          qty = parseFloat(rawQty) || 1.0;
-        }
-        rest = match[2]?.trim() || ingStr;
-      }
-    }
-
-    const unitKeywords = [
-      'cups', 'cup', 'tablespoons', 'tablespoon', 'tbsp', 'teaspoons', 'teaspoon', 'tsp',
-      'grams', 'gram', 'g', 'ml', 'ounces', 'oz', 'pounds', 'pound', 'lb', 'lbs', 'cloves', 'clove', 
-      'slices', 'slice', 'pinches', 'pinch', 'handfuls', 'handful', 'large', 'medium', 'small', 'can', 'cans'
-    ];
-    
-    let name = rest.toLowerCase().trim();
-    for (const uk of unitKeywords) {
-      const ukRegex = new RegExp(`^\\b${uk}\\b\\s*(of\\s+)?`, 'i');
-      if (ukRegex.test(name)) {
-        name = name.replace(ukRegex, '').trim();
-        break;
-      }
-    }
-    return { name, qty };
   };
 
   const handleFinishCooking = () => {
@@ -252,10 +206,11 @@ export default function RecipeModal({ recipe, onClose }) {
     const list = (Array.isArray(recipe.ingredients) ? recipe.ingredients : [])
       .map(ingStr => {
         const parsed = parseIngredient(ingStr);
-        const matchInfo = getPantryStatus(parsed.name);
+        const matchInfo = getPantryStatus(ingStr);
+        const qtyToDeduct = (parsed.hasQuantity && parsed.qty) ? Number((parsed.qty * servingRatio).toFixed(2)) : 1.0;
         return {
-          name: parsed.name,
-          qty: parsed.qty,
+          name: parsed.name || ingStr,
+          qty: qtyToDeduct,
           checked: matchInfo.inStock
         };
       });
@@ -523,21 +478,14 @@ export default function RecipeModal({ recipe, onClose }) {
                               {appliedSwaps[ing] ? (
                                 <span>
                                   <span style={{ textDecoration: 'line-through', opacity: 0.55, marginRight: '6px' }}>
-                                    {ing}
+                                    {formatIngredientForServings(ing, servingRatio, targetServings)}
                                   </span>
                                   <span style={{ color: '#059669', fontWeight: '700' }}>
                                     ✨ {appliedSwaps[ing]}
                                   </span>
                                 </span>
                               ) : (
-                                ing.replace(/^([\d\.\/\s\-–]+)?/, (match) => {
-                                  const parsed = parseIngredient(ing);
-                                  if (parsed.qty > 0) {
-                                     const scaledQty = Number((parsed.qty * servingRatio).toFixed(2));
-                                     return `${scaledQty} `;
-                                  }
-                                  return match;
-                                })
+                                formatIngredientForServings(ing, servingRatio, targetServings)
                               )}{' '}
                               {check.inStock && <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>(In Pantry)</span>}
                             </span>
