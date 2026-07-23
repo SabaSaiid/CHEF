@@ -84,10 +84,11 @@ export default function TDEEProfile() {
   useEffect(() => { loadProfiles(); }, [token]);
 
   const computeResults = (p) => {
-    const cal = p.target_calories;
     const prot = p.target_protein || 0;
     const carb = p.target_carbs || 0;
     const fat = p.target_fat || 0;
+    const macroSum = prot * 4 + carb * 4 + fat * 9;
+    const cal = macroSum > 0 ? macroSum : (p.target_calories || 2000);
     const wt = p.weight_kg || 70;
     const { proteinPct, carbsPct, fatPct } = calculateMacroPercentages(prot, carb, fat, cal);
     const bmiVal  = p.bmi || (wt > 0 ? Math.round((wt / ((p.height_cm / 100) ** 2)) * 10) / 10 : 0);
@@ -101,9 +102,9 @@ export default function TDEEProfile() {
       bmi: bmiVal, bmi_category: p.bmi_category || bmiCat,
       formula_used: p.formula_used || 'Mifflin-St Jeor',
       target_fiber_g: p.target_fiber_g, target_water_ml: p.target_water_ml,
-      protein_pct: p.protein_pct ?? proteinPct,
-      carbs_pct: p.carbs_pct ?? carbsPct,
-      fat_pct: p.fat_pct ?? fatPct,
+      protein_pct: proteinPct,
+      carbs_pct: carbsPct,
+      fat_pct: fatPct,
       protein_per_kg: p.protein_per_kg || (wt > 0 ? (prot / wt).toFixed(1) : '2.0'),
     };
   };

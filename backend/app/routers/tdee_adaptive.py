@@ -94,14 +94,8 @@ def calculate_adaptive_tdee(
     
     if active_profile:
         active_profile.tdee_maintenance = adaptive_tdee
-        
-        # Apply goal logic to this new true maintenance
-        if active_profile.goal == "lose":
-            active_profile.target_calories = int(round(adaptive_tdee * 0.8)) # 20% deficit
-        elif active_profile.goal == "gain":
-            active_profile.target_calories = int(round(adaptive_tdee * 1.15)) # 15% surplus
-        else:
-            active_profile.target_calories = adaptive_tdee
+        from app.routers.profiles import _calculate_and_save_targets
+        _calculate_and_save_targets(active_profile, active_profile)
             
         current_user.target_calories = active_profile.target_calories
         current_user.tdee_maintenance = adaptive_tdee

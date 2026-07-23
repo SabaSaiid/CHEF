@@ -172,6 +172,10 @@ def apply_health_adjustments(
         elif condition == "anemia":
             _apply_anemia(adj)
 
+    # Recalculate target_calories so it strictly equals sum of macro calories
+    if adj.target_protein is not None and adj.target_carbs is not None and adj.target_fat is not None:
+        adj.target_calories = (adj.target_protein * 4) + (adj.target_carbs * 4) + (adj.target_fat * 9)
+
     return adj
 
 
@@ -188,9 +192,10 @@ def _apply_diabetes(adj: HealthAdjustment, calories: int, weight_kg: float):
     max_carb_cals = calories * 0.45
     max_carbs_g = int(round(max_carb_cals / 4))
     if adj.target_carbs and adj.target_carbs > max_carbs_g:
+        old_carbs = adj.target_carbs
         adj.target_carbs = max_carbs_g
         # Redistribute excess carb calories to protein
-        excess_cals = (adj.target_carbs - max_carbs_g) * 4
+        excess_cals = (old_carbs - max_carbs_g) * 4
         adj.target_protein = (adj.target_protein or 0) + int(round(excess_cals / 4))
 
     adj.target_fiber_g = max(adj.target_fiber_g or 25, 30)
@@ -216,7 +221,11 @@ def _apply_hypertension(adj: HealthAdjustment, calories: int):
     max_fat_cals = calories * 0.27
     max_fat_g = int(round(max_fat_cals / 9))
     if adj.target_fat and adj.target_fat > max_fat_g:
+        old_fat = adj.target_fat
         adj.target_fat = max_fat_g
+        excess_cals = (old_fat - max_fat_g) * 9
+        # Redistribute excess fat calories to carbs
+        adj.target_carbs = (adj.target_carbs or 0) + int(round(excess_cals / 4))
 
     adj.max_fat_pct = 27
     adj.target_fiber_g = max(adj.target_fiber_g or 25, 30)
@@ -265,7 +274,11 @@ def _apply_high_cholesterol(adj: HealthAdjustment, calories: int):
     max_fat_cals = calories * 0.25
     max_fat_g = int(round(max_fat_cals / 9))
     if adj.target_fat and adj.target_fat > max_fat_g:
+        old_fat = adj.target_fat
         adj.target_fat = max_fat_g
+        excess_cals = (old_fat - max_fat_g) * 9
+        # Redistribute excess fat calories to carbs
+        adj.target_carbs = (adj.target_carbs or 0) + int(round(excess_cals / 4))
 
     adj.max_fat_pct = 25
     adj.target_fiber_g = max(adj.target_fiber_g or 25, 25)
@@ -293,13 +306,18 @@ def _apply_pcos(adj: HealthAdjustment, calories: int, weight_kg: float):
     min_protein_cals = calories * 0.25
     min_protein_g = int(round(min_protein_cals / 4))
     if adj.target_protein and adj.target_protein < min_protein_g:
+        needed_g = min_protein_g - adj.target_protein
         adj.target_protein = min_protein_g
+        carbs_to_reduce = needed_g
+        adj.target_carbs = max(0, (adj.target_carbs or 0) - carbs_to_reduce)
 
-    # Cap carbs at 40%
     max_carb_cals = calories * 0.40
     max_carbs_g = int(round(max_carb_cals / 4))
     if adj.target_carbs and adj.target_carbs > max_carbs_g:
+        old_carbs = adj.target_carbs
         adj.target_carbs = max_carbs_g
+        excess_cals = (old_carbs - max_carbs_g) * 4
+        adj.target_protein = (adj.target_protein or 0) + int(round(excess_cals / 4))
 
     adj.max_carbs_pct = 40
 
@@ -320,7 +338,12 @@ def _apply_kidney_disease(adj: HealthAdjustment, calories: int, weight_kg: float
     - Phosphorus restriction (dairy, nuts, cola)
     """
     max_protein = int(round(0.8 * weight_kg))
-    adj.target_protein = min(adj.target_protein or max_protein, max_protein)
+    if adj.target_protein and adj.target_protein > max_protein:
+        old_protein = adj.target_protein
+        adj.target_protein = max_protein
+        excess_cals = (old_protein - max_protein) * 4
+        adj.target_carbs = (adj.target_carbs or 0) + int(round(excess_cals / 4))
+
     adj.max_protein_per_kg = 0.8
 
     adj.avoid_ingredients.extend(HIGH_POTASSIUM_INGREDIENTS)

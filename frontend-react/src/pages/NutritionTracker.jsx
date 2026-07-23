@@ -313,9 +313,9 @@ export default function NutritionTracker() {
   // TDEE targets from user profile
   const targets = {
     calories: activeProfile?.target_calories || 2000,
-    protein_g: activeProfile?.target_protein || 150,
-    carbs_g: activeProfile?.target_carbs || 250,
-    fat_g: activeProfile?.target_fat || 65,
+    protein_g: activeProfile?.target_protein || 125,
+    carbs_g: activeProfile?.target_carbs || 240,
+    fat_g: activeProfile?.target_fat || 60,
   };
 
   const pct = (val, target) => Math.min(Math.round((val / target) * 100), 100);

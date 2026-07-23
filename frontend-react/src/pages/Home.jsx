@@ -95,9 +95,9 @@ export default function Home() {
   const targets = useMemo(() => {
     return {
       calories: activeProfile?.target_calories || 2000,
-      protein: activeProfile?.target_protein || 150,
-      carbs: activeProfile?.target_carbs || 200,
-      fat: activeProfile?.target_fat || 65,
+      protein: activeProfile?.target_protein || 125,
+      carbs: activeProfile?.target_carbs || 240,
+      fat: activeProfile?.target_fat || 60,
       water: activeProfile?.target_water_ml || 2500,
     };
   }, [activeProfile]);
@@ -149,7 +149,7 @@ export default function Home() {
 
   const totals = useMemo(() => {
     if (!token) {
-      return { calories: 1250, protein: 95, carbs: 140, fat: 42 }; // Mock for guest
+      return { calories: 1318, protein: 95, carbs: 140, fat: 42 }; // Mock for guest (95*4 + 140*4 + 42*9 = 1318 kcal)
     }
     let cal = 0, prot = 0, carb = 0, fat = 0;
     todayLog.forEach(item => {

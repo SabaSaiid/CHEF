@@ -144,6 +144,8 @@ def _calculate_and_save_targets(profile: UserProfile, data) -> None:
                 weight_kg=data.weight_kg,
                 health_conditions_str=health_conditions,
             )
+            if adj.target_calories is not None:
+                profile.target_calories = adj.target_calories
             if adj.target_protein is not None:
                 profile.target_protein = adj.target_protein
             if adj.target_carbs is not None:
@@ -154,5 +156,11 @@ def _calculate_and_save_targets(profile: UserProfile, data) -> None:
                 profile.target_fiber_g = adj.target_fiber_g
             if adj.target_water_ml is not None:
                 profile.target_water_ml = adj.target_water_ml
+            if adj.protein_pct is not None:
+                profile.protein_pct = adj.protein_pct
+            if adj.carbs_pct is not None:
+                profile.carbs_pct = adj.carbs_pct
+            if adj.fat_pct is not None:
+                profile.fat_pct = adj.fat_pct
     except Exception:
         pass

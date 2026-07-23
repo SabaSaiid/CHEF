@@ -189,46 +189,45 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
 
     target_calories = int(round(target_calories))
 
-    # ─── 5. Protein — weight-based (ISSN position stand) ────────────
+    # ─── 5. Macro Distribution (Evidence-Based AMDR & Sports Nutrition) ──
+    # Standard Clinical Splits:
+    #   • Maintenance: 20% Protein / 50% Carbs / 30% Fat
+    #   • Weight Loss: 30% Protein / 40% Carbs / 30% Fat (higher protein preserves lean mass)
+    #   • Muscle Gain: 30% Protein / 45% Carbs / 25% Fat
+    if req.goal == "lose":
+        protein_ratio, fat_ratio = 0.30, 0.30
+    elif req.goal == "gain":
+        protein_ratio, fat_ratio = 0.30, 0.25
+    else:
+        protein_ratio, fat_ratio = 0.20, 0.30
+
+    # Ensure active individuals meet minimum protein per kg (1.6g/kg for lose/gain, 1.2g/kg maintain)
     is_active = req.activity_level in ACTIVE_LEVELS
-    protein_range = PROTEIN_PER_KG.get(req.goal, (1.2, 1.8))
-    protein_per_kg = protein_range[1] if is_active else protein_range[0]
-    target_protein = round(protein_per_kg * req.weight_kg)
+    min_protein_g_per_kg = 1.6 if (req.goal in ["lose", "gain"] or is_active) else 1.2
+    weight_protein_g = int(round(min_protein_g_per_kg * req.weight_kg))
+    
+    pct_protein_g = int(round((target_calories * protein_ratio) / 4))
+    target_protein = max(pct_protein_g, weight_protein_g)
+    
+    # Cap protein at 35% of total calories (AMDR upper limit)
+    max_protein_cals = target_calories * 0.35
+    if target_protein * 4 > max_protein_cals:
+        target_protein = int(round(max_protein_cals / 4))
+        
     protein_calories = target_protein * 4
 
-    # Cap protein calories at 40% of total to leave room for fat & carbs
-    max_protein_cals = target_calories * 0.40
-    if protein_calories > max_protein_cals:
-        protein_calories = max_protein_cals
-        target_protein = int(round(protein_calories / 4))
-        protein_per_kg = round(target_protein / req.weight_kg, 2)
+    # Fat target
+    fat_calories_target = target_calories * fat_ratio
+    target_fat = int(round(fat_calories_target / 9))
+    fat_calories = target_fat * 9
 
-    # ─── 6. Fat — 25% (lose) or 28% (maintain/gain) ─────────────────
-    # Minimum ~20% needed for hormonal health; we target 25-28%
-    fat_pct = 25 if req.goal == "lose" else 28
-    fat_calories = target_calories * (fat_pct / 100)
-    target_fat = int(round(fat_calories / 9))
-
-    # ─── 7. Carbs — remainder of calories ────────────────────────────
-    carbs_calories = target_calories - protein_calories - fat_calories
-    # Safety: ensure carbs don't go negative
-    if carbs_calories < 0:
-        carbs_calories = 0
+    # Carbs target (remainder of calories)
+    carbs_calories = max(0, target_calories - protein_calories - fat_calories)
     target_carbs = int(round(carbs_calories / 4))
 
-    # ─── Dynamic TEF Adjustment (Thermic Effect of Food) ─────────────
-    # Standard multipliers assume a mixed diet with ~10% TEF.
-    # If the diet is very high protein, TEF increases, meaning we can
-    # slightly increase the target calories to account for calories burned digesting.
-    protein_ratio = protein_calories / target_calories if target_calories > 0 else 0
-    if protein_ratio > 0.25:
-        # For every 5% protein above 25%, add ~1% to total caloric expenditure
-        tef_bonus_pct = ((protein_ratio - 0.25) / 0.05) * 0.01
-        tef_adjustment = target_calories * tef_bonus_pct
-        target_calories += int(round(tef_adjustment))
-        # Add the bonus calories to carbs to fuel workouts
-        target_carbs += int(round(tef_adjustment / 4))
-        
+    # ─── Ensure total target_calories strictly matches macro sum ──────
+    target_calories = (target_protein * 4) + (target_carbs * 4) + (target_fat * 9)
+
     # ─── Actual macro percentages ────────────────────────────────────
     protein_pct_actual, carbs_pct_actual, fat_pct_actual = calculate_macro_percentages(
         target_protein, target_carbs, target_fat, target_calories
@@ -264,7 +263,7 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
         protein_pct=protein_pct_actual,
         carbs_pct=carbs_pct_actual,
         fat_pct=fat_pct_actual,
-        protein_per_kg=round(protein_per_kg, 2),
+        protein_per_kg=round(target_protein / req.weight_kg, 2),
     )
 
 
