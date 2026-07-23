@@ -3,6 +3,7 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import AuthModal from '../components/AuthModal';
 import { Plus, Wand2, Trash2, Search, AlertTriangle, ChefHat, Info, AlertCircle, Package } from 'lucide-react';
 import useHoldToRepeat from '../hooks/useHoldToRepeat';
 
@@ -19,7 +20,6 @@ function HoldablePantryQtyBtn({ item, amount, onAdjust, label, title }) {
     </button>
   );
 }
-
 
 const PANTRY_CATEGORIES = ['All', 'Produce', 'Proteins', 'Dairy', 'Grains & Baking', 'Spices & Seasonings', 'Other'];
 
@@ -39,6 +39,7 @@ const QUICK_PRESETS = [
 export default function Pantry() {
   const { token } = useContext(AuthContext);
   const toast = useToast();
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
   const [pantryItems, setPantryItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -259,9 +260,13 @@ export default function Pantry() {
       </div>
 
       {!token ? (
-        <div className="empty-state fade-in-up" style={{ '--delay': '100ms' }}>
-          <Package size={48} style={{ color: 'var(--text-muted)' }} />
-          <p>Please log in to manage your personal pantry ingredients.</p>
+        <div className="empty-state fade-in-up" style={{ '--delay': '100ms', padding: '60px 20px', textAlign: 'center' }}>
+          <Package size={48} style={{ color: 'var(--text-muted)', marginBottom: '16px' }} />
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px' }}>Personal Pantry Storage</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>Log in or sign up to manage your ingredient inventory and generate matched recipes.</p>
+          <button className="btn-primary" onClick={() => setAuthModalOpen(true)} style={{ padding: '10px 24px', fontSize: '1rem', borderRadius: '12px' }}>
+            🔐 Log In / Sign Up
+          </button>
         </div>
       ) : (
         <div style={{ marginTop: '20px' }}>
@@ -350,18 +355,18 @@ export default function Pantry() {
                       <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        style={{ padding: '10px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'var(--glass-bg)', color: 'var(--text-primary)' }}
+                        style={{ padding: '10px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
                       >
                         {PANTRY_CATEGORIES.filter(c => c !== 'All').map(c => (
                           <option key={c} value={c}>{c}</option>
                         ))}
                       </select>
                     </div>
+
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                      <label style={{ fontWeight: '600', fontSize: '13px', color: 'var(--text-secondary)' }}>Freshness (days)</label>
+                      <label style={{ fontWeight: '600', fontSize: '13px', color: 'var(--text-secondary)' }}>Days Fresh</label>
                       <input
                         type="number"
-                        required
                         min="1"
                         value={daysFresh}
                         onChange={(e) => setDaysFresh(e.target.value)}
@@ -370,33 +375,35 @@ export default function Pantry() {
                     </div>
                   </div>
 
-                  <button type="submit" className="btn-primary" style={{ padding: '12px', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>
-                    Add to Pantry
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    style={{ padding: '12px', marginTop: '5px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <Plus size={18} /> Add to Pantry
                   </button>
                 </form>
               </div>
 
-              {/* AI Magic Import Panel */}
-              <h2 className="section-title" style={{ margin: 0, marginTop: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Wand2 size={20} /> AI Magic Import
+              {/* Magic Import Box */}
+              <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, marginTop: '10px' }}>
+                <Wand2 size={20} /> Smart Quick Import
               </h2>
+              
               <div className="card glass" style={{ padding: '20px' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '0 0 10px 0' }}>Paste receipt, notes, or grocery list text to extract and add items automatically.</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
-                    Paste a messy grocery list or receipt text. Gemini AI will automatically extract quantities, units, and categories.
-                  </p>
                   <textarea
-                    placeholder="e.g. 2 gallons of milk, a bunch of bananas, 500g chicken breast..."
+                    rows={3}
+                    placeholder="e.g. 2 cartons of milk, 12 eggs, 500g chicken..."
                     value={magicImportText}
                     onChange={(e) => setMagicImportText(e.target.value)}
                     style={{
-                      padding: '12px',
+                      padding: '10px',
                       borderRadius: '8px',
                       border: '1px solid var(--border-glass)',
                       background: 'var(--bg-secondary)',
                       color: 'var(--text-primary)',
-                      minHeight: '80px',
-                      resize: 'vertical',
                       fontFamily: 'inherit',
                       fontSize: '14px'
                     }}
@@ -447,8 +454,8 @@ export default function Pantry() {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flex: 1, justifyContent: 'flex-end' }}>
                     <button
                       className="btn-primary"
-                      onClick={handleGenerateRecipe}
-                      disabled={generatingRecipe || pantryItems.length === 0}
+                      onClick={handleGenerateAI}
+                      disabled={generatingRecipe || safeItems.length === 0}
                       style={{
                         padding: '8px 16px',
                         background: 'var(--text-primary)',
@@ -637,6 +644,8 @@ export default function Pantry() {
           onClose={() => setGeneratedRecipe(null)}
         />
       )}
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
     </section>
   );
 }
