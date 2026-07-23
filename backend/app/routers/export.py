@@ -1,19 +1,57 @@
-"""
-Export router — download saved recipes as plain text or PDF.
-Requires authentication (only the recipe owner can export).
-"""
-
 import io
 import json
+import re
+from typing import Optional
+from xml.sax.saxutils import escape
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import StreamingResponse
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.models import SavedRecipe, User
-from app.auth import get_current_user
 
 router = APIRouter(prefix="/api/recipes/saved", tags=["recipes"])
+security_optional = HTTPBearer(auto_error=False)
+
+
+def _get_current_user_export(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_optional),
+    token: Optional[str] = Query(None, description="JWT Token for direct browser export link"),
+    db: Session = Depends(get_db),
+) -> User:
+    raw_token = None
+    if credentials and credentials.credentials:
+        raw_token = credentials.credentials
+    elif token:
+        raw_token = token
+
+    if not raw_token:
+        raise HTTPException(
+            status_code=401,
+            detail="Authentication token required. Please log in.",
+        )
+
+    try:
+        payload = jwt.decode(
+            raw_token,
+            settings.JWT_SECRET_KEY,
+            algorithms=[settings.JWT_ALGORITHM],
+        )
+        user_id_str = payload.get("sub")
+        if user_id_str is None:
+            raise HTTPException(status_code=401, detail="Invalid token payload")
+        user_id = int(user_id_str)
+    except (JWTError, ValueError):
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user
 
 
 def _get_user_recipe(recipe_id: int, db: Session, user: User) -> SavedRecipe:
@@ -67,29 +105,35 @@ def _recipe_to_text(recipe: SavedRecipe) -> str:
 
     # Summary
     if recipe.summary:
+        clean_summary = re.sub(r'<[^>]+>', '', recipe.summary)
         lines.append("DESCRIPTION")
         lines.append("-" * 40)
-        lines.append(f"  {recipe.summary}")
+        lines.append(f"  {clean_summary}")
         lines.append("")
 
     # Ingredients
     if recipe.ingredients:
         lines.append("INGREDIENTS")
         lines.append("-" * 40)
-        # Ingredients are stored as comma-separated string or JSON
         try:
             ing_list = json.loads(recipe.ingredients)
         except (json.JSONDecodeError, TypeError):
             ing_list = [i.strip() for i in recipe.ingredients.split(",") if i.strip()]
         for ing in ing_list:
-            lines.append(f"  • {ing}")
+            if isinstance(ing, dict):
+                ing_str = f"{ing.get('amount', '')} {ing.get('unit', '')} {ing.get('name', '')}".strip()
+            else:
+                ing_str = str(ing).strip()
+            if ing_str:
+                lines.append(f"  • {ing_str}")
         lines.append("")
 
     # Instructions
     if recipe.instructions:
+        clean_inst = re.sub(r'<[^>]+>', '', recipe.instructions)
         lines.append("INSTRUCTIONS")
         lines.append("-" * 40)
-        lines.append(recipe.instructions)
+        lines.append(clean_inst)
         lines.append("")
 
     lines.append("-" * 60)
@@ -107,7 +151,7 @@ def _recipe_to_pdf_bytes(recipe: SavedRecipe) -> bytes:
     from reportlab.lib.colors import HexColor
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.enums import TA_CENTER, TA_LEFT
+    from reportlab.lib.enums import TA_CENTER
 
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
@@ -118,7 +162,6 @@ def _recipe_to_pdf_bytes(recipe: SavedRecipe) -> bytes:
 
     # ── Colours ──
     accent = HexColor("#e07a5f")
-    green = HexColor("#81b29a")
     dark = HexColor("#3a261c")
     muted = HexColor("#6b4c3b")
 
@@ -154,11 +197,11 @@ def _recipe_to_pdf_bytes(recipe: SavedRecipe) -> bytes:
         spaceBefore=20,
     )
 
-    # ── Build story ──
     story = []
 
     # Title
-    story.append(Paragraph(recipe.title, title_style))
+    safe_title = escape(recipe.title or "Recipe")
+    story.append(Paragraph(safe_title, title_style))
     story.append(Paragraph("CHEF — Constraint-based Hybrid Eating Framework", subtitle_style))
 
     # Nutrition table
@@ -194,7 +237,8 @@ def _recipe_to_pdf_bytes(recipe: SavedRecipe) -> bytes:
     # Summary
     if recipe.summary:
         story.append(Paragraph("Description", heading_style))
-        story.append(Paragraph(recipe.summary, body_style))
+        clean_summary = re.sub(r'<[^>]+>', '', recipe.summary)
+        story.append(Paragraph(escape(clean_summary), body_style))
 
     # Ingredients
     if recipe.ingredients:
@@ -204,15 +248,21 @@ def _recipe_to_pdf_bytes(recipe: SavedRecipe) -> bytes:
         except (json.JSONDecodeError, TypeError):
             ing_list = [i.strip() for i in recipe.ingredients.split(",") if i.strip()]
         for ing in ing_list:
-            story.append(Paragraph(f"• {ing}", bullet_style))
+            if isinstance(ing, dict):
+                ing_str = f"{ing.get('amount', '')} {ing.get('unit', '')} {ing.get('name', '')}".strip()
+            else:
+                ing_str = str(ing).strip()
+            if ing_str:
+                story.append(Paragraph(f"• {escape(ing_str)}", bullet_style))
 
     # Instructions
     if recipe.instructions:
         story.append(Paragraph("Instructions", heading_style))
-        for line in recipe.instructions.split("\n"):
+        clean_inst = re.sub(r'<[^>]+>', '', recipe.instructions)
+        for line in clean_inst.split("\n"):
             line = line.strip()
             if line:
-                story.append(Paragraph(line, body_style))
+                story.append(Paragraph(escape(line), body_style))
 
     # Footer
     story.append(Spacer(1, 20))
@@ -238,7 +288,7 @@ def export_recipe(
     recipe_id: int,
     format: str = Query("text", pattern="^(text|pdf)$", description="Export format: text or pdf"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(_get_current_user_export),
 ):
     """
     Export a saved recipe as a downloadable file.
@@ -268,3 +318,4 @@ def export_recipe(
         media_type="text/plain; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="{safe_title}.txt"'},
     )
+

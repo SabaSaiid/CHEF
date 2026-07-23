@@ -54,6 +54,145 @@ export default function SavedRecipes() {
     }
   };
 
+  const handleExport = async (recipe, format) => {
+    try {
+      const response = await api.get(`/recipes/saved/${recipe.id}/export?format=${format}`, {
+        responseType: 'blob'
+      });
+      const mimeType = format === 'pdf' ? 'application/pdf' : 'text/plain;charset=utf-8';
+      const blob = new Blob([response], { type: mimeType });
+      const url = window.URL.createObjectURL(blob);
+      const safeTitle = (recipe.title || 'recipe').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const ext = format === 'pdf' ? 'pdf' : 'txt';
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${safeTitle}.${ext}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      toast.success(`Downloaded ${recipe.title} as ${format.toUpperCase()} ✓`);
+    } catch (err) {
+      console.error(`Export ${format} failed:`, err);
+      // Client-side fallback for text format
+      if (format === 'text') {
+        try {
+          let textContent = `============================================================\n`;
+          textContent += `  ${recipe.title}\n`;
+          textContent += `============================================================\n\n`;
+          if (recipe.calories || recipe.protein_g || recipe.carbs_g || recipe.fat_g) {
+            textContent += `NUTRITION\n----------------------------------------\n`;
+            if (recipe.calories) textContent += `  Calories: ${recipe.calories} kcal\n`;
+            if (recipe.protein_g) textContent += `  Protein: ${recipe.protein_g}g\n`;
+            if (recipe.carbs_g) textContent += `  Carbs: ${recipe.carbs_g}g\n`;
+            if (recipe.fat_g) textContent += `  Fat: ${recipe.fat_g}g\n`;
+            textContent += `\n`;
+          }
+          if (recipe.ingredients) {
+            textContent += `INGREDIENTS\n----------------------------------------\n`;
+            let ingsArr = [];
+            try {
+              ingsArr = typeof recipe.ingredients === 'string' ? JSON.parse(recipe.ingredients) : recipe.ingredients;
+            } catch (e) {
+              ingsArr = recipe.ingredients.split(',').map(s => s.trim());
+            }
+            ingsArr.forEach(ing => {
+              const ingStr = typeof ing === 'object' ? `${ing.amount || ''} ${ing.unit || ''} ${ing.name || ''}`.trim() : String(ing).trim();
+              textContent += `  • ${ingStr}\n`;
+            });
+            textContent += `\n`;
+          }
+          if (recipe.instructions) {
+            const cleanInst = recipe.instructions.replace(/<[^>]+>/g, '');
+            textContent += `INSTRUCTIONS\n----------------------------------------\n${cleanInst}\n\n`;
+          }
+          textContent += `------------------------------------------------------------\nExported from CHEF — Constraint-based Hybrid Eating Framework\n`;
+
+          const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+          const url = window.URL.createObjectURL(blob);
+          const safeTitle = (recipe.title || 'recipe').replace(/[^a-zA-Z0-9_-]/g, '_');
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${safeTitle}.txt`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          toast.success(`Exported "${recipe.title}" as TXT ✓`);
+          return;
+        } catch (fallbackErr) {
+          console.error("Fallback export failed:", fallbackErr);
+        }
+      }
+      toast.error(`Failed to export recipe: ${err.message}`);
+    }
+  };
+
+  const handlePrint = (recipe) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      toast.error("Pop-up blocked. Please allow pop-ups to print.");
+      return;
+    }
+    const cleanTitle = DOMPurify.sanitize(recipe.title || 'Recipe');
+    const cleanSummary = recipe.summary ? DOMPurify.sanitize(recipe.summary) : '';
+    let ingsArr = [];
+    if (recipe.ingredients) {
+      try {
+        ingsArr = typeof recipe.ingredients === 'string' ? JSON.parse(recipe.ingredients) : recipe.ingredients;
+      } catch (e) {
+        ingsArr = recipe.ingredients.split(',').map(s => s.trim());
+      }
+    }
+    const ingredientsList = ingsArr.length > 0
+      ? ingsArr.map(i => `<li>${DOMPurify.sanitize(typeof i === 'object' ? `${i.amount || ''} ${i.unit || ''} ${i.name || ''}`.trim() : String(i).trim())}</li>`).join('')
+      : '<li>No ingredients listed</li>';
+    const instructionsText = recipe.instructions
+      ? DOMPurify.sanitize(recipe.instructions).replace(/\n/g, '<br/>')
+      : 'No instructions listed';
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${cleanTitle} — CHEF Recipe</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 40px; color: #2d3748; line-height: 1.6; }
+          h1 { color: #e07a5f; margin-bottom: 5px; border-bottom: 2px solid #e07a5f; padding-bottom: 8px; }
+          .meta { font-size: 14px; color: #718096; margin-bottom: 20px; }
+          .section-title { font-size: 18px; font-weight: bold; color: #e07a5f; margin-top: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+          ul { padding-left: 20px; }
+          li { margin-bottom: 6px; }
+          .footer { margin-top: 40px; pt-4; border-top: 1px solid #e2e8f0; font-size: 12px; color: #a0aec0; text-align: center; }
+          @media print {
+            body { margin: 20px; }
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${cleanTitle}</h1>
+        <div class="meta">
+          ${recipe.calories ? `<span>🔥 ${recipe.calories} kcal</span> &nbsp;•&nbsp; ` : ''}
+          ${recipe.ready_in_minutes ? `<span>⏱️ ${recipe.ready_in_minutes} mins</span> &nbsp;•&nbsp; ` : ''}
+          ${recipe.rating ? `<span>★ ${recipe.rating}/5</span>` : ''}
+        </div>
+        ${cleanSummary ? `<p><em>${cleanSummary}</em></p>` : ''}
+        <div class="section-title">Ingredients</div>
+        <ul>${ingredientsList}</ul>
+        <div class="section-title">Instructions</div>
+        <p>${instructionsText}</p>
+        <div class="footer">Exported from CHEF — Constraint-based Hybrid Eating Framework</div>
+        <script>
+          window.onload = function() { window.print(); };
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
   return (
     <section className="page active">
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -107,10 +246,10 @@ export default function SavedRecipes() {
                     </div>
                   </div>
                   <div className="recipe-actions" style={{ marginTop: '15px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <button className="btn-secondary" onClick={() => setSelectedRecipe({...r, ingredients: r.ingredients ? r.ingredients.split(', ') : []})}>View Details</button>
-                    <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=text`, '_blank')} title="Export as Text">📄 Text</button>
-                    <button className="btn-secondary" onClick={() => window.open(`/api/recipes/saved/${r.id}/export?format=pdf`, '_blank')} title="Export as PDF">📕 PDF</button>
-                    <button className="btn-secondary" onClick={() => { const w = window.open('', '_blank'); w.document.write(`<pre style="font-family:monospace;white-space:pre-wrap;max-width:800px;margin:40px auto;font-size:14px">${DOMPurify.sanitize(r.title)}\n\n${DOMPurify.sanitize(r.ingredients || '')}\n\n${DOMPurify.sanitize(r.instructions || '')}</pre>`); w.document.title = DOMPurify.sanitize(r.title); w.print(); }} title="Print Recipe">🖨️ Print</button>
+                    <button className="btn-secondary" onClick={() => setSelectedRecipe({...r, ingredients: r.ingredients ? (typeof r.ingredients === 'string' && r.ingredients.startsWith('[') ? JSON.parse(r.ingredients) : r.ingredients.split(', ')) : []})}>View Details</button>
+                    <button className="btn-secondary" onClick={() => handleExport(r, 'text')} title="Export as Text">📄 Text</button>
+                    <button className="btn-secondary" onClick={() => handleExport(r, 'pdf')} title="Export as PDF">📕 PDF</button>
+                    <button className="btn-secondary" onClick={() => handlePrint(r)} title="Print Recipe">🖨️ Print</button>
                     <button className="btn-danger" onClick={() => handleDelete(r.id)}>🗑️ Remove</button>
                   </div>
                 </div>
