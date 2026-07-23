@@ -149,20 +149,68 @@ export default function NutritionTracker() {
     }
   };
 
+  const formatDateStr = (dateObj) => {
+    const y = dateObj.getFullYear();
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const d = String(dateObj.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  const parseLocalDate = (dateStr) => {
+    if (!dateStr) return new Date();
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  };
+
   const fetchSummary = async () => {
     if (!token) return;
-    const end = new Date(selectedDate);
-    const start = new Date(selectedDate);
-    if (summaryRange === 'week') {
-      start.setDate(start.getDate() - 6);
-    } else {
-      start.setDate(start.getDate() - 29);
-    }
+    const daysCount = summaryRange === 'week' ? 7 : 30;
+    const endDate = parseLocalDate(selectedDate);
+    const startDate = parseLocalDate(selectedDate);
+    startDate.setDate(startDate.getDate() - (daysCount - 1));
+
+    const startStr = formatDateStr(startDate);
+    const endStr = formatDateStr(endDate);
+
     try {
-      const data = await api.get(`/nutrition/log/summary?start_date=${start.toISOString().split('T')[0]}&end_date=${end.toISOString().split('T')[0]}`);
-      setSummaryData(data);
+      const data = await api.get(`/nutrition/log/summary?start_date=${startStr}&end_date=${endStr}`);
+      const dataMap = new Map((data || []).map(item => [item.date, item]));
+      
+      const fullTimeline = [];
+      const curr = new Date(startDate);
+      while (curr <= endDate) {
+        const dateStr = formatDateStr(curr);
+        const existing = dataMap.get(dateStr);
+        fullTimeline.push({
+          date: dateStr,
+          total_calories: existing ? existing.total_calories || 0 : 0,
+          total_protein_g: existing ? existing.total_protein_g || 0 : 0,
+          total_carbs_g: existing ? existing.total_carbs_g || 0 : 0,
+          total_fat_g: existing ? existing.total_fat_g || 0 : 0,
+          total_fiber_g: existing ? existing.total_fiber_g || 0 : 0,
+          items_logged: existing ? existing.items_logged || 0 : 0,
+          hasData: !!existing && (existing.items_logged || 0) > 0,
+        });
+        curr.setDate(curr.getDate() + 1);
+      }
+      setSummaryData(fullTimeline);
     } catch {
-      // silently ignore summary errors
+      const fullTimeline = [];
+      const curr = new Date(startDate);
+      while (curr <= endDate) {
+        fullTimeline.push({
+          date: formatDateStr(curr),
+          total_calories: 0,
+          total_protein_g: 0,
+          total_carbs_g: 0,
+          total_fat_g: 0,
+          total_fiber_g: 0,
+          items_logged: 0,
+          hasData: false,
+        });
+        curr.setDate(curr.getDate() + 1);
+      }
+      setSummaryData(fullTimeline);
     }
   };
 
@@ -758,7 +806,9 @@ export default function NutritionTracker() {
       )}
 
       {/* ── Trend Analytics Overhaul (SVG Line Chart) ── */}
-      {summaryData.length > 0 && (() => {
+      {(() => {
+        if (!token || summaryData.length === 0) return null;
+
         const width = 640;
         const height = 250;
         const paddingLeft = 55;
@@ -766,20 +816,25 @@ export default function NutritionTracker() {
         const paddingTop = 45;
         const paddingBottom = 40;
 
+        const totalDays = summaryData.length;
+        const activeDays = summaryData.filter(d => (d.total_calories || 0) > 0);
+        const activeCount = activeDays.length;
+
         const rawMax = Math.max(...summaryData.map(d => d.total_calories || 0), targets.calories || 0);
         const maxCal = Math.max(Math.ceil((rawMax * 1.25) / 500) * 500, 1000);
 
-        const totalDays = summaryData.length;
-        const avgCals = Math.round(summaryData.reduce((acc, curr) => acc + (curr.total_calories || 0), 0) / totalDays);
-        const peakCals = Math.round(Math.max(...summaryData.map(d => d.total_calories || 0)));
+        const avgCals = activeCount > 0 
+          ? Math.round(activeDays.reduce((acc, curr) => acc + (curr.total_calories || 0), 0) / activeCount) 
+          : 0;
+        const peakCals = Math.round(Math.max(0, ...summaryData.map(d => d.total_calories || 0)));
         const targetGoal = targets.calories || 2000;
         const onTrackCount = summaryData.filter(d => (d.total_calories || 0) >= targetGoal * 0.85 && (d.total_calories || 0) <= targetGoal * 1.15).length;
-        const onTrackPct = Math.round((onTrackCount / totalDays) * 100);
+        const onTrackPct = activeCount > 0 ? Math.round((onTrackCount / activeCount) * 100) : 0;
 
         const points = summaryData.map((d, index) => {
           const x = paddingLeft + (index * (width - paddingLeft - paddingRight)) / (totalDays - 1 || 1);
           const y = height - paddingBottom - ((d.total_calories || 0) * (height - paddingTop - paddingBottom)) / maxCal;
-          return { x, y, date: d.date, calories: d.total_calories || 0 };
+          return { x, y, date: d.date, calories: d.total_calories || 0, hasData: d.hasData };
         });
 
         const targetY = height - paddingBottom - (targetGoal * (height - paddingTop - paddingBottom)) / maxCal;
@@ -794,12 +849,19 @@ export default function NutritionTracker() {
         const isHoveredNearTop = hoveredPoint && hoveredPoint.y < (height * 0.45);
         const tooltipLeftPct = hoveredPoint ? Math.max(8, Math.min(92, (hoveredPoint.x / width) * 100)) : 50;
 
+        const isLabelTick = (idx) => {
+          if (summaryRange === 'week') return true;
+          return idx === 0 || idx === 5 || idx === 10 || idx === 15 || idx === 20 || idx === 25 || idx === totalDays - 1;
+        };
+
         return (
           <div className="card glass" style={{ marginTop: '24px', padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <h3 style={{ fontSize: '18px', margin: 0, fontWeight: '700' }}>Trend Analytics</h3>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Calorie Intake History & Goal Compliance</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                  {summaryRange === 'month' ? '30-Day Monthly Calorie Intake' : '7-Day Calorie Intake'} & Goal Compliance
+                </span>
               </div>
               <div style={{ display: 'flex', gap: '6px' }}>
                 <button
@@ -822,18 +884,24 @@ export default function NutritionTracker() {
             {/* Quick Metrics Bar */}
             <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
-                <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Daily Avg</div>
+                <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Daily Avg (Active)</div>
                 <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)', marginTop: '2px' }}>{avgCals} <span style={{ fontSize: '11px', fontWeight: 'normal' }}>kcal</span></div>
               </div>
               <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
                 <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Goal Match</div>
-                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#10b981', marginTop: '2px' }}>{onTrackPct}% <span style={{ fontSize: '11px', fontWeight: 'normal', color: 'var(--text-muted)' }}>({onTrackCount}/{totalDays}d)</span></div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#10b981', marginTop: '2px' }}>{onTrackPct}% <span style={{ fontSize: '11px', fontWeight: 'normal', color: 'var(--text-muted)' }}>({onTrackCount}/{activeCount || totalDays}d)</span></div>
               </div>
               <div style={{ flex: 1, minWidth: '120px', background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
                 <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)' }}>Peak Intake</div>
                 <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#f59e0b', marginTop: '2px' }}>{peakCals} <span style={{ fontSize: '11px', fontWeight: 'normal' }}>kcal</span></div>
               </div>
             </div>
+
+            {activeCount === 0 && (
+              <div style={{ textAlign: 'center', padding: '8px', marginBottom: '12px', fontSize: '12px', color: 'var(--text-muted)', background: 'var(--bg-secondary)', borderRadius: '8px' }}>
+                ℹ️ No logged meals found for this {summaryRange === 'month' ? '30-day window' : '7-day window'}. Log your meals to track your daily progress!
+              </div>
+            )}
 
             <div style={{ position: 'relative', width: '100%', overflow: 'visible' }}>
               <svg 
@@ -934,8 +1002,8 @@ export default function NutritionTracker() {
                 {points.map((p) => {
                   const isHovered = hoveredPoint?.date === p.date;
                   const diff = p.calories - targetGoal;
-                  const isNearTarget = Math.abs(diff) <= targetGoal * 0.12;
-                  const pointColor = isNearTarget ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6');
+                  const isNearTarget = p.calories > 0 && Math.abs(diff) <= targetGoal * 0.12;
+                  const pointColor = p.calories === 0 ? 'var(--text-muted)' : (isNearTarget ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6'));
 
                   return (
                     <g key={p.date}>
@@ -951,16 +1019,16 @@ export default function NutritionTracker() {
                       <circle
                         cx={p.x}
                         cy={p.y}
-                        r={isHovered ? 6 : 4.5}
+                        r={isHovered ? 6 : (summaryRange === 'month' ? 3.5 : 4.5)}
                         fill="var(--bg-primary)"
                         stroke={pointColor}
-                        strokeWidth="3"
+                        strokeWidth={summaryRange === 'month' ? 2 : 3}
                         style={{ cursor: 'pointer', transition: 'r 0.15s ease, fill 0.15s ease' }}
                         onMouseEnter={() => setHoveredPoint(p)}
                         onClick={() => setSelectedDate(p.date)}
                       />
                       {/* Point-wise kcal text label */}
-                      {(isHovered || summaryRange === 'week') && (
+                      {(isHovered || (summaryRange === 'week' && p.calories > 0)) && (
                         <g>
                           <rect 
                             x={p.x - 18} 
@@ -990,10 +1058,10 @@ export default function NutritionTracker() {
                 })}
 
                 {/* X-Axis Date Labels */}
-                {points.filter((_, idx) => summaryRange === 'month' ? idx % 4 === 0 : true).map(p => {
-                  const dateObj = new Date(p.date + 'T12:00:00');
+                {points.filter((_, idx) => isLabelTick(idx)).map(p => {
+                  const dateObj = parseLocalDate(p.date);
                   const label = summaryRange === 'month' 
-                    ? `${dateObj.getMonth() + 1}/${dateObj.getDate()}` 
+                    ? dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
                     : dateObj.toLocaleDateString(undefined, { weekday: 'short' });
                   return (
                     <text 
@@ -1014,8 +1082,12 @@ export default function NutritionTracker() {
               {/* Dynamic Glassmorphism Tooltip */}
               {hoveredPoint && (() => {
                 const diff = Math.round(hoveredPoint.calories - targetGoal);
-                const diffText = diff > 0 ? `+${diff} kcal over target` : `${Math.abs(diff)} kcal remaining`;
-                const diffColor = Math.abs(diff) <= targetGoal * 0.12 ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6');
+                const diffText = hoveredPoint.calories === 0 
+                  ? 'No intake logged'
+                  : (diff > 0 ? `+${diff} kcal over target` : `${Math.abs(diff)} kcal remaining`);
+                const diffColor = hoveredPoint.calories === 0 
+                  ? 'var(--text-muted)'
+                  : (Math.abs(diff) <= targetGoal * 0.12 ? '#10b981' : (diff > 0 ? '#f59e0b' : '#3b82f6'));
                 const pctOfTarget = Math.round((hoveredPoint.calories / targetGoal) * 100);
 
                 return (
