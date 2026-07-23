@@ -5417,5 +5417,172 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+/* ── Grocery List Print Styles ────────────────────────────────────────── */
+.printable-checkbox-box {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+  }
+
+  /* Hide navigation, sidebar, page elements, close button, print button */
+  #main-nav,
+  .sidebar,
+  .no-print,
+  .modal-close,
+  .page-header,
+  .meal-planner-page > div:not(.grocery-modal-overlay),
+  button {
+    display: none !important;
+  }
+
+  .grocery-print-header {
+    display: block !important;
+  }
+
+  .grocery-screen-header {
+    display: none !important;
+  }
+
+  /* Reset modal overlay & drawer for full printable document layout */
+  .grocery-modal-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    z-index: 99999 !important;
+  }
+
+  .grocery-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    animation: none !important;
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  .grocery-scroll-area {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .grocery-categories-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    align-items: start !important;
+  }
+
+  .grocery-category-group {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 12px !important;
+  }
+
+  .grocery-category-header {
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+    padding-bottom: 4px;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .grocery-item-row {
+    background: #ffffff !important;
+    border: 1px solid #d0d0d0 !important;
+    color: #000000 !important;
+    opacity: 1 !important;
+    margin-bottom: 6px !important;
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .grocery-item-title {
+    color: #000000 !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+  }
+
+  .grocery-item-row.is-checked .grocery-item-title {
+    text-decoration: line-through !important;
+    color: #777777 !important;
+  }
+
+  .grocery-item-sub {
+    color: #555555 !important;
+    font-size: 0.75rem !important;
+  }
+
+  .printable-checkbox-box {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000000 !important;
+    border-radius: 3px !important;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 11px;
+    color: #000000 !important;
+    background: #ffffff !important;
+    flex-shrink: 0;
+  }
+
+  .grocery-pantry-section {
+    grid-column: 1 / -1 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    background: #f5faf7 !important;
+    border: 1px solid #c2e5d3 !important;
+    color: #1e7e44 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin-top: 10px !important;
+  }
+
+  .grocery-pantry-chip {
+    background: #ffffff !important;
+    color: #1e7e44 !important;
+    border: 1px solid #1e7e44 !important;
+    font-weight: 600 !important;
+  }
+
+  .grocery-print-footer {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+  }
+}
+
+
 
 

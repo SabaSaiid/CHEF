@@ -47,7 +47,6 @@ export default function Navbar({ onToggleSidebar }) {
           <span className="nav-logo">👨‍🍳</span>
           <div className="nav-brand-text">
             <span className="nav-title">CHEF</span>
-            <span className="nav-subtitle">Hybrid Eating Framework</span>
           </div>
         </div>
 
