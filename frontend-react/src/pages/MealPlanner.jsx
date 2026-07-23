@@ -3,10 +3,13 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import AuthModal from '../components/AuthModal';
 
 export default function MealPlanner() {
   const { token, activeProfile } = useContext(AuthContext);
   const toast = useToast();
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
     const day = today.getDay();
@@ -38,6 +41,35 @@ export default function MealPlanner() {
   const [newItemName, setNewItemName] = useState('');
   const [showPantryInPrint, setShowPantryInPrint] = useState(true);
 
+  // Mouse / Touch Drag state for Meal Planner Grid
+  const gridRef = React.useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragScrollLeft, setDragScrollLeft] = useState(0);
+
+  const handleGridMouseDown = (e) => {
+    if (!gridRef.current) return;
+    setIsDragging(true);
+    setDragStartX(e.pageX - gridRef.current.offsetLeft);
+    setDragScrollLeft(gridRef.current.scrollLeft);
+  };
+
+  const handleGridMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleGridMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleGridMouseMove = (e) => {
+    if (!isDragging || !gridRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - gridRef.current.offsetLeft;
+    const walk = (x - dragStartX) * 1.5;
+    gridRef.current.scrollLeft = dragScrollLeft - walk;
+  };
+
   const SLOTS = ['Breakfast', 'Lunch', 'Snack', 'Dinner'];
 
   const getWeekDays = () => {
@@ -54,6 +86,28 @@ export default function MealPlanner() {
   const startDateStr = weekDays[0].toISOString().split('T')[0];
   const endDateStr = weekDays[6].toISOString().split('T')[0];
 
+  const fetchData = async () => {
+    if (!token) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const [plans, recipes] = await Promise.all([
+        api.get(`/mealplan?start_date=${startDateStr}&end_date=${endDateStr}`),
+        api.get('/recipes/saved'),
+      ]);
+      setMealPlans(plans || []);
+      setSavedRecipes(recipes || []);
+    } catch (err) {
+      setError(err.message || 'Failed to load meal planner data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [token, startDateStr, endDateStr]);
+
   // Load checked state & custom items from localStorage for active week
   useEffect(() => {
     try {
@@ -68,6 +122,88 @@ export default function MealPlanner() {
       console.error(e);
     }
   }, [startDateStr, endDateStr]);
+
+  const changeWeek = (weeks) => {
+    const newStart = new Date(currentWeekStart);
+    newStart.setDate(newStart.getDate() + (weeks * 7));
+    setCurrentWeekStart(newStart);
+  };
+
+  const getMealForSlot = (dateStr, slot) => {
+    return mealPlans.find(mp => mp.date === dateStr && mp.meal_slot === slot);
+  };
+
+  const openRecipePicker = (dateStr, slot) => {
+    setSelectedSlot({ date: dateStr, slot });
+    setIsRecipePickerOpen(true);
+  };
+
+  const assignRecipeToSlot = async (recipeId) => {
+    if (!selectedSlot) return;
+    try {
+      await api.post('/mealplan', {
+        recipe_id: recipeId,
+        date: selectedSlot.date,
+        meal_slot: selectedSlot.slot
+      });
+      toast.success(`Assigned to ${selectedSlot.slot}! ✓`);
+      setIsRecipePickerOpen(false);
+      setSelectedSlot(null);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || 'Failed to assign recipe.');
+    }
+  };
+
+  const removeMeal = async (mealPlanId, e) => {
+    if (e) e.stopPropagation();
+    try {
+      await api.delete(`/mealplan/${mealPlanId}`);
+      toast.success("Meal removed from plan");
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || 'Failed to remove meal.');
+    }
+  };
+
+  const handleSmartAutofill = async () => {
+    setSmartFilling(true);
+    try {
+      const result = await api.post(`/mealplan/autofill?start_date=${startDateStr}&end_date=${endDateStr}`);
+      toast.success(result.message || "Smart autofill complete! ✨");
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || 'Autofill failed.');
+    } finally {
+      setSmartFilling(false);
+    }
+  };
+
+  const handleLogToday = async () => {
+    setLoggingToday(true);
+    try {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const result = await api.post(`/mealplan/log-today?date=${todayStr}`);
+      toast.success(result.message || "Today's planned meals logged into tracker! ⚡");
+    } catch (err) {
+      toast.error(err.message || 'Failed to log today\'s meals.');
+    } finally {
+      setLoggingToday(false);
+    }
+  };
+
+  const generateShoppingList = async () => {
+    setIsShoppingListOpen(true);
+    setLoadingShoppingList(true);
+    try {
+      const data = await api.get(`/mealplan/shopping-list?start_date=${startDateStr}&end_date=${endDateStr}`);
+      setShoppingList(data || { categories: {}, in_pantry_skipped: [] });
+    } catch (err) {
+      toast.error(err.message || 'Failed to generate shopping list.');
+    } finally {
+      setLoadingShoppingList(false);
+    }
+  };
 
   const updateCheckedItems = (newChecked) => {
     setCheckedListItems(newChecked);
@@ -173,9 +309,18 @@ export default function MealPlanner() {
 
   if (!token) {
     return (
-      <section className="page active" style={{textAlign: 'center', paddingTop: '100px'}}>
-        <h2>Please Log In</h2>
-        <p style={{color: 'var(--text-secondary)'}}>You must be logged in to plan your meals.</p>
+      <section className="page active meal-planner-page" style={{ textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="card glass" style={{ maxWidth: '500px', margin: '0 auto', padding: '40px 30px', borderRadius: '24px' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📅</div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '10px' }}>Weekly Meal Planner</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: '1.6' }}>
+            Plan your weekly meals, auto-log daily nutrition, and generate smart grocery checklists based on pantry stock.
+          </p>
+          <button className="btn-primary" onClick={() => setAuthModalOpen(true)} style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: '14px' }}>
+            🔐 Log In / Sign Up to Access Planner
+          </button>
+        </div>
+        <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
       </section>
     );
   }
@@ -210,7 +355,23 @@ export default function MealPlanner() {
 
       {error && <div style={{ color: '#dc2626', marginBottom: '20px', padding: '10px', background: 'rgba(220,38,38,0.1)', borderRadius: '8px' }}>{error}</div>}
       
-      <div className="calendar-grid" style={{ display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '30px', padding: '10px 5px' }}>
+      <div 
+        ref={gridRef}
+        className="calendar-grid" 
+        onMouseDown={handleGridMouseDown}
+        onMouseLeave={handleGridMouseLeave}
+        onMouseUp={handleGridMouseUp}
+        onMouseMove={handleGridMouseMove}
+        style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          overflowX: 'auto', 
+          cursor: isDragging ? 'grabbing' : 'grab',
+          userSelect: isDragging ? 'none' : 'auto',
+          paddingBottom: '30px', 
+          padding: '10px 5px' 
+        }}
+      >
         {weekDays.map((dateObj, dayIdx) => {
           const dateStr = dateObj.toISOString().split('T')[0];
           const isToday = dateStr === new Date().toISOString().split('T')[0];

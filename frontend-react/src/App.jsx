@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
+import { SettingsProvider } from './context/SettingsContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
@@ -55,17 +56,29 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <ToastProvider>
-          <BrowserRouter>
-            <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
-            <div className={`app-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-              <main id="app-main">
-                <AnimatedRoutes />
-              </main>
-              <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
-            </div>
-          </BrowserRouter>
-        </ToastProvider>
+        <SettingsProvider>
+          <ToastProvider>
+            <BrowserRouter>
+              <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
+              <div className={`app-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+                <main id="app-main">
+                  <AnimatedRoutes />
+                </main>
+                <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
+              </div>
+              {!isSidebarOpen && (
+                <button 
+                  className="sidebar-floating-toggle"
+                  onClick={() => setSidebarOpen(true)}
+                  title="Open Preferences & Profile Sidebar"
+                  aria-label="Open Sidebar"
+                >
+                  📋
+                </button>
+              )}
+            </BrowserRouter>
+          </ToastProvider>
+        </SettingsProvider>
       </AuthProvider>
     </ThemeProvider>
   );

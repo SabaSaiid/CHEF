@@ -90,45 +90,76 @@ if _recipes_path.exists():
                     _INGREDIENT_INDEX[token].add(item.id)
 
 
+# Load ingredient groups taxonomy
+_GROUPS_FILE = Path(__file__).resolve().parent.parent / "ingredient_groups.json"
+_GROUPS_DATA = {"groups": {}, "common_typos": {}}
+if _GROUPS_FILE.exists():
+    with open(_GROUPS_FILE, "r", encoding="utf-8") as _gf:
+        _GROUPS_DATA = json.load(_gf)
+
+_GROUPS = _GROUPS_DATA.get("groups", {})
+_TYPOS = _GROUPS_DATA.get("common_typos", {})
+
+def _expand_ingredient_synonyms(ing: str) -> set[str]:
+    """Returns set of synonyms/family members for an ingredient name."""
+    s = ing.lower().strip()
+    s = _TYPOS.get(s, s)
+    synonyms = {s}
+    for group_name, members in _GROUPS.items():
+        if s == group_name or s in members:
+            synonyms.update(members)
+            synonyms.add(group_name)
+    return synonyms
+
+
 def _match_score(recipe: RecipeItem, search_ingredients: list[str]) -> float:
     """
     Calculate how well a recipe matches the search ingredients (0.0 to 1.0).
-    Uses direct string containment — called only on the pre-filtered candidate set.
+    Uses ingredient taxonomy expansion, typo correction, and string containment.
     """
     if not search_ingredients:
         return 1.0
 
-    recipe_ings = {ing.lower() for ing in recipe.ingredients}
+    recipe_ings = [ing.lower() for ing in recipe.ingredients]
     title_lower = recipe.title.lower()
     matches = 0
 
     for search_ing in search_ingredients:
-        s = search_ing.lower().strip()
-        if s in title_lower:
-            matches += 1
-            continue
-        for recipe_ing in recipe_ings:
-            if s in recipe_ing or recipe_ing in s:
-                matches += 1
+        expanded_terms = _expand_ingredient_synonyms(search_ing)
+        matched = False
+        for term in expanded_terms:
+            if term in title_lower:
+                matched = True
                 break
+            for recipe_ing in recipe_ings:
+                if term in recipe_ing or recipe_ing in term:
+                    matched = True
+                    break
+            if matched:
+                break
+        if matched:
+            matches += 1
 
-    return matches / len(search_ingredients)
+    return round(matches / len(search_ingredients), 2)
 
 
 def _get_candidate_ids(search_ingredients: list[str]) -> set[str] | None:
     """
     Use the inverted index to find candidate recipe IDs that contain at least
-    one of the search ingredient tokens. Returns None if no ingredients given.
+    one of the search ingredient tokens or taxonomy synonyms. Returns None if no ingredients given.
     """
     if not search_ingredients:
         return None  # No filtering — use full list
 
     candidate_ids: set[str] = set()
     for ing in search_ingredients:
-        for token in ing.lower().split():
-            if len(token) > 2 and token in _INGREDIENT_INDEX:
-                candidate_ids |= _INGREDIENT_INDEX[token]
+        terms = _expand_ingredient_synonyms(ing)
+        for term in terms:
+            for token in term.split():
+                if len(token) > 2 and token in _INGREDIENT_INDEX:
+                    candidate_ids |= _INGREDIENT_INDEX[token]
     return candidate_ids
+
 
 
 def _diet_matches(recipe: RecipeItem, diet: str) -> bool:

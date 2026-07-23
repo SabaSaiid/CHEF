@@ -133,6 +133,8 @@ class TDEEResponse(BaseModel):
     carbs_pct: int = Field(..., description="Carbs % of total calories")
     fat_pct: int = Field(..., description="Fat % of total calories")
     protein_per_kg: float = Field(..., description="Protein grams per kg body weight")
+    recommended_goal: Optional[str] = Field(None, description="Recommended goal based on BMI: lose | maintain | gain")
+    recommendation_reason: Optional[str] = Field(None, description="Explanation for recommendation")
 
 
 # ── Ingredients ─────────────────────────────────────────────────

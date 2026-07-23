@@ -241,8 +241,18 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
     # EFSA guideline: ~35 ml per kg body weight
     target_water = int(round(35 * req.weight_kg))
 
-    # ─── 9. BMI ──────────────────────────────────────────────────────
+    # ─── 9. BMI & Target Recommendations ─────────────────────────────
     bmi_val, bmi_cat = _bmi(req.weight_kg, req.height_cm)
+
+    if bmi_val < 18.5:
+        recommended_goal = "gain"
+        recommendation_reason = f"BMI is {bmi_val} ({bmi_cat}). Controlled Surplus (Bulking) is recommended for healthy muscle gain."
+    elif bmi_val >= 25.0:
+        recommended_goal = "lose"
+        recommendation_reason = f"BMI is {bmi_val} ({bmi_cat}). Controlled Deficit (Cutting) is recommended to achieve normal BMI range."
+    else:
+        recommended_goal = req.goal if req.goal in ["lose", "gain", "maintain"] else "maintain"
+        recommendation_reason = f"BMI is {bmi_val} ({bmi_cat}). Healthy normal range — align with your preference ({req.goal})."
 
     return TDEEResponse(
         # Core targets
@@ -264,7 +274,10 @@ def calculate_tdee_macros(req: TDEERequest) -> TDEEResponse:
         carbs_pct=carbs_pct_actual,
         fat_pct=fat_pct_actual,
         protein_per_kg=round(target_protein / req.weight_kg, 2),
+        recommended_goal=recommended_goal,
+        recommendation_reason=recommendation_reason,
     )
+
 
 
 @router.post("/calculate", response_model=TDEEResponse)

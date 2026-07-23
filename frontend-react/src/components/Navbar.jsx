@@ -1,14 +1,15 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Bell, Trash2, CheckCircle2, AlertCircle, AlertTriangle, Info, CheckCheck } from 'lucide-react';
+import { Bell, Trash2, CheckCircle2, AlertCircle, AlertTriangle, Info, CheckCheck, SlidersHorizontal, Settings as SettingsIcon } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
-import { ThemeContext } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
 import AuthModal from './AuthModal';
+import SettingsModal from './SettingsModal';
 
 export default function Navbar({ onToggleSidebar }) {
   const { token, username } = useContext(AuthContext);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const { history, unreadCount, markAllAsRead, clearHistory } = useToast();
   const notifRef = useRef(null);
@@ -125,24 +126,39 @@ export default function Navbar({ onToggleSidebar }) {
           {!token ? (
             <button className="btn-auth" onClick={() => setAuthModalOpen(true)}>🔐 Login</button>
           ) : (
-            <div className="user-greeting">
+            <div className="user-greeting" onClick={onToggleSidebar} style={{ cursor: 'pointer' }} title="Toggle Sidebar Panel">
               <span>👤 {username}</span>
             </div>
           )}
 
+          {/* Toggle Sidebar Button */}
           <button 
-            className="navbar-sidebar-toggle theme-toggle"
+            type="button"
+            className="nav-icon-btn"
             onClick={onToggleSidebar}
-            title="Toggle Preferences"
+            title="Toggle Preferences & Sidebar"
+            aria-label="Toggle Sidebar"
             style={{ margin: 0 }}
           >
-            ⚙️
+            <SlidersHorizontal size={18} />
+          </button>
+
+          {/* App Settings Modal Button */}
+          <button 
+            type="button"
+            className="nav-icon-btn"
+            onClick={() => setSettingsOpen(true)}
+            title="App Settings"
+            aria-label="App Settings"
+            style={{ margin: 0 }}
+          >
+            <SettingsIcon size={18} />
           </button>
         </div>
       </nav>
 
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
+      {isSettingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </>
   );
 }
-

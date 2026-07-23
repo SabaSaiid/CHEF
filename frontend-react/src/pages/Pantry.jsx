@@ -4,6 +4,22 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 import { Plus, Wand2, Trash2, Search, AlertTriangle, ChefHat, Info, AlertCircle, Package } from 'lucide-react';
+import useHoldToRepeat from '../hooks/useHoldToRepeat';
+
+function HoldablePantryQtyBtn({ item, amount, onAdjust, label, title }) {
+  const handlers = useHoldToRepeat(() => onAdjust(item, amount), 350, 100);
+  return (
+    <button
+      type="button"
+      style={{ border: 'none', background: 'transparent', padding: '4px 8px', fontSize: '16px', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 'bold' }}
+      title={title}
+      {...handlers}
+    >
+      {label}
+    </button>
+  );
+}
+
 
 const PANTRY_CATEGORIES = ['All', 'Produce', 'Proteins', 'Dairy', 'Grains & Baking', 'Spices & Seasonings', 'Other'];
 
@@ -585,24 +601,13 @@ export default function Pantry() {
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '18px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-secondary)', borderRadius: '8px', padding: '2px', border: '1px solid var(--border-glass)' }}>
-                            <button 
-                              onClick={() => handleQuantityAdjust(item, -1)}
-                              style={{ border: 'none', background: 'transparent', padding: '4px 8px', fontSize: '16px', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 'bold' }}
-                              title="Subtract 1"
-                            >
-                              -
-                            </button>
+                            <HoldablePantryQtyBtn item={item} amount={-1} onAdjust={handleQuantityAdjust} label="-" title="Hold to subtract quantity" />
                             <span style={{ fontSize: '12px', fontWeight: 'bold', padding: '0 8px', color: 'var(--text-secondary)' }}>
                               qty
                             </span>
-                            <button 
-                              onClick={() => handleQuantityAdjust(item, 1)}
-                              style={{ border: 'none', background: 'transparent', padding: '4px 8px', fontSize: '16px', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 'bold' }}
-                              title="Add 1"
-                            >
-                              +
-                            </button>
+                            <HoldablePantryQtyBtn item={item} amount={1} onAdjust={handleQuantityAdjust} label="+" title="Hold to add quantity" />
                           </div>
+
                           
                           <button 
                             onClick={() => handleDelete(item.id, item.ingredient_name)}

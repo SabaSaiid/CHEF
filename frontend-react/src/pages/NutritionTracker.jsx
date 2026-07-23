@@ -3,6 +3,23 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { calculateMacroPercentages } from '../utils/nutrition';
+import useHoldToRepeat from '../hooks/useHoldToRepeat';
+
+function HoldableWaterBtn({ label, amount, onAdd, disabled, className, title }) {
+  const handlers = useHoldToRepeat(() => onAdd(amount), 350, 100);
+  return (
+    <button
+      type="button"
+      className={className}
+      disabled={disabled}
+      title={title}
+      {...handlers}
+    >
+      {label}
+    </button>
+  );
+}
+
 
 const MEAL_SLOTS = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
@@ -539,7 +556,12 @@ export default function NutritionTracker() {
             const visualPct = Math.min(rawPct, 100);
             const diff = Math.round(value - target);
             const isExceeded = diff > 0;
+            const isCriticalOverflow = rawPct >= 150;
             const isTargetMet = rawPct >= 90 && rawPct <= 110;
+
+            const badgeBg = isCriticalOverflow ? 'rgba(231, 76, 60, 0.25)' : (isExceeded ? 'rgba(243, 156, 18, 0.25)' : (isTargetMet ? 'rgba(16, 185, 129, 0.2)' : 'var(--bg-primary)'));
+            const badgeColor = isCriticalOverflow ? '#e74c3c' : (isExceeded ? '#f39c12' : (isTargetMet ? '#10b981' : 'var(--text-muted)'));
+            const borderCol = isCriticalOverflow ? '1px solid rgba(231, 76, 60, 0.6)' : (isExceeded ? '1px solid rgba(243, 156, 18, 0.5)' : (isTargetMet ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid var(--border-glass)'));
 
             return (
               <div 
@@ -550,7 +572,7 @@ export default function NutritionTracker() {
                   padding: '18px 12px 16px',
                   borderRadius: '16px',
                   background: 'var(--bg-secondary)',
-                  border: isExceeded ? '1px solid #f59e0b40' : (isTargetMet ? '1px solid #10b98140' : '1px solid var(--border-glass)'),
+                  border: borderCol,
                   transition: 'all 0.25s ease',
                   cursor: 'default'
                 }}
@@ -566,12 +588,13 @@ export default function NutritionTracker() {
                   fontWeight: 'bold',
                   padding: '2px 7px',
                   borderRadius: '10px',
-                  background: isExceeded ? '#f59e0b20' : (isTargetMet ? '#10b98120' : 'var(--bg-primary)'),
-                  color: isExceeded ? '#f59e0b' : (isTargetMet ? '#10b981' : 'var(--text-muted)'),
+                  background: badgeBg,
+                  color: badgeColor,
                   border: '1px solid var(--border-glass)'
                 }}>
-                  {rawPct}%
+                  {rawPct}% {isCriticalOverflow ? '🚨' : ''}
                 </div>
+
 
                 <div className="tracker-ring" style={{ width: '84px', height: '84px', margin: '8px auto 12px' }}>
                   <svg viewBox="0 0 36 36" className="tracker-ring-svg" style={{ overflow: 'visible' }}>
@@ -663,19 +686,14 @@ export default function NutritionTracker() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
                   <div style={{ flex: 1 }}>
                     <div className="water-controls" style={{ marginTop: 0 }}>
-                      <button className="water-btn primary-btn" onClick={() => handleAddWaterCustom(250)} title="Add 250ml water">
-                        💧 +250ml
-                      </button>
-                      <button className="water-btn" onClick={() => handleAddWaterCustom(500)} title="Add 500ml water">
-                        🌊 +500ml
-                      </button>
-                      <button className="water-btn danger-btn" onClick={() => handleAddWaterCustom(-250)} disabled={waterTotal <= 0} title="Remove 250ml water">
-                        ➖ -250ml
-                      </button>
+                      <HoldableWaterBtn className="water-btn primary-btn" amount={250} onAdd={handleAddWaterCustom} label="💧 +250ml" title="Hold to add water" />
+                      <HoldableWaterBtn className="water-btn" amount={500} onAdd={handleAddWaterCustom} label="🌊 +500ml" title="Hold to add 500ml" />
+                      <HoldableWaterBtn className="water-btn danger-btn" amount={-250} onAdd={handleAddWaterCustom} disabled={waterTotal <= 0} label="➖ -250ml" title="Hold to remove water" />
                       <button className="water-btn" onClick={handleResetWater} title="Reset hydration tracker">
                         🔄 Reset
                       </button>
                     </div>
+
                   </div>
 
                   {/* The Fluid Glass Tumbler */}

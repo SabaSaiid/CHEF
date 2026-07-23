@@ -39,6 +39,41 @@ if _DATA_FILE.exists():
     with open(_DATA_FILE, "r") as f:
         _SUBSTITUTIONS = json.load(f)
 
+_GROUPS_FILE = Path(__file__).resolve().parent.parent / "ingredient_groups.json"
+_GROUPS_DATA = {"groups": {}, "common_typos": {}}
+if _GROUPS_FILE.exists():
+    with open(_GROUPS_FILE, "r") as f:
+        _GROUPS_DATA = json.load(f)
+
+ALL_KNOWN_INGREDIENTS = list(set(
+    list(_SUBSTITUTIONS.keys()) +
+    [item for group in _GROUPS_DATA.get("groups", {}).values() for item in group]
+))
+
+def spell_correct_ingredient(query: str) -> tuple[str, bool]:
+    """
+    Auto-correct typos like 'chaiken' -> 'chicken'.
+    Returns (corrected_name, was_corrected).
+    """
+    if not query:
+        return query, False
+    
+    q_clean = query.strip().lower()
+    typos = _GROUPS_DATA.get("common_typos", {})
+    if q_clean in typos:
+        return typos[q_clean], True
+    
+    # Direct match in known ingredients
+    if q_clean in ALL_KNOWN_INGREDIENTS:
+        return q_clean, False
+
+    # Difflib close match
+    matches = difflib.get_close_matches(q_clean, ALL_KNOWN_INGREDIENTS, n=1, cutoff=0.7)
+    if matches:
+        return matches[0], True
+        
+    return query, False
+
 DESCRIPTORS = re.compile(
     r"\b("
     r"fresh|freshly|organic|raw|cold-pressed|extra-virgin|extra\s+virgin|"
@@ -339,3 +374,18 @@ async def parse_ingredients(req: IngredientParseRequest):
         ingredient_names=names,
         parser="rule_based",
     )
+
+
+@router.get("/autocorrect")
+def autocorrect_query(query: str):
+    """
+    Auto-correct ingredient query spelling. E.g. 'chaiken' -> 'chicken'.
+    Returns { original: query, corrected: corrected, is_corrected: bool }.
+    """
+    corrected, is_corrected = spell_correct_ingredient(query)
+    return {
+        "original": query,
+        "corrected": corrected,
+        "is_corrected": is_corrected
+    }
+

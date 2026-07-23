@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import { useSettings } from '../context/SettingsContext';
 
 const DIET_OPTIONS = [
   { value: 'vegetarian', label: '🥬 Vegetarian' },
@@ -25,7 +26,9 @@ const MEAL_OPTIONS = [
 export default function Recipes() {
   const location = useLocation();
   const toast = useToast();
+  const { settings } = useSettings();
   const [ingredients, setIngredients] = useState(location.state?.ingredients || '');
+  const [autoCorrectSuggestion, setAutoCorrectSuggestion] = useState(null);
   const [diet, setDiet] = useState('');
   const [region, setRegion] = useState('');
   const [mealType, setMealType] = useState('');
@@ -40,6 +43,38 @@ export default function Recipes() {
   const [sortBy, setSortBy] = useState('best_match');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const didInitRef = useRef(false);
+
+  useEffect(() => {
+    if (!settings.autoCorrectEnabled || !ingredients.trim()) {
+      setAutoCorrectSuggestion(null);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      const lastWord = ingredients.split(',').pop().trim();
+      if (lastWord.length >= 3) {
+        try {
+          const res = await api.get(`/ingredients/autocorrect?query=${encodeURIComponent(lastWord)}`);
+          if (res.is_corrected && res.corrected.toLowerCase() !== lastWord.toLowerCase()) {
+            setAutoCorrectSuggestion({ original: lastWord, corrected: res.corrected });
+          } else {
+            setAutoCorrectSuggestion(null);
+          }
+        } catch (e) {
+          setAutoCorrectSuggestion(null);
+        }
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [ingredients, settings.autoCorrectEnabled]);
+
+  const applyAutoCorrect = () => {
+    if (!autoCorrectSuggestion) return;
+    const parts = ingredients.split(',');
+    parts[parts.length - 1] = ` ${autoCorrectSuggestion.corrected}`;
+    setIngredients(parts.join(',').trim());
+    setAutoCorrectSuggestion(null);
+  };
+
 
   const loadPantry = async () => {
     try {
@@ -130,7 +165,29 @@ export default function Recipes() {
             🛒 Use My Pantry
           </button>
         </div>
+
+        {autoCorrectSuggestion && (
+          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.88rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Did you mean:</span>
+            <button
+              onClick={applyAutoCorrect}
+              style={{
+                background: 'rgba(129, 178, 154, 0.2)',
+                color: 'var(--primary)',
+                border: '1px solid var(--primary)',
+                padding: '3px 10px',
+                borderRadius: '16px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: '0.2s'
+              }}
+            >
+              ✨ {autoCorrectSuggestion.corrected} (replace "{autoCorrectSuggestion.original}")
+            </button>
+          </div>
+        )}
       </div>
+
 
       {/* Chip Filters Section */}
       <div className="fade-in-up" style={{ '--delay': '100ms', maxWidth: '1000px', margin: '0 auto' }}>

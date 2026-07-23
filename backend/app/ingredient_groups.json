@@ -1,0 +1,41 @@
+{
+  "groups": {
+    "cheese": ["cheese", "cheddar", "brie", "gouda", "parmesan", "mozzarella", "feta", "ricotta", "paneer", "halloumi", "cottage cheese", "cream cheese", "swiss cheese", "blue cheese", "provolone"],
+    "poultry": ["chicken", "chicken breast", "chicken thigh", "turkey", "turkey breast", "duck", "ground chicken", "ground turkey"],
+    "meat": ["beef", "ground beef", "steak", "pork", "pork belly", "pork chop", "lamb", "venison", "bacon", "sausage", "ham"],
+    "seafood": ["fish", "salmon", "tuna", "cod", "shrimp", "prawns", "crab", "lobster", "scallops", "tilapia", "halibut"],
+    "milk": ["milk", "whole milk", "skim milk", "almond milk", "soy milk", "oat milk", "coconut milk", "evaporated milk", "heavy cream", "condensed milk"],
+    "flour": ["flour", "all-purpose flour", "whole wheat flour", "almond flour", "oat flour", "cornstarch", "bread flour", "baking flour"],
+    "oil": ["oil", "olive oil", "avocado oil", "vegetable oil", "canola oil", "sesame oil", "coconut oil", "sunflower oil", "ghee", "butter"],
+    "onion": ["onion", "onions", "yellow onion", "red onion", "shallots", "scallions", "green onion", "leek", "chives"],
+    "pepper": ["bell pepper", "capsicum", "red bell pepper", "green bell pepper", "yellow bell pepper", "black pepper", "chili", "green chili", "red chili", "jalapeno", "serrano", "paprika", "cayenne"],
+    "rice": ["rice", "white rice", "brown rice", "basmati rice", "jasmine rice", "arborio rice", "wild rice", "cauliflower rice"],
+    "greens": ["spinach", "kale", "lettuce", "arugula", "swiss chard", "cabbage", "napa cabbage", "bok choy"],
+    "yogurt": ["yogurt", "greek yogurt", "curd", "hung curd", "sour cream"]
+  },
+  "common_typos": {
+    "chaiken": "chicken",
+    "chickn": "chicken",
+    "chickin": "chicken",
+    "tomto": "tomato",
+    "tomatoes": "tomato",
+    "paner": "paneer",
+    "panir": "paneer",
+    "garic": "garlic",
+    "garlc": "garlic",
+    "chilii": "chili",
+    "chilli": "chili",
+    "potat": "potato",
+    "potatos": "potato",
+    "potatoes": "potato",
+    "ric": "rice",
+    "yoghut": "yogurt",
+    "yogurt": "yogurt",
+    "brocoli": "broccoli",
+    "spinch": "spinach",
+    "chese": "cheese",
+    "chees": "cheese",
+    "butterr": "butter",
+    "onionn": "onion"
+  }
+}
