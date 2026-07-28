@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { calculateMacroPercentages } from '../utils/nutrition';
 import useHoldToRepeat from '../hooks/useHoldToRepeat';
+import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
 
 function HoldableWaterBtn({ label, amount, onAdd, disabled, className, title }) {
   const handlers = useHoldToRepeat(() => onAdd(amount), 350, 100);
@@ -104,7 +105,7 @@ function MacroDonut({ protein, carbs, fat }) {
 export default function NutritionTracker() {
   const { token, activeProfile } = useContext(AuthContext);
   const toast = useToast();
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(getLocalDateString());
   const [logs, setLogs] = useState([]);
   const [waterTotal, setWaterTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -265,7 +266,13 @@ export default function NutritionTracker() {
     e.preventDefault();
     if (!form.food_item.trim()) return;
     try {
-      await api.post('/nutrition/log', { ...form, date: selectedDate });
+      if (token) {
+        await api.post('/nutrition/log', { ...form, date: selectedDate });
+      } else {
+        const stored = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        const newLog = { ...form, id: Date.now(), date: selectedDate };
+        localStorage.setItem('chef_guest_logs', JSON.stringify([...stored, newLog]));
+      }
       toast.success(`${form.food_item} logged ✓`);
       setForm({
         food_item: '',
@@ -282,6 +289,7 @@ export default function NutritionTracker() {
       fetchLogs();
       fetchSummary();
       fetchCoachInsights();
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
     } catch (err) {
       toast.error(err.message);
     }
@@ -289,11 +297,18 @@ export default function NutritionTracker() {
 
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/nutrition/log/${id}`);
+      if (token) {
+        await api.delete(`/nutrition/log/${id}`);
+      } else {
+        const stored = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        const updated = stored.filter(item => item.id !== id);
+        localStorage.setItem('chef_guest_logs', JSON.stringify(updated));
+      }
       toast.success('Entry removed');
       fetchLogs();
       fetchSummary();
       fetchCoachInsights();
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
     } catch (err) {
       toast.error(err.message);
     }
@@ -326,6 +341,7 @@ export default function NutritionTracker() {
         fetchLogs();
         fetchSummary();
         fetchCoachInsights();
+        dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
       } catch (err) {
         toast.error(err.message);
       }
@@ -333,6 +349,7 @@ export default function NutritionTracker() {
       const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount);
       localStorage.setItem('chef_guest_water', newTotal);
       setWaterTotal(newTotal);
+      dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
       if (amount > 0) {
         toast.success(`Logged ${amount}ml water (demo mode) 💧`);
       } else {
@@ -352,6 +369,7 @@ export default function NutritionTracker() {
         fetchLogs();
         fetchSummary();
         fetchCoachInsights();
+        dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
         toast.success("Hydration reset!");
       } catch (err) {
         toast.error(err.message);
@@ -359,7 +377,8 @@ export default function NutritionTracker() {
     } else {
       localStorage.setItem('chef_guest_water', 0);
       setWaterTotal(0);
-      toast.success("Reset water (demo mode)");
+      dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
+      toast.success("Hydration reset!");
     }
   };
 

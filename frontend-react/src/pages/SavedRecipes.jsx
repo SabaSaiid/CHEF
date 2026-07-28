@@ -4,6 +4,7 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import ChefScoreBadge from '../components/ChefScoreBadge';
 
 export default function SavedRecipes() {
   const { token } = useContext(AuthContext);
@@ -226,7 +227,10 @@ export default function SavedRecipes() {
               <div key={r.id} className="recipe-card" style={{animationDelay: `${idx * 0.06}s`}}>
                 {r.image_url && <img className="recipe-image" src={r.image_url} alt={r.title} />}
                 <div className="recipe-info">
-                  <div className="recipe-title">{r.title}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div className="recipe-title" style={{ flex: 1 }}>{r.title}</div>
+                    {(r.nutri_score || r.chef_score) && <ChefScoreBadge grade={(r.nutri_score || r.chef_score).grade} size="sm" />}
+                  </div>
                   {r.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(r.summary)}}></div>}
                   <div className="recipe-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>

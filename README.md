@@ -62,6 +62,7 @@ For production, run `npm run build` inside `frontend-react/` — the backend wil
 | Search History | localStorage | Last 10 ingredient searches as quick-access tags |
 | Dark / Light Theme | CSS variables + context | Persisted toggle, full dark theme support |
 | Save / Bookmark Recipes | Per-user SQLite storage | Authenticated save, list, delete |
+| **Nutri-Score** | 6-tier rating badge | Evaluates recipes on S, A, B, C, D, E scale based on 2023 FSA-NPS algorithm |
 
 ## API Endpoints
 
@@ -120,6 +121,11 @@ CHEF/
 │           ├── tdee.py             # TDEE calculator
 │           ├── substitutions.py    # Ingredient substitution API
 │           └── mealplan.py         # Weekly meal planner + shopping list
+│       └── scoring/                # Nutri-Score 6-tier rating engine (FSA-NPS 2023)
+│           ├── calculator.py       # Scoring calculation logic & S-tier bonus
+│           ├── categories.py       # Category classification (general/beverage/fats/cheese)
+│           ├── constants.py        # FSA-NPS point tables & threshold mappings
+│           └── estimators.py       # Per-100g normalization & FVL% estimation
 ├── frontend-react/
 │   ├── index.html           # SPA shell
 │   ├── package.json         # React 19 + Vite 8 + dependencies
@@ -151,6 +157,8 @@ CHEF/
 │   └── README.md            # ML model documentation
 ├── logs/
 │   └── server.log
+├── docs/
+│   └── NUTRI_SCORE.md       # Comprehensive documentation for Nutri-Score methodology
 ├── PROJECT_REPORT.md        # Academic capstone report
 ├── REAL_WORLD_IMPACT.md     # Impact statement
 ├── SETUP.md                 # Installation guide

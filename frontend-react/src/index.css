@@ -4227,6 +4227,34 @@ h6 {
     flex-direction: column;
 }
 
+.daily-targets-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.target-edit-pill {
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--accent-1);
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.target-edit-pill:hover {
+    background: var(--accent-1);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+}
+
 .calorie-tracker-layout {
     display: flex;
     gap: 32px;
@@ -4238,8 +4266,8 @@ h6 {
 
 .progress-ring-container {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4247,14 +4275,13 @@ h6 {
 }
 
 .progress-ring-container:hover {
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
 .progress-ring-circle {
     transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
-    filter: drop-shadow(0 0 10px rgba(var(--primary-rgb), 0.6));
 }
 
 .progress-ring-text {
@@ -4266,18 +4293,28 @@ h6 {
 }
 
 .progress-ring-val {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     font-weight: 800;
     color: var(--text-primary);
     line-height: 1.1;
+    letter-spacing: -0.02em;
 }
 
 .progress-ring-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-top: 4px;
+    margin-top: 2px;
+}
+
+.progress-ring-pct-badge {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
 }
 
 .macro-bars-grid {
@@ -4285,7 +4322,44 @@ h6 {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-width: 200px;
+    min-width: 220px;
+}
+
+.macro-summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+}
+
+[data-theme="dark"] .macro-summary-header {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.macro-summary-remaining {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.macro-quick-log-btn {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.macro-quick-log-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
 }
 
 .macro-bar-item {
@@ -4297,21 +4371,56 @@ h6 {
 .macro-bar-header {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
+    align-items: center;
+    font-size: 0.88rem;
     font-weight: 600;
 }
 
+.macro-label-title {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.macro-val-text {
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.macro-pct-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .macro-pct-chip {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.macro-pct-chip.over {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
 .macro-bar-container {
-    height: 8px;
+    height: 9px;
     background: rgba(0, 0, 0, 0.06);
     border-radius: 6px;
     overflow: hidden;
 }
 
+[data-theme="dark"] .macro-bar-container {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .macro-bar-fill {
     height: 100%;
     border-radius: 6px;
-    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
 }
@@ -4325,7 +4434,7 @@ h6 {
     bottom: 0;
     background: linear-gradient(90deg,
             rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.25) 50%,
             rgba(255, 255, 255, 0) 100%);
     animation: shine-bar 2s infinite linear;
 }
@@ -4699,18 +4808,15 @@ h6 {
 .hero-search-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
+    padding: 20px 24px;
     background: var(--gradient-primary);
     border-radius: var(--radius);
     margin-bottom: 20px;
     box-shadow: var(--shadow-glow);
-    text-align: center;
     color: white;
     position: relative;
     overflow: hidden;
-    max-width: 900px;
+    max-width: 1050px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -4743,10 +4849,10 @@ h6 {
 .hero-input-wrapper {
     display: flex;
     width: 100%;
-    max-width: 600px;
+    max-width: 100%;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 50px;
-    padding: 8px;
+    padding: 6px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     position: relative;
     z-index: 1;
@@ -5991,7 +6097,30 @@ input:focus, select:focus, textarea:focus {
         font-size: 18px;
     }
 }
+/* ── CHEF Score Badge & Shimmer Animation ──────────────────────────── */
 
+@keyframes chefScoreShimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
+.chef-score-badge {
+    user-select: none;
+    box-sizing: border-box;
+}
 
+.chef-score-badge.chef-score-S {
+    box-shadow: 0 0 8px rgba(218, 165, 32, 0.6), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.chef-score-breakdown-wrapper {
+    width: 100%;
+}
 

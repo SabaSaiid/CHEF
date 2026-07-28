@@ -27,10 +27,14 @@ from app.schemas import (
     RecipeSearchResponse,
     RecipeItem,
     RecipeNutrition,
+    NutriScoreResponse,
+    ChefScoreResponse,
     SaveRecipeRequest,
     SavedRecipeResponse,
     RecipeRateRequest,
 )
+from app.scoring.calculator import compute_nutri_score, compute_chef_score
+from app.scoring.constants import GRADE_ORDER
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 
@@ -55,6 +59,9 @@ if _recipes_path.exists():
         _nutr = _r.get("nutrition", {})
         region = _r.get("region")
         meal_type = _r.get("meal_type")
+        # Load precomputed Nutri-Score if present
+        _ns = _r.get("nutri_score") or _r.get("chef_score")
+        _nutri_score_obj = NutriScoreResponse(**_ns) if _ns else None
         item = RecipeItem(
             id=_r["id"], title=_r["title"], summary=_r.get("summary", ""),
             image_url=_r.get("image_url"),
@@ -68,6 +75,8 @@ if _recipes_path.exists():
             region=region,
             popularity=_r.get("popularity", 50),
             nutrition=RecipeNutrition(**_nutr) if _nutr else None,
+            nutri_score=_nutri_score_obj,
+            chef_score=_nutri_score_obj,
         )
         DEMO_RECIPES.append(item)
         _RECIPE_BY_ID[item.id] = item
@@ -373,6 +382,13 @@ async def search_recipes(req: RecipeSearchRequest):
         constraints.append(f"Region: {req.region}")
     if req.meal_type:
         constraints.append(f"Meal: {req.meal_type}")
+    min_score_filter = req.min_nutri_score or req.min_chef_score
+    if min_score_filter:
+        constraints.append(f"Nutri-Score ≥ {min_score_filter}")
+
+    # Precompute allowed Nutri-Score grades for filtering
+    min_grade_idx = GRADE_ORDER.index(min_score_filter.upper()) if min_score_filter and min_score_filter.upper() in GRADE_ORDER else None
+    allowed_grades = set(GRADE_ORDER[:min_grade_idx + 1]) if min_grade_idx is not None else None
 
     # Try Spoonacular first if ingredients are provided
     if req.ingredients:
@@ -437,6 +453,10 @@ async def search_recipes(req: RecipeSearchRequest):
             continue
         if not _diet_matches(recipe, req.diet or ""):
             continue
+        # Nutri-Score filter
+        score_obj = recipe.nutri_score or recipe.chef_score
+        if allowed_grades and score_obj and score_obj.grade not in allowed_grades:
+            continue
         scored.append(recipe.model_copy(update={"match_score": score}))
 
     # Step 5: Sort
@@ -446,6 +466,12 @@ async def search_recipes(req: RecipeSearchRequest):
         scored.sort(key=lambda r: (r.nutrition.calories if r.nutrition else 99999, -r.match_score))
     elif req.sort_by == "highest_protein":
         scored.sort(key=lambda r: (r.nutrition.protein_g if r.nutrition and r.nutrition.protein_g else 0), reverse=True)
+    elif req.sort_by == "healthiest":
+        scored.sort(key=lambda r: (
+            GRADE_ORDER.index((r.nutri_score or r.chef_score).grade) if (r.nutri_score or r.chef_score) and (r.nutri_score or r.chef_score).grade in GRADE_ORDER else 99,
+            (r.nutri_score or r.chef_score).numeric_score if (r.nutri_score or r.chef_score) else 99,
+            -r.match_score,
+        ))
     else:
         if not req.ingredients:
             scored.sort(

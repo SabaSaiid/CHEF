@@ -1,13 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import AuthModal from './AuthModal';
+import { getLocalDateString, CHEF_EVENTS } from '../utils/dateUtils';
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  const { token, username, logout, seedDemo, userProfile, activeProfile } = useContext(AuthContext);
+  const { token, username, logout, seedDemo, userProfile, activeProfile, refreshActiveProfile } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const toast = useToast();
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [todayCalories, setTodayCalories] = useState(0);
 
-  useEffect(() => {
+  const fetchTodayCalories = useCallback(() => {
     if (token) {
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateString();
       api.get(`/nutrition/log?date=${todayStr}`)
         .then(data => {
           const total = Array.isArray(data) ? data.reduce((sum, log) => sum + (log.calories || 0), 0) : 0;
@@ -25,9 +26,36 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         })
         .catch(err => console.error("Failed to fetch today's logs:", err));
     } else {
-      setTodayCalories(0);
+      try {
+        const todayStr = getLocalDateString();
+        const storedLogs = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        const todayGuestLogs = storedLogs.filter(item => item.date === todayStr);
+        const total = todayGuestLogs.reduce((sum, log) => sum + (log.calories || 0), 0);
+        setTodayCalories(total);
+      } catch {
+        setTodayCalories(0);
+      }
     }
-  }, [token, userProfile]);
+  }, [token]);
+
+  useEffect(() => {
+    fetchTodayCalories();
+
+    const handleSync = () => {
+      fetchTodayCalories();
+      if (refreshActiveProfile) refreshActiveProfile();
+    };
+
+    window.addEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
+    window.addEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+    window.addEventListener('storage', handleSync);
+
+    return () => {
+      window.removeEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
+      window.removeEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+      window.removeEventListener('storage', handleSync);
+    };
+  }, [fetchTodayCalories, refreshActiveProfile]);
 
   const handleDemoClick = async () => {
     setDemoLoading(true);

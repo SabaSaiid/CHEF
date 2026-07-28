@@ -1,0 +1,58 @@
+{
+  "fruit": [
+    "apple", "apples", "banana", "bananas", "mango", "mangoes", "orange", "oranges",
+    "grape", "grapes", "strawberry", "strawberries", "blueberry", "blueberries",
+    "raspberry", "raspberries", "blackberry", "blackberries", "pineapple", "papaya",
+    "watermelon", "cantaloupe", "melon", "kiwi", "peach", "peaches", "plum", "plums",
+    "cherry", "cherries", "pomegranate", "guava", "lychee", "fig", "figs",
+    "apricot", "apricots", "pear", "pears", "coconut", "passion fruit",
+    "dragon fruit", "jackfruit", "custard apple", "sitaphal", "jamun",
+    "amla", "gooseberry", "cranberry", "cranberries", "date", "dates",
+    "raisin", "raisins", "prune", "prunes", "dried fruit", "lemon", "lime",
+    "grapefruit", "tangerine", "mandarin", "clementine", "starfruit",
+    "chiku", "sapodilla", "tamarind", "raw mango", "aam"
+  ],
+  "vegetable": [
+    "spinach", "palak", "onion", "onions", "tomato", "tomatoes", "carrot", "carrots",
+    "potato", "potatoes", "sweet potato", "broccoli", "cauliflower", "cabbage",
+    "bell pepper", "capsicum", "cucumber", "zucchini", "eggplant", "brinjal",
+    "baingan", "mushroom", "mushrooms", "peas", "green peas", "matar",
+    "corn", "beetroot", "radish", "mooli", "turnip", "pumpkin", "kaddu",
+    "bottle gourd", "lauki", "ridge gourd", "turai", "bitter gourd", "karela",
+    "okra", "bhindi", "lady finger", "asparagus", "celery", "leek",
+    "spring onion", "scallion", "green onion", "kale", "lettuce", "arugula",
+    "swiss chard", "bok choy", "napa cabbage", "artichoke", "fennel",
+    "parsnip", "squash", "butternut squash", "acorn squash",
+    "green beans", "french beans", "snap peas", "snow peas",
+    "watercress", "endive", "radicchio", "chili", "chilli", "green chili",
+    "red chili", "jalapeno", "serrano", "habanero", "ginger", "garlic",
+    "shallot", "shallots", "drumstick", "moringa", "lotus stem", "kamal kakdi",
+    "yam", "colocasia", "arbi", "raw banana", "banana stem",
+    "methi", "fenugreek leaves", "dill", "suva", "curry leaves",
+    "coriander", "cilantro", "parsley", "basil", "mint", "pudina",
+    "ivy gourd", "tindora", "pointed gourd", "parwal", "snake gourd"
+  ],
+  "legume": [
+    "lentil", "lentils", "dal", "daal", "arhar", "toor dal", "moong dal",
+    "urad dal", "masoor dal", "chana dal", "chickpea", "chickpeas", "chole",
+    "rajma", "kidney bean", "kidney beans", "black bean", "black beans",
+    "pinto bean", "pinto beans", "navy bean", "lima bean",
+    "soybean", "soybeans", "edamame", "black eyed pea", "lobia",
+    "moth bean", "horse gram", "kulthi", "green gram", "moong",
+    "split pea", "split peas", "pigeon pea", "bean sprouts",
+    "sprouts", "mung bean", "fava bean", "broad bean",
+    "adzuki bean", "cannellini", "tofu", "tempeh",
+    "soy", "soy chunks", "nutrela", "soya"
+  ],
+  "nut": [
+    "almond", "almonds", "cashew", "cashews", "peanut", "peanuts",
+    "walnut", "walnuts", "pistachio", "pistachios", "pecan", "pecans",
+    "hazelnut", "hazelnuts", "brazil nut", "macadamia", "pine nut", "pine nuts",
+    "chestnut", "chestnuts", "sunflower seed", "sunflower seeds",
+    "pumpkin seed", "pumpkin seeds", "sesame seed", "sesame seeds", "til",
+    "flaxseed", "flax seed", "chia seed", "chia seeds",
+    "hemp seed", "hemp seeds", "poppy seed", "poppy seeds", "khus khus",
+    "melon seeds", "magaz", "watermelon seeds", "charoli", "chironji",
+    "makhana", "fox nut", "lotus seeds"
+  ]
+}

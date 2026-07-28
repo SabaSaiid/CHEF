@@ -156,6 +156,7 @@ export default function TDEEProfile() {
         await api.post(`/profiles/${profile.id}/activate`);
         await refreshActiveProfile();
         loadProfiles();
+        dispatchChefEvent(CHEF_EVENTS.PROFILE_UPDATED);
       } catch { /* non-fatal */ }
     }
   };
@@ -171,6 +172,7 @@ export default function TDEEProfile() {
       setFormData({ ...EMPTY_FORM });
       loadProfiles();
       refreshActiveProfile();
+      dispatchChefEvent(CHEF_EVENTS.PROFILE_UPDATED);
     } catch (err) { toast.error(err.message); }
   };
 
@@ -199,6 +201,7 @@ export default function TDEEProfile() {
         if (saved.target_calories) setResults(computeResults(saved));
         loadProfiles();
         refreshActiveProfile();
+        dispatchChefEvent(CHEF_EVENTS.PROFILE_UPDATED);
       } else {
         const data = await api.post('/tdee/calculate', payload);
         setResults(data);

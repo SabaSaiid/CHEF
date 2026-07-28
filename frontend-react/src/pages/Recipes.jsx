@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import ChefScoreBadge from '../components/ChefScoreBadge';
 import { useSettings } from '../context/SettingsContext';
 
 const DIET_OPTIONS = [
@@ -41,6 +42,7 @@ export default function Recipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('best_match');
+  const [minChefScore, setMinChefScore] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const didInitRef = useRef(false);
 
@@ -109,6 +111,10 @@ export default function Recipes() {
       if (maxCal) body.max_calories = parseInt(maxCal, 10);
       if (maxTime) body.max_time = parseInt(maxTime, 10);
       if (sortBy && sortBy !== 'best_match') body.sort_by = sortBy;
+      if (minChefScore) {
+        body.min_nutri_score = minChefScore;
+        body.min_chef_score = minChefScore;
+      }
 
       const data = await api.post('/recipes/search', body);
       setResults(data);
@@ -122,7 +128,7 @@ export default function Recipes() {
     } finally {
       setLoading(false);
     }
-  }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy]);
+  }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy, minChefScore]);
 
   useEffect(() => {
     if (location.state?.ingredients && !didInitRef.current) {
@@ -138,19 +144,65 @@ export default function Recipes() {
     setMaxCal('');
     setMaxTime('');
     setSortBy('best_match');
+    setMinChefScore('');
     setError(null);
     setPage(1);
   };
 
+  const activeFilterCount = [diet, mealType, minChefScore, region, maxCal, maxTime, sortBy && sortBy !== 'best_match'].filter(Boolean).length;
+
   return (
-    <section className="page active" style={{ padding: '0 20px 40px' }}>
+    <section className="page active" style={{ padding: '0 20px 30px', maxWidth: '1100px', margin: '0 auto' }}>
       
-      {/* Hero Search Section */}
-      <div className="hero-search-container fade-in-up">
-        <h1 className="hero-search-title">What's in your fridge?</h1>
-        <p className="hero-search-subtitle">Discover thousands of premium recipes tailored to your ingredients and lifestyle.</p>
-        
-        <div className="hero-input-wrapper">
+      {/* Compact Search & Filter Control Bar (Max 25% Page Height) */}
+      <div className="hero-search-container fade-in-up" style={{ padding: '24px 20px', borderRadius: '16px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <h1 className="hero-search-title" style={{ fontSize: '24px', margin: 0 }}>What's in your fridge?</h1>
+            <p className="hero-search-subtitle" style={{ fontSize: '13px', margin: '4px 0 0', opacity: 0.85 }}>
+              Discover recipes tailored to your ingredients & diet.
+            </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              className={`btn-secondary ${showAdvanced || activeFilterCount > 0 ? 'active' : ''}`}
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              style={{
+                padding: '8px 16px',
+                fontSize: '14px',
+                fontWeight: 600,
+                borderRadius: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                border: showAdvanced ? '1px solid var(--primary)' : '1px solid rgba(255,255,255,0.2)',
+                background: showAdvanced ? 'rgba(255, 90, 54, 0.15)' : undefined,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span>🎛️ Filters</span>
+              {activeFilterCount > 0 && (
+                <span style={{
+                  background: 'var(--primary)',
+                  color: '#fff',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="hero-input-wrapper" style={{ marginTop: 0 }}>
           <input 
             type="text" 
             placeholder="e.g. paneer, tomato, onion..." 
@@ -162,12 +214,12 @@ export default function Recipes() {
             Search
           </button>
           <button className="btn-secondary hero-btn pantry-pulse-btn" onClick={loadPantry} disabled={loading}>
-            🛒 Use My Pantry
+            🛒 Pantry
           </button>
         </div>
 
         {autoCorrectSuggestion && (
-          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.88rem' }}>
+          <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.85rem' }}>
             <span style={{ color: 'var(--text-muted)' }}>Did you mean:</span>
             <button
               onClick={applyAutoCorrect}
@@ -186,48 +238,70 @@ export default function Recipes() {
             </button>
           </div>
         )}
-      </div>
 
-
-      {/* Chip Filters Section */}
-      <div className="fade-in-up" style={{ '--delay': '100ms', maxWidth: '1000px', margin: '0 auto' }}>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 600 }}>Filter by Diet</h3>
-          <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: '13px' }} onClick={() => setShowAdvanced(!showAdvanced)}>
-            {showAdvanced ? 'Hide Advanced' : '⚙️ Advanced Filters'}
-          </button>
-        </div>
-        
-        <div className="filter-chips-container">
-          {DIET_OPTIONS.map(opt => (
-            <div 
-              key={opt.value} 
-              className={`filter-chip ${diet === opt.value ? 'active' : ''}`}
-              onClick={() => setDiet(diet === opt.value ? '' : opt.value)}
-            >
-              {opt.label}
+        {/* Collapsible Filter Drawer */}
+        {showAdvanced && (
+          <div className="card glass fade-in-up" style={{ padding: '20px', marginTop: '16px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.15)' }}>
+            
+            {/* Diet Filter Chips */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Dietary Preference
+              </div>
+              <div className="filter-chips-container" style={{ marginBottom: 0 }}>
+                {DIET_OPTIONS.map(opt => (
+                  <div 
+                    key={opt.value} 
+                    className={`filter-chip ${diet === opt.value ? 'active' : ''}`}
+                    onClick={() => setDiet(diet === opt.value ? '' : opt.value)}
+                  >
+                    {opt.label}
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
 
-        <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '15px' }}>Meal Type</h3>
-        <div className="filter-chips-container">
-          {MEAL_OPTIONS.map(opt => (
-            <div 
-              key={opt.value} 
-              className={`filter-chip ${mealType === opt.value ? 'active' : ''}`}
-              onClick={() => setMealType(mealType === opt.value ? '' : opt.value)}
-            >
-              {opt.label}
+            {/* Meal Type & Nutri-Score Filter Row */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Meal Type
+                </div>
+                <div className="filter-chips-container" style={{ marginBottom: 0 }}>
+                  {MEAL_OPTIONS.map(opt => (
+                    <div 
+                      key={opt.value} 
+                      className={`filter-chip ${mealType === opt.value ? 'active' : ''}`}
+                      onClick={() => setMealType(mealType === opt.value ? '' : opt.value)}
+                    >
+                      {opt.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Nutri-Score Grade
+                </div>
+                <div className="filter-chips-container" style={{ marginBottom: 0 }}>
+                  {['S', 'A', 'B', 'C'].map(g => (
+                    <div
+                      key={g}
+                      className={`filter-chip ${minChefScore === g ? 'active' : ''}`}
+                      onClick={() => setMinChefScore(minChefScore === g ? '' : g)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                    >
+                      <ChefScoreBadge grade={g} size="sm" showTooltip={false} />
+                      <span>{g}+</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
 
-        {/* Advanced Filters (collapsible) */}
-        <div className={`advanced-filters-drawer ${showAdvanced ? 'open' : ''}`}>
-          <div className="card glass fade-in-up" style={{ padding: '20px', marginBottom: '30px', marginTop: '10px' }}>
-            <div className="constraints-row" style={{ marginTop: 0 }}>
+            {/* Dropdowns & Numeric Inputs Row */}
+            <div className="constraints-row" style={{ marginTop: 0, gap: '10px' }}>
               <select value={region} onChange={e => setRegion(e.target.value)}>
                 <option value="">Any Region</option>
                 <option value="Indian">🇮🇳 Indian</option>
@@ -244,16 +318,21 @@ export default function Recipes() {
                 <option value="fastest">Sort by: Fastest</option>
                 <option value="lowest_calories">Sort by: Lowest Calories</option>
                 <option value="highest_protein">Sort by: Highest Protein</option>
+                <option value="healthiest">Sort by: Healthiest (Nutri-Score)</option>
               </select>
 
               <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
               <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />
               
-              <button className="btn-secondary" onClick={clearFilters}>Clear filters</button>
+              {activeFilterCount > 0 && (
+                <button className="btn-secondary" onClick={clearFilters} style={{ color: 'var(--accent-1)', borderColor: 'var(--accent-1)' }}>
+                  Clear all filters ({activeFilterCount})
+                </button>
+              )}
             </div>
-          </div>
-        </div>
 
+          </div>
+        )}
       </div>
 
       {/* Results Area */}
@@ -304,6 +383,12 @@ export default function Recipes() {
                   {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && (
                     <div className="magazine-card-badge">
                       {Math.round(recipe.match_score * 100)}% match
+                    </div>
+                  )}
+
+                  {(recipe.nutri_score || recipe.chef_score) && (
+                    <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}>
+                      <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
                     </div>
                   )}
 

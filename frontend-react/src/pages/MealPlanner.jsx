@@ -3,6 +3,7 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import ChefScoreBadge from '../components/ChefScoreBadge';
 import AuthModal from '../components/AuthModal';
 
 export default function MealPlanner() {
@@ -415,7 +416,10 @@ export default function MealPlanner() {
                           <div style={{ padding: '8px 10px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                              <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '2px' }}>{slot}</div>
                              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{meal.recipe?.title}</div>
-                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>{meal.recipe?.calories} kcal</div>
+                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                               <span>{meal.recipe?.calories} kcal</span>
+                               {(meal.recipe?.nutri_score || meal.recipe?.chef_score) && <ChefScoreBadge grade={(meal.recipe?.nutri_score || meal.recipe?.chef_score).grade} size="sm" />}
+                             </div>
                           </div>
                           <button 
                             className="remove-meal-btn"

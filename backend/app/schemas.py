@@ -183,6 +183,22 @@ class RecipeNutrition(BaseModel):
     fat_g: float = 0.0
 
 
+class NutriScoreResponse(BaseModel):
+    """Nutri-Score rating for a recipe."""
+    grade: str = Field(..., description="Nutri-Score grade: S | A | B | C | D | E")
+    numeric_score: int = Field(..., description="Raw NPS score (negative - positive)")
+    label: str = Field("", description="Display label (e.g. '★ S', 'A')")
+    color_bg: str = Field("", description="Badge background color hex")
+    color_text: str = Field("", description="Badge text color hex")
+    description: str = Field("", description="Human-readable tier description")
+    category: str = Field("general", description="Scoring category used")
+    negative_total: int = Field(0, description="Sum of negative points (0-40)")
+    positive_total: int = Field(0, description="Sum of positive points (0-15)")
+
+
+ChefScoreResponse = NutriScoreResponse
+
+
 class RecipeItem(BaseModel):
     id: str
     title: str
@@ -195,6 +211,8 @@ class RecipeItem(BaseModel):
     instructions: Optional[str] = None
     source_url: Optional[str] = None
     nutrition: Optional[RecipeNutrition] = None
+    nutri_score: Optional[NutriScoreResponse] = None
+    chef_score: Optional[NutriScoreResponse] = None
     diets: list[str] = []
     meal_type: Optional[str] = None
     region: Optional[str] = None
@@ -229,7 +247,15 @@ class RecipeSearchRequest(BaseModel):
     )
     region: Optional[str] = Field(None, description="Region filter e.g. Bihar, Punjab, South Indian")
     meal_type: Optional[str] = Field(None, description="Breakfast | Lunch | Dinner | Snack")
-    sort_by: Optional[str] = Field(None, description="best_match | fastest | lowest_calories | highest_protein")
+    sort_by: Optional[str] = Field(None, description="best_match | fastest | lowest_calories | highest_protein | healthiest")
+    min_nutri_score: Optional[str] = Field(
+        None,
+        description="Minimum Nutri-Score grade filter: S | A | B | C | D | E. Only shows recipes at or above this grade."
+    )
+    min_chef_score: Optional[str] = Field(
+        None,
+        description="Alias for min_nutri_score."
+    )
 
 
 class RecipeSearchResponse(BaseModel):

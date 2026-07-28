@@ -20,11 +20,13 @@ Unlike traditional platforms, CHEF uses a hybrid approach combining natural lang
 - **Database**: SQLite with SQLAlchemy ORM for lightweight, portable state management.
 - **Frontend**: React 19 + Vite 8 with a glassmorphism design system to ensure dynamic, responsive rendering.
 - **Constraint Engine**: Custom Python logic to filter recipes recursively based on strict boundaries (Max Calories, Max Time) and boolean tags (Vegetarian, Gluten-free, Keto).
+- **Nutri-Score Rating Engine**: 6-tier nutritional rating system (S, A, B, C, D, E) based on the 2023 FSA-NPS Nutri-Score algorithm, extended with an S-Tier for superior nutrient density and minimal negative component penalties.
 
 ## 3. Results & Performance
 - **API Latency**: <50ms per internal database query.
 - **UI Responsiveness**: 100% Lighthouse Accessibility and Best Practices score with efficient React component rendering and semantic HTML.
 - **Filtering Accuracy**: The system correctly identifies and enforces mutually exclusive dietary tags across the demo datasets.
+- **Nutritional Grading**: Successfully enriched all 5,250 local recipes with Nutri-Scores (S: 8.1%, A: 27.0%, B: 18.3%, C: 29.4%, D: 15.9%, E: 1.3%) and integrated soft quality bonuses into the weekly meal planner.
 
 ## 4. Contribution Summary
 - **Saba Saeed**: Designed the Project architecture and UI/UX, managing documentations, and assisted with constraint engine and database scripting.

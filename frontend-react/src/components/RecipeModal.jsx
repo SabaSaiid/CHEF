@@ -7,6 +7,8 @@ import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import { calculateMacroPercentages } from '../utils/nutrition';
 import { parseIngredient, formatIngredientForServings } from '../utils/ingredientParser';
+import ChefScoreBadge from './ChefScoreBadge';
+import ChefScoreBreakdown from './ChefScoreBreakdown';
 
 
 function InstructionSteps({ instructions }) {
@@ -432,7 +434,12 @@ export default function RecipeModal({ recipe, onClose }) {
               </div>
             )}
 
-            <h2 className="modal-title">{recipe.title}</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <h2 className="modal-title" style={{ margin: 0, flex: 1 }}>{recipe.title}</h2>
+              {(recipe.nutri_score || recipe.chef_score) && (
+                <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="lg" />
+              )}
+            </div>
             {recipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(recipe.summary)}}></p>}
             
             {/* ── YouTube Video Embed or Image ── */}
@@ -441,6 +448,11 @@ export default function RecipeModal({ recipe, onClose }) {
             ) : recipe.image_url ? (
               <img src={recipe.image_url} alt={recipe.title} style={{width: '100%', height: '250px', objectFit: 'cover', borderRadius: '12px', marginTop: '15px', marginBottom: '15px'}} />
             ) : null}
+
+            {/* Nutri-Score Breakdown */}
+            {(recipe.nutri_score || recipe.chef_score) && (
+              <ChefScoreBreakdown nutriScore={recipe.nutri_score || recipe.chef_score} />
+            )}
 
             {/* Servings Adjuster */}
             {recipe.ingredients && recipe.ingredients.length > 0 && (

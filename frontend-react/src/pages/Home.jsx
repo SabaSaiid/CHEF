@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useContext, useMemo, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
+import ChefScoreBadge from '../components/ChefScoreBadge';
 import foodFacts from '../data/foodFacts';
+import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
 
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour < 12) return 'Good Morning';
   if (hour < 17) return 'Good Afternoon';
-  return 'Good Evening';
+  return 'Evening';
 }
 
 const FACT_COUNT = 3;
@@ -21,11 +23,8 @@ const AUTO_ROTATE_MS = 6000;
 function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const started = useRef(false);
 
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
     const startTime = performance.now();
     const animate = (now) => {
       const elapsed = now - startTime;
@@ -45,9 +44,10 @@ function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
 }
 
 export default function Home() {
-  const { token, username, activeProfile } = useContext(AuthContext);
+  const { token, username, activeProfile, refreshActiveProfile } = useContext(AuthContext);
   const toast = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [dailyRecipe, setDailyRecipe] = useState(null);
   const [quickRecipes, setQuickRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +61,7 @@ export default function Home() {
 
   const [todayLog, setTodayLog] = useState([]);
   const [waterTotal, setWaterTotal] = useState(0);
+  const [guestLogs, setGuestLogs] = useState([]);
   const [todayMeals, setTodayMeals] = useState({ Breakfast: null, Lunch: null, Dinner: null, Snack: null });
   const [fridgeQuery, setFridgeQuery] = useState('');
 
@@ -103,8 +104,21 @@ export default function Home() {
   }, [activeProfile]);
 
   const fetchTodayStats = useCallback(async () => {
-    if (!token) return;
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateString();
+
+    if (!token) {
+      // Dynamic Guest Mode Data
+      const guestWater = parseInt(localStorage.getItem('chef_guest_water')) || 0;
+      setWaterTotal(guestWater);
+      try {
+        const storedLogs = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        const todayGuestLogs = storedLogs.filter(item => item.date === todayStr);
+        setGuestLogs(todayGuestLogs);
+      } catch {
+        setGuestLogs([]);
+      }
+      return;
+    }
 
     // 1. Fetch Nutrition Logs for today
     try {
@@ -137,42 +151,52 @@ export default function Home() {
     }
   }, [token]);
 
+  // Sync on mount, token change, or route navigation back to home
   useEffect(() => {
     fetchTodayStats();
-  }, [fetchTodayStats, token]);
+  }, [fetchTodayStats, token, location.pathname]);
 
+  // Subscribe to real-time custom window sync events from other tabs/pages
   useEffect(() => {
-    if (!token) {
-      setWaterTotal(parseInt(localStorage.getItem('chef_guest_water')) || 0);
-    }
-  }, [token]);
+    const handleSync = () => {
+      fetchTodayStats();
+      if (refreshActiveProfile) refreshActiveProfile();
+    };
+
+    window.addEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
+    window.addEventListener(CHEF_EVENTS.WATER_UPDATED, handleSync);
+    window.addEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+    window.addEventListener('storage', handleSync);
+
+    return () => {
+      window.removeEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
+      window.removeEventListener(CHEF_EVENTS.WATER_UPDATED, handleSync);
+      window.removeEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+      window.removeEventListener('storage', handleSync);
+    };
+  }, [fetchTodayStats, refreshActiveProfile]);
 
   const totals = useMemo(() => {
-    if (!token) {
-      return { calories: 1318, protein: 95, carbs: 140, fat: 42 }; // Mock for guest (95*4 + 140*4 + 42*9 = 1318 kcal)
-    }
     let cal = 0, prot = 0, carb = 0, fat = 0;
-    todayLog.forEach(item => {
+    const logSource = token ? todayLog : guestLogs;
+
+    logSource.forEach(item => {
       cal += item.calories || 0;
       prot += item.protein_g || 0;
       carb += item.carbs_g || 0;
       fat += item.fat_g || 0;
     });
+
     return {
       calories: Math.round(cal),
       protein: Math.round(prot),
       carbs: Math.round(carb),
       fat: Math.round(fat),
     };
-  }, [todayLog, token]);
-
-  const strokeDashoffset = useMemo(() => {
-    const pct = Math.min(totals.calories / targets.calories, 1.0);
-    return 346 - (pct * 346);
-  }, [totals.calories, targets.calories]);
+  }, [todayLog, guestLogs, token]);
 
   const handleLogWater = async (amount) => {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateString();
     if (token) {
       try {
         if (amount < 0) {
@@ -192,11 +216,13 @@ export default function Home() {
             }
             toast.success(`Removed ${Math.abs(amount)}ml water! 💧`);
             fetchTodayStats();
+            dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
           }
         } else {
           await api.post('/nutrition/log/water', { amount_ml: amount, date: todayStr });
           toast.success(`Added ${amount}ml water! 💧`);
           fetchTodayStats();
+          dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
         }
       } catch (err) {
         toast.error("Failed to log water: " + err.message);
@@ -205,6 +231,7 @@ export default function Home() {
       const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount);
       localStorage.setItem('chef_guest_water', newTotal);
       setWaterTotal(newTotal);
+      dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
       if (amount > 0) {
         toast.success(`Logged ${amount}ml water (demo mode) 💧`);
       } else {
@@ -417,63 +444,115 @@ export default function Home() {
       {/* ── Dashboard Cards (Calorie & Water Tracker) ── */}
       <div className="dashboard-row fade-in-up" style={{ '--delay': '300ms' }}>
         {/* Calorie & Macro Tracker Card */}
-        <div className="card glass dashboard-widget-card">
-          <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>🔥 Daily Targets</h3>
-          <p className="subtitle" style={{ marginBottom: '15px' }}>
+        <div className="card glass dashboard-widget-card daily-targets-card">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '6px' }}>
+            <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>🎯</span> Daily Targets
+            </h3>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <button 
+                onClick={() => navigate('/tdee')}
+                className="target-edit-pill"
+                title="Edit Target Profile"
+              >
+                ⚙️ Adjust Profile
+              </button>
+            </div>
+          </div>
+
+          <p className="subtitle" style={{ marginBottom: '16px' }}>
             {token ? (activeProfile ? `Active Profile: ${activeProfile.profile_name}` : "Set up a profile in settings") : "Preview mode — Sign in to track stats"}
           </p>
 
           <div className="calorie-tracker-layout">
             {/* SVG circular progress ring */}
             <div className="progress-ring-container">
-              <svg width="140" height="140">
+              <svg width="150" height="150" viewBox="0 0 150 150">
                 <defs>
-                  <linearGradient id="homeRingGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="var(--accent-1)" />
-                    <stop offset="100%" stopColor="#10b981" />
+                  <linearGradient id="homeRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="50%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#8b5cf6" />
                   </linearGradient>
+                  <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
                 </defs>
+                {/* Background Ring */}
                 <circle
-                  cx="70"
-                  cy="70"
-                  r="55"
+                  cx="75"
+                  cy="75"
+                  r="58"
                   stroke="var(--border-glass)"
-                  strokeWidth="10"
+                  strokeWidth="11"
                   fill="transparent"
+                  style={{ opacity: 0.5 }}
                 />
+                {/* Animated Progress Ring */}
                 <circle
                   className="progress-ring-circle"
-                  cx="70"
-                  cy="70"
-                  r="55"
+                  cx="75"
+                  cy="75"
+                  r="58"
                   stroke="url(#homeRingGrad)"
-                  strokeWidth="10"
+                  strokeWidth="11"
                   fill="transparent"
-                  strokeDasharray="346"
-                  strokeDashoffset={strokeDashoffset}
+                  strokeDasharray="364"
+                  strokeDashoffset={364 - (Math.min(totals.calories / (targets.calories || 1), 1.0) * 364)}
                   strokeLinecap="round"
-                  style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+                  filter="url(#ringGlow)"
+                  style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
                 />
               </svg>
               <div className="progress-ring-text">
-                <span className="progress-ring-val">{totals.calories}</span>
+                <span className="progress-ring-val">
+                  <AnimatedCounter end={totals.calories} />
+                </span>
                 <span className="progress-ring-label">of {targets.calories} kcal</span>
+                <span className="progress-ring-pct-badge" style={{
+                  background: totals.calories > targets.calories ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                  color: totals.calories > targets.calories ? '#ef4444' : '#10b981',
+                }}>
+                  {Math.round((totals.calories / (targets.calories || 1)) * 100)}%
+                </span>
               </div>
             </div>
 
             {/* Macros mini bars */}
             <div className="macro-bars-grid">
+              <div className="macro-summary-header">
+                <span className="macro-summary-remaining">
+                  {targets.calories - totals.calories >= 0 
+                    ? `🔥 ${targets.calories - totals.calories} kcal remaining`
+                    : `⚠️ ${totals.calories - targets.calories} kcal over target`}
+                </span>
+                <button 
+                  className="macro-quick-log-btn"
+                  onClick={() => navigate('/nutrition')}
+                  title="Log Meal / Quick Add"
+                >
+                  ➕ Log Meal
+                </button>
+              </div>
+
               {[
-                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: '#10b981' },
-                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: '#3b82f6' },
-                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: '#f59e0b' }
+                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: 'linear-gradient(90deg, #10b981, #059669)', cals: totals.protein * 4 },
+                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: 'linear-gradient(90deg, #3b82f6, #2563eb)', cals: totals.carbs * 4 },
+                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: 'linear-gradient(90deg, #f59e0b, #d97706)', cals: totals.fat * 9 }
               ].map(macro => {
                 const pct = Math.min((macro.val / (macro.target || 1)) * 100, 100);
+                const isOver = macro.val > macro.target;
                 return (
                   <div key={macro.label} className="macro-bar-item">
                     <div className="macro-bar-header">
-                      <span style={{ color: 'var(--text-secondary)' }}>{macro.label}</span>
-                      <span style={{ fontWeight: '700' }}>{macro.val}g / {macro.target}g</span>
+                      <span className="macro-label-title">{macro.label}</span>
+                      <span className="macro-val-text">
+                        <strong>{macro.val}g</strong> / {macro.target}g
+                        <span className={`macro-pct-chip ${isOver ? 'over' : ''}`}>
+                          {Math.round((macro.val / (macro.target || 1)) * 100)}%
+                        </span>
+                      </span>
                     </div>
                     <div className="macro-bar-container">
                       <div
@@ -593,7 +672,12 @@ export default function Home() {
       ) : quickRecipes.length > 0 && (
         <div className="quick-recipes-grid fade-in-up" style={{ '--delay': '530ms' }}>
           {quickRecipes.map(recipe => (
-            <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }}>
+            <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }} style={{ position: 'relative' }}>
+              {(recipe.nutri_score || recipe.chef_score) && (
+                <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 3 }}>
+                  <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
+                </div>
+              )}
               <img src={recipe.image_url} alt={recipe.title} className="mini-recipe-image" />
               <div className="mini-recipe-content">
                 <h3 className="mini-recipe-title">{recipe.title}</h3>

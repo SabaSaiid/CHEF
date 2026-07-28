@@ -308,8 +308,13 @@ def generate_weekly_diet_plan(
                 prot_diff = abs(prot - target_meal_protein)
                 prot_fit = max(0, 1 - (prot_diff / max(target_meal_protein, 1)))
 
-                # Combined score: 40% cal fit + 20% protein fit + 40% taste
-                combined = (cal_fit * 0.40) + (prot_fit * 0.20) + (recipe["_taste_score"] * 0.40)
+                # Nutri-Score quality bonus (S=1.0, A=0.85, B=0.65, C=0.4, D=0.15, E=0.0)
+                _bonus_map = {"S": 1.0, "A": 0.85, "B": 0.65, "C": 0.4, "D": 0.15, "E": 0.0}
+                _ns = recipe.get("nutri_score") or recipe.get("chef_score", {})
+                grade_bonus = _bonus_map.get(_ns.get("grade", "C"), 0.4) if _ns else 0.4
+
+                # Combined score: 35% cal fit + 15% protein fit + 35% taste + 15% nutritional quality
+                combined = (cal_fit * 0.35) + (prot_fit * 0.15) + (recipe["_taste_score"] * 0.35) + (grade_bonus * 0.15)
 
                 if combined > best_score:
                     best_score = combined
