@@ -54,5 +54,10 @@
     "hemp seed", "hemp seeds", "poppy seed", "poppy seeds", "khus khus",
     "melon seeds", "magaz", "watermelon seeds", "charoli", "chironji",
     "makhana", "fox nut", "lotus seeds"
+  ],
+  "concentrate": [
+    "tomato paste", "tomato puree", "tomato purée", "sun-dried tomato", "sundried tomato",
+    "fruit puree", "fruit purée", "apple puree", "mango puree", "tamarind paste", "tamarind concentrate",
+    "date paste", "dried apricot", "dried fig", "dried fruit", "raisin", "raisins", "prune", "prunes", "sultana", "sultanas"
   ]
 }

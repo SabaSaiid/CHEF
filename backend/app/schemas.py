@@ -183,6 +183,12 @@ class RecipeNutrition(BaseModel):
     fat_g: float = 0.0
 
 
+class SupplementaryBadgesSchema(BaseModel):
+    nak_ratio: Optional[dict] = None
+    nova_upf: Optional[dict] = None
+    glycemic_load: Optional[dict] = None
+
+
 class NutriScoreResponse(BaseModel):
     """Nutri-Score rating for a recipe."""
     grade: str = Field(..., description="Nutri-Score grade: S | A | B | C | D | E")
@@ -193,7 +199,9 @@ class NutriScoreResponse(BaseModel):
     description: str = Field("", description="Human-readable tier description")
     category: str = Field("general", description="Scoring category used")
     negative_total: int = Field(0, description="Sum of negative points (0-40)")
-    positive_total: int = Field(0, description="Sum of positive points (0-15)")
+    confidence: Optional[str] = Field("high", description="Weight parsing confidence: high | medium | low")
+    algorithm_version: Optional[str] = Field("1.0.0", description="Scoring algorithm version")
+    supplementary_badges: Optional[SupplementaryBadgesSchema] = None
 
 
 ChefScoreResponse = NutriScoreResponse
@@ -213,6 +221,7 @@ class RecipeItem(BaseModel):
     nutrition: Optional[RecipeNutrition] = None
     nutri_score: Optional[NutriScoreResponse] = None
     chef_score: Optional[NutriScoreResponse] = None
+    supplementary_badges: Optional[SupplementaryBadgesSchema] = None
     diets: list[str] = []
     meal_type: Optional[str] = None
     region: Optional[str] = None

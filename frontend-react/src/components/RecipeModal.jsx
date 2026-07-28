@@ -9,6 +9,7 @@ import { calculateMacroPercentages } from '../utils/nutrition';
 import { parseIngredient, formatIngredientForServings } from '../utils/ingredientParser';
 import ChefScoreBadge from './ChefScoreBadge';
 import ChefScoreBreakdown from './ChefScoreBreakdown';
+import SupplementaryBadges from './SupplementaryBadges';
 
 
 function InstructionSteps({ instructions }) {
@@ -453,6 +454,13 @@ export default function RecipeModal({ recipe, onClose }) {
             {(recipe.nutri_score || recipe.chef_score) && (
               <ChefScoreBreakdown nutriScore={recipe.nutri_score || recipe.chef_score} />
             )}
+
+            {/* Supplementary Health Indicators */}
+            <SupplementaryBadges
+              badges={recipe.supplementary_badges || (recipe.nutri_score && recipe.nutri_score.supplementary_badges)}
+              nutrition={recipe.nutrition}
+              ingredients={recipe.ingredients}
+            />
 
             {/* Servings Adjuster */}
             {recipe.ingredients && recipe.ingredients.length > 0 && (

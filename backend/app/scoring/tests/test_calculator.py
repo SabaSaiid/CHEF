@@ -16,7 +16,7 @@ from pathlib import Path
 # Ensure the backend app is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
-import pytest
+# import pytest
 
 from app.scoring.calculator import (
     compute_chef_score,
@@ -269,6 +269,7 @@ class TestSTier:
             servings=1,
             title="",
             category_override="general",
+            is_per_100g=True,
         )
 
     def test_steamed_broccoli_lentils_qualifies(self):
@@ -376,4 +377,61 @@ class TestEdgeCases:
 # ═══════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    pytest.main([__file__, "-v", "--tb=short"])
+    t_neg = TestNegativePointLookup()
+    t_neg.test_zero_value_gives_zero_points()
+    t_neg.test_below_first_threshold()
+    t_neg.test_exactly_at_first_threshold()
+    t_neg.test_just_above_first_threshold()
+    t_neg.test_max_points()
+    t_neg.test_sodium_mid_range()
+
+    t_pos = TestPositivePointLookup()
+    t_pos.test_zero_gives_zero()
+    t_pos.test_high_fiber()
+    t_pos.test_moderate_protein()
+
+    t_cat = TestCategoryClassification()
+    t_cat.test_general_food()
+    t_cat.test_general_food_with_ingredients()
+    t_cat.test_beverage_smoothie()
+    t_cat.test_beverage_lassi()
+    t_cat.test_beverage_juice()
+    t_cat.test_smoothie_bowl_not_beverage()
+    t_cat.test_coffee_cake_not_beverage()
+    t_cat.test_cheese_dominant_paneer_tikka()
+    t_cat.test_cheese_dominant_mac_and_cheese()
+    t_cat.test_cheese_not_dominant_in_pizza()
+    t_cat.test_fats_dressing()
+    t_cat.test_fats_pesto()
+    t_cat.test_vinaigrette()
+
+    t_fvl = TestFVLEstimation()
+    t_fvl.test_empty_ingredients()
+    t_fvl.test_pure_vegetable_dish()
+    t_fvl.test_mixed_dish()
+    t_fvl.test_no_fvl()
+    t_fvl.test_legume_dish()
+
+    t_ref = TestReferenceGrades()
+    t_ref.test_raw_carrots_grade_a()
+    t_ref.test_white_bread_grade_c()
+    t_ref.test_plain_yogurt_grade_a()
+    t_ref.test_raw_salmon_grade_a()
+    t_ref.test_cooked_lentils_grade_a()
+    t_ref.test_butter_grade_d()
+    t_ref.test_milk_chocolate_grade_e()
+
+    t_s = TestSTier()
+    t_s.test_steamed_broccoli_lentils_qualifies()
+    t_s.test_fresh_fruit_salad_qualifies()
+    t_s.test_grilled_chicken_does_not_qualify()
+    t_s.test_chocolate_cake_does_not_qualify()
+
+    t_edge = TestEdgeCases()
+    t_edge.test_empty_nutrition()
+    t_edge.test_zero_calories()
+    t_edge.test_no_ingredients()
+    t_edge.test_score_to_dict()
+    t_edge.test_grade_bonus_property()
+
+    print("✅ All test_calculator.py tests passed!")

@@ -166,16 +166,33 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
             </>
           )}
 
-          {/* Category badge */}
-          <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Category:</span>
-            <span style={{
-              fontSize: 11, fontWeight: 600,
-              padding: '2px 8px', borderRadius: 6,
-              background: 'var(--bg-hover)', color: 'var(--text-primary)',
-            }}>
-              {category || 'general'}
-            </span>
+          {/* Category & Confidence badges */}
+          <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Category:</span>
+              <span style={{
+                fontSize: 11, fontWeight: 600,
+                padding: '2px 8px', borderRadius: 6,
+                background: 'var(--bg-hover)', color: 'var(--text-primary)',
+              }}>
+                {category || 'general'}
+              </span>
+            </div>
+
+            {(scoreObj.confidence || breakdown?.confidence) && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Confidence:</span>
+                <span style={{
+                  fontSize: 11, fontWeight: 600,
+                  padding: '2px 8px', borderRadius: 6,
+                  textTransform: 'capitalize',
+                  background: (scoreObj.confidence || breakdown?.confidence) === 'high' ? 'rgba(16, 185, 129, 0.15)' : (scoreObj.confidence || breakdown?.confidence) === 'medium' ? 'rgba(238, 129, 0, 0.15)' : 'rgba(230, 62, 17, 0.15)',
+                  color: (scoreObj.confidence || breakdown?.confidence) === 'high' ? '#038141' : (scoreObj.confidence || breakdown?.confidence) === 'medium' ? '#EE8100' : '#E63E11',
+                }}>
+                  {scoreObj.confidence || breakdown?.confidence}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Explanation */}

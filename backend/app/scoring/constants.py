@@ -11,6 +11,8 @@ References:
 
 from __future__ import annotations
 
+ALGORITHM_VERSION = "1.0.0"
+
 # ── Negative-point threshold tables ─────────────────────────────────────
 #
 # Each list contains 11 threshold values corresponding to points 0–10.

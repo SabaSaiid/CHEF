@@ -1580,25 +1580,25 @@
     "image_url": "https://images.pexels.com/photos/6808665/pexels-photo-6808665.jpeg?auto=compress&cs=tinysrgb&h=350",
     "chef_score": {
       "grade": "B",
-      "numeric_score": 1,
+      "numeric_score": 0,
       "label": "B",
       "color_bg": "#85BB2F",
       "color_text": "#1a1a1a",
       "description": "Good nutritional quality",
       "category": "general",
       "negative_total": 5,
-      "positive_total": 4
+      "positive_total": 5
     },
     "nutri_score": {
       "grade": "B",
-      "numeric_score": 1,
+      "numeric_score": 0,
       "label": "B",
       "color_bg": "#85BB2F",
       "color_text": "#1a1a1a",
       "description": "Good nutritional quality",
       "category": "general",
       "negative_total": 5,
-      "positive_total": 4
+      "positive_total": 5
     }
   },
   {
@@ -3092,26 +3092,26 @@
     "popularity": 79,
     "image_url": "https://images.pexels.com/photos/30914332/pexels-photo-30914332.jpeg?auto=compress&cs=tinysrgb&h=350",
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 9,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 14,
-      "positive_total": 3
+      "positive_total": 5
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 9,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 14,
-      "positive_total": 3
+      "positive_total": 5
     }
   },
   {
@@ -11249,26 +11249,26 @@
     "popularity": 75,
     "image_url": "https://images.pexels.com/photos/30914332/pexels-photo-30914332.jpeg?auto=compress&cs=tinysrgb&h=350",
     "chef_score": {
-      "grade": "C",
-      "numeric_score": 7,
-      "label": "C",
-      "color_bg": "#FECB02",
+      "grade": "B",
+      "numeric_score": 0,
+      "label": "B",
+      "color_bg": "#85BB2F",
       "color_text": "#1a1a1a",
-      "description": "Average nutritional quality",
+      "description": "Good nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 6
+      "positive_total": 13
     },
     "nutri_score": {
-      "grade": "C",
-      "numeric_score": 7,
-      "label": "C",
-      "color_bg": "#FECB02",
+      "grade": "B",
+      "numeric_score": 0,
+      "label": "B",
+      "color_bg": "#85BB2F",
       "color_text": "#1a1a1a",
-      "description": "Average nutritional quality",
+      "description": "Good nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 6
+      "positive_total": 13
     }
   },
   {
@@ -35214,26 +35214,26 @@
     "region": "Indian",
     "popularity": 60,
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 12,
-      "positive_total": 1
+      "positive_total": 2
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 12,
-      "positive_total": 1
+      "positive_total": 2
     }
   },
   {
@@ -35274,25 +35274,25 @@
     "popularity": 64,
     "chef_score": {
       "grade": "D",
-      "numeric_score": 14,
+      "numeric_score": 13,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 15,
-      "positive_total": 1
+      "positive_total": 2
     },
     "nutri_score": {
       "grade": "D",
-      "numeric_score": 14,
+      "numeric_score": 13,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 15,
-      "positive_total": 1
+      "positive_total": 2
     }
   },
   {
@@ -35391,26 +35391,26 @@
     "region": "Indian",
     "popularity": 43,
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 12,
-      "positive_total": 1
+      "positive_total": 2
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 12,
-      "positive_total": 1
+      "positive_total": 2
     }
   },
   {
@@ -35509,26 +35509,26 @@
     "region": "Indian",
     "popularity": 67,
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     }
   },
   {
@@ -35568,26 +35568,26 @@
     "region": "Indian",
     "popularity": 38,
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     }
   },
   {
@@ -35628,25 +35628,25 @@
     "popularity": 53,
     "chef_score": {
       "grade": "D",
-      "numeric_score": 12,
+      "numeric_score": 11,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 1
+      "positive_total": 2
     },
     "nutri_score": {
       "grade": "D",
-      "numeric_score": 12,
+      "numeric_score": 11,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 1
+      "positive_total": 2
     }
   },
   {
@@ -35687,25 +35687,25 @@
     "popularity": 46,
     "chef_score": {
       "grade": "D",
-      "numeric_score": 14,
+      "numeric_score": 13,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 15,
-      "positive_total": 1
+      "positive_total": 2
     },
     "nutri_score": {
       "grade": "D",
-      "numeric_score": 14,
+      "numeric_score": 13,
       "label": "D",
       "color_bg": "#EE8100",
       "color_text": "#ffffff",
       "description": "Poor nutritional quality",
       "category": "general",
       "negative_total": 15,
-      "positive_total": 1
+      "positive_total": 2
     }
   },
   {
@@ -35745,26 +35745,26 @@
     "region": "Indian",
     "popularity": 34,
     "chef_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     },
     "nutri_score": {
-      "grade": "D",
-      "numeric_score": 11,
-      "label": "D",
-      "color_bg": "#EE8100",
-      "color_text": "#ffffff",
-      "description": "Poor nutritional quality",
+      "grade": "C",
+      "numeric_score": 10,
+      "label": "C",
+      "color_bg": "#FECB02",
+      "color_text": "#1a1a1a",
+      "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 2
+      "positive_total": 3
     }
   },
   {
@@ -66194,25 +66194,25 @@
     "popularity": 39,
     "chef_score": {
       "grade": "C",
-      "numeric_score": 9,
+      "numeric_score": 8,
       "label": "C",
       "color_bg": "#FECB02",
       "color_text": "#1a1a1a",
       "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 4
+      "positive_total": 5
     },
     "nutri_score": {
       "grade": "C",
-      "numeric_score": 9,
+      "numeric_score": 8,
       "label": "C",
       "color_bg": "#FECB02",
       "color_text": "#1a1a1a",
       "description": "Average nutritional quality",
       "category": "general",
       "negative_total": 13,
-      "positive_total": 4
+      "positive_total": 5
     }
   },
   {

@@ -16,6 +16,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from app.scoring.constants import (
+    ALGORITHM_VERSION,
     NEGATIVE_TABLES,
     POSITIVE_TABLES,
     GRADE_THRESHOLDS,
@@ -31,6 +32,7 @@ from app.scoring.constants import (
 from app.scoring.categories import classify_recipe_category
 from app.scoring.estimators import (
     estimate_fvl_percent,
+    estimate_fvl_percent_with_confidence,
     estimate_serving_weight_g,
     normalize_to_per_100g,
     enrich_missing_nutrients,
@@ -56,6 +58,7 @@ class NutriScoreBreakdown:
     # Estimated values
     fvl_pct: float = 0.0
     estimated_serving_weight_g: float = 300.0
+    confidence: str = "high"  # "high" | "medium" | "low"
     # Per-100g values used for scoring (for debugging / transparency)
     energy_kj_per_100g: float = 0.0
     sat_fat_per_100g: float = 0.0
@@ -80,6 +83,7 @@ class NutriScoreResult:
     category: str                           # "general", "beverage", "fats_oils", "cheese"
     breakdown: NutriScoreBreakdown = field(default_factory=NutriScoreBreakdown)
     # Visual metadata (convenience for API responses)
+    algorithm_version: str = ALGORITHM_VERSION
     color_bg: str = ""
     color_text: str = ""
     label: str = ""
@@ -109,6 +113,8 @@ class NutriScoreResult:
             "color_text": self.color_text,
             "label": self.label,
             "description": self.description,
+            "confidence": self.breakdown.confidence,
+            "algorithm_version": self.algorithm_version,
             "breakdown": {
                 "neg_energy": self.breakdown.neg_energy,
                 "neg_saturated_fat": self.breakdown.neg_saturated_fat,
@@ -119,6 +125,7 @@ class NutriScoreResult:
                 "pos_fvl": self.breakdown.pos_fvl,
                 "protein_excluded": self.breakdown.protein_excluded,
                 "fvl_pct": self.breakdown.fvl_pct,
+                "confidence": self.breakdown.confidence,
                 "nutrients_estimated": self.breakdown.nutrients_estimated,
             },
         }
@@ -262,7 +269,7 @@ def compute_nutri_score(
     # ── Step 5: Compute positive points ────────────────────────────
     pos_table = POSITIVE_TABLES[category]
 
-    fvl_pct = estimate_fvl_percent(ingredients)
+    fvl_pct, confidence = estimate_fvl_percent_with_confidence(ingredients)
     pos_fiber = _lookup_positive_points(
         per_100g.get("fiber_g", 0), pos_table["fiber"]
     )
@@ -301,6 +308,7 @@ def compute_nutri_score(
         protein_excluded=protein_excluded,
         fvl_pct=fvl_pct,
         estimated_serving_weight_g=serving_weight_g,
+        confidence=confidence,
         energy_kj_per_100g=round(energy_kj, 1),
         sat_fat_per_100g=round(per_100g.get("saturated_fat_g", 0), 2),
         sugars_per_100g=round(per_100g.get("sugar_g", 0), 2),

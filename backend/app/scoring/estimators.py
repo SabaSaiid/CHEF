@@ -109,12 +109,12 @@ def _parse_fraction(s: str) -> float:
         return 1.0
 
 
-def _parse_ingredient_weight(ingredient_str: str) -> tuple[str, float]:
+def _parse_ingredient_weight(ingredient_str: str) -> tuple[str, float, bool]:
     """
     Parse an ingredient string and estimate its weight in grams.
 
     Returns:
-        (ingredient_name, estimated_weight_g)
+        (ingredient_name, estimated_weight_g, is_explicit_unit)
     """
     ingredient_str = ingredient_str.strip()
 
@@ -126,7 +126,8 @@ def _parse_ingredient_weight(ingredient_str: str) -> tuple[str, float]:
         name = m.group(3).strip()
 
         grams_per_unit = _UNIT_TO_GRAMS.get(unit, 100)
-        return name.lower(), qty * grams_per_unit
+        is_explicit = unit in _UNIT_TO_GRAMS
+        return name.lower(), qty * grams_per_unit, is_explicit
 
     # Fallback: try to extract just the name, assume ~100g
     # Remove leading numbers and common words
@@ -138,12 +139,12 @@ def _parse_ingredient_weight(ingredient_str: str) -> tuple[str, float]:
     if not cleaned:
         cleaned = ingredient_str
 
-    return cleaned.lower().strip(), 100.0
+    return cleaned.lower().strip(), 100.0, False
 
 
 def _classify_ingredient(name: str) -> Optional[str]:
     """
-    Classify an ingredient as fruit/vegetable/legume/nut or None.
+    Classify an ingredient as fruit/vegetable/legume/nut/concentrate or None.
 
     Uses multi-strategy matching:
       1. Exact match
@@ -168,31 +169,55 @@ def _classify_ingredient(name: str) -> Optional[str]:
 def estimate_fvl_percent(ingredients: list[str]) -> float:
     """
     Estimate the fruit/vegetable/legume/nut percentage of a recipe.
+    Wrapper returning float for backwards compatibility.
+    """
+    fvl_pct, _ = estimate_fvl_percent_with_confidence(ingredients)
+    return fvl_pct
 
-    Args:
-        ingredients: List of raw ingredient strings (e.g., "2 cups spinach").
+
+def estimate_fvl_percent_with_confidence(ingredients: list[str]) -> tuple[float, str]:
+    """
+    Estimate FVL percentage with official 2.0x concentrate multiplier and
+    weight parsing confidence score (high / medium / low).
 
     Returns:
-        Estimated FVL percentage (0.0 – 100.0).
+        (fvl_percentage, confidence_level)
     """
     if not ingredients:
-        return 0.0
+        return 0.0, "low"
 
     total_weight = 0.0
     fvl_weight = 0.0
+    explicit_weight = 0.0
 
     for ing_str in ingredients:
-        name, weight_g = _parse_ingredient_weight(ing_str)
+        name, weight_g, is_explicit = _parse_ingredient_weight(ing_str)
         total_weight += weight_g
+        if is_explicit:
+            explicit_weight += weight_g
 
         category = _classify_ingredient(name)
         if category in ("fruit", "vegetable", "legume", "nut"):
             fvl_weight += weight_g
+        elif category == "concentrate":
+            # Nutri-Score 2023 rule: concentrated tomato paste/purée & dried fruit = 2.0x raw equivalent
+            fvl_weight += weight_g * 2.0
 
     if total_weight <= 0:
-        return 0.0
+        return 0.0, "low"
 
-    return round(min(100.0, (fvl_weight / total_weight) * 100), 1)
+    fvl_pct = round(min(100.0, (fvl_weight / total_weight) * 100), 1)
+
+    # Compute weight-parsing confidence score
+    explicit_ratio = explicit_weight / total_weight
+    if explicit_ratio >= 0.8:
+        confidence = "high"
+    elif explicit_ratio >= 0.5:
+        confidence = "medium"
+    else:
+        confidence = "low"
+
+    return fvl_pct, confidence
 
 
 def estimate_serving_weight_g(
@@ -219,7 +244,7 @@ def estimate_serving_weight_g(
 
     total_weight = 0.0
     for ing_str in ingredients:
-        _, weight_g = _parse_ingredient_weight(ing_str)
+        _, weight_g, _ = _parse_ingredient_weight(ing_str)
         total_weight += weight_g
 
     if total_weight <= 0:
@@ -319,7 +344,7 @@ def _aggregate_from_ingredients(
     matched_any = False
 
     for ing_str in ingredients:
-        name, weight_g = _parse_ingredient_weight(ing_str)
+        name, weight_g, _ = _parse_ingredient_weight(ing_str)
         total_weight += weight_g
 
         # Look up in nutrition DB

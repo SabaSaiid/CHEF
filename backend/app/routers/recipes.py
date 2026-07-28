@@ -34,7 +34,8 @@ from app.schemas import (
     RecipeRateRequest,
 )
 from app.scoring.calculator import compute_nutri_score, compute_chef_score
-from app.scoring.constants import GRADE_ORDER
+from app.scoring.constants import GRADE_ORDER, ALGORITHM_VERSION
+from app.services.cache import raw_nutrition_cache, nutri_score_cache
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 
@@ -269,40 +270,39 @@ async def _search_spoonacular(
                 missed = item.get("missedIngredientCount", 0)
                 match_scores[rid] = 1.0 - (missed / max(len(ingredients), 1))
 
-            # Step 2: Fetch full recipe details in bulk
-            recipe_ids = [str(item["id"]) for item in search_data if "id" in item]
-            bulk_resp = await client.get(
-                "https://api.spoonacular.com/recipes/informationBulk",
-                params={
-                    "ids": ",".join(recipe_ids),
-                    "apiKey": settings.SPOONACULAR_API_KEY,
-                    "includeNutrition": True,
-                },
-            )
+            # Step 2: Fetch full recipe details in bulk (with dual-layer caching)
+            all_recipe_ids = [str(item["id"]) for item in search_data if "id" in item]
+            cached_infos = {}
+            missing_ids = []
 
-            if bulk_resp.status_code != 200:
-                # Fallback: return basic results without instructions
-                return [
-                    RecipeItem(
-                        id=str(item.get("id", "")),
-                        title=item.get("title", ""),
-                        image_url=item.get("image", ""),
-                        ingredients=[
-                            ing.get("name", "") for ing in item.get("usedIngredients", [])
-                        ] + [
-                            ing.get("name", "") for ing in item.get("missedIngredients", [])
-                        ],
-                        match_score=match_scores.get(str(item.get("id", "")), 0.0),
-                    )
-                    for item in search_data
-                ]
+            for rid in all_recipe_ids:
+                cached_payload = raw_nutrition_cache.get(f"raw_nutrition:{rid}")
+                if cached_payload is not None:
+                    cached_infos[rid] = cached_payload
+                else:
+                    missing_ids.append(rid)
 
-            bulk_data = bulk_resp.json()
+            if missing_ids:
+                bulk_resp = await client.get(
+                    "https://api.spoonacular.com/recipes/informationBulk",
+                    params={
+                        "ids": ",".join(missing_ids),
+                        "apiKey": settings.SPOONACULAR_API_KEY,
+                        "includeNutrition": True,
+                    },
+                )
+                if bulk_resp.status_code == 200:
+                    for info in bulk_resp.json():
+                        rid = str(info.get("id", ""))
+                        raw_nutrition_cache.set(f"raw_nutrition:{rid}", info)
+                        cached_infos[rid] = info
 
             results = []
-            for info in bulk_data:
-                rid = str(info.get("id", ""))
-                
+            for rid in all_recipe_ids:
+                info = cached_infos.get(rid)
+                if not info:
+                    continue
+
                 # Extract ingredients with amounts
                 ext_ingredients = []
                 for ing in info.get("extendedIngredients", []):
@@ -320,6 +320,24 @@ async def _search_spoonacular(
                         carbs_g=nutrients.get("carbohydrates", 0),
                         fat_g=nutrients.get("fat", 0),
                     )
+
+                # Compute Nutri-Score with Store B caching
+                score_cache_key = f"nutri_score:{rid}:{ALGORITHM_VERSION}"
+                cached_score = nutri_score_cache.get(score_cache_key)
+                if cached_score is None:
+                    calc_res = compute_nutri_score(
+                        nutrition={
+                            "calories": nutrition.calories if nutrition else 0,
+                            "protein_g": nutrition.protein_g if nutrition else 0,
+                            "carbs_g": nutrition.carbs_g if nutrition else 0,
+                            "fat_g": nutrition.fat_g if nutrition else 0,
+                        },
+                        ingredients=ext_ingredients,
+                        servings=info.get("servings", 1) or 1,
+                        title=info.get("title", ""),
+                    )
+                    cached_score = NutriScoreResponse(**calc_res.to_dict())
+                    nutri_score_cache.set(score_cache_key, cached_score)
 
                 # Extract instructions
                 instructions = _extract_instructions(info)
@@ -340,6 +358,8 @@ async def _search_spoonacular(
                     instructions=instructions if instructions else None,
                     diets=info.get("diets", []),
                     nutrition=nutrition,
+                    nutri_score=cached_score,
+                    chef_score=cached_score,
                     source_url=info.get("sourceUrl"),
                     match_score=match_scores.get(rid, 0.0),
                 ))
