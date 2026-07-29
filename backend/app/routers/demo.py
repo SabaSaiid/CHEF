@@ -95,7 +95,7 @@ def seed_demo_data(db: Session = Depends(get_db)):
     profile.goal = "maintain"
     profile.goal_intensity = "moderate"
     profile.body_fat_percent = None
-    profile.health_conditions = "diabetes,hypertension"
+    profile.health_conditions = ""
     profile.taste_preferences = "spicy,savory"
 
     # Calculate accurate baseline targets
