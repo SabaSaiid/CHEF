@@ -16,9 +16,7 @@
 
 ## 🌟 Overview
 
-**CHEF** solves the daily *"What should I cook today?"* dilemma. Rather than searching by dish names, users input available ingredients—either via natural language text or by taking/uploading a photo using **YOLOv8 computer vision**. 
-
-CHEF instantly filters **7,100+ recipes** based on:
+**CHEF** is a full-stack web application that helps users find recipes based on the ingredients they already have at home. Users can type ingredients in plain text or upload a photo to detect them using a **YOLOv8** object detection model. The system then searches a local database of **7,100+ recipes** and filters results based on:
 - 🥗 **Dietary Rules**: Vegetarian, Vegan, Keto, Gluten-Free, High-Protein
 - 🎯 **Nutritional Targets**: Daily calorie & macro goals (calculated via TDEE)
 - ⏱️ **Cooking Constraints**: Maximum available cooking & prep time
