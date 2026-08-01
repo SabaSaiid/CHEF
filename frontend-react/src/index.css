@@ -6124,3 +6124,154 @@ input:focus, select:focus, textarea:focus {
     width: 100%;
 }
 
+/* ── CHEF Enhanced Settings UI/UX Styles ────────────────────────────────── */
+
+/* Accent Theme CSS Variable Bindings */
+:root {
+  --accent-primary: #10b981;
+  --accent-glow: rgba(16, 185, 129, 0.25);
+  --accent-subtle: rgba(16, 185, 129, 0.1);
+}
+
+[data-accent="emerald"] {
+  --accent-color: #059669;
+  --accent-primary: #059669;
+  --accent-glow: rgba(5, 150, 105, 0.25);
+  --accent-subtle: rgba(5, 150, 105, 0.1);
+}
+
+[data-accent="violet"] {
+  --accent-color: #8b5cf6;
+  --accent-primary: #8b5cf6;
+  --accent-glow: rgba(139, 92, 246, 0.25);
+  --accent-subtle: rgba(139, 92, 246, 0.1);
+}
+
+[data-accent="amber"] {
+  --accent-color: #f59e0b;
+  --accent-primary: #f59e0b;
+  --accent-glow: rgba(245, 158, 11, 0.25);
+  --accent-subtle: rgba(245, 158, 11, 0.1);
+}
+
+/* Custom iOS-Style Animated Switch */
+.chef-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.chef-switch-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.chef-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-glass, rgba(255, 255, 255, 0.2));
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chef-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.chef-switch-input:checked + .chef-switch-slider {
+  background-color: var(--accent-primary, #10b981);
+  box-shadow: 0 0 10px var(--accent-glow, rgba(16, 185, 129, 0.3));
+}
+
+.chef-switch-input:checked + .chef-switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* Settings Search Input */
+.settings-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.settings-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.15));
+  background: var(--bg-secondary, rgba(0, 0, 0, 0.04));
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.settings-search-input:focus {
+  border-color: var(--accent-primary, #10b981);
+  box-shadow: 0 0 0 3px var(--accent-glow, rgba(16, 185, 129, 0.15));
+}
+
+.settings-search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Storage footprint bar */
+.storage-meter {
+  height: 8px;
+  width: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  display: flex;
+}
+
+.storage-meter-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--accent-primary, #10b981), #3b82f6);
+  transition: width 0.4s ease;
+}
+
+/* Responsive tab bar for smaller screens */
+@media (max-width: 640px) {
+  .settings-modal-wrapper {
+    flex-direction: column !important;
+  }
+  .settings-sidebar-tabs {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+  .tab-nav-btn {
+    white-space: nowrap !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+

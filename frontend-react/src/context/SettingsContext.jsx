@@ -162,6 +162,27 @@ export const SettingsProvider = ({ children }) => {
     }
   };
 
+  const getStorageMetrics = () => {
+    try {
+      let totalBytes = 0;
+      let chefKeysCount = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('chef_')) {
+          chefKeysCount++;
+          const val = localStorage.getItem(key) || '';
+          totalBytes += (key.length + val.length) * 2; // approx 2 bytes per char
+        }
+      }
+      const kbSize = (totalBytes / 1024).toFixed(1);
+      const searchCount = JSON.parse(localStorage.getItem('chef_search_history') || '[]').length;
+      const logsCount = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]').length;
+      return { totalBytes, kbSize, chefKeysCount, searchCount, logsCount };
+    } catch (e) {
+      return { totalBytes: 0, kbSize: '0.0', chefKeysCount: 0, searchCount: 0, logsCount: 0 };
+    }
+  };
+
   return (
     <SettingsContext.Provider value={{
       settings,
@@ -170,6 +191,7 @@ export const SettingsProvider = ({ children }) => {
       exportUserData,
       importUserData,
       clearAppCache,
+      getStorageMetrics,
       DEFAULT_SETTINGS
     }}>
       {children}
