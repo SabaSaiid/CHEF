@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useSettings } from '../context/SettingsContext';
 import RecipeModal from '../components/RecipeModal';
 import AuthModal from '../components/AuthModal';
 import { Plus, Wand2, Trash2, Search, AlertTriangle, ChefHat, Info, AlertCircle, Package, Clock, Leaf, Minus } from 'lucide-react';
@@ -221,6 +222,7 @@ const QUICK_PRESETS = [
 export default function Pantry() {
   const { token } = useContext(AuthContext);
   const toast = useToast();
+  const { settings } = useSettings();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
   const [pantryItems, setPantryItems] = useState([]);
@@ -386,8 +388,9 @@ export default function Pantry() {
     const expiryTime = updatedDate + (item.days_fresh || 7) * 24 * 60 * 60 * 1000;
     const timeLeftMs = expiryTime - Date.now();
     const daysLeft = Math.ceil(timeLeftMs / (24 * 60 * 60 * 1000));
+    const warningDays = settings.expiryWarningDays || 3;
 
-    if (isNaN(daysLeft) || daysLeft > 2) {
+    if (isNaN(daysLeft) || daysLeft > warningDays) {
       return { label: 'Fresh', color: '#27ae60', bg: 'rgba(39,174,96,0.1)' };
     }
     if (daysLeft <= 0) {

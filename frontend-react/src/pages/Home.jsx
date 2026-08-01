@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useSettings } from '../context/SettingsContext';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import foodFacts from '../data/foodFacts';
@@ -45,6 +46,7 @@ function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
 
 export default function Home() {
   const { token, username, activeProfile, refreshActiveProfile } = useContext(AuthContext);
+  const { settings } = useSettings();
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,9 +101,9 @@ export default function Home() {
       protein: activeProfile?.target_protein || 125,
       carbs: activeProfile?.target_carbs || 240,
       fat: activeProfile?.target_fat || 60,
-      water: activeProfile?.target_water_ml || 2500,
+      water: activeProfile?.target_water_ml || settings?.waterGoalTarget || 2000,
     };
-  }, [activeProfile]);
+  }, [activeProfile, settings]);
 
   const fetchTodayStats = useCallback(async () => {
     const todayStr = getLocalDateString();

@@ -30,7 +30,7 @@ export default function Recipes() {
   const { settings } = useSettings();
   const [ingredients, setIngredients] = useState(location.state?.ingredients || '');
   const [autoCorrectSuggestion, setAutoCorrectSuggestion] = useState(null);
-  const [diet, setDiet] = useState('');
+  const [diet, setDiet] = useState(location.state?.diet || (settings.defaultDiet && settings.defaultDiet !== 'none' ? settings.defaultDiet : ''));
   const [region, setRegion] = useState('');
   const [mealType, setMealType] = useState('');
   const [maxCal, setMaxCal] = useState('');
