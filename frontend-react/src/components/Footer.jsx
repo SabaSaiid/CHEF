@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, HeartPulse, FileText, Database, Heart, ExternalLink, HelpCircle } from 'lucide-react';
+import { ShieldCheck, HeartPulse, FileText, Database, Heart, ExternalLink, HelpCircle, Award, MessageSquare } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onOpenFeedback }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -48,6 +48,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/attributions" className="footer-legal-link">
+                  <Award size={14} />
+                  <span>Open Source Credits</span>
+                </Link>
+              </li>
+              <li>
                 <Link to="/terms?tab=terms" className="footer-legal-link">
                   <FileText size={14} />
                   <span>Terms of Service</span>
@@ -71,6 +77,18 @@ export default function Footer() {
                   <span>Data & AI Policy</span>
                 </Link>
               </li>
+              {onOpenFeedback && (
+                <li>
+                  <button 
+                    onClick={onOpenFeedback} 
+                    className="footer-legal-link"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', font: 'inherit' }}
+                  >
+                    <MessageSquare size={14} />
+                    <span>Report Feedback</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 

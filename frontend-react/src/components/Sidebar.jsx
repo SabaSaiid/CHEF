@@ -7,7 +7,7 @@ import api from '../services/api';
 import AuthModal from './AuthModal';
 import { getLocalDateString, CHEF_EVENTS } from '../utils/dateUtils';
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
   const { token, username, logout, seedDemo, userProfile, activeProfile, refreshActiveProfile } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const toast = useToast();
@@ -284,6 +284,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <button className="sidebar-tool-btn" onClick={() => handleNav('/help')}>
               ❓ Help & FAQ
             </button>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/attributions')}>
+              📜 Open Source Credits
+            </button>
             <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=terms')}>
               📜 Terms of Service
             </button>
@@ -293,6 +296,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=disclaimer')}>
               ⚠️ Medical Disclaimer
             </button>
+            {onOpenFeedback && (
+              <button className="sidebar-tool-btn" onClick={() => { setIsOpen(false); onOpenFeedback(); }}>
+                💬 Report Feedback
+              </button>
+            )}
           </div>
         </div>
       </div>

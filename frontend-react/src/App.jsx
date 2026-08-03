@@ -20,9 +20,11 @@ import './index.css';
 
 import TermsAndConditions from './pages/TermsAndConditions';
 import HelpCenter from './pages/HelpCenter';
+import Attributions from './pages/Attributions';
 import Footer from './components/Footer';
 
 import CookieConsentBanner from './components/CookieConsentBanner';
+import FeedbackModal from './components/FeedbackModal';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -41,6 +43,7 @@ function AnimatedRoutes() {
         <Route path="/pantry" element={<Pantry />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/help" element={<HelpCenter />} />
+        <Route path="/attributions" element={<Attributions />} />
       </Routes>
     </div>
   );
@@ -48,6 +51,7 @@ function AnimatedRoutes() {
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = React.useState(window.innerWidth > 1100);
+  const [isFeedbackOpen, setIsFeedbackOpen] = React.useState(false);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -71,9 +75,9 @@ function App() {
               <div className={`app-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
                 <main id="app-main">
                   <AnimatedRoutes />
-                  <Footer />
+                  <Footer onOpenFeedback={() => setIsFeedbackOpen(true)} />
                 </main>
-                <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
+                <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} onOpenFeedback={() => setIsFeedbackOpen(true)} />
               </div>
               {!isSidebarOpen && (
                 <button 
@@ -85,7 +89,15 @@ function App() {
                   📋
                 </button>
               )}
-              <CookieConsentBanner />
+              <button
+                className="feedback-floating-btn"
+                onClick={() => setIsFeedbackOpen(true)}
+                title="Send Feedback or Report Inaccurate Data"
+              >
+                💬 Feedback
+              </button>
+              <CookieConsentBanner onOpenSettings={() => {}} />
+              <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
             </BrowserRouter>
           </ToastProvider>
         </SettingsProvider>
