@@ -2391,6 +2391,32 @@ h6 {
 }
 
 /* ── Fun Fact Carousel Widget ─────────────────────────────── */
+.glowing-bulb-icon {
+    color: #ff9f43;
+    filter: drop-shadow(0 0 8px rgba(255, 159, 67, 0.5));
+}
+
+.btn-fact-shuffle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-fact-shuffle:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
 .fun-fact-widget {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
@@ -2401,6 +2427,7 @@ h6 {
     box-shadow: var(--shadow-card);
     transition: transform var(--transition), box-shadow var(--transition);
     position: relative;
+    padding-top: 10px;
 }
 
 .fun-fact-widget:hover {
@@ -2408,30 +2435,42 @@ h6 {
     box-shadow: var(--shadow-card-hover);
 }
 
-/* Decorative gradient bar at top */
-.fun-fact-gradient-bar {
-    height: 4px;
-    background: var(--gradient-primary);
-    background-size: 200% 100%;
-    animation: gradientShift 4s ease-in-out infinite;
+.fun-fact-categories {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 10px 16px 6px 16px;
+    scrollbar-width: none;
 }
 
-@keyframes gradientShift {
+.fun-fact-categories::-webkit-scrollbar {
+    display: none;
+}
 
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
+.fact-cat-pill {
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
 
-    50% {
-        background-position: 100% 50%;
-    }
+.fact-cat-pill:hover,
+.fact-cat-pill.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
 }
 
 /* Slides container */
 .fun-fact-slides {
     position: relative;
-    min-height: 220px;
+    min-height: 180px;
     overflow: hidden;
 }
 
@@ -2440,9 +2479,9 @@ h6 {
     inset: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 28px 24px 16px;
+    align-items: flex-start;
+    text-align: left;
+    padding: 16px 20px;
     opacity: 0;
     transform: translateY(12px) scale(0.97);
     transition: opacity 0.45s ease, transform 0.45s ease;
@@ -2456,67 +2495,59 @@ h6 {
     position: relative;
 }
 
-/* Icon with decorative ring */
+.fun-fact-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 .fun-fact-icon-wrap {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 72px;
-    height: 72px;
-    margin-bottom: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 107, 0, 0.1);
 }
 
 .fun-fact-icon {
-    font-size: 38px;
-    line-height: 1;
-    z-index: 1;
-    filter: drop-shadow(0 3px 10px rgba(224, 122, 95, 0.18));
-    animation: floatSoft 3s ease-in-out infinite;
+    font-size: 20px;
 }
 
-.fun-fact-icon-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid rgba(224, 122, 95, 0.15);
-    animation: ringPulse 3s ease-in-out infinite;
-}
-
-@keyframes ringPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        border-color: rgba(224, 122, 95, 0.15);
-    }
-
-    50% {
-        transform: scale(1.12);
-        border-color: rgba(129, 178, 154, 0.2);
-    }
-}
-
-/* Category badge */
-.fun-fact-category {
-    display: inline-block;
-    font-size: 10px;
+.fun-fact-category-badge {
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: white;
-    background: var(--gradient-primary);
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 14px;
-    box-shadow: 0 2px 8px rgba(224, 122, 95, 0.2);
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary);
+}
+
+.btn-fact-copy {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-fact-copy:hover {
+    color: var(--primary);
+    background: rgba(255, 107, 0, 0.08);
 }
 
 /* Fact text */
 .fun-fact-text {
-    font-size: 14px;
-    line-height: 1.75;
-    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-primary);
     font-family: var(--font);
     max-width: 280px;
     margin: 0 auto;

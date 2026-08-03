@@ -27,7 +27,12 @@ import {
   Trash2, 
   Flame, 
   ExternalLink, 
-  Sparkles 
+  Sparkles,
+  Lightbulb,
+  RefreshCw,
+  Copy,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 function getGreeting() {
@@ -80,6 +85,8 @@ export default function Home() {
   const [isPickerOpen, setPickerOpen] = useState(false);
   const [pickerSlot, setPickerSlot] = useState('Breakfast');
   const [activeFact, setActiveFact] = useState(0);
+  const [selectedFactCategory, setSelectedFactCategory] = useState('All');
+  const [copiedFact, setCopiedFact] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
 
@@ -91,11 +98,10 @@ export default function Home() {
 
   const greeting = useMemo(() => getGreeting(), []);
 
-  // Pick FACT_COUNT facts per day using a deterministic daily seed
+  // Pick 5 facts per day using a deterministic daily seed
   const dailyFacts = useMemo(() => {
     const now = new Date();
     const dayIndex = Math.floor(now.getTime() / 86400000);
-    // simple seeded shuffle to pick FACT_COUNT facts
     const indices = foodFacts.map((_, i) => i);
     let seed = dayIndex;
     for (let i = indices.length - 1; i > 0; i--) {
@@ -103,19 +109,46 @@ export default function Home() {
       const j = seed % (i + 1);
       [indices[i], indices[j]] = [indices[j], indices[i]];
     }
-    return indices.slice(0, FACT_COUNT).map(i => foodFacts[i]);
+    return indices.slice(0, 6).map(i => foodFacts[i]);
   }, []);
+
+  const filteredFacts = useMemo(() => {
+    if (selectedFactCategory === 'All') return dailyFacts;
+    const match = foodFacts.filter(f => f.category === selectedFactCategory);
+    return match.length > 0 ? match : dailyFacts;
+  }, [selectedFactCategory, dailyFacts]);
+
+  const handleShuffleFact = () => {
+    const randomIndex = Math.floor(Math.random() * foodFacts.length);
+    const randomFact = foodFacts[randomIndex];
+    const foundIdx = filteredFacts.findIndex(f => f.id === randomFact.id);
+    if (foundIdx !== -1) {
+      setActiveFact(foundIdx);
+    } else {
+      setSelectedFactCategory('All');
+      const allIdx = dailyFacts.findIndex(f => f.id === randomFact.id);
+      setActiveFact(allIdx !== -1 ? allIdx : Math.floor(Math.random() * dailyFacts.length));
+    }
+    toast.success('Shuffled a new food science fact! 💡');
+  };
+
+  const handleCopyFact = (factText) => {
+    navigator.clipboard.writeText(factText);
+    setCopiedFact(true);
+    toast.success('Fact copied to clipboard! 📋');
+    setTimeout(() => setCopiedFact(false), 2000);
+  };
 
   // Auto-rotate facts
   const nextFact = useCallback(() => {
-    setActiveFact(prev => (prev + 1) % dailyFacts.length);
-  }, [dailyFacts.length]);
+    setActiveFact(prev => (prev + 1) % filteredFacts.length);
+  }, [filteredFacts.length]);
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || filteredFacts.length <= 1) return;
     timerRef.current = setInterval(nextFact, AUTO_ROTATE_MS);
     return () => clearInterval(timerRef.current);
-  }, [isPaused, nextFact]);
+  }, [isPaused, nextFact, filteredFacts.length]);
 
   const targets = useMemo(() => {
     return {
@@ -489,23 +522,59 @@ export default function Home() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <h2 className="section-title">💡 Did You Know?</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Lightbulb size={20} className="glowing-bulb-icon" /> Did You Know?
+            </h2>
+            <button
+              className="btn-fact-shuffle"
+              onClick={handleShuffleFact}
+              title="Shuffle a new food science fact"
+            >
+              <RefreshCw size={13} /> Shuffle
+            </button>
+          </div>
+
           <div className="fun-fact-widget">
-            {/* Decorative top gradient bar */}
-            <div className="fun-fact-gradient-bar" />
+            {/* Category Filter Pills */}
+            <div className="fun-fact-categories">
+              {['All', 'Nutrition', 'Culture', 'Cooking', 'Health'].map(cat => (
+                <button
+                  key={cat}
+                  className={`fact-cat-pill ${selectedFactCategory === cat ? 'active' : ''}`}
+                  onClick={() => {
+                    setSelectedFactCategory(cat);
+                    setActiveFact(0);
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
 
             {/* Fact slides */}
             <div className="fun-fact-slides">
-              {dailyFacts.map((fact, idx) => (
+              {filteredFacts.map((fact, idx) => (
                 <div
-                  key={idx}
+                  key={fact.id || idx}
                   className={`fun-fact-slide ${idx === activeFact ? 'active' : ''}`}
                 >
-                  <div className="fun-fact-icon-wrap">
-                    <span className="fun-fact-icon">{fact.icon}</span>
-                    <div className="fun-fact-icon-ring" />
+                  <div className="fun-fact-top-row">
+                    <div className="fun-fact-icon-wrap">
+                      <span className="fun-fact-icon">{fact.icon}</span>
+                    </div>
+                    <span className={`fun-fact-category-badge cat-${(fact.category || 'Nutrition').toLowerCase().replace(/\s+/g, '')}`}>
+                      {fact.category}
+                    </span>
+                    <button 
+                      className="btn-fact-copy"
+                      onClick={() => handleCopyFact(fact.fact)}
+                      title="Copy fact text"
+                    >
+                      {copiedFact ? <Check size={13} style={{ color: '#10ac84' }} /> : <Copy size={13} />}
+                    </button>
                   </div>
-                  <span className="fun-fact-category">{fact.category}</span>
+
                   <p className="fun-fact-text">{fact.fact}</p>
                 </div>
               ))}
@@ -515,13 +584,13 @@ export default function Home() {
             <div className="fun-fact-controls">
               <button
                 className="fun-fact-arrow"
-                onClick={() => setActiveFact(prev => (prev - 1 + dailyFacts.length) % dailyFacts.length)}
+                onClick={() => setActiveFact(prev => (prev - 1 + filteredFacts.length) % filteredFacts.length)}
                 aria-label="Previous fact"
               >
-                ‹
+                <ChevronLeft size={16} />
               </button>
               <div className="fun-fact-dots">
-                {dailyFacts.map((_, idx) => (
+                {filteredFacts.slice(0, 8).map((_, idx) => (
                   <button
                     key={idx}
                     className={`fun-fact-dot ${idx === activeFact ? 'active' : ''}`}
@@ -532,10 +601,10 @@ export default function Home() {
               </div>
               <button
                 className="fun-fact-arrow"
-                onClick={() => setActiveFact(prev => (prev + 1) % dailyFacts.length)}
+                onClick={() => setActiveFact(prev => (prev + 1) % filteredFacts.length)}
                 aria-label="Next fact"
               >
-                ›
+                <ChevronRight size={16} />
               </button>
             </div>
 
@@ -543,13 +612,15 @@ export default function Home() {
             <div className="fun-fact-progress">
               <div
                 className={`fun-fact-progress-fill ${isPaused ? 'paused' : ''}`}
-                key={activeFact}
+                key={`${selectedFactCategory}-${activeFact}`}
               />
             </div>
 
             <div className="fun-fact-footer">
-              <span className="fun-fact-counter">{activeFact + 1} / {dailyFacts.length}</span>
-              <span className="fun-fact-source">Verified food science</span>
+              <span className="fun-fact-counter">{activeFact + 1} / {filteredFacts.length} Facts</span>
+              <span className="fun-fact-source">
+                <Sparkles size={12} style={{ color: 'var(--primary)' }} /> Verified Food Science
+              </span>
             </div>
           </div>
         </div>
