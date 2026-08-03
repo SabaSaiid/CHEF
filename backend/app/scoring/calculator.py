@@ -28,6 +28,8 @@ from app.scoring.constants import (
     TIER_COLORS,
     TIER_DESCRIPTIONS,
     GRADE_BONUS,
+    NEXT_TIER_MAP,
+    GRADE_ORDER,
 )
 from app.scoring.categories import classify_recipe_category
 from app.scoring.estimators import (
@@ -82,6 +84,10 @@ class NutriScoreResult:
     positive_total: int                     # Sum of positive points (0–15)
     category: str                           # "general", "beverage", "fats_oils", "cheese"
     breakdown: NutriScoreBreakdown = field(default_factory=NutriScoreBreakdown)
+    # Tier progression & recommendations
+    next_tier: Optional[str] = None
+    points_to_next_tier: int = 0
+    upgrade_recommendations: list[str] = field(default_factory=list)
     # Visual metadata (convenience for API responses)
     algorithm_version: str = ALGORITHM_VERSION
     color_bg: str = ""
@@ -114,6 +120,9 @@ class NutriScoreResult:
             "label": self.label,
             "description": self.description,
             "confidence": self.breakdown.confidence,
+            "next_tier": self.next_tier,
+            "points_to_next_tier": self.points_to_next_tier,
+            "upgrade_recommendations": self.upgrade_recommendations,
             "algorithm_version": self.algorithm_version,
             "breakdown": {
                 "neg_energy": self.breakdown.neg_energy,
@@ -296,7 +305,7 @@ def compute_nutri_score(
     # ── Step 8: Map to grade ───────────────────────────────────────
     grade = _map_score_to_grade(final_score, negative_total, positive_total, category)
 
-    # ── Build result ───────────────────────────────────────────────
+    # ── Step 9: Build breakdown ────────────────────────────────────
     breakdown = NutriScoreBreakdown(
         neg_energy=neg_energy,
         neg_saturated_fat=neg_sat_fat,
@@ -318,6 +327,14 @@ def compute_nutri_score(
         nutrients_estimated=nutrients_estimated,
     )
 
+    # ── Step 10: Tier progression & upgrade advice ───────────────────
+    next_tier, points_to_next = _calculate_tier_progression(
+        grade, final_score, negative_total, positive_total, category
+    )
+    recommendations = _generate_upgrade_recommendations(
+        grade, breakdown, final_score, negative_total, positive_total
+    )
+
     return NutriScoreResult(
         grade=grade,
         numeric_score=final_score,
@@ -325,6 +342,9 @@ def compute_nutri_score(
         positive_total=positive_total,
         category=category,
         breakdown=breakdown,
+        next_tier=next_tier,
+        points_to_next_tier=points_to_next,
+        upgrade_recommendations=recommendations,
     )
 
 
@@ -360,6 +380,135 @@ def _map_score_to_grade(
 
     # If no threshold matched, it's E
     return "E"
+
+
+def _calculate_tier_progression(
+    grade: str,
+    score: int,
+    negative_total: int,
+    positive_total: int,
+    category: str,
+) -> tuple[Optional[str], int]:
+    """Calculate the next target tier and numeric points needed to reach it."""
+    next_tier = NEXT_TIER_MAP.get(grade)
+    if not next_tier:
+        return None, 0
+
+    if grade == "A":
+        # S-Tier target
+        pts = max(1, score - S_TIER_MAX_SCORE)
+        return "S", pts
+
+    thresholds = GRADE_THRESHOLDS.get(category, GRADE_THRESHOLDS["general"])
+    # Map from target grade to threshold
+    threshold_map = {g: ub for ub, g in thresholds}
+    target_ub = threshold_map.get(next_tier)
+    if target_ub is not None:
+        pts = max(1, score - target_ub)
+        return next_tier, pts
+
+    return next_tier, 1
+
+
+def _generate_upgrade_recommendations(
+    grade: str,
+    breakdown: NutriScoreBreakdown,
+    score: int,
+    negative_total: int,
+    positive_total: int,
+) -> list[str]:
+    """Generate context-aware, actionable tips to upgrade the recipe's Nutri-Score."""
+    recs: list[str] = []
+
+    if grade == "S":
+        recs.append("★ Superior Rating: Outstanding nutritional balance with minimal penalties.")
+        return recs
+
+    # Negative nutrient reduction advice
+    if breakdown.neg_sodium >= 2:
+        recs.append(
+            f"Reduce sodium/salt content ({breakdown.neg_sodium} penalty pts) by substituting with lemon, garlic, or fresh herbs."
+        )
+    if breakdown.neg_saturated_fat >= 2:
+        recs.append(
+            f"Lower saturated fat ({breakdown.neg_saturated_fat} penalty pts) by swapping ghee or butter for olive oil or avocado oil."
+        )
+    if breakdown.neg_sugars >= 2:
+        recs.append(
+            f"Cut added sugars ({breakdown.neg_sugars} penalty pts) or replace sweet marinades with fruit puree."
+        )
+    if breakdown.neg_energy >= 4:
+        recs.append(
+            f"Reduce calorie density ({breakdown.neg_energy} penalty pts per 100g) by adding leafy greens or watery veggies."
+        )
+
+    # Positive nutrient boost advice
+    if breakdown.pos_fiber < 3:
+        recs.append(
+            "Increase dietary fiber with whole grains, chia seeds, lentils, or spinach."
+        )
+    if breakdown.pos_fvl < 3:
+        recs.append(
+            "Boost fruit, vegetable, legume, or nut percentage to earn up to 5 positive points."
+        )
+
+    if breakdown.protein_excluded:
+        recs.append(
+            "Protein points excluded due to high penalties; reduce sodium/sat-fat below 11 negative points to restore protein credit."
+        )
+
+    if grade == "A":
+        recs.append(
+            "To reach ★ S-Tier: Maintain final score ≤ -4, negative total ≤ 1 pt, and positive total ≥ 5 pts."
+        )
+
+    return recs[:4]  # Return top 4 most actionable recommendations
+
+
+def compute_daily_nutri_score(meal_scores: list[dict]) -> dict:
+    """
+    Compute an overall Daily Nutri-Score aggregate from a list of meal scores.
+
+    Args:
+        meal_scores: List of dicts representing each meal's nutri_score / chef_score.
+
+    Returns:
+        Dict with overall daily grade, average numeric score, totals, and visual metadata.
+    """
+    valid_scores = [m for m in meal_scores if isinstance(m, dict) and "grade" in m]
+    if not valid_scores:
+        tier = TIER_COLORS["C"]
+        return {
+            "grade": "C",
+            "numeric_score": 5,
+            "negative_total": 5,
+            "positive_total": 0,
+            "color_bg": tier["background"],
+            "color_text": tier["text"],
+            "label": tier["label"],
+            "description": "Average daily intake balance",
+            "meal_count": 0,
+        }
+
+    avg_score = int(round(sum(m.get("numeric_score", 0) for m in valid_scores) / len(valid_scores)))
+    avg_neg = int(round(sum(m.get("negative_total", 0) for m in valid_scores) / len(valid_scores)))
+    avg_pos = int(round(sum(m.get("positive_total", 0) for m in valid_scores) / len(valid_scores)))
+
+    daily_grade = _map_score_to_grade(avg_score, avg_neg, avg_pos, "general")
+    tier = TIER_COLORS.get(daily_grade, TIER_COLORS["C"])
+
+    return {
+        "grade": daily_grade,
+        "numeric_score": avg_score,
+        "negative_total": avg_neg,
+        "positive_total": avg_pos,
+        "color_bg": tier["background"],
+        "color_text": tier["text"],
+        "label": tier["label"],
+        "description": f"Daily average across {len(valid_scores)} logged meal(s): {TIER_DESCRIPTIONS.get(daily_grade, '')}",
+        "meal_count": len(valid_scores),
+    }
+
 
 
 # ── Convenience: compute from minimal recipe dict ───────────────────────

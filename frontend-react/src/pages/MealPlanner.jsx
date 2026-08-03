@@ -383,10 +383,29 @@ export default function MealPlanner() {
           const targetCals = activeProfile?.target_calories || 2000;
           const calPercent = Math.min(100, Math.max(0, (dailyCals / targetCals) * 100));
           const isOverTarget = dailyCals > targetCals;
+
+          // Compute daily aggregate Nutri-Score grade
+          const dayMeals = SLOTS.map(slot => getMealForSlot(dateStr, slot)).filter(Boolean);
+          const dayNutriScores = dayMeals.map(m => m.recipe?.nutri_score || m.recipe?.chef_score).filter(Boolean);
+          let dailyGrade = null;
+          if (dayNutriScores.length > 0) {
+            const avgScore = Math.round(dayNutriScores.reduce((acc, s) => acc + (s.numeric_score ?? 0), 0) / dayNutriScores.length);
+            if (avgScore <= -4) dailyGrade = 'S';
+            else if (avgScore <= -1) dailyGrade = 'A';
+            else if (avgScore <= 2) dailyGrade = 'B';
+            else if (avgScore <= 10) dailyGrade = 'C';
+            else if (avgScore <= 18) dailyGrade = 'D';
+            else dailyGrade = 'E';
+          }
           
           return (
             <div key={dateStr} className={`calendar-day ${isToday ? 'today' : ''}`} style={{ flex: '1', minWidth: '220px', background: isToday ? 'rgba(255,255,255,0.9)' : 'var(--glass-bg)', borderRadius: '24px', overflow: 'hidden', border: isToday ? '2px solid var(--primary)' : '1px solid var(--border-glass)', boxShadow: isToday ? 'var(--shadow-card-hover)' : 'var(--shadow-card)', transition: 'transform 0.2s', animation: `fadeInUp 0.4s ease forwards ${dayIdx * 0.05}s`, opacity: 0 }}>
-              <div className="day-header" style={{ padding: '16px', textAlign: 'center', background: isToday ? 'var(--primary)' : 'rgba(255,255,255,0.5)', borderBottom: '1px solid var(--border-glass)', color: isToday ? 'white' : 'var(--text-primary)' }}>
+              <div className="day-header" style={{ padding: '16px', textAlign: 'center', background: isToday ? 'var(--primary)' : 'rgba(255,255,255,0.5)', borderBottom: '1px solid var(--border-glass)', color: isToday ? 'white' : 'var(--text-primary)', position: 'relative' }}>
+                {dailyGrade && (
+                  <div style={{ position: 'absolute', top: 12, right: 12 }} title={`Daily Nutri-Score: ${dailyGrade}`}>
+                    <ChefScoreBadge grade={dailyGrade} size="sm" showTooltip={true} />
+                  </div>
+                )}
                 <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.8 }}>{dateObj.toLocaleDateString('en-US', { weekday: 'long' })}</div>
                 <div style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '4px 0' }}>{dateObj.getDate()}</div>
                 

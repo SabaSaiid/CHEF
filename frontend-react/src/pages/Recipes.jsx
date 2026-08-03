@@ -288,18 +288,18 @@ export default function Recipes() {
 
               <div>
                 <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Nutri-Score Grade
+                  Nutri-Score Grade Tier
                 </div>
-                <div className="filter-chips-container" style={{ marginBottom: 0 }}>
-                  {['S', 'A', 'B', 'C'].map(g => (
+                <div className="filter-chips-container" style={{ marginBottom: 0, flexWrap: 'wrap', gap: '6px' }}>
+                  {['S', 'A', 'B', 'C', 'D', 'E'].map(g => (
                     <div
                       key={g}
                       className={`filter-chip ${minChefScore === g ? 'active' : ''}`}
                       onClick={() => setMinChefScore(minChefScore === g ? '' : g)}
-                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                      style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 8 }}
                     >
                       <ChefScoreBadge grade={g} size="sm" showTooltip={false} />
-                      <span>{g}+</span>
+                      <span style={{ fontWeight: 700, fontSize: 12 }}>{g}</span>
                     </div>
                   ))}
                 </div>

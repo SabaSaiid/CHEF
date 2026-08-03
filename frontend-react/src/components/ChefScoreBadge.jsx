@@ -19,7 +19,7 @@ const TIER_DATA = {
  *   onClick  – optional click handler
  *   style    – additional inline styles
  */
-export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, onClick, style = {} }) {
+export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, nextTier, pointsToNextTier, onClick, style = {} }) {
   const [hovered, setHovered] = useState(false);
   
   if (!grade || !TIER_DATA[grade]) return null;
@@ -101,6 +101,11 @@ export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, onClic
         <div style={tooltipStyle}>
           <div style={{ fontWeight: 700, marginBottom: 2 }}>Nutri-Score: {grade}</div>
           <div style={{ opacity: 0.85 }}>{tier.desc}</div>
+          {nextTier && pointsToNextTier > 0 && (
+            <div style={{ color: '#F59E0B', fontSize: 10, marginTop: 3, fontWeight: 600 }}>
+              ⚡ {pointsToNextTier} {pointsToNextTier === 1 ? 'pt' : 'pts'} to Tier {nextTier}
+            </div>
+          )}
         </div>
       )}
     </div>

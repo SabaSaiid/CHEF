@@ -13,6 +13,7 @@ Public API:
 from app.scoring.calculator import (
     compute_nutri_score,
     compute_nutri_score_from_recipe,
+    compute_daily_nutri_score,
     NutriScoreResult,
     NutriScoreBreakdown,
 )
@@ -21,7 +22,9 @@ from app.scoring.categories import classify_recipe_category
 __all__ = [
     "compute_nutri_score",
     "compute_nutri_score_from_recipe",
+    "compute_daily_nutri_score",
     "NutriScoreResult",
     "NutriScoreBreakdown",
     "classify_recipe_category",
 ]
+

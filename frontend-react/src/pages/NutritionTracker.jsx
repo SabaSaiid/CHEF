@@ -5,6 +5,7 @@ import { useToast } from '../context/ToastContext';
 import { calculateMacroPercentages } from '../utils/nutrition';
 import useHoldToRepeat from '../hooks/useHoldToRepeat';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
+import ChefScoreBadge from '../components/ChefScoreBadge';
 
 function HoldableWaterBtn({ label, amount, onAdd, disabled, className, title }) {
   const handlers = useHoldToRepeat(() => onAdd(amount), 350, 100);
@@ -428,22 +429,30 @@ export default function NutritionTracker() {
     
     const finalScore = Math.max(0, Math.round(score));
     
-    let grade = 'D';
-    let color = '#ef4444';
-    let label = 'Needs Balance Adjustment';
+    let grade = 'E';
+    let color = '#E63E11';
+    let label = 'Very Poor Balance';
     
-    if (finalScore >= 90) {
+    if (finalScore >= 95) {
+      grade = 'S';
+      color = '#DAA520';
+      label = '★ Superior Daily Balance';
+    } else if (finalScore >= 85) {
       grade = 'A';
-      color = '#10b981';
-      label = 'Optimal Nutrient Balance';
-    } else if (finalScore >= 75) {
+      color = '#038141';
+      label = 'Excellent Daily Balance';
+    } else if (finalScore >= 70) {
       grade = 'B';
-      color = '#3b82f6';
-      label = 'Good Nutrient Balance';
-    } else if (finalScore >= 60) {
+      color = '#85BB2F';
+      label = 'Good Daily Balance';
+    } else if (finalScore >= 55) {
       grade = 'C';
-      color = '#f59e0b';
+      color = '#FECB02';
       label = 'Moderate Balance';
+    } else if (finalScore >= 40) {
+      grade = 'D';
+      color = '#EE8100';
+      label = 'Needs Balance Adjustment';
     }
     
     return { grade, score: finalScore, label, color };

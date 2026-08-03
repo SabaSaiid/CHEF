@@ -171,6 +171,26 @@ GRADE_BONUS: dict[str, float] = {
     "E": 0.0,
 }
 
+# Next tier progression mapping (for upgrade advice)
+NEXT_TIER_MAP: dict[str, Optional[str]] = {
+    "E": "D",
+    "D": "C",
+    "C": "B",
+    "B": "A",
+    "A": "S",
+    "S": None,
+}
+
+# Health condition penalty multipliers for optional personalized scoring
+HEALTH_CONDITION_WEIGHTS: dict[str, dict[str, float]] = {
+    "Hypertension": {"sodium": 1.5, "saturated_fat": 1.1},
+    "High Blood Pressure": {"sodium": 1.5, "saturated_fat": 1.1},
+    "Diabetes": {"sugars": 1.5, "energy_kj": 1.2},
+    "Type 2 Diabetes": {"sugars": 1.5, "energy_kj": 1.2},
+    "High Cholesterol": {"saturated_fat": 1.5},
+    "Fatty Liver": {"sugars": 1.3, "saturated_fat": 1.3},
+}
+
 
 # ── Penalty-biased defaults for missing nutrients ──────────────────────
 #
@@ -196,3 +216,4 @@ FALLBACK_SERVING_WEIGHT_G: dict[str, float] = {
     "beverage":  250.0,
     "default":   300.0,
 }
+

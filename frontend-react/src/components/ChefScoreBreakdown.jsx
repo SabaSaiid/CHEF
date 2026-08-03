@@ -104,9 +104,9 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
 
       {/* Expanded breakdown */}
       <div style={{
-        maxHeight: expanded ? 400 : 0,
+        maxHeight: expanded ? 750 : 0,
         overflow: 'hidden',
-        transition: 'max-height 0.3s ease',
+        transition: 'max-height 0.35s ease',
       }}>
         <div style={{
           padding: '16px 12px 12px',
@@ -116,6 +116,76 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
           borderTop: 'none',
           marginTop: -2,
         }}>
+          {/* Grade Spectrum Bar */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                6-Tier Rating Spectrum
+              </span>
+              {scoreObj.next_tier && scoreObj.points_to_next_tier > 0 && (
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B' }}>
+                  ⚡ {scoreObj.points_to_next_tier} {scoreObj.points_to_next_tier === 1 ? 'pt' : 'pts'} to Tier {scoreObj.next_tier}
+                </span>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 4, height: 24, borderRadius: 8, padding: 3, background: 'var(--bg-hover)', border: '1px solid var(--border)' }}>
+              {[
+                { g: 'S', bg: 'linear-gradient(135deg, #DAA520, #FFD700)', label: '★ S' },
+                { g: 'A', bg: '#038141', label: 'A' },
+                { g: 'B', bg: '#85BB2F', label: 'B' },
+                { g: 'C', bg: '#FECB02', label: 'C' },
+                { g: 'D', bg: '#EE8100', label: 'D' },
+                { g: 'E', bg: '#E63E11', label: 'E' },
+              ].map(t => {
+                const isActive = t.g === grade;
+                return (
+                  <div
+                    key={t.g}
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 6,
+                      background: t.bg,
+                      color: t.g === 'A' || t.g === 'D' || t.g === 'E' ? '#fff' : '#1a1a1a',
+                      fontWeight: 800,
+                      fontSize: 11,
+                      position: 'relative',
+                      opacity: isActive ? 1 : 0.45,
+                      transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                      boxShadow: isActive ? '0 0 10px rgba(0,0,0,0.3)' : 'none',
+                      border: isActive ? '2px solid #fff' : 'none',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {t.label}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Upgrade Recommendations Card */}
+          {scoreObj.upgrade_recommendations && scoreObj.upgrade_recommendations.length > 0 && (
+            <div style={{
+              marginBottom: 16,
+              padding: '10px 12px',
+              borderRadius: 10,
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+            }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#D97706', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+                💡 Actionable Recommendations to Elevate Nutri-Score
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 16, fontSize: 11, color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                {scoreObj.upgrade_recommendations.map((rec, idx) => (
+                  <li key={idx} style={{ marginBottom: 3 }}>{rec}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Points summary */}
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div style={{
