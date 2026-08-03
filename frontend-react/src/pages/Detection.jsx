@@ -219,6 +219,25 @@ export default function Detection() {
         <p className="subtitle">Upload a photo to detect food items, estimate portions, and log calories automatically</p>
       </div>
 
+      <div className="ai-disclaimer-box" style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '14px 18px',
+        background: 'rgba(245, 158, 11, 0.08)',
+        border: '1px solid rgba(245, 158, 11, 0.25)',
+        borderRadius: '12px',
+        fontSize: '0.84rem',
+        color: 'var(--text-primary)',
+        marginBottom: '20px',
+        lineHeight: '1.5'
+      }}>
+        <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>⚠️</span>
+        <div>
+          <strong>AI Vision Safety Notice:</strong> Computer vision food detection analyzes ingredients visually from image shapes and colors. AI scanning <strong>cannot detect microscopic cross-contamination, hidden trace allergens, or invisible spices</strong>. Always verify physical packaging if you have severe life-threatening allergies.
+        </div>
+      </div>
+
       <div className="card glass">
         <input 
           type="file" 

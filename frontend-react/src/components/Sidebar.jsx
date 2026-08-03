@@ -281,6 +281,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         <div className="sidebar-section">
           <h4 className="sidebar-section-title">Legal & Governance</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/help')}>
+              ❓ Help & FAQ
+            </button>
             <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=terms')}>
               📜 Terms of Service
             </button>

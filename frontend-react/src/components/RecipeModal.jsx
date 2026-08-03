@@ -10,6 +10,7 @@ import { parseIngredient, formatIngredientForServings } from '../utils/ingredien
 import ChefScoreBadge from './ChefScoreBadge';
 import ChefScoreBreakdown from './ChefScoreBreakdown';
 import SupplementaryBadges from './SupplementaryBadges';
+import { checkRecipeAllergens } from '../utils/allergenUtils';
 
 
 function InstructionSteps({ instructions }) {
@@ -178,15 +179,11 @@ export default function RecipeModal({ recipe, onClose }) {
     : [];
 
   // Allergen Checking
-  const profileAllergens = activeProfile?.allergens
-    ? activeProfile.allergens.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+  const rawProfileAllergens = activeProfile?.allergens
+    ? activeProfile.allergens.split(',').map(s => s.trim()).filter(Boolean)
     : [];
   
-  const detectedAllergens = recipe.ingredients
-    ? profileAllergens.filter(allergen => 
-        recipe.ingredients.some(ing => ing.toLowerCase().includes(allergen))
-      )
-    : [];
+  const detectedAllergens = checkRecipeAllergens(recipe.ingredients || [], rawProfileAllergens);
 
   // Pantry check
   const getPantryStatus = (ingStr) => {

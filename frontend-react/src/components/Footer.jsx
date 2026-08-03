@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, HeartPulse, FileText, Database, Heart, ExternalLink } from 'lucide-react';
+import { ShieldCheck, HeartPulse, FileText, Database, Heart, ExternalLink, HelpCircle } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -41,6 +41,12 @@ export default function Footer() {
           <div className="footer-links-col">
             <h4 className="footer-col-title">Legal & Governance</h4>
             <ul className="footer-links-list">
+              <li>
+                <Link to="/help" className="footer-legal-link">
+                  <HelpCircle size={14} />
+                  <span>Help & FAQ</span>
+                </Link>
+              </li>
               <li>
                 <Link to="/terms?tab=terms" className="footer-legal-link">
                   <FileText size={14} />

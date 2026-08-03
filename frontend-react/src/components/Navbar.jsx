@@ -59,6 +59,7 @@ export default function Navbar({ onToggleSidebar }) {
           <NavLink to="/planner" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Planner</NavLink>
           <NavLink to="/tracker" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Tracker</NavLink>
           <NavLink to="/saved" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Saved</NavLink>
+          <NavLink to="/help" className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}>Help</NavLink>
         </div>
 
         <div className="nav-auth">

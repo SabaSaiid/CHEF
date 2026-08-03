@@ -19,6 +19,7 @@ import Pantry from './pages/Pantry';
 import './index.css';
 
 import TermsAndConditions from './pages/TermsAndConditions';
+import HelpCenter from './pages/HelpCenter';
 import Footer from './components/Footer';
 
 import CookieConsentBanner from './components/CookieConsentBanner';
@@ -39,6 +40,7 @@ function AnimatedRoutes() {
         <Route path="/tracker" element={<NutritionTracker />} />
         <Route path="/pantry" element={<Pantry />} />
         <Route path="/terms" element={<TermsAndConditions />} />
+        <Route path="/help" element={<HelpCenter />} />
       </Routes>
     </div>
   );
