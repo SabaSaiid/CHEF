@@ -9,6 +9,7 @@ import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import foodFacts from '../data/foodFacts';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
+import { Droplet, Droplets, Plus, Minus } from 'lucide-react';
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -577,48 +578,85 @@ export default function Home() {
 
           return (
             <div className="card glass dashboard-widget-card water-widget">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '4px' }}>
-                <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0 }}>💧 Daily Hydration</h3>
-                {isGoalReached && (
-                  <span className="water-goal-badge">🎉 Goal Met!</span>
+              <div className="water-widget-header">
+                <div>
+                  <h3 className="section-title" style={{ marginTop: 0, marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="water-title-icon">💧</span>
+                    <span>Daily Hydration</span>
+                  </h3>
+                  <p className="subtitle" style={{ margin: 0, fontSize: '0.82rem' }}>Target: <strong>{targetWater} ml</strong></p>
+                </div>
+                {isGoalReached ? (
+                  <span className="water-goal-badge pulse-glow">🎉 Goal Met!</span>
+                ) : (
+                  <span className="water-pct-badge">{pctWater}%</span>
                 )}
               </div>
-              
-              <p className="subtitle" style={{ marginBottom: '8px', alignSelf: 'flex-start' }}>Target: {targetWater} ml</p>
 
-              {/* Progress bar background */}
-              <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginBottom: '12px' }}>
-                <div style={{ width: `${pctWater}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
-              </div>
+              {/* Realistic Glass Tumbler Container */}
+              <div className="water-glass-container">
+                {/* Volume Measurement Ticks */}
+                <div className="glass-ticks">
+                  <span className="tick-mark t-100">100%</span>
+                  <span className="tick-mark t-75">75%</span>
+                  <span className="tick-mark t-50">50%</span>
+                  <span className="tick-mark t-25">25%</span>
+                </div>
 
-              <div className="water-display">
-                <div
-                  className="water-level"
-                  style={{ height: `${pctWater}%` }}
-                >
-                  <div className="water-wave" />
-                  <div className="water-bubble" />
-                  <div className="water-bubble" />
-                  <div className="water-bubble" />
+                <div className="water-display">
+                  {/* Water level fill */}
+                  <div className="water-level" style={{ height: `${pctWater}%` }}>
+                    <div className="water-wave wave-1" />
+                    <div className="water-wave wave-2" />
+                    <div className="water-bubble b1" />
+                    <div className="water-bubble b2" />
+                    <div className="water-bubble b3" />
+                    <div className="water-bubble b4" />
+                  </div>
+
+                  {/* Glass reflections */}
+                  <div className="glass-glare" />
+                  <div className="glass-rim" />
+
+                  {/* Empty state prompt inside glass */}
+                  {waterTotal === 0 && (
+                    <div className="glass-empty-hint">
+                      <span>💧</span>
+                      <span>Tap + to log</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)', marginTop: '4px' }}>
-                {waterTotal} <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>/ {targetWater} ml</span>
-                <div style={{ fontSize: '0.8rem', color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginTop: '2px' }}>
-                  {pctWater}% Completed
+              {/* Numerical Stat Display */}
+              <div className="water-stats-row">
+                <div className="water-stat-main">
+                  <span className="water-current-num">{waterTotal}</span>
+                  <span className="water-target-total">/ {targetWater} ml</span>
                 </div>
+                <span className={`water-status-tag ${isGoalReached ? 'success' : ''}`}>
+                  {isGoalReached ? '✨ Fully Hydrated' : `${Math.max(0, targetWater - waterTotal)} ml remaining`}
+                </span>
               </div>
 
+              {/* Enhanced Action Buttons */}
               <div className="water-controls">
-                <button className="water-btn primary-btn" onClick={() => handleLogWater(250)} title="Add 250ml water">
-                  💧 +250ml
+                <button className="water-btn preset-btn" onClick={() => handleLogWater(250)} title="Add 250ml water">
+                  <Droplet size={15} className="btn-icon-svg" />
+                  <span className="btn-text">+250 ml</span>
                 </button>
-                <button className="water-btn" onClick={() => handleLogWater(500)} title="Add 500ml water">
-                  🌊 +500ml
+                <button className="water-btn preset-btn bottle" onClick={() => handleLogWater(500)} title="Add 500ml water">
+                  <Droplets size={15} className="btn-icon-svg" />
+                  <span className="btn-text">+500 ml</span>
                 </button>
-                <button className="water-btn danger-btn" onClick={() => handleLogWater(-250)} disabled={waterTotal <= 0} title="Remove 250ml water">
-                  ➖ -250ml
+                <button 
+                  className="water-btn subtract-btn" 
+                  onClick={() => handleLogWater(-250)} 
+                  disabled={waterTotal <= 0} 
+                  title="Remove 250ml water"
+                >
+                  <Minus size={15} className="btn-icon-svg" />
+                  <span className="btn-text">-250 ml</span>
                 </button>
               </div>
             </div>
