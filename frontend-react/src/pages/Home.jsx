@@ -732,8 +732,10 @@ export default function Home() {
                   {/* Empty state prompt inside glass */}
                   {waterTotal === 0 && (
                     <div className="glass-empty-hint">
-                      <span>💧</span>
-                      <span>Tap + to log</span>
+                      <div className="empty-droplet-glow">
+                        <Droplet size={22} className="empty-droplet-icon" />
+                      </div>
+                      <span className="empty-hint-text">Tap + to log</span>
                     </div>
                   )}
                 </div>
