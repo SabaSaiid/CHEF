@@ -18,6 +18,9 @@ import NutritionTracker from './pages/NutritionTracker';
 import Pantry from './pages/Pantry';
 import './index.css';
 
+import TermsAndConditions from './pages/TermsAndConditions';
+import Footer from './components/Footer';
+
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -33,6 +36,7 @@ function AnimatedRoutes() {
         <Route path="/planner" element={<MealPlanner />} />
         <Route path="/tracker" element={<NutritionTracker />} />
         <Route path="/pantry" element={<Pantry />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
       </Routes>
     </div>
   );
@@ -63,6 +67,7 @@ function App() {
               <div className={`app-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
                 <main id="app-main">
                   <AnimatedRoutes />
+                  <Footer />
                 </main>
                 <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
               </div>

@@ -254,6 +254,14 @@ export default function SettingsModal({ onClose }) {
             >
               <Database size={16} /> Data & Backup
             </button>
+
+            <button 
+              className={`tab-nav-btn ${activeTab === 'legal' ? 'active' : ''}`}
+              onClick={() => setActiveTab('legal')}
+              style={tabBtnStyle(activeTab === 'legal')}
+            >
+              <Info size={16} /> Legal & About
+            </button>
           </div>
 
           {/* Tab Content Panel */}
@@ -753,6 +761,61 @@ export default function SettingsModal({ onClose }) {
                     >
                       <RotateCcw size={15} /> {confirmingReset ? 'Confirm Reset?' : 'Reset Defaults'}
                     </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* LEGAL & ABOUT TAB */}
+            {(activeTab === 'legal' || searchQuery.trim() !== '') && (
+              <>
+                {activeTab === 'legal' && <h3 style={sectionHeadingStyle}>Legal, Governance & About</h3>}
+                {isMatch('terms privacy medical disclaimer legal about governance license') && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={settingRowStyle}>
+                      <div>
+                        <div style={settingTitleStyle}>Terms of Service & Privacy Policy</div>
+                        <div style={settingDescStyle}>Review legal agreements, user responsibilities, and privacy rights</div>
+                      </div>
+                      <a 
+                        href="/terms?tab=terms" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ ...actionBtnStyle, background: 'var(--accent-1)', color: '#ffffff', textDecoration: 'none' }}
+                      >
+                        Read Terms ↗
+                      </a>
+                    </div>
+
+                    <div style={settingRowStyle}>
+                      <div>
+                        <div style={settingTitleStyle}>Medical & Nutritional Disclaimer</div>
+                        <div style={settingDescStyle}>Important safety notices on algorithmic macro recommendations</div>
+                      </div>
+                      <a 
+                        href="/terms?tab=disclaimer" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ ...actionBtnStyle, background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', textDecoration: 'none', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+                      >
+                        Read Disclaimer ↗
+                      </a>
+                    </div>
+
+                    <div style={settingRowStyle}>
+                      <div>
+                        <div style={settingTitleStyle}>Data & AI Image Policy</div>
+                        <div style={settingDescStyle}>Overview of vision model execution and browser storage policies</div>
+                      </div>
+                      <a 
+                        href="/terms?tab=data" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ ...actionBtnStyle, background: 'var(--bg-secondary)', color: 'var(--text-primary)', textDecoration: 'none', border: '1px solid var(--border-glass)' }}
+                      >
+                        Read Data Policy ↗
+                      </a>
+                    </div>
                   </div>
                 )}
               </>

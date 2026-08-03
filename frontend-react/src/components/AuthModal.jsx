@@ -73,6 +73,23 @@ export default function AuthModal({ isOpen, onClose }) {
               onChange={e => setFormData({ ...formData, password: e.target.value })} 
             />
           </div>
+          {mode === 'signup' && (
+            <div className="terms-consent-group" style={{ margin: '14px 0 6px', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer', lineHeight: '1.4' }}>
+                <input type="checkbox" required style={{ marginTop: '3px', accentColor: 'var(--accent-1)' }} />
+                <span>
+                  I agree to CHEF's{' '}
+                  <a href="/terms?tab=terms" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-1)', textDecoration: 'underline', fontWeight: 'bold' }}>
+                    Terms of Service
+                  </a>{' '}
+                  &{' '}
+                  <a href="/terms?tab=privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-1)', textDecoration: 'underline', fontWeight: 'bold' }}>
+                    Privacy Policy
+                  </a>.
+                </span>
+              </label>
+            </div>
+          )}
           {error && <div className="auth-error">{error}</div>}
           <button type="submit" className="btn-primary btn-full">
             {mode === 'login' ? 'Login' : 'Sign Up'}

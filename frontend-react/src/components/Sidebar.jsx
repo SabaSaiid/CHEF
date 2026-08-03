@@ -276,6 +276,22 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </div>
           )}
         </div>
+
+        {/* Legal & Governance */}
+        <div className="sidebar-section">
+          <h4 className="sidebar-section-title">Legal & Governance</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=terms')}>
+              📜 Terms of Service
+            </button>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=privacy')}>
+              🔒 Privacy Policy
+            </button>
+            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=disclaimer')}>
+              ⚠️ Medical Disclaimer
+            </button>
+          </div>
+        </div>
       </div>
 
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
