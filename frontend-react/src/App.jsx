@@ -21,6 +21,8 @@ import './index.css';
 import TermsAndConditions from './pages/TermsAndConditions';
 import Footer from './components/Footer';
 
+import CookieConsentBanner from './components/CookieConsentBanner';
+
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -81,6 +83,7 @@ function App() {
                   📋
                 </button>
               )}
+              <CookieConsentBanner />
             </BrowserRouter>
           </ToastProvider>
         </SettingsProvider>

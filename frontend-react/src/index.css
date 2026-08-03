@@ -7051,3 +7051,441 @@ input:focus, select:focus, textarea:focus {
   border: 1px solid rgba(255, 90, 54, 0.4);
 }
 
+/* ==========================================================================
+   COOKIE CONSENT BANNER STYLING
+   ========================================================================== */
+.cookie-banner-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 460px;
+  width: calc(100% - 48px);
+  z-index: 9990;
+  animation: cookieSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cookieSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cookie-banner-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(12px);
+}
+
+.cookie-banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cookie-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cookie-icon {
+  color: var(--accent-1);
+}
+
+.cookie-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cookie-close-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.cookie-close-btn:hover {
+  background: var(--border-glass);
+  color: var(--text-primary);
+}
+
+.cookie-description {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.cookie-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.cookie-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cookie-btn.primary {
+  background: var(--gradient-primary);
+  color: #ffffff;
+  border: none;
+}
+
+.cookie-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 90, 54, 0.3);
+}
+
+.cookie-btn.secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+}
+
+.cookie-btn.secondary:hover {
+  background: var(--border-glass);
+}
+
+.cookie-btn.link {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  margin-left: auto;
+}
+
+.cookie-btn.link:hover {
+  color: var(--accent-1);
+}
+
+/* ==========================================================================
+   DATA PRIVACY PORTAL STYLING
+   ========================================================================== */
+.privacy-portal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.privacy-portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-icon {
+  color: var(--accent-1);
+}
+
+.portal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.portal-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.portal-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.portal-refresh-btn:hover {
+  background: var(--border-glass);
+  color: var(--text-primary);
+}
+
+/* Privacy Cards */
+.privacy-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.card-heading.danger {
+  color: #ef4444;
+}
+
+.card-desc {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* Storage Meter Gauge */
+.meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meter-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.meter-value {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent-1);
+}
+
+.meter-track {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.meter-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-num {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-num.text-green {
+  color: #10b981;
+}
+
+/* Consent Manager Options */
+.consent-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.consent-opt-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.consent-opt-box:hover {
+  border-color: var(--accent-1);
+}
+
+.consent-opt-box.active {
+  border-color: var(--accent-1);
+  background: rgba(255, 90, 54, 0.04);
+}
+
+.opt-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.consent-opt-box.active .opt-radio {
+  border-color: var(--accent-1);
+  background: var(--accent-1);
+  color: #ffffff;
+}
+
+.opt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.opt-text strong {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.opt-text span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Export Suite */
+.export-btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.export-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+}
+
+.export-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 90, 54, 0.25);
+}
+
+.export-action-btn.csv {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+}
+
+.export-action-btn.csv:hover {
+  border-color: var(--accent-1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.export-action-btn .btn-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.export-action-btn .btn-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.export-action-btn .btn-sub {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+
+/* Erasure Zone */
+.erasure-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+}
+
+.erasure-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.erasure-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.erasure-btn.confirming {
+  background: #ef4444;
+  color: #ffffff;
+  animation: pulse 1s infinite;
+}
+
+

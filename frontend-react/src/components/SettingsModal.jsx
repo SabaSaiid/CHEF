@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useSettings } from '../context/SettingsContext';
 import { useToast } from '../context/ToastContext';
+import DataPrivacyPortal from './DataPrivacyPortal';
 import { 
   Settings as SettingsIcon, 
   ShieldAlert, 
@@ -642,106 +643,7 @@ export default function SettingsModal({ onClose }) {
             {/* DATA & BACKUP TAB */}
             {(activeTab === 'data' || searchQuery.trim() !== '') && (
               <>
-                {activeTab === 'data' && <h3 style={sectionHeadingStyle}>Data Management & Cloud Backup</h3>}
-                
-                {/* Local Storage Footprint Bar */}
-                <div style={{
-                  background: 'var(--bg-secondary)',
-                  padding: '16px 18px',
-                  borderRadius: '16px',
-                  border: '1px solid var(--border-glass)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '10px'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <HardDrive size={16} style={{ color: 'var(--accent-primary, #10b981)' }} />
-                      <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
-                        Local Data Footprint
-                      </span>
-                    </div>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                      {storageMetrics.kbSize} KB ({storageMetrics.chefKeysCount} keys)
-                    </span>
-                  </div>
-
-                  <div className="storage-meter">
-                    <div 
-                      className="storage-meter-fill" 
-                      style={{ width: `${Math.min(100, Math.max(5, (storageMetrics.totalBytes / 50000) * 100))}%` }} 
-                    />
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '16px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    <span>🔍 {storageMetrics.searchCount} search history items</span>
-                    <span>📊 {storageMetrics.logsCount} guest logs</span>
-                  </div>
-                </div>
-
-                {/* Export Backup */}
-                {isMatch('export backup json download save') && (
-                  <div style={settingRowStyle}>
-                    <div>
-                      <div style={settingTitleStyle}>Export Full Backup (JSON)</div>
-                      <div style={settingDescStyle}>Download all settings, saved recipes, and nutrition logs</div>
-                    </div>
-                    <button 
-                      type="button"
-                      onClick={handleExport}
-                      style={{ ...actionBtnStyle, background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' }}
-                    >
-                      <Download size={15} /> Export
-                    </button>
-                  </div>
-                )}
-
-                {/* Import Backup */}
-                {isMatch('import restore backup json upload') && (
-                  <div style={settingRowStyle}>
-                    <div>
-                      <div style={settingTitleStyle}>Restore Backup (JSON)</div>
-                      <div style={settingDescStyle}>Upload a previously exported backup configuration file</div>
-                    </div>
-                    <input 
-                      type="file" 
-                      ref={fileInputRef} 
-                      accept=".json" 
-                      onChange={handleFileChange} 
-                      style={{ display: 'none' }} 
-                    />
-                    <button 
-                      type="button"
-                      onClick={handleImportClick}
-                      style={{ ...actionBtnStyle, background: 'var(--card-bg)', border: '1px solid var(--border-glass)', color: 'var(--text-primary)' }}
-                    >
-                      <Upload size={15} /> Import
-                    </button>
-                  </div>
-                )}
-
-                {/* Clear Cache */}
-                {isMatch('clear search cache history wipe') && (
-                  <div style={settingRowStyle}>
-                    <div>
-                      <div style={settingTitleStyle}>Clear Search Cache</div>
-                      <div style={settingDescStyle}>Wipe saved ingredient search queries & draft cache</div>
-                    </div>
-                    <button 
-                      type="button"
-                      onClick={handleClearCache}
-                      style={{ 
-                        ...actionBtnStyle, 
-                        background: confirmingClear ? '#ef4444' : 'rgba(239, 68, 68, 0.1)', 
-                        color: confirmingClear ? '#ffffff' : '#ef4444', 
-                        border: '1px solid rgba(239, 68, 68, 0.3)' 
-                      }}
-                    >
-                      <Trash2 size={15} /> {confirmingClear ? 'Confirm Clear?' : 'Clear Cache'}
-                    </button>
-                  </div>
-                )}
-
+                <DataPrivacyPortal />
                 {/* Reset Defaults */}
                 {isMatch('factory reset settings default parameters') && (
                   <div style={settingRowStyle}>
