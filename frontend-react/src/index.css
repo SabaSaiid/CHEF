@@ -4453,6 +4453,27 @@ h6 {
     margin-top: 24px;
 }
 
+.today-plan-summary-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.today-plan-summary-pill .summary-val {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.today-plan-summary-pill .summary-target {
+    color: var(--text-secondary);
+}
+
 .today-plan-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -4460,72 +4481,203 @@ h6 {
     margin-top: 15px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .today-plan-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
     .today-plan-grid {
         grid-template-columns: 1fr;
     }
 }
 
 .today-plan-slot-card {
+    position: relative;
     padding: 16px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    border-radius: 16px;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: space-between;
+    border-radius: 18px;
     border: 1px solid var(--border-glass);
-    min-height: 120px;
-    transition: all 0.3s ease;
+    min-height: 140px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px);
+}
+
+[data-theme='dark'] .today-plan-slot-card {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .today-plan-slot-card:hover {
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.65);
     border-color: var(--primary);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='dark'] .today-plan-slot-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.today-plan-slot-card.slot-active-glow {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.25), 0 8px 24px rgba(255, 107, 0, 0.12);
+}
+
+.today-plan-slot-card.slot-logged {
+    border-color: rgba(16, 172, 132, 0.35);
+    background: rgba(16, 172, 132, 0.04);
+}
+
+.today-plan-slot-card.slot-empty {
+    border-style: dashed;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.015);
 }
 
 .slot-label-badge {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.slot-now-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b00, #ff9f43);
+    padding: 2px 7px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(255, 107, 0, 0.3);
 }
 
 .slot-recipe-title {
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
-    margin: 0;
+    margin: 6px 0 4px 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.3;
+}
+
+.slot-macro-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
 }
 
 .slot-recipe-cals {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--primary);
     font-weight: 600;
-    margin-top: 4px;
+}
+
+.slot-recipe-macro {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.slot-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-glass);
+}
+
+.slot-logged-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #10ac84;
+    background: rgba(16, 172, 132, 0.12);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.btn-quick-log {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-quick-log:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 3px 8px rgba(255, 107, 0, 0.3);
+}
+
+.btn-slot-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-slot-remove:hover {
+    color: #ee5253;
+    background: rgba(238, 82, 83, 0.1);
+}
+
+.slot-empty-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.today-plan-slot-card.slot-empty:hover .slot-empty-prompt {
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+.slot-empty-icon {
+    opacity: 0.6;
 }
 
 .slot-empty-text {
     font-size: 0.85rem;
-    color: var(--text-muted);
-    font-style: italic;
+    font-weight: 600;
 }
 
 /* ==========================================================================

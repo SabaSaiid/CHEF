@@ -6,10 +6,29 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
 import RecipeModal from '../components/RecipeModal';
+import MealSlotPickerModal from '../components/MealSlotPickerModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import foodFacts from '../data/foodFacts';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
-import { Droplet, Droplets, Plus, Minus } from 'lucide-react';
+import { 
+  Droplet, 
+  Droplets, 
+  Plus, 
+  Minus, 
+  Coffee, 
+  Sun, 
+  Utensils, 
+  Moon, 
+  Apple, 
+  Calendar, 
+  CheckCircle2, 
+  PlusCircle, 
+  Check, 
+  Trash2, 
+  Flame, 
+  ExternalLink, 
+  Sparkles 
+} from 'lucide-react';
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -58,6 +77,8 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isPickerOpen, setPickerOpen] = useState(false);
+  const [pickerSlot, setPickerSlot] = useState('Breakfast');
   const [activeFact, setActiveFact] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
@@ -198,6 +219,90 @@ export default function Home() {
     };
   }, [todayLog, guestLogs, token]);
 
+  const plannedTotals = useMemo(() => {
+    let cal = 0, prot = 0, carb = 0, fat = 0;
+    Object.values(todayMeals).forEach(entry => {
+      if (entry?.recipe) {
+        cal += entry.recipe.calories || 0;
+        prot += entry.recipe.protein_g || entry.recipe.protein || 0;
+        carb += entry.recipe.carbs_g || entry.recipe.carbs || 0;
+        fat += entry.recipe.fat_g || entry.recipe.fat || 0;
+      }
+    });
+    return {
+      calories: Math.round(cal),
+      protein: Math.round(prot),
+      carbs: Math.round(carb),
+      fat: Math.round(fat),
+    };
+  }, [todayMeals]);
+
+  const isMealSlotLogged = useCallback((slotEntry) => {
+    if (!slotEntry?.recipe) return false;
+    const recipeId = slotEntry.recipe.id;
+    const title = slotEntry.recipe.title?.toLowerCase();
+    const logSource = token ? todayLog : guestLogs;
+
+    return logSource.some(log => 
+      (recipeId && log.recipe_id === recipeId) ||
+      (log.food_name && log.food_name.toLowerCase() === title)
+    );
+  }, [todayLog, guestLogs, token]);
+
+  const handleQuickLogMeal = async (e, slotEntry, slotName) => {
+    e.stopPropagation();
+    if (!slotEntry?.recipe) return;
+
+    const recipe = slotEntry.recipe;
+    const todayStr = getLocalDateString();
+
+    try {
+      if (token) {
+        await api.post('/nutrition/log', {
+          recipe_id: recipe.id,
+          food_name: recipe.title,
+          calories: recipe.calories || 0,
+          protein_g: recipe.protein_g || recipe.protein || 0,
+          carbs_g: recipe.carbs_g || recipe.carbs || 0,
+          fat_g: recipe.fat_g || recipe.fat || 0,
+          date: todayStr,
+          meal_type: slotName ? slotName.toLowerCase() : 'snack'
+        });
+      } else {
+        const newLog = {
+          id: Date.now(),
+          recipe_id: recipe.id,
+          food_name: recipe.title,
+          calories: recipe.calories || 0,
+          protein_g: recipe.protein_g || 0,
+          carbs_g: recipe.carbs_g || 0,
+          fat_g: recipe.fat_g || 0,
+          date: todayStr
+        };
+        const existing = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        localStorage.setItem('chef_guest_logs', JSON.stringify([...existing, newLog]));
+      }
+
+      toast.success(`Logged "${recipe.title}" into daily nutrition! 🎯`);
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
+      fetchTodayStats();
+    } catch (err) {
+      toast.error(err.message || 'Failed to log meal.');
+    }
+  };
+
+  const handleRemoveMealFromPlan = async (e, mealPlanId) => {
+    e.stopPropagation();
+    if (!mealPlanId) return;
+    try {
+      await api.delete(`/mealplan/${mealPlanId}`);
+      toast.success('Meal removed from today\'s plan');
+      fetchTodayStats();
+    } catch (err) {
+      toast.error(err.message || 'Failed to remove meal.');
+    }
+  };
+
   const handleLogWater = async (amount) => {
     const todayStr = getLocalDateString();
     if (token) {
@@ -304,6 +409,12 @@ export default function Home() {
 
   const slots = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const slotEmojis = { Breakfast: '🍳', Lunch: '🍲', Dinner: '🥗', Snack: '🍎' };
+  const slotIcons = {
+    Breakfast: <Coffee size={14} />,
+    Lunch: <Utensils size={14} />,
+    Dinner: <Moon size={14} />,
+    Snack: <Apple size={14} />
+  };
   const slotColors = { Breakfast: '#ff9f43', Lunch: '#10ac84', Dinner: '#ee5253', Snack: '#0abde3' };
 
   const activeSlot = useMemo(() => {
@@ -666,34 +777,110 @@ export default function Home() {
 
       {/* ── Today's Meal Plan slots ── */}
       <div className="card glass dashboard-widget-card today-plan-widget fade-in-up" style={{ marginBottom: '2rem', '--delay': '400ms' }}>
-        <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px' }}>📆 Today's Meal Plan</h3>
-        <p className="subtitle" style={{ marginBottom: '15px' }}>What you scheduled to eat today</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+          <div>
+            <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Calendar size={20} style={{ color: 'var(--primary)' }} /> Today's Meal Plan
+            </h3>
+            <p className="subtitle" style={{ margin: 0 }}>What you scheduled to eat today</p>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            {/* Planned Total Calories Pill */}
+            <div className="today-plan-summary-pill">
+              <Flame size={14} style={{ color: 'var(--primary)' }} />
+              <span className="summary-val">{plannedTotals.calories}</span>
+              <span className="summary-target">/ {targets.calories} kcal Planned</span>
+            </div>
+
+            <button 
+              className="btn-ghost-sm" 
+              onClick={() => navigate('/planner')}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', padding: '6px 12px', borderRadius: '10px', color: 'var(--primary)' }}
+            >
+              Manage Plan <ExternalLink size={13} />
+            </button>
+          </div>
+        </div>
 
         <div className="today-plan-grid">
           {slots.map(slot => {
             const entry = todayMeals[slot];
             const recipe = entry?.recipe;
             const isActive = slot === activeSlot;
+            const logged = isMealSlotLogged(entry);
+
             return (
               <div
                 key={slot}
-                className={`today-plan-slot-card ${isActive ? 'slot-active-glow' : ''}`}
-                onClick={() => recipe && setSelectedRecipe(recipe) && setModalOpen(true)}
-                style={{ cursor: recipe ? 'pointer' : 'default' }}
+                className={`today-plan-slot-card ${isActive ? 'slot-active-glow' : ''} ${logged ? 'slot-logged' : ''} ${!recipe ? 'slot-empty' : ''}`}
+                onClick={() => {
+                  if (recipe) {
+                    setSelectedRecipe(recipe);
+                    setModalOpen(true);
+                  } else {
+                    setPickerSlot(slot);
+                    setPickerOpen(true);
+                  }
+                }}
               >
-                <span
-                  className="slot-label-badge"
-                  style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30` }}
-                >
-                  {slotEmojis[slot]} {slot}
-                </span>
+                {/* Header Badge */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
+                  <span
+                    className="slot-label-badge"
+                    style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30`, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    {slotIcons[slot]} {slot}
+                  </span>
+
+                  {isActive && (
+                    <span className="slot-now-tag">NOW</span>
+                  )}
+                </div>
+
                 {recipe ? (
                   <>
                     <p className="slot-recipe-title">{recipe.title}</p>
-                    {recipe.calories && <span className="slot-recipe-cals">🔥 {recipe.calories} kcal</span>}
+                    
+                    <div className="slot-macro-row">
+                      {recipe.calories && <span className="slot-recipe-cals">🔥 {recipe.calories} kcal</span>}
+                      {(recipe.protein_g || recipe.protein) && (
+                        <span className="slot-recipe-macro">💪 {recipe.protein_g || recipe.protein}g P</span>
+                      )}
+                    </div>
+
+                    {/* Action Bar */}
+                    <div className="slot-action-bar" onClick={(e) => e.stopPropagation()}>
+                      {logged ? (
+                        <span className="slot-logged-badge">
+                          <CheckCircle2 size={13} /> Logged
+                        </span>
+                      ) : (
+                        <button
+                          className="btn-quick-log"
+                          onClick={(e) => handleQuickLogMeal(e, entry, slot)}
+                          title="Log this meal into daily nutrition"
+                        >
+                          <Check size={13} /> Quick Log
+                        </button>
+                      )}
+
+                      {entry?.id && (
+                        <button
+                          className="btn-slot-remove"
+                          onClick={(e) => handleRemoveMealFromPlan(e, entry.id)}
+                          title="Remove from plan"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      )}
+                    </div>
                   </>
                 ) : (
-                  <span className="slot-empty-text">Empty slot</span>
+                  <div className="slot-empty-prompt">
+                    <PlusCircle size={22} className="slot-empty-icon" />
+                    <span className="slot-empty-text">+ Add Meal</span>
+                  </div>
                 )}
               </div>
             );
@@ -746,6 +933,16 @@ export default function Home() {
 
       {isModalOpen && selectedRecipe && (
         <RecipeModal recipe={selectedRecipe} onClose={() => { setModalOpen(false); setSelectedRecipe(null); }} />
+      )}
+
+      {isPickerOpen && (
+        <MealSlotPickerModal
+          isOpen={isPickerOpen}
+          slot={pickerSlot}
+          date={getLocalDateString()}
+          onClose={() => setPickerOpen(false)}
+          onAssignSuccess={() => fetchTodayStats()}
+        />
       )}
     </section>
   );
