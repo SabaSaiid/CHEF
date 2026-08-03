@@ -8087,6 +8087,41 @@ input:focus, select:focus, textarea:focus {
   color: #10b981;
 }
 
+/* Recipe Card Grid Allergen Warning Badge */
+.card-allergen-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 4;
+  background: rgba(239, 68, 68, 0.9);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .feedback-floating-btn {
+    bottom: 20px;
+    left: 16px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+  }
+
+  .cookie-banner-wrapper {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: calc(100% - 32px);
+    max-width: 100%;
+  }
+}
+
+
 
 
 

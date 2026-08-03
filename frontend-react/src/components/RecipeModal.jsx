@@ -87,7 +87,7 @@ function VideoEmbed({ videoUrl, title }) {
   );
 }
 
-export default function RecipeModal({ recipe, onClose }) {
+export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   if (!recipe) return null;
 
   const { token, activeProfile } = useContext(AuthContext);
@@ -434,6 +434,28 @@ export default function RecipeModal({ recipe, onClose }) {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <h2 className="modal-title" style={{ margin: 0, flex: 1 }}>{recipe.title}</h2>
+              {onOpenFeedback && (
+                <button
+                  type="button"
+                  onClick={() => onOpenFeedback(`Recipe Data: ${recipe.title}`)}
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.08)',
+                    color: '#ef4444',
+                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                  title="Report inaccurate macros or ingredients for this recipe"
+                >
+                  🚩 Report Error
+                </button>
+              )}
               {(recipe.nutri_score || recipe.chef_score) && (
                 <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="lg" />
               )}

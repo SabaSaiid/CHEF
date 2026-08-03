@@ -54,6 +54,21 @@ export default function CookieConsentBanner({ onOpenSettings }) {
           </button>
         </div>
 
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '4px 10px',
+          background: 'rgba(16, 185, 129, 0.1)',
+          color: '#10b981',
+          borderRadius: '12px',
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          width: 'fit-content'
+        }}>
+          ⚡ 100% Local Storage • 0% Third-Party Tracking
+        </div>
+
         <p className="cookie-description">
           CHEF uses browser <strong>Local Storage</strong> to remember your daily macro targets, dietary profile, and theme preferences. We do <strong>not</strong> use invasive third-party ad tracking cookies.
         </p>

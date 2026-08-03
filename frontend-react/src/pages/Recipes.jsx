@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
+import { AuthContext } from '../context/AuthContext';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import { useSettings } from '../context/SettingsContext';
+import { checkRecipeAllergens } from '../utils/allergenUtils';
 
 const DIET_OPTIONS = [
   { value: 'vegetarian', label: '🥬 Vegetarian' },
@@ -28,6 +30,10 @@ export default function Recipes() {
   const location = useLocation();
   const toast = useToast();
   const { settings } = useSettings();
+  const { activeProfile } = useContext(AuthContext);
+  const userAllergens = activeProfile?.allergens 
+    ? activeProfile.allergens.split(',').map(s => s.trim()).filter(Boolean)
+    : [];
   const [ingredients, setIngredients] = useState(location.state?.ingredients || '');
   const [autoCorrectSuggestion, setAutoCorrectSuggestion] = useState(null);
   const [diet, setDiet] = useState(location.state?.diet || (settings.defaultDiet && settings.defaultDiet !== 'none' ? settings.defaultDiet : ''));
@@ -373,24 +379,32 @@ export default function Recipes() {
 
             {/* Magazine Style Grid */}
             <div className="magazine-grid">
-              {results.recipes.map((recipe, idx) => (
-                <div 
-                  key={idx} 
-                  className="magazine-card" 
-                  style={{animationDelay: `${idx * 0.05}s`}}
-                  onClick={() => setSelectedRecipe(recipe)}
-                >
-                  {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && (
-                    <div className="magazine-card-badge">
-                      {Math.round(recipe.match_score * 100)}% match
-                    </div>
-                  )}
+              {results.recipes.map((recipe, idx) => {
+                const flaggedAllergens = checkRecipeAllergens(recipe.ingredients || [], userAllergens);
+                return (
+                  <div 
+                    key={idx} 
+                    className="magazine-card" 
+                    style={{animationDelay: `${idx * 0.05}s`}}
+                    onClick={() => setSelectedRecipe(recipe)}
+                  >
+                    {flaggedAllergens.length > 0 && (
+                      <div className="card-allergen-badge">
+                        ⚠️ {flaggedAllergens.join(', ')}
+                      </div>
+                    )}
 
-                  {(recipe.nutri_score || recipe.chef_score) && (
-                    <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}>
-                      <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
-                    </div>
-                  )}
+                    {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && (
+                      <div className="magazine-card-badge">
+                        {Math.round(recipe.match_score * 100)}% match
+                      </div>
+                    )}
+
+                    {(recipe.nutri_score || recipe.chef_score) && (
+                      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}>
+                        <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
+                      </div>
+                    )}
 
                   <button 
                     className="quick-save-btn" 
@@ -420,7 +434,8 @@ export default function Recipes() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
             
             {/* Pagination remains the same */}

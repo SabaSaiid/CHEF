@@ -145,6 +145,30 @@ export default function HelpCenter() {
               className="help-search-input"
             />
           </div>
+
+          {/* Quick Tag Shortcuts */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '-8px' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>Popular Searches:</span>
+            {['TDEE', 'AI Vision', 'Export Data', 'Allergies'].map(tag => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setSearchQuery(tag)}
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-glass)',
+                  padding: '3px 10px',
+                  borderRadius: '12px',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  color: 'var(--accent-1)',
+                  cursor: 'pointer'
+                }}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
