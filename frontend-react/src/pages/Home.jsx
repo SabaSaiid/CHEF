@@ -113,24 +113,36 @@ export default function Home() {
     return indices.slice(0, 6).map(i => foodFacts[i]);
   }, []);
 
+  // Dynamic facts pool state initialized with daily pool
+  const [customFactPool, setCustomFactPool] = useState(null);
+
+  const activePool = customFactPool || dailyFacts;
+
   const filteredFacts = useMemo(() => {
-    if (selectedFactCategory === 'All') return dailyFacts;
+    if (selectedFactCategory === 'All') return activePool;
     const match = foodFacts.filter(f => f.category === selectedFactCategory);
-    return match.length > 0 ? match : dailyFacts;
-  }, [selectedFactCategory, dailyFacts]);
+    return match.length > 0 ? match : activePool;
+  }, [selectedFactCategory, activePool]);
 
   const handleShuffleFact = () => {
-    const randomIndex = Math.floor(Math.random() * foodFacts.length);
-    const randomFact = foodFacts[randomIndex];
-    const foundIdx = filteredFacts.findIndex(f => f.id === randomFact.id);
-    if (foundIdx !== -1) {
-      setActiveFact(foundIdx);
-    } else {
-      setSelectedFactCategory('All');
-      const allIdx = dailyFacts.findIndex(f => f.id === randomFact.id);
-      setActiveFact(allIdx !== -1 ? allIdx : Math.floor(Math.random() * dailyFacts.length));
+    // Pick a random fact from all 50+ facts in foodFacts database
+    const randomFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+    
+    // Check if it's already in the pool, if not prepend it so it's active immediately
+    let newPool = [...activePool];
+    let existingIndex = newPool.findIndex(f => f.id === randomFact.id);
+    
+    if (existingIndex === -1) {
+      newPool = [randomFact, ...newPool];
+      existingIndex = 0;
     }
-    toast.success('Shuffled a new food science fact! 💡');
+    
+    setCustomFactPool(newPool);
+    if (selectedFactCategory !== 'All' && randomFact.category !== selectedFactCategory) {
+      setSelectedFactCategory('All');
+    }
+    setActiveFact(existingIndex);
+    toast.success(`Shuffled: "${randomFact.category}" fact 💡`);
   };
 
   const handleCopyFact = (factText) => {

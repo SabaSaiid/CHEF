@@ -89,28 +89,12 @@ function VideoEmbed({ videoUrl, title }) {
 }
 
 export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
-  if (!recipe) return null;
-
   const { token, activeProfile } = useContext(AuthContext);
   const toast = useToast();
   const [pantry, setPantry] = useState([]);
   const [substitution, setSubstitution] = useState({});
   const [loadingSub, setLoadingSub] = useState({});
   const [appliedSwaps, setAppliedSwaps] = useState({});
-
-  const handleApplySwap = (originalIng, substituteItem) => {
-    setAppliedSwaps(prev => ({
-      ...prev,
-      [originalIng]: substituteItem
-    }));
-    toast({
-      title: "Swap Applied! 💡",
-      description: `Replaced '${originalIng}' with '${substituteItem}' in your recipe view.`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
 
   // Cooking Mode states
   const [isCookingMode, setIsCookingMode] = useState(false);
@@ -126,8 +110,8 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   const [deductList, setDeductList] = useState([]);
 
   // Servings state
-  const [targetServings, setTargetServings] = useState(recipe.servings || 1);
-  const defaultServings = recipe.servings || 1;
+  const [targetServings, setTargetServings] = useState(recipe?.servings || 1);
+  const defaultServings = recipe?.servings || 1;
   const servingRatio = targetServings / defaultServings;
 
   useEffect(() => {
@@ -165,6 +149,41 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
       }
     };
   }, []);
+
+  if (!recipe) return null;
+
+  const handleSaveBookmark = async () => {
+    if (!token) {
+      toast.error('Please log in to save recipes.');
+      return;
+    }
+    try {
+      await api.post('/recipes/save', {
+        title: recipe.title,
+        image_url: recipe.image_url || null,
+        summary: recipe.summary || null,
+        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : (typeof recipe.ingredients === 'string' ? recipe.ingredients : ''),
+        instructions: recipe.instructions || null,
+        calories: recipe.calories || recipe.nutrition?.calories || null,
+        protein_g: recipe.protein_g || recipe.nutrition?.protein_g || null,
+        carbs_g: recipe.carbs_g || recipe.nutrition?.carbs_g || null,
+        fat_g: recipe.fat_g || recipe.nutrition?.fat_g || null,
+        ready_in_minutes: recipe.ready_in_minutes || null,
+        servings: targetServings || recipe.servings || null,
+      });
+      toast.success(`"${recipe.title}" saved to bookmarks! 🔖`);
+    } catch (err) {
+      toast.error(err.message || 'Failed to save recipe');
+    }
+  };
+
+  const handleApplySwap = (originalIng, substituteItem) => {
+    setAppliedSwaps(prev => ({
+      ...prev,
+      [originalIng]: substituteItem
+    }));
+    toast.success(`Applied swap: Replaced '${originalIng}' with '${substituteItem}' 💡`);
+  };
 
   let videoUrl = recipe.video_url;
   if (!videoUrl && recipe.image_url && recipe.image_url.includes('img.youtube.com/vi/')) {
@@ -457,6 +476,26 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
                   🚩 Report Error
                 </button>
               )}
+              <button
+                type="button"
+                onClick={handleSaveBookmark}
+                style={{
+                  background: 'rgba(255, 90, 54, 0.12)',
+                  color: 'var(--primary)',
+                  border: '1px solid var(--primary)',
+                  padding: '4px 10px',
+                  borderRadius: '8px',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+                title="Save recipe to bookmarks"
+              >
+                🔖 Save
+              </button>
               {(recipe.nutri_score || recipe.chef_score) && (
                 <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="lg" />
               )}

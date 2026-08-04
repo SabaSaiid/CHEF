@@ -440,18 +440,45 @@ export default function TDEEProfile() {
               <label>Goal</label>
               <select name="goal" value={formData.goal} onChange={handleChange} className="form-input" style={selectStyle} required>
                 <option value="lose">Lose Weight</option>
-                <option value="maintain">Maintain</option>
+                <option value="maintain">Maintain Weight</option>
                 <option value="gain">Gain Weight</option>
               </select>
             </div>
-            <div className="form-group" style={{flex: 1}}>
-              <label>Intensity</label>
-              <select name="goal_intensity" value={formData.goal_intensity} onChange={handleChange} className="form-input" style={selectStyle} required>
-                <option value="mild">Mild (~0.25 kg/week)</option>
-                <option value="moderate">Moderate (~0.5 kg/week)</option>
-                <option value="aggressive">Aggressive (~0.7 kg/week)</option>
-              </select>
-            </div>
+            {(() => {
+              const isMaintain = (formData.goal || '').toLowerCase().includes('maintain');
+              return (
+                <div className="form-group" style={{flex: 1}}>
+                  <label style={{ opacity: isMaintain ? 0.6 : 1 }}>
+                    Intensity {isMaintain && <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>(N/A for Maintenance)</span>}
+                  </label>
+                  <select 
+                    name="goal_intensity" 
+                    value={isMaintain ? 'moderate' : formData.goal_intensity} 
+                    onChange={handleChange} 
+                    className="form-input" 
+                    style={{
+                      ...selectStyle,
+                      opacity: isMaintain ? 0.55 : 1,
+                      cursor: isMaintain ? 'not-allowed' : 'pointer',
+                      background: isMaintain ? 'var(--bg-secondary, rgba(0,0,0,0.06))' : undefined,
+                      pointerEvents: isMaintain ? 'none' : 'auto'
+                    }} 
+                    disabled={isMaintain}
+                    required
+                  >
+                    {isMaintain ? (
+                      <option value="moderate">Maintenance Calorie Balance</option>
+                    ) : (
+                      <>
+                        <option value="mild">Mild (~0.25 kg/week)</option>
+                        <option value="moderate">Moderate (~0.5 kg/week)</option>
+                        <option value="aggressive">Aggressive (~0.7 kg/week)</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              );
+            })()}
           </div>
 
           <button type="submit" className={`btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading} style={{marginTop: '18px'}}>

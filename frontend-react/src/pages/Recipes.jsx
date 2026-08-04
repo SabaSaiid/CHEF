@@ -31,7 +31,32 @@ export default function Recipes() {
   const location = useLocation();
   const toast = useToast();
   const { settings } = useSettings();
-  const { activeProfile } = useContext(AuthContext);
+  const { token, activeProfile } = useContext(AuthContext);
+
+  const saveRecipe = async (recipe) => {
+    if (!token) {
+      toast.error('Please log in to save recipes.');
+      return;
+    }
+    try {
+      await api.post('/recipes/save', {
+        title: recipe.title,
+        image_url: recipe.image_url || null,
+        summary: recipe.summary || null,
+        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : (typeof recipe.ingredients === 'string' ? recipe.ingredients : ''),
+        instructions: recipe.instructions || null,
+        calories: recipe.calories || recipe.nutrition?.calories || null,
+        protein_g: recipe.protein_g || recipe.nutrition?.protein_g || null,
+        carbs_g: recipe.carbs_g || recipe.nutrition?.carbs_g || null,
+        fat_g: recipe.fat_g || recipe.nutrition?.fat_g || null,
+        ready_in_minutes: recipe.ready_in_minutes || null,
+        servings: recipe.servings || null,
+      });
+      toast.success(`"${recipe.title}" saved to bookmarks! 🔖`);
+    } catch (err) {
+      toast.error(err.message || 'Failed to save recipe');
+    }
+  };
   const userAllergens = activeProfile?.allergens 
     ? activeProfile.allergens.split(',').map(s => s.trim()).filter(Boolean)
     : [];
@@ -76,41 +101,13 @@ export default function Recipes() {
     return () => clearTimeout(timer);
   }, [ingredients, settings.autoCorrectEnabled]);
 
-  const applyAutoCorrect = () => {
-    if (!autoCorrectSuggestion) return;
-    const parts = ingredients.split(',');
-    parts[parts.length - 1] = ` ${autoCorrectSuggestion.corrected}`;
-    setIngredients(parts.join(',').trim());
-    setAutoCorrectSuggestion(null);
-  };
-
-
-  const loadPantry = async () => {
-    try {
-      setLoading(true);
-      const data = await api.get('/pantry');
-      if (data && data.length > 0) {
-        const sortedData = [...data].sort((a, b) => a.days_fresh - b.days_fresh);
-        const topExpiring = sortedData.slice(0, 5);
-        const pantryIngs = topExpiring.map(item => item.ingredient_name).join(', ');
-        setIngredients(pantryIngs);
-        toast.success(`Loaded ${topExpiring.length} expiring ingredients from pantry!`);
-      } else {
-        toast.info("Your pantry is empty.");
-      }
-    } catch (err) {
-      toast.error("Failed to load pantry.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = useCallback(async (pageNum = 1) => {
+  const handleSearch = useCallback(async (pageNum = 1, overrideIngredients = null) => {
     const actualPage = typeof pageNum === 'number' ? pageNum : 1;
     setLoading(true);
     setError(null);
     try {
-      const ingList = ingredients.split(',').map(s => s.trim()).filter(Boolean);
+      const activeIngStr = typeof overrideIngredients === 'string' ? overrideIngredients : ingredients;
+      const ingList = activeIngStr.split(',').map(s => s.trim()).filter(Boolean);
       const body = { ingredients: ingList, max_results: 25, page: actualPage };
       if (diet) body.diet = diet;
       if (region) body.region = region;
@@ -136,6 +133,36 @@ export default function Recipes() {
       setLoading(false);
     }
   }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy, minChefScore]);
+
+  const applyAutoCorrect = () => {
+    if (!autoCorrectSuggestion) return;
+    const parts = ingredients.split(',');
+    parts[parts.length - 1] = ` ${autoCorrectSuggestion.corrected}`;
+    const newIngredients = parts.join(',').trim();
+    setIngredients(newIngredients);
+    setAutoCorrectSuggestion(null);
+    handleSearch(1, newIngredients);
+  };
+
+  const loadPantry = async () => {
+    try {
+      setLoading(true);
+      const data = await api.get('/pantry');
+      if (data && data.length > 0) {
+        const sortedData = [...data].sort((a, b) => a.days_fresh - b.days_fresh);
+        const topExpiring = sortedData.slice(0, 5);
+        const pantryIngs = topExpiring.map(item => item.ingredient_name).join(', ');
+        setIngredients(pantryIngs);
+        toast.success(`Loaded ${topExpiring.length} expiring ingredients from pantry!`);
+      } else {
+        toast.info("Your pantry is empty.");
+      }
+    } catch (err) {
+      toast.error("Failed to load pantry.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (location.state?.ingredients && !didInitRef.current) {
@@ -226,20 +253,24 @@ export default function Recipes() {
         </div>
 
         {autoCorrectSuggestion && (
-          <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.85rem' }}>
-            <span style={{ color: 'var(--text-muted)' }}>Did you mean:</span>
+          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', fontSize: '0.88rem', background: 'rgba(15, 23, 42, 0.88)', backdropFilter: 'blur(12px)', padding: '8px 18px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.3)', width: 'fit-content', margin: '14px auto 0', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+            <span style={{ color: '#f8fafc', fontWeight: 700, letterSpacing: '0.2px' }}>Did you mean:</span>
             <button
               onClick={applyAutoCorrect}
               style={{
-                background: 'rgba(129, 178, 154, 0.2)',
-                color: 'var(--primary)',
-                border: '1px solid var(--primary)',
-                padding: '3px 10px',
+                background: '#ffffff',
+                color: '#0f172a',
+                border: 'none',
+                padding: '5px 14px',
                 borderRadius: '16px',
-                fontWeight: '700',
+                fontWeight: '800',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
-                transition: '0.2s'
+                boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                transition: 'transform 0.15s ease'
               }}
+              onMouseOver={e => e.currentTarget.style.transform = 'scale(1.03)'}
+              onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
             >
               ✨ {autoCorrectSuggestion.corrected} (replace "{autoCorrectSuggestion.original}")
             </button>
@@ -397,17 +428,16 @@ export default function Recipes() {
                       </div>
                     )}
 
-                    {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && (
-                      <div className="magazine-card-badge">
-                        {Math.round(recipe.match_score * 100)}% match
-                      </div>
-                    )}
-
-                    {(recipe.nutri_score || recipe.chef_score) && (
-                      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}>
+                    <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 3, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {(recipe.nutri_score || recipe.chef_score) && (
                         <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
-                      </div>
-                    )}
+                      )}
+                      {ingredients.trim() && Math.round(recipe.match_score * 100) > 0 && (
+                        <div className="magazine-card-badge" style={{ position: 'static' }}>
+                          {Math.round(recipe.match_score * 100)}% match
+                        </div>
+                      )}
+                    </div>
 
                   <button 
                     className="quick-save-btn" 

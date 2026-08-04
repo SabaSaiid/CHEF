@@ -5219,11 +5219,23 @@ h6 {
 .hero-input-wrapper input {
     flex: 1;
     border: none;
-    background: transparent;
+    background: transparent !important;
     padding: 12px 20px;
     font-size: 16px;
     outline: none;
-    color: var(--text-primary);
+    color: #1a1a1a !important;
+}
+
+[data-theme="dark"] .hero-input-wrapper input {
+    color: #ffffff !important;
+}
+
+.hero-input-wrapper input::placeholder {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .hero-input-wrapper input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
 }
 
 .hero-btn {
@@ -6584,9 +6596,12 @@ input:focus, select:focus, textarea:focus {
 
 .settings-search-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  z-index: 2;
 }
 
 /* Storage footprint bar */
@@ -6625,6 +6640,72 @@ input:focus, select:focus, textarea:focus {
     padding: 8px 12px !important;
     font-size: 0.8rem !important;
   }
+}
+
+/* ── Settings Hitboxes & Interactive Elements ── */
+.tab-nav-btn {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass, rgba(255,255,255,0.1));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.tab-nav-btn:hover {
+  background: var(--bg-primary, rgba(255,255,255,0.08));
+  border-color: var(--primary, #ff5a36);
+  transform: translateY(-1px);
+}
+
+.chef-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chef-switch-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.chef-switch-slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255,255,255,0.18);
+  transition: .3s ease;
+  border-radius: 34px;
+  border: 1px solid var(--border-glass);
+}
+
+.chef-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s ease;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.chef-switch-input:checked + .chef-switch-slider {
+  background-color: var(--primary, #ff5a36);
+  border-color: var(--primary, #ff5a36);
+}
+
+.chef-switch-input:checked + .chef-switch-slider:before {
+  transform: translateX(22px);
 }
 
 /* ==========================================================================
@@ -6727,19 +6808,31 @@ input:focus, select:focus, textarea:focus {
   gap: 10px;
 }
 
-.footer-links-list a {
+.footer-links-list a,
+.footer-links-list button,
+.footer-legal-btn,
+.footer-legal-link {
   font-size: 0.86rem;
   color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
-.footer-links-list a:hover {
-  color: var(--accent-1);
-  transform: translateX(3px);
+.footer-links-list a:hover,
+.footer-links-list button:hover,
+.footer-legal-btn:hover,
+.footer-legal-link:hover {
+  color: var(--accent-1, #ff5a36) !important;
+  transform: translateX(4px);
 }
 
 .footer-disclaimer-banner {
@@ -6925,8 +7018,12 @@ input:focus, select:focus, textarea:focus {
 
 .terms-search-box .search-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-muted);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .terms-search-input {
@@ -7042,6 +7139,14 @@ input:focus, select:focus, textarea:focus {
   font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.6;
+}
+
+.terms-section {
+  scroll-margin-top: 95px;
+}
+
+.terms-section h2, .terms-section h3 {
+  scroll-margin-top: 95px;
 }
 
 .terms-section h3 {
@@ -7915,7 +8020,11 @@ input:focus, select:focus, textarea:focus {
 .help-search-container .search-icon {
   position: absolute;
   left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-muted);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .help-search-input {
@@ -8472,6 +8581,11 @@ input:focus, select:focus, textarea:focus {
     width: calc(100% - 32px);
     max-width: 100%;
   }
+}
+
+.calendar-grid {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 
 

@@ -80,9 +80,9 @@ export default function Footer({ onOpenFeedback }) {
               {onOpenFeedback && (
                 <li>
                   <button 
+                    type="button"
                     onClick={onOpenFeedback} 
-                    className="footer-legal-link"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', font: 'inherit' }}
+                    className="footer-legal-btn"
                   >
                     <MessageSquare size={14} />
                     <span>Report Feedback</span>

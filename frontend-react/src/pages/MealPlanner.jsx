@@ -370,8 +370,7 @@ export default function MealPlanner() {
           overflowX: 'auto', 
           cursor: isDragging ? 'grabbing' : 'grab',
           userSelect: isDragging ? 'none' : 'auto',
-          paddingBottom: '30px', 
-          padding: '10px 5px' 
+          padding: '12px 20px 30px 20px' 
         }}
       >
         {weekDays.map((dateObj, dayIdx) => {

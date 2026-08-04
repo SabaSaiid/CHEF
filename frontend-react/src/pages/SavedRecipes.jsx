@@ -34,6 +34,9 @@ export default function SavedRecipes() {
 
   useEffect(() => {
     fetchRecipes();
+    const handleFocus = () => fetchRecipes();
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, [token, sortBy]);
 
   const handleRate = async (id, rating) => {

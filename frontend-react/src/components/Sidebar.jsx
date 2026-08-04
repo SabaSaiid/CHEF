@@ -192,22 +192,28 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
 
         {/* Live Calories Progress Bar */}
         {token && activeProfile && activeProfile.target_calories && (() => {
-          const calPct = Math.min(Math.round((todayCalories / activeProfile.target_calories) * 100), 100);
+          const actualCalPct = Math.round((todayCalories / activeProfile.target_calories) * 100);
+          const barWidth = Math.min(100, actualCalPct);
+          const isOverTarget = todayCalories > activeProfile.target_calories;
+          const overKcal = todayCalories - activeProfile.target_calories;
+
           return (
             <div className="sidebar-section">
               <h4 className="sidebar-section-title">Today's Progress</h4>
               <div className="sidebar-tracker-glimpse" style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-glass)' }}>
-                <div className="tracker-glimpse-info" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div className="tracker-glimpse-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                   <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>Calories</span>
-                  <span style={{ fontSize: '11px', fontWeight: '800', color: 'var(--text-primary)' }}>{calPct}%</span>
+                  <span style={{ fontSize: '11px', fontWeight: '800', color: isOverTarget ? '#ef4444' : 'var(--text-primary)' }}>
+                    {actualCalPct}% {isOverTarget && `(🔥 +${overKcal} kcal over)`}
+                  </span>
                 </div>
                 <div className="tracker-glimpse-bar" style={{ height: '6px', background: 'rgba(0,0,0,0.05)', borderRadius: '3px', overflow: 'hidden', position: 'relative' }}>
                   <div 
                     className="tracker-glimpse-bar-fill" 
                     style={{ 
                       height: '100%',
-                      width: `${calPct}%`, 
-                      background: 'var(--accent-1)',
+                      width: `${barWidth}%`, 
+                      background: isOverTarget ? 'linear-gradient(90deg, #ff5a36, #ef4444)' : 'var(--accent-1)',
                       borderRadius: '3px',
                       transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)' 
                     }}

@@ -1,10 +1,22 @@
 import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { CheckCircle2, AlertCircle, AlertTriangle, Info, Loader2, X } from 'lucide-react';
+import { playAddSound, playWarningSound, playClickSound } from '../utils/soundEffects';
 
 const ToastContext = createContext();
 
 let toastIdCounter = 0;
+
+function isAudioEnabled() {
+  try {
+    const saved = localStorage.getItem('chef_app_settings');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return Boolean(parsed.toastAudio);
+    }
+  } catch (e) {}
+  return false;
+}
 
 export function useToast() {
   const context = useContext(ToastContext);
@@ -50,6 +62,16 @@ export function ToastProvider({ children }) {
     };
 
     setToasts(prev => [newToast, ...prev].slice(0, 5));
+
+    if (isAudioEnabled()) {
+      if (type === 'error' || type === 'warning') {
+        playWarningSound();
+      } else if (type === 'success') {
+        playAddSound();
+      } else {
+        playClickSound();
+      }
+    }
 
     // Log to Notification Center history
     setHistory(prev => [{

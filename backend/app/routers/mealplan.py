@@ -242,3 +242,48 @@ def get_grocery_list(
         "in_pantry_skipped": in_pantry_skipped
     }
 
+
+@router.post("/log-today")
+def log_today_meals(
+    date: str = Query(..., description="YYYY-MM-DD"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Automatically copy today's planned meals into the nutrition log tracker for today's date.
+    """
+    plans = db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date == date
+    ).all()
+
+    if not plans:
+        return {"message": "No meals planned for today to log.", "logged_count": 0}
+
+    from app.models import NutritionLog
+    logged_count = 0
+
+    for mp in plans:
+        if mp.recipe:
+            cal = mp.recipe.calories or (mp.recipe.nutrition.get("calories") if isinstance(mp.recipe.nutrition, dict) else 0) or 0
+            prot = mp.recipe.protein_g or (mp.recipe.nutrition.get("protein_g") if isinstance(mp.recipe.nutrition, dict) else 0) or 0
+            carbs = mp.recipe.carbs_g or (mp.recipe.nutrition.get("carbs_g") if isinstance(mp.recipe.nutrition, dict) else 0) or 0
+            fat = mp.recipe.fat_g or (mp.recipe.nutrition.get("fat_g") if isinstance(mp.recipe.nutrition, dict) else 0) or 0
+
+            log_entry = NutritionLog(
+                user_id=current_user.id,
+                date=date,
+                food_name=f"[Planned] {mp.recipe.title}",
+                meal_type=mp.meal_slot or "Meal",
+                calories=float(cal),
+                protein_g=float(prot),
+                carbs_g=float(carbs),
+                fat_g=float(fat)
+            )
+            db.add(log_entry)
+            logged_count += 1
+
+    db.commit()
+    return {"message": f"Successfully logged {logged_count} planned meals into your Nutrition Tracker! ⚡", "logged_count": logged_count}
+
+

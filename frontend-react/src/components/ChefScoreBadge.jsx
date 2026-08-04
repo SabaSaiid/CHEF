@@ -65,24 +65,24 @@ export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, nextTi
     ...style,
   };
 
+  const isLarge = size === 'lg';
   const tooltipStyle = {
     position: 'absolute',
-    bottom: '110%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    background: 'rgba(20, 20, 20, 0.95)',
+    ...(isLarge ? { top: '115%', right: 0 } : { bottom: '115%', left: '50%', transform: 'translateX(-50%)' }),
+    background: 'rgba(20, 20, 20, 0.96)',
     color: '#fff',
-    padding: '6px 10px',
+    padding: '6px 12px',
     borderRadius: '8px',
     fontSize: '11px',
     fontWeight: 500,
     whiteSpace: 'nowrap',
     pointerEvents: 'none',
-    zIndex: 100,
+    zIndex: 999,
     opacity: hovered ? 1 : 0,
-    transition: 'opacity 0.15s ease',
+    transition: 'opacity 0.15s ease, transform 0.15s ease',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.4)',
     lineHeight: 1.4,
   };
 

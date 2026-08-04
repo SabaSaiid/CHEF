@@ -266,6 +266,10 @@ export default function NutritionTracker() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.food_item.trim()) return;
+    if (selectedDate < getLocalDateString()) {
+      const confirmEdit = window.confirm(`⚠️ You are about to add a food entry to a PAST date (${selectedDate}). Are you sure you want to modify historical logs?`);
+      if (!confirmEdit) return;
+    }
     try {
       if (token) {
         await api.post('/nutrition/log', { ...form, date: selectedDate });
@@ -297,6 +301,10 @@ export default function NutritionTracker() {
   };
 
   const handleDelete = async (id) => {
+    if (selectedDate < getLocalDateString()) {
+      const confirmDelete = window.confirm(`⚠️ You are about to delete an entry from a PAST date (${selectedDate}). Are you sure you want to alter historical logs?`);
+      if (!confirmDelete) return;
+    }
     try {
       if (token) {
         await api.delete(`/nutrition/log/${id}`);
@@ -316,6 +324,10 @@ export default function NutritionTracker() {
   };
 
   const handleAddWaterCustom = async (amount) => {
+    if (selectedDate < getLocalDateString()) {
+      const confirmWater = window.confirm(`⚠️ You are about to modify water intake for a PAST date (${selectedDate}). Are you sure you want to proceed?`);
+      if (!confirmWater) return;
+    }
     if (token) {
       try {
         if (amount < 0) {
@@ -497,6 +509,27 @@ export default function NutritionTracker() {
         />
       </div>
 
+      {/* Historical Log Warning Banner */}
+      {selectedDate < getLocalDateString() && (
+        <div style={{
+          marginBottom: '20px',
+          padding: '12px 18px',
+          borderRadius: '14px',
+          background: 'rgba(245, 158, 11, 0.12)',
+          border: '1px solid rgba(245, 158, 11, 0.35)',
+          color: '#d97706',
+          fontSize: '13.5px',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          boxShadow: '0 4px 12px rgba(245, 158, 11, 0.1)'
+        }}>
+          <span style={{ fontSize: '18px' }}>⚠️</span>
+          <span>Viewing Historical Log ({selectedDate}). Modifying past records will trigger confirmation prompts.</span>
+        </div>
+      )}
+
       {/* Daily Health Grade Banner */}
       {(() => {
         const health = calculateNutritionGrade();
@@ -517,6 +550,42 @@ export default function NutritionTracker() {
             </div>
           </div>
         );
+      })()}
+
+      {/* Over-eating Warning Alert Banner */}
+      {(() => {
+        const calOverflow = totals.calories - targets.calories;
+        if (calOverflow > 0 && targets.calories > 0) {
+          return (
+            <div className="card glass fade-in-up" style={{ 
+              marginBottom: '20px', 
+              padding: '14px 20px', 
+              borderLeft: '4px solid #ef4444', 
+              background: 'rgba(239, 68, 68, 0.08)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              borderRadius: '14px',
+              border: '1px solid rgba(239, 68, 68, 0.2)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '24px' }}>🚨</span>
+                <div>
+                  <h4 style={{ fontSize: '12px', textTransform: 'uppercase', color: '#ef4444', margin: 0, fontWeight: 'bold', letterSpacing: '0.5px' }}>
+                    Over-eating Warning Alert
+                  </h4>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', margin: '2px 0 0' }}>
+                    Exceeded daily calorie target by <span style={{ color: '#ef4444', fontWeight: '800' }}>+{Math.round(calOverflow)} kcal</span> ({Math.round((totals.calories / targets.calories) * 100)}% of goal)
+                  </p>
+                </div>
+              </div>
+              <span style={{ background: '#ef4444', color: '#fff', fontSize: '11px', fontWeight: '800', padding: '5px 12px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(239,68,68,0.3)' }}>
+                🔥 Calorie Surplus
+              </span>
+            </div>
+          );
+        }
+        return null;
       })()}
 
       {/* ── AI Coach Insights Card ── */}
@@ -690,25 +759,34 @@ export default function NutritionTracker() {
         <div className="card glass water-widget" style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px' }}>
           {(() => {
             const targetWater = activeProfile?.target_water_ml || 2500;
-            const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
+            const actualPctWater = Math.round((waterTotal / targetWater) * 100);
+            const barWidthPct = Math.min(100, actualPctWater);
             const isGoalReached = waterTotal >= targetWater;
+            const isPastDate = selectedDate < getLocalDateString();
 
             return (
               <div style={{ width: '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '4px' }}>
                   <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '800' }}>💧 Hydration</h3>
-                  {isGoalReached && (
-                    <span className="water-goal-badge">🎉 Goal Met!</span>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {isPastDate && (
+                      <span style={{ fontSize: '0.72rem', background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)', padding: '2px 8px', borderRadius: '10px', fontWeight: '700' }}>
+                        🔒 Historical Log
+                      </span>
+                    )}
+                    {isGoalReached && (
+                      <span className="water-goal-badge">🎉 Goal Met!</span>
+                    )}
+                  </div>
                 </div>
 
                 <p style={{ margin: '2px 0 10px', fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                  {waterTotal} ml / {targetWater} ml <span style={{ color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginLeft: '6px' }}>({pctWater}%)</span>
+                  {waterTotal} ml / {targetWater} ml <span style={{ color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginLeft: '6px' }}>({actualPctWater}%)</span>
                 </p>
 
                 {/* Progress bar background */}
                 <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginBottom: '16px' }}>
-                  <div style={{ width: `${pctWater}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
+                  <div style={{ width: `${barWidthPct}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
@@ -728,15 +806,15 @@ export default function NutritionTracker() {
                   <div className="water-display" style={{ margin: 0, width: '70px', height: '90px', borderRadius: '4px 4px 24px 24px' }}>
                     <div
                       className="water-level"
-                      style={{ height: `${pctWater}%` }}
+                      style={{ height: `${barWidthPct}%` }}
                     >
                       <div className="water-wave" />
                       <div className="water-bubble" />
                       <div className="water-bubble" />
                     </div>
                     <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 6 }}>
-                      <span style={{ fontSize: '11px', fontWeight: '800', color: pctWater > 45 ? '#ffffff' : 'var(--text-primary)', textShadow: pctWater > 45 ? '0 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
-                        {pctWater}%
+                      <span style={{ fontSize: '11px', fontWeight: '800', color: barWidthPct > 45 ? '#ffffff' : 'var(--text-primary)', textShadow: barWidthPct > 45 ? '0 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
+                        {actualPctWater}%
                       </span>
                     </div>
                   </div>
