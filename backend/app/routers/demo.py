@@ -26,10 +26,6 @@ _DEMO_RECIPES_CACHE = None
 
 def _load_demo_recipes():
     """Pick 8 diverse recipes from the dataset for the demo."""
-    global _DEMO_RECIPES_CACHE
-    if _DEMO_RECIPES_CACHE is not None:
-        return _DEMO_RECIPES_CACHE
-
     recipes_path = Path(__file__).resolve().parent.parent / "recipes.json"
     
     try:
@@ -37,15 +33,12 @@ def _load_demo_recipes():
             all_recipes = json.load(f)
     except Exception as e:
         print(f"Error loading recipes: {e}")
-        _DEMO_RECIPES_CACHE = []
         return []
 
     # Pick recipes that have images, nutrition, and instructions
     good = [r for r in all_recipes if r.get("image_url") and r.get("nutrition") and r.get("instructions")]
     random.seed(42)  # deterministic
-    selected = random.sample(good, min(8, len(good)))
-    _DEMO_RECIPES_CACHE = selected
-    return selected
+    return random.sample(good, min(8, len(good)))
 
 
 @router.post("/seed")

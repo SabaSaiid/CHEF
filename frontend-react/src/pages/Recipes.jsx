@@ -8,6 +8,7 @@ import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import { useSettings } from '../context/SettingsContext';
 import { checkRecipeAllergens } from '../utils/allergenUtils';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 
 const DIET_OPTIONS = [
   { value: 'vegetarian', label: '🥬 Vegetarian' },
@@ -381,6 +382,8 @@ export default function Recipes() {
             <div className="magazine-grid">
               {results.recipes.map((recipe, idx) => {
                 const flaggedAllergens = checkRecipeAllergens(recipe.ingredients || [], userAllergens);
+                const visual = getRecipeCardVisual(recipe);
+
                 return (
                   <div 
                     key={idx} 
@@ -418,10 +421,38 @@ export default function Recipes() {
                   </button>
                   
                   {recipe.image_url ? (
-                    <img className="magazine-card-img" src={recipe.image_url} alt={recipe.title} loading="lazy" />
-                  ) : (
-                    <div className="magazine-card-img" style={{ background: 'var(--bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🍽️</div>
-                  )}
+                    <img 
+                      className="magazine-card-img" 
+                      src={recipe.image_url} 
+                      alt={recipe.title} 
+                      loading="lazy" 
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.style.display = 'none';
+                        if (e.currentTarget.nextSibling) {
+                          e.currentTarget.nextSibling.style.display = 'flex';
+                        }
+                      }}
+                    />
+                  ) : null}
+                  
+                  <div 
+                    className="magazine-card-img" 
+                    style={{ 
+                      display: recipe.image_url ? 'none' : 'flex', 
+                      background: visual.gradient, 
+                      flexDirection: 'column', 
+                      alignItems: 'center', 
+                      justify: 'center',
+                      gap: '8px',
+                      position: 'relative'
+                    }}
+                  >
+                    <span style={{ fontSize: '42px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.4))' }}>{visual.icon}</span>
+                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.3)', padding: '2px 8px', borderRadius: '10px' }}>
+                      {visual.category}
+                    </span>
+                  </div>
                   
                   <div className="magazine-card-overlay"></div>
                   

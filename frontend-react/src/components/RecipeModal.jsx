@@ -11,6 +11,7 @@ import ChefScoreBadge from './ChefScoreBadge';
 import ChefScoreBreakdown from './ChefScoreBreakdown';
 import SupplementaryBadges from './SupplementaryBadges';
 import { checkRecipeAllergens } from '../utils/allergenUtils';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 
 
 function InstructionSteps({ instructions }) {
@@ -465,9 +466,47 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
             {/* ── YouTube Video Embed or Image ── */}
             {videoUrl ? (
               <VideoEmbed videoUrl={videoUrl} title={recipe.title} />
-            ) : recipe.image_url ? (
-              <img src={recipe.image_url} alt={recipe.title} style={{width: '100%', height: '250px', objectFit: 'cover', borderRadius: '12px', marginTop: '15px', marginBottom: '15px'}} />
-            ) : null}
+            ) : (() => {
+              const visual = getRecipeCardVisual(recipe);
+              return (
+                <>
+                  {recipe.image_url ? (
+                    <img 
+                      src={recipe.image_url} 
+                      alt={recipe.title} 
+                      style={{width: '100%', height: '250px', objectFit: 'cover', borderRadius: '12px', marginTop: '15px', marginBottom: '15px'}} 
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.style.display = 'none';
+                        if (e.currentTarget.nextSibling) {
+                          e.currentTarget.nextSibling.style.display = 'flex';
+                        }
+                      }} 
+                    />
+                  ) : null}
+                  <div 
+                    style={{
+                      display: recipe.image_url ? 'none' : 'flex',
+                      width: '100%',
+                      height: '180px',
+                      background: visual.gradient,
+                      borderRadius: '12px',
+                      marginTop: '15px',
+                      marginBottom: '15px',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    <span style={{ fontSize: '48px' }}>{visual.icon}</span>
+                    <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.3)', padding: '3px 10px', borderRadius: '10px' }}>
+                      {visual.category}
+                    </span>
+                  </div>
+                </>
+              );
+            })()}
 
             {/* Nutri-Score Breakdown */}
             {(recipe.nutri_score || recipe.chef_score) && (

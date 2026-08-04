@@ -29,9 +29,10 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Environments
+# Environments & Cache
 .env
 .env.*
+*cache*.json
 
 # Editor configuration
 pyrightconfig.json

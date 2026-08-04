@@ -8,6 +8,7 @@ import { useSettings } from '../context/SettingsContext';
 import RecipeModal from '../components/RecipeModal';
 import MealSlotPickerModal from '../components/MealSlotPickerModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import foodFacts from '../data/foodFacts';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
 import { 
@@ -482,7 +483,42 @@ export default function Home() {
               <div style={{ padding: '20px', color: 'var(--accent-1)', textAlign: 'center' }}>{error}</div>
             ) : dailyRecipe && (
               <>
-                {dailyRecipe.image_url && <img className="recipe-image" style={{ maxHeight: '250px', objectFit: 'cover' }} src={dailyRecipe.image_url} alt={dailyRecipe.title} />}
+                {(() => {
+                  const visual = getRecipeCardVisual(dailyRecipe);
+                  return dailyRecipe.image_url ? (
+                    <img 
+                      className="recipe-image" 
+                      style={{ maxHeight: '250px', objectFit: 'cover' }} 
+                      src={dailyRecipe.image_url} 
+                      alt={dailyRecipe.title} 
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.style.display = 'none';
+                        if (e.currentTarget.nextSibling) {
+                          e.currentTarget.nextSibling.style.display = 'flex';
+                        }
+                      }} 
+                    />
+                  ) : null;
+                })()}
+                <div 
+                  className="recipe-image" 
+                  style={{ 
+                    display: dailyRecipe.image_url ? 'none' : 'flex', 
+                    maxHeight: '250px',
+                    height: '180px',
+                    background: getRecipeCardVisual(dailyRecipe).gradient, 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <span style={{ fontSize: '48px' }}>{getRecipeCardVisual(dailyRecipe).icon}</span>
+                  <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.3)', padding: '3px 10px', borderRadius: '10px' }}>
+                    {getRecipeCardVisual(dailyRecipe).category}
+                  </span>
+                </div>
                 <div className="recipe-info" style={{ padding: '20px' }}>
                   <div className="recipe-title" style={{ fontSize: '1.5rem' }}>{dailyRecipe.title}</div>
                   {dailyRecipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(dailyRecipe.summary) }} style={{ marginBottom: '15px' }}></div>}
@@ -978,7 +1014,39 @@ export default function Home() {
                   <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
                 </div>
               )}
-              <img src={recipe.image_url} alt={recipe.title} className="mini-recipe-image" />
+              {(() => {
+                const visual = getRecipeCardVisual(recipe);
+                return (
+                  <>
+                    {recipe.image_url ? (
+                      <img 
+                        src={recipe.image_url} 
+                        alt={recipe.title} 
+                        className="mini-recipe-image" 
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = 'flex';
+                          }
+                        }} 
+                      />
+                    ) : null}
+                    <div 
+                      className="mini-recipe-image" 
+                      style={{ 
+                        display: recipe.image_url ? 'none' : 'flex', 
+                        background: visual.gradient, 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontSize: '22px'
+                      }}
+                    >
+                      {visual.icon}
+                    </div>
+                  </>
+                );
+              })()}
               <div className="mini-recipe-content">
                 <h3 className="mini-recipe-title">{recipe.title}</h3>
                 <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>

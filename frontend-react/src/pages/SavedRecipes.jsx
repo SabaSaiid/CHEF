@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 
 export default function SavedRecipes() {
   const { token } = useContext(AuthContext);
@@ -223,9 +224,41 @@ export default function SavedRecipes() {
 
         {recipes.length > 0 && (
           <div className="recipe-grid">
-            {recipes.map((r, idx) => (
+            {recipes.map((r, idx) => {
+              const visual = getRecipeCardVisual(r);
+              return (
               <div key={r.id} className="recipe-card" style={{animationDelay: `${idx * 0.06}s`}}>
-                {r.image_url && <img className="recipe-image" src={r.image_url} alt={r.title} />}
+                {r.image_url ? (
+                  <img 
+                    className="recipe-image" 
+                    src={r.image_url} 
+                    alt={r.title} 
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.style.display = 'none';
+                      if (e.currentTarget.nextSibling) {
+                        e.currentTarget.nextSibling.style.display = 'flex';
+                      }
+                    }} 
+                  />
+                ) : null}
+                
+                <div 
+                  className="recipe-image" 
+                  style={{ 
+                    display: r.image_url ? 'none' : 'flex', 
+                    background: visual.gradient, 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    gap: '4px'
+                  }}
+                >
+                  <span style={{ fontSize: '32px' }}>{visual.icon}</span>
+                  <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.3)', padding: '2px 6px', borderRadius: '8px' }}>
+                    {visual.category}
+                  </span>
+                </div>
                 <div className="recipe-info">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <div className="recipe-title" style={{ flex: 1 }}>{r.title}</div>
@@ -258,7 +291,8 @@ export default function SavedRecipes() {
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         )}
       </div>

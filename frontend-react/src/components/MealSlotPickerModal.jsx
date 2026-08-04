@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import { useToast } from '../context/ToastContext';
 
 export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAssignSuccess }) {
@@ -200,11 +201,42 @@ export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAss
                   }}
                   onClick={() => handleAssign(recipe)}
                 >
-                  <img 
-                    src={recipe.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150'} 
-                    alt={recipe.title} 
-                    style={{ width: '56px', height: '56px', borderRadius: '10px', objectFit: 'cover' }}
-                  />
+                  {(() => {
+                    const visual = getRecipeCardVisual(recipe);
+                    return (
+                      <>
+                        {recipe.image_url ? (
+                          <img 
+                            src={recipe.image_url} 
+                            alt={recipe.title} 
+                            style={{ width: '56px', height: '56px', borderRadius: '10px', objectFit: 'cover' }}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.style.display = 'none';
+                              if (e.currentTarget.nextSibling) {
+                                e.currentTarget.nextSibling.style.display = 'flex';
+                              }
+                            }} 
+                          />
+                        ) : null}
+                        <div 
+                          style={{ 
+                            display: recipe.image_url ? 'none' : 'flex', 
+                            width: '56px', 
+                            height: '56px', 
+                            borderRadius: '10px', 
+                            background: visual.gradient,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '24px',
+                            flexShrink: 0
+                          }}
+                        >
+                          {visual.icon}
+                        </div>
+                      </>
+                    );
+                  })()}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                       {recipe.title}

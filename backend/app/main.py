@@ -18,7 +18,7 @@ Run:  python -m uvicorn app.main:app --reload --port 8001
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -199,6 +199,8 @@ app.include_router(pantry.router)
 app.include_router(weight.router)
 app.include_router(tdee_adaptive.router)
 app.include_router(diet_planner.router)
+
+
 
 
 # ── Custom branded Swagger UI ──────────────────────────────────
@@ -530,6 +532,8 @@ if FRONTEND_DIR.is_dir():
 
     @app.get("/{full_path:path}", include_in_schema=False)
     def serve_frontend(full_path: str):
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API route not found")
         path = FRONTEND_DIR / full_path
         if path.is_file():
             return FileResponse(str(path))

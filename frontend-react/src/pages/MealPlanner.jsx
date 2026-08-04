@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
+import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import AuthModal from '../components/AuthModal';
 
 export default function MealPlanner() {
@@ -427,11 +428,30 @@ export default function MealPlanner() {
                       
                       {meal ? (
                         <div className="planned-meal-card" style={{ display: 'flex', height: '100%', cursor: 'pointer' }} onClick={() => setActiveRecipeModal(meal.recipe)}>
-                          {meal.recipe?.image_url ? (
-                             <div style={{ width: '70px', height: '80px', flexShrink: 0, backgroundImage: `url(${meal.recipe.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '8px' }} />
-                          ) : (
-                             <div style={{ width: '70px', height: '80px', flexShrink: 0, background: 'var(--accent-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px' }}>🍲</div>
-                          )}
+                          {(() => {
+                            const visual = getRecipeCardVisual(meal.recipe);
+                            return (
+                              <>
+                                {meal.recipe?.image_url ? (
+                                  <img 
+                                    src={meal.recipe.image_url} 
+                                    alt={meal.recipe?.title}
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.style.display = 'none';
+                                      if (e.target.nextSibling) {
+                                        e.target.nextSibling.style.display = 'flex';
+                                      }
+                                    }}
+                                    style={{ width: '70px', height: '80px', flexShrink: 0, objectFit: 'cover', borderRadius: '8px' }} 
+                                  />
+                                ) : null}
+                                <div style={{ display: meal.recipe?.image_url ? 'none' : 'flex', width: '70px', height: '80px', flexShrink: 0, background: visual.gradient, alignItems: 'center', justifyContent: 'center', borderRadius: '8px', fontSize: '24px' }}>
+                                  {visual.icon}
+                                </div>
+                              </>
+                            );
+                          })()}
                           <div style={{ padding: '8px 10px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                              <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '2px' }}>{slot}</div>
                              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{meal.recipe?.title}</div>
@@ -484,11 +504,31 @@ export default function MealPlanner() {
               <div className="recipe-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', maxHeight: '50vh', overflowY: 'auto', paddingRight: '10px' }}>
                 {savedRecipes.map(r => (
                   <div key={r.id} className="recipe-card glass" onClick={() => assignRecipeToSlot(r.id)} style={{ cursor: 'pointer', border: '2px solid transparent', transition: '0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary)'} onMouseOut={e => e.currentTarget.style.borderColor = 'transparent'}>
-                    {r.image_url ? (
-                       <img className="recipe-image" src={r.image_url} alt={r.title} style={{ height: '120px' }} />
-                    ) : (
-                       <div style={{ height: '120px', background: 'var(--accent-3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>
-                    )}
+                    {(() => {
+                      const visual = getRecipeCardVisual(r);
+                      return (
+                        <>
+                          {r.image_url ? (
+                            <img 
+                              className="recipe-image" 
+                              src={r.image_url} 
+                              alt={r.title} 
+                              style={{ height: '120px' }} 
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.style.display = 'none';
+                                if (e.currentTarget.nextSibling) {
+                                  e.currentTarget.nextSibling.style.display = 'flex';
+                                }
+                              }} 
+                            />
+                          ) : null}
+                          <div style={{ display: r.image_url ? 'none' : 'flex', height: '120px', background: visual.gradient, alignItems: 'center', justifyContent: 'center', fontSize: '32px' }}>
+                            {visual.icon}
+                          </div>
+                        </>
+                      );
+                    })()}
                     <div className="recipe-info" style={{ padding: '12px' }}>
                       <div className="recipe-title" style={{ fontSize: '1rem', WebkitLineClamp: 2 }}>{r.title}</div>
                       {r.calories && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', marginTop: '6px', fontWeight: '600' }}>🔥 {r.calories} kcal</div>}
