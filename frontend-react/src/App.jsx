@@ -16,6 +16,9 @@ import SavedRecipes from './pages/SavedRecipes';
 import MealPlanner from './pages/MealPlanner';
 import NutritionTracker from './pages/NutritionTracker';
 import Pantry from './pages/Pantry';
+import Community from './pages/Community';
+import SubmitRecipe from './pages/SubmitRecipe';
+import UserProfile from './pages/UserProfile';
 import './index.css';
 
 import TermsAndConditions from './pages/TermsAndConditions';
@@ -41,6 +44,9 @@ function AnimatedRoutes() {
         <Route path="/planner" element={<MealPlanner />} />
         <Route path="/tracker" element={<NutritionTracker />} />
         <Route path="/pantry" element={<Pantry />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/community/submit-recipe" element={<SubmitRecipe />} />
+        <Route path="/profile/:username" element={<UserProfile />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/help" element={<HelpCenter />} />
         <Route path="/attributions" element={<Attributions />} />

@@ -29,7 +29,7 @@ from app.config import settings
 from app.database import Base, engine
 
 from app.routers import (
-    ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo, profiles, pantry, weight, tdee_adaptive, diet_planner
+    ingredients, recipes, nutrition, detection, auth_router, tdee, mealplan, export, nutrition_tracker, demo, profiles, pantry, weight, tdee_adaptive, diet_planner, reviews, community_feed, community_recipes, groups_challenges
 )
 
 
@@ -199,6 +199,10 @@ app.include_router(pantry.router)
 app.include_router(weight.router)
 app.include_router(tdee_adaptive.router)
 app.include_router(diet_planner.router)
+app.include_router(reviews.router)
+app.include_router(community_feed.router)
+app.include_router(community_recipes.router)
+app.include_router(groups_challenges.router)
 
 
 

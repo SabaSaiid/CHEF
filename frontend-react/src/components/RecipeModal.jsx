@@ -120,6 +120,54 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
     }
   }, [recipe]);
 
+  // Reviews & Cooking Tips State
+  const [reviews, setReviews] = useState([]);
+  const [reviewSummary, setReviewSummary] = useState(null);
+  const [ratingInput, setRatingInput] = useState(5);
+  const [reviewTextInput, setReviewTextInput] = useState('');
+  const [tipCategoryInput, setTipCategoryInput] = useState('General');
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  const fetchReviews = useEffect(() => {
+    if (recipe?.id) {
+      const source = recipe.source || 'catalog';
+      api.get(`/reviews/summary/${recipe.id}?recipe_source=${source}`)
+        .then(res => setReviewSummary(res))
+        .catch(err => console.error("Error fetching review summary:", err));
+
+      api.get(`/reviews/recipe/${recipe.id}?recipe_source=${source}`)
+        .then(res => setReviews(res))
+        .catch(err => console.error("Error fetching reviews:", err));
+    }
+  }, [recipe]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      toast.showError("Please log in to leave a review or cooking tip.");
+      return;
+    }
+    setSubmittingReview(true);
+    try {
+      await api.post('/reviews', {
+        recipe_id: String(recipe.id),
+        recipe_source: recipe.source || 'catalog',
+        rating: Number(ratingInput),
+        review_text: reviewTextInput.trim() || null,
+        tip_category: tipCategoryInput,
+      });
+      toast.showSuccess("Review submitted successfully!");
+      setReviewTextInput('');
+      const source = recipe.source || 'catalog';
+      api.get(`/reviews/summary/${recipe.id}?recipe_source=${source}`).then(res => setReviewSummary(res));
+      api.get(`/reviews/recipe/${recipe.id}?recipe_source=${source}`).then(res => setReviews(res));
+    } catch (err) {
+      toast.showError(err.response?.data?.detail || "Failed to submit review.");
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       api.get('/pantry')
@@ -691,6 +739,108 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
             )}
 
             <InstructionSteps instructions={recipe.instructions} />
+
+            {/* ── Community Reviews & Cooking Tips ── */}
+            <div className="modal-section" style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid var(--border-color)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>⭐</span> Reviews & Cooking Tips
+                </h3>
+                {reviewSummary && reviewSummary.total_reviews > 0 && (
+                  <span style={{ fontSize: '14px', fontWeight: '700', color: '#f59e0b', background: 'rgba(245, 158, 11, 0.1)', padding: '4px 10px', borderRadius: '12px' }}>
+                    ★ {reviewSummary.average_rating} ({reviewSummary.total_reviews} review{reviewSummary.total_reviews > 1 ? 's' : ''})
+                  </span>
+                )}
+              </div>
+
+              {/* Leave Review Form */}
+              {token ? (
+                <form onSubmit={handleSubmitReview} style={{ background: 'var(--bg-tertiary, rgba(255,255,255,0.03))', padding: '14px', borderRadius: '10px', marginBottom: '15px', border: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', gap: '15px', marginBottom: '10px', flexWrap: 'wrap' }}>
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '600', display: 'block', marginBottom: '4px' }}>Rating:</label>
+                      <select 
+                        value={ratingInput} 
+                        onChange={e => setRatingInput(Number(e.target.value))}
+                        style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                      >
+                        <option value={5}>⭐⭐⭐⭐⭐ (5/5)</option>
+                        <option value={4}>⭐⭐⭐⭐ (4/5)</option>
+                        <option value={3}>⭐⭐⭐ (3/5)</option>
+                        <option value={2}>⭐⭐ (2/5)</option>
+                        <option value={1}>⭐ (1/5)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '600', display: 'block', marginBottom: '4px' }}>Tip Category:</label>
+                      <select 
+                        value={tipCategoryInput} 
+                        onChange={e => setTipCategoryInput(e.target.value)}
+                        style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                      >
+                        <option value="General">General Review</option>
+                        <option value="Cooking Technique">Cooking Technique</option>
+                        <option value="Substitution">Ingredient Swap</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <textarea
+                    rows={2}
+                    placeholder="Share your cooking tips, notes, or rating for this recipe..."
+                    value={reviewTextInput}
+                    onChange={e => setReviewTextInput(e.target.value)}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', resize: 'vertical', fontSize: '14px', marginBottom: '10px' }}
+                  />
+
+                  <button 
+                    type="submit" 
+                    disabled={submittingReview}
+                    className="action-btn primary"
+                    style={{ padding: '6px 16px', fontSize: '13px' }}
+                  >
+                    {submittingReview ? 'Submitting...' : 'Post Review & Tip'}
+                  </button>
+                </form>
+              ) : (
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '15px' }}>
+                  💡 Log in to leave a star rating or share your cooking tips!
+                </p>
+              )}
+
+              {/* Reviews List */}
+              {reviews.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {reviews.map(rev => (
+                    <div key={rev.id} style={{ padding: '10px 14px', borderRadius: '8px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <span style={{ fontWeight: '700', fontSize: '13px', color: 'var(--text-primary)' }}>
+                          👨‍🍳 {rev.username}
+                        </span>
+                        <span style={{ fontSize: '12px', color: '#f59e0b' }}>
+                          {'⭐'.repeat(rev.rating)}
+                        </span>
+                      </div>
+                      {rev.tip_category && (
+                        <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', background: 'rgba(249, 115, 22, 0.15)', color: '#f97316', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', marginBottom: '4px' }}>
+                          {rev.tip_category}
+                        </span>
+                      )}
+                      {rev.review_text && (
+                        <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>
+                          {rev.review_text}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                  No reviews yet for this recipe. Be the first to add a review or cooking tip!
+                </p>
+              )}
+            </div>
 
             {recipe.nutrition && (
               <div className="modal-section" style={{marginTop: '15px'}}>

@@ -4,7 +4,7 @@ ORM models — User authentication + recipe storage.
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Integer, String, Float, DateTime, Text, ForeignKey, Boolean
+from sqlalchemy import Integer, String, Float, DateTime, Text, ForeignKey, Boolean, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -252,6 +252,223 @@ class PantryItem(Base):
 
     def __repr__(self) -> str:
         return f"<PantryItem id={self.id} ingredient={self.ingredient_name!r} qty={self.quantity}>"
+
+
+class RecipeReview(Base):
+    """Text review, rating (1-5 stars), and cooking tips for any recipe."""
+    __tablename__ = "recipe_reviews"
+    __table_args__ = (
+        UniqueConstraint("user_id", "recipe_id", "recipe_source", name="uq_user_recipe_review"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    recipe_id: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    recipe_source: Mapped[str] = mapped_column(String(50), nullable=False, default="catalog")  # catalog, spoonacular, community
+    rating: Mapped[int] = mapped_column(Integer, nullable=False)  # 1 to 5 stars
+    review_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    tip_category: Mapped[str | None] = mapped_column(String(50), nullable=True)  # General, Substitution, Cooking Technique
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False
+    )
+
+    # Relationship
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<RecipeReview id={self.id} recipe={self.recipe_id!r} rating={self.rating}>"
+
+
+# ── Phase 2: Social Feed Models ────────────────────────────────
+
+class CommunityPost(Base):
+    """Social feed post (text + optional photo + optional linked recipe)."""
+    __tablename__ = "community_posts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    image_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    recipe_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    recipe_source: Mapped[str | None] = mapped_column(String(50), nullable=True, default="catalog")
+    group_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("community_groups.id", ondelete="SET NULL"), nullable=True, index=True)
+    likes_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    comments_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    owner: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<CommunityPost id={self.id} user_id={self.user_id}>"
+
+
+class CommunityComment(Base):
+    """Comment on a social feed post."""
+    __tablename__ = "community_comments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("community_posts.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    owner: Mapped["User"] = relationship("User")
+    post: Mapped["CommunityPost"] = relationship("CommunityPost")
+
+    def __repr__(self) -> str:
+        return f"<CommunityComment id={self.id} post_id={self.post_id}>"
+
+
+class CommunityLike(Base):
+    """User like on a social feed post."""
+    __tablename__ = "community_likes"
+    __table_args__ = (
+        UniqueConstraint("post_id", "user_id", name="uq_post_user_like"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("community_posts.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+
+class CommunityFollow(Base):
+    """User-to-user follow relationship."""
+    __tablename__ = "community_follows"
+    __table_args__ = (
+        UniqueConstraint("follower_id", "following_id", name="uq_user_follow"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    follower_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    following_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+
+# ── Phase 3: User-Submitted Recipes Models ──────────────────────
+
+class CommunityRecipe(Base):
+    """User-created recipe submission with moderation workflow."""
+    __tablename__ = "community_recipes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    submitter_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
+    summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    image_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    ready_in_minutes: Mapped[int] = mapped_column(Integer, nullable=False, default=30)
+    servings: Mapped[int] = mapped_column(Integer, nullable=False, default=4)
+    ingredients: Mapped[str] = mapped_column(Text, nullable=False)  # JSON string
+    instructions: Mapped[str] = mapped_column(Text, nullable=False)
+    diets: Mapped[str | None] = mapped_column(String(500), nullable=True)  # Comma-separated
+    meal_type: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    region: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    calories: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    protein_g: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    carbs_g: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    fat_g: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    fiber_g: Mapped[float | None] = mapped_column(Float, nullable=True, default=0.0)
+    sodium_mg: Mapped[float | None] = mapped_column(Float, nullable=True, default=0.0)
+    sugar_g: Mapped[float | None] = mapped_column(Float, nullable=True, default=0.0)
+    nutri_score_grade: Mapped[str | None] = mapped_column(String(2), nullable=True)
+    nutri_score_points: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    moderation_status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending", index=True)  # pending, approved, rejected
+    moderation_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    submitter: Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<CommunityRecipe id={self.id} title={self.title!r} status={self.moderation_status}>"
+
+
+# ── Phase 4: Groups & Challenges Models ─────────────────────────
+
+class CommunityGroup(Base):
+    """Culinary interest group."""
+    __tablename__ = "community_groups"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
+    slug: Mapped[str] = mapped_column(String(150), unique=True, nullable=False, index=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    category: Mapped[str] = mapped_column(String(50), nullable=False, default="Diet")
+    creator_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    members_count: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    creator: Mapped["User"] = relationship("User")
+
+
+class CommunityGroupMember(Base):
+    """Group membership mapping."""
+    __tablename__ = "community_group_members"
+    __table_args__ = (
+        UniqueConstraint("group_id", "user_id", name="uq_group_member"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    group_id: Mapped[int] = mapped_column(Integer, ForeignKey("community_groups.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    joined_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+
+class CommunityChallenge(Base):
+    """Time-boxed nutrition or habit challenge."""
+    __tablename__ = "community_challenges"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    metric_type: Mapped[str] = mapped_column(String(50), nullable=False)  # protein_target_days, nutri_score_count, water_target_days, recipes_logged
+    target_value: Mapped[float] = mapped_column(Float, nullable=False)
+    duration_days: Mapped[int] = mapped_column(Integer, nullable=False, default=7)
+    start_date: Mapped[str] = mapped_column(String(10), nullable=False)  # YYYY-MM-DD
+    end_date: Mapped[str] = mapped_column(String(10), nullable=False)    # YYYY-MM-DD
+    badge_icon: Mapped[str] = mapped_column(String(100), nullable=False, default="🏆")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+
+class CommunityChallengeParticipant(Base):
+    """User challenge progress tracking."""
+    __tablename__ = "community_challenge_participants"
+    __table_args__ = (
+        UniqueConstraint("challenge_id", "user_id", name="uq_challenge_participant"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    challenge_id: Mapped[int] = mapped_column(Integer, ForeignKey("community_challenges.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    current_progress: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    is_completed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    joined_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
 
 
 

@@ -85,3 +85,35 @@ def get_current_user(
 
     return user
 
+
+security_optional = HTTPBearer(auto_error=False)
+
+
+def get_optional_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_optional),
+    db: Session = Depends(get_db),
+) -> Optional["User"]:
+    """
+    FastAPI dependency — returns User object if valid Bearer token present,
+    or None if unauthenticated guest reader.
+    """
+    if not credentials:
+        return None
+
+    try:
+        payload = jwt.decode(
+            credentials.credentials,
+            settings.JWT_SECRET_KEY,
+            algorithms=[settings.JWT_ALGORITHM],
+        )
+        user_id_str = payload.get("sub")
+        if user_id_str is None:
+            return None
+        user_id = int(user_id_str)
+    except (JWTError, ValueError):
+        return None
+
+    from app.models import User
+    return db.query(User).filter(User.id == user_id).first()
+
+

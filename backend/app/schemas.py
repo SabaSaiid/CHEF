@@ -629,4 +629,181 @@ class PantryItemResponse(BaseModel):
     updated_at: datetime
 
 
+# ── Recipe Reviews & Tips ──────────────────────────────────────
+
+class RecipeReviewCreate(BaseModel):
+    recipe_id: str = Field(..., min_length=1, max_length=255, description="Recipe identifier")
+    recipe_source: str = Field("catalog", description="catalog, spoonacular, or community")
+    rating: int = Field(..., ge=1, le=5, description="Star rating from 1 to 5")
+    review_text: Optional[str] = Field(None, max_length=2000, description="Text review or cooking tip")
+    tip_category: Optional[str] = Field("General", max_length=50, description="General, Substitution, Cooking Technique")
+
+
+class RecipeReviewResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    username: str
+    recipe_id: str
+    recipe_source: str
+    rating: int
+    review_text: Optional[str] = None
+    tip_category: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class RecipeReviewSummary(BaseModel):
+    recipe_id: str
+    recipe_source: str
+    average_rating: float = 0.0
+    total_reviews: int = 0
+    rating_distribution: dict[int, int] = Field(default_factory=lambda: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0})
+
+
+# ── Social Feed ────────────────────────────────────────────────
+
+class PostCreateRequest(BaseModel):
+    content: str = Field(..., min_length=1, max_length=5000, description="Post text caption")
+    image_url: Optional[str] = Field(None, max_length=1000, description="Optional image URL")
+    recipe_id: Optional[str] = Field(None, max_length=255, description="Optional attached recipe ID")
+    recipe_source: Optional[str] = Field("catalog", description="catalog, spoonacular, or community")
+    group_id: Optional[int] = Field(None, description="Optional group ID")
+
+
+class CommentCreateRequest(BaseModel):
+    content: str = Field(..., min_length=1, max_length=2000, description="Comment text")
+
+
+class CommentResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    post_id: int
+    user_id: int
+    username: str
+    content: str
+    created_at: datetime
+
+
+class PostResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    username: str
+    content: str
+    image_url: Optional[str] = None
+    recipe_id: Optional[str] = None
+    recipe_source: Optional[str] = None
+    group_id: Optional[int] = None
+    likes_count: int = 0
+    comments_count: int = 0
+    is_liked: bool = False
+    is_author: bool = False
+    created_at: datetime
+
+
+class UserCommunityProfile(BaseModel):
+    user_id: int
+    username: str
+    posts_count: int = 0
+    followers_count: int = 0
+    following_count: int = 0
+    is_following: bool = False
+    recent_posts: list[PostResponse] = Field(default_factory=list)
+
+
+# ── User-Submitted Recipes ──────────────────────────────────────
+
+class CommunityRecipeCreate(BaseModel):
+    title: str = Field(..., min_length=3, max_length=500)
+    summary: Optional[str] = Field(None, max_length=2000)
+    image_url: Optional[str] = Field(None, max_length=1000)
+    ready_in_minutes: int = Field(30, ge=1, le=1440)
+    servings: int = Field(4, ge=1, le=100)
+    ingredients: list[str] = Field(..., min_items=1, description="List of ingredient strings")
+    instructions: str = Field(..., min_length=10, description="Step by step preparation instructions")
+    diets: Optional[list[str]] = Field(default_factory=list)
+    meal_type: Optional[str] = Field("Lunch/Dinner")
+    region: Optional[str] = Field("International")
+    calories: float = Field(..., ge=0)
+    protein_g: float = Field(..., ge=0)
+    carbs_g: float = Field(..., ge=0)
+    fat_g: float = Field(..., ge=0)
+    fiber_g: Optional[float] = Field(0.0, ge=0)
+    sodium_mg: Optional[float] = Field(0.0, ge=0)
+    sugar_g: Optional[float] = Field(0.0, ge=0)
+
+
+class CommunityRecipeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    submitter_id: int
+    submitter_username: str
+    title: str
+    summary: Optional[str] = None
+    image_url: Optional[str] = None
+    ready_in_minutes: int
+    servings: int
+    ingredients: list[str]
+    instructions: str
+    diets: list[str]
+    meal_type: Optional[str] = None
+    region: Optional[str] = None
+    calories: float
+    protein_g: float
+    carbs_g: float
+    fat_g: float
+    fiber_g: Optional[float] = 0.0
+    nutri_score_grade: Optional[str] = None
+    nutri_score_points: Optional[int] = None
+    moderation_status: str
+    moderation_note: Optional[str] = None
+    created_at: datetime
+
+
+# ── Groups & Challenges ────────────────────────────────────────
+
+class CommunityGroupCreate(BaseModel):
+    name: str = Field(..., min_length=3, max_length=150)
+    description: str = Field(..., min_length=10, max_length=2000)
+    category: str = Field("Diet", max_length=50)
+
+
+class CommunityGroupResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    slug: str
+    description: str
+    category: str
+    creator_id: Optional[int] = None
+    members_count: int = 1
+    is_member: bool = False
+    created_at: datetime
+
+
+class CommunityChallengeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    description: str
+    metric_type: str
+    target_value: float
+    duration_days: int
+    start_date: str
+    end_date: str
+    badge_icon: str
+    is_joined: bool = False
+    current_progress: float = 0.0
+    is_completed: bool = False
+
+
+
+
 
