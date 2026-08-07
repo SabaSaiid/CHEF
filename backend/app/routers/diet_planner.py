@@ -41,6 +41,26 @@ MEAL_DISTRIBUTION = {
     "Dinner":    0.30,
 }
 
+# ── Title normalization for variety enforcement ─────────────────────────
+import re as _re
+_VARIANT_PREFIXES = _re.compile(
+    r'^(premium|quick|spicy|mild|special|authentic|traditional|'
+    r'homestyle|restaurant style|dhaba style|classic|easy|simple|'
+    r'best|super|ultimate|perfect|healthy|instant|delicious)\s+',
+    _re.IGNORECASE
+)
+
+def _normalize_title_family(title: str) -> str:
+    """Strip variant prefixes to get the core recipe identity."""
+    t = title.strip()
+    # Iteratively strip prefixes
+    for _ in range(3):
+        t_new = _VARIANT_PREFIXES.sub('', t)
+        if t_new == t:
+            break
+        t = t_new
+    return t.lower().strip()
+
 # ── Recipe cache ────────────────────────────────────────────────────────
 
 _RECIPE_CACHE = None
@@ -276,6 +296,7 @@ def generate_weekly_diet_plan(
     monday = today - timedelta(days=today.weekday())
 
     used_ids = set()
+    used_title_families = set()  # Prevent title-family duplicates (e.g. all "Pani Puri" variants)
     plan_entries = []
 
     for day_offset in range(7):
@@ -294,6 +315,11 @@ def generate_weekly_diet_plan(
             for recipe in buckets.get(slot, filtered):
                 rid = recipe.get("id")
                 if rid in used_ids:
+                    continue
+                
+                # Enforce title-family variety
+                title_family = _normalize_title_family(recipe.get("title", ""))
+                if title_family in used_title_families:
                     continue
 
                 nutrition = recipe.get("nutrition", {})
@@ -322,6 +348,7 @@ def generate_weekly_diet_plan(
 
             if best_recipe:
                 used_ids.add(best_recipe.get("id"))
+                used_title_families.add(_normalize_title_family(best_recipe.get("title", "")))
                 plan_entries.append({
                     "date": day_str,
                     "meal_slot": slot,

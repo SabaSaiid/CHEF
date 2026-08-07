@@ -221,21 +221,69 @@ def deduct_recipe_ingredients(
     return {"message": "Deduction completed", "deducted": deducted, "not_found": not_found}
 
 class MagicImportRequest(BaseModel):
-    text: str
+    text: Optional[str] = None
+    raw_text: Optional[str] = None
+
+    @property
+    def input_text(self) -> str:
+        return self.raw_text or self.text or ""
+
+def _fallback_parse_grocery_text(text: str) -> list[dict]:
+    """Rule-based fallback parser when Gemini API is unavailable."""
+    import re
+    lines = [l.strip() for l in text.replace(';', '\n').split('\n') if l.strip()]
+    items = []
+    pattern = re.compile(
+        r'^(?:[-•*]\s*)?'
+        r'(?:(\d+(?:\.\d+)?)\s*)?'
+        r'(pcs?|kg|g|ml|l|liter|liters|cups?|tbsp|tsp|oz|bunch|packets?|packets?|slices?|pieces?)?\s*'
+        r'(?:of\s+)?'
+        r'(.+)$',
+        re.IGNORECASE
+    )
+    for line in lines:
+        m = pattern.match(line)
+        if m:
+            qty = float(m.group(1)) if m.group(1) else 1
+            unit = m.group(2) or 'pcs'
+            name = m.group(3).strip().rstrip(',;.')
+            items.append({
+                "ingredient_name": name.title(),
+                "quantity": qty,
+                "unit": unit.lower(),
+                "category": "Other",
+                "days_fresh": 7,
+            })
+        elif line:
+            items.append({
+                "ingredient_name": line.title(),
+                "quantity": 1,
+                "unit": "pcs",
+                "category": "Other",
+                "days_fresh": 7,
+            })
+    return items
 
 @router.post("/magic-import")
 async def magic_import_pantry(
     req: MagicImportRequest,
+    db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
     Parses a messy grocery list or receipt text via Gemini API 
-    and returns a clean JSON list of pantry items.
+    and saves parsed items directly into the user's pantry.
+    Falls back to rule-based parsing when Gemini is unavailable.
     """
-    if not settings.GEMINI_API_KEY:
-        raise HTTPException(status_code=500, detail="Gemini API Key is missing. Magic Import disabled.")
+    input_text = req.input_text
+    if not input_text.strip():
+        raise HTTPException(status_code=400, detail="No text provided to import.")
 
-    prompt = f"""
+    parsed_items = None
+
+    # Try Gemini API first
+    if settings.GEMINI_API_KEY:
+        prompt = f"""
     You are an expert culinary AI. Parse the following grocery list or receipt text and extract the ingredients.
     Return ONLY a valid JSON array of objects. No markdown formatting, no code blocks, just raw JSON.
     Each object must exactly match this schema:
@@ -246,35 +294,73 @@ async def magic_import_pantry(
     - "days_fresh" (number, estimated shelf life in days)
 
     Text to parse:
-    {req.text}
+    {input_text}
     """
+        try:
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                resp = await client.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={settings.GEMINI_API_KEY}",
+                    json={
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {"temperature": 0.1}
+                    }
+                )
+                
+                if resp.status_code == 200:
+                    data = resp.json()
+                    raw_text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    
+                    if raw_text.startswith("```json"):
+                        raw_text = raw_text[7:]
+                    if raw_text.startswith("```"):
+                        raw_text = raw_text[3:]
+                    if raw_text.endswith("```"):
+                        raw_text = raw_text[:-3]
+                        
+                    parsed_items = json.loads(raw_text.strip())
+        except Exception:
+            pass  # Fall through to fallback
 
-    try:
-        async with httpx.AsyncClient(timeout=20.0) as client:
-            resp = await client.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={settings.GEMINI_API_KEY}",
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {"temperature": 0.1}
-                }
+    # Fallback to rule-based parser
+    if parsed_items is None:
+        parsed_items = _fallback_parse_grocery_text(input_text)
+
+    if not parsed_items:
+        raise HTTPException(status_code=400, detail="Could not parse any items from the provided text.")
+
+    # Auto-save parsed items into the user's pantry
+    saved_count = 0
+    for item in parsed_items:
+        name = item.get("ingredient_name", "").strip()
+        if not name:
+            continue
+        
+        # Check if item already exists in pantry
+        existing = db.query(PantryItem).filter(
+            PantryItem.user_id == current_user.id,
+            PantryItem.ingredient_name.ilike(name)
+        ).first()
+        
+        if existing:
+            existing.quantity = (existing.quantity or 0) + (item.get("quantity", 1) or 1)
+        else:
+            new_item = PantryItem(
+                user_id=current_user.id,
+                ingredient_name=name,
+                quantity=item.get("quantity", 1),
+                unit=item.get("unit", "pcs"),
+                category=item.get("category", "Other"),
+                days_fresh=item.get("days_fresh", 7),
             )
-            
-            if resp.status_code != 200:
-                raise HTTPException(status_code=resp.status_code, detail="AI parsing failed")
-                
-            data = resp.json()
-            raw_text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-            
-            if raw_text.startswith("```json"):
-                raw_text = raw_text[7:]
-            if raw_text.endswith("```"):
-                raw_text = raw_text[:-3]
-                
-            parsed_items = json.loads(raw_text.strip())
-            return {"items": parsed_items}
-            
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+            db.add(new_item)
+        saved_count += 1
+    
+    db.commit()
+
+    return {
+        "items": parsed_items,
+        "message": f"Successfully imported {saved_count} items into your pantry!"
+    }
 
 @router.get("/generate-recipe")
 async def generate_pantry_recipe(

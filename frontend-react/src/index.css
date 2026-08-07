@@ -1317,8 +1317,9 @@ input::placeholder {
 }
 
 .recipe-image {
-    width: 140px;
-    height: 110px;
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1 / 1;
     border-radius: var(--radius-sm);
     object-fit: cover;
     flex-shrink: 0;
@@ -5301,7 +5302,7 @@ h6 {
     position: relative;
     border-radius: var(--radius);
     overflow: hidden;
-    aspect-ratio: 4/5;
+    aspect-ratio: 1 / 1;
     cursor: pointer;
     box-shadow: var(--shadow-card);
     transition: transform var(--transition), box-shadow var(--transition);

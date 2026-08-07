@@ -225,7 +225,7 @@ async def _find_substitutes(name: str, recipe_title: str | None = None) -> Ingre
     spoonacular_key = settings.SPOONACULAR_API_KEY
     if spoonacular_key:
         try:
-            async with httpx.AsyncClient(timeout=4.0) as client:
+            async with httpx.AsyncClient(timeout=2.0) as client:
                 res = await client.get(
                     "https://api.spoonacular.com/food/ingredients/substitutes",
                     params={"ingredientName": name_norm, "apiKey": spoonacular_key}

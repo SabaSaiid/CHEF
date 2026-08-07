@@ -344,7 +344,7 @@ export default function Pantry() {
     if (!magicImportText.trim()) return;
     setImporting(true);
     try {
-      const data = await api.post('/pantry/magic-import', { raw_text: magicImportText });
+      const data = await api.post('/pantry/magic-import', { text: magicImportText, raw_text: magicImportText });
       toast.success(data.message || 'Pantry updated from text!');
       setMagicImportText('');
       fetchPantry(false);

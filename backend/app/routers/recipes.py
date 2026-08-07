@@ -39,6 +39,37 @@ from app.services.cache import raw_nutrition_cache, nutri_score_cache
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 
+# Allergen keyword map for filtering
+_ALLERGEN_MAP = {
+    "peanut": ["peanut", "groundnut"],
+    "dairy": ["milk", "cheese", "butter", "cream", "yogurt", "ghee", "paneer", "curd", "whey"],
+    "gluten": ["wheat", "flour", "bread", "pasta", "noodle", "roti", "naan", "maida", "semolina"],
+    "egg": ["egg"],
+    "soy": ["soy", "tofu", "tempeh", "edamame", "soy sauce"],
+    "shellfish": ["shrimp", "crab", "lobster", "oyster", "mussel", "clam", "prawn"],
+    "fish": ["fish", "salmon", "tuna", "cod", "sardine", "anchovy", "mackerel"],
+    "tree nuts": ["almond", "walnut", "cashew", "pistachio", "pecan", "hazelnut", "brazil nut"],
+}
+
+def _recipe_has_allergen(recipe, allergies: list[str], exclude_ingredients: list[str]) -> bool:
+    """Return True if recipe contains any allergen or excluded ingredient."""
+    if not allergies and not exclude_ingredients:
+        return False
+    # Build searchable text from ingredients + title
+    ingredients_list = recipe.ingredients if isinstance(recipe.ingredients, list) else [recipe.ingredients or ""]
+    searchable = (" ".join(ingredients_list) + " " + (recipe.title or "")).lower()
+    
+    for allergen in (allergies or []):
+        keywords = _ALLERGEN_MAP.get(allergen.lower(), [allergen.lower()])
+        if any(kw in searchable for kw in keywords):
+            return True
+    
+    for excl in (exclude_ingredients or []):
+        if excl.lower() in searchable:
+            return True
+    
+    return False
+
 
 # ── Startup: load and index recipe database ────────────────────
 _recipes_path = Path(__file__).parent.parent / "recipes.json"
@@ -419,6 +450,10 @@ async def search_recipes(req: RecipeSearchRequest):
         total_needed = req.max_results * req.page
         api_results = await _search_spoonacular(req.ingredients, total_needed, req.diet, req.max_time)
         if api_results is not None:
+            # Filter out allergens and excluded ingredients
+            if req.allergies or req.exclude_ingredients:
+                api_results = [r for r in api_results if not _recipe_has_allergen(r, req.allergies, req.exclude_ingredients)]
+
             if req.sort_by == "fastest":
                 api_results.sort(key=lambda r: r.ready_in_minutes or 9999)
             elif req.sort_by == "lowest_calories":
@@ -477,6 +512,9 @@ async def search_recipes(req: RecipeSearchRequest):
             continue
         if not _diet_matches(recipe, req.diet or ""):
             continue
+        # Allergen / excluded ingredient filter
+        if _recipe_has_allergen(recipe, req.allergies or [], req.exclude_ingredients or []):
+            continue
         # Nutri-Score filter
         score_obj = recipe.nutri_score or recipe.chef_score
         if allowed_grades and score_obj and score_obj.grade not in allowed_grades:
@@ -523,6 +561,14 @@ def save_recipe(
     current_user: User = Depends(get_current_user),
 ):
     """Save a recipe to the current user's collection. Requires authentication."""
+    # Prevent duplicates — check if same title already saved by this user
+    existing = db.query(SavedRecipe).filter(
+        SavedRecipe.user_id == current_user.id,
+        SavedRecipe.title == req.title
+    ).first()
+    if existing:
+        return existing
+
     recipe = SavedRecipe(
         user_id=current_user.id,
         title=req.title,

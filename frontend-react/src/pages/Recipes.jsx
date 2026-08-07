@@ -27,6 +27,17 @@ const MEAL_OPTIONS = [
   { value: 'Dessert', label: '🍰 Dessert' },
 ];
 
+const ALLERGY_OPTIONS = [
+  { value: 'peanut', label: '🥜 Peanut' },
+  { value: 'dairy', label: '🥛 Dairy' },
+  { value: 'gluten', label: '🌾 Gluten' },
+  { value: 'egg', label: '🥚 Egg' },
+  { value: 'soy', label: '🫘 Soy' },
+  { value: 'shellfish', label: '🦐 Shellfish' },
+  { value: 'fish', label: '🐟 Fish' },
+  { value: 'tree nuts', label: '🌰 Tree Nuts' },
+];
+
 export default function Recipes() {
   const location = useLocation();
   const toast = useToast();
@@ -76,6 +87,7 @@ export default function Recipes() {
   const [sortBy, setSortBy] = useState('best_match');
   const [minChefScore, setMinChefScore] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedAllergies, setSelectedAllergies] = useState([]);
   const didInitRef = useRef(false);
 
   useEffect(() => {
@@ -119,6 +131,7 @@ export default function Recipes() {
         body.min_nutri_score = minChefScore;
         body.min_chef_score = minChefScore;
       }
+      if (selectedAllergies.length > 0) body.allergies = selectedAllergies;
 
       const data = await api.post('/recipes/search', body);
       setResults(data);
@@ -132,7 +145,7 @@ export default function Recipes() {
     } finally {
       setLoading(false);
     }
-  }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy, minChefScore]);
+  }, [ingredients, diet, region, mealType, maxCal, maxTime, sortBy, minChefScore, selectedAllergies]);
 
   const applyAutoCorrect = () => {
     if (!autoCorrectSuggestion) return;
@@ -179,11 +192,18 @@ export default function Recipes() {
     setMaxTime('');
     setSortBy('best_match');
     setMinChefScore('');
+    setSelectedAllergies([]);
     setError(null);
     setPage(1);
   };
 
-  const activeFilterCount = [diet, mealType, minChefScore, region, maxCal, maxTime, sortBy && sortBy !== 'best_match'].filter(Boolean).length;
+  const toggleAllergy = (value) => {
+    setSelectedAllergies(prev =>
+      prev.includes(value) ? prev.filter(a => a !== value) : [...prev, value]
+    );
+  };
+
+  const activeFilterCount = [diet, mealType, minChefScore, region, maxCal, maxTime, sortBy && sortBy !== 'best_match', selectedAllergies.length > 0].filter(Boolean).length;
 
   return (
     <section className="page active" style={{ padding: '0 20px 30px', maxWidth: '1100px', margin: '0 auto' }}>
@@ -292,6 +312,25 @@ export default function Recipes() {
                     key={opt.value} 
                     className={`filter-chip ${diet === opt.value ? 'active' : ''}`}
                     onClick={() => setDiet(diet === opt.value ? '' : opt.value)}
+                  >
+                    {opt.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Allergy Filter Chips */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                ⚠️ Exclude Allergens
+              </div>
+              <div className="filter-chips-container" style={{ marginBottom: 0 }}>
+                {ALLERGY_OPTIONS.map(opt => (
+                  <div 
+                    key={opt.value} 
+                    className={`filter-chip ${selectedAllergies.includes(opt.value) ? 'active' : ''}`}
+                    onClick={() => toggleAllergy(opt.value)}
+                    style={selectedAllergies.includes(opt.value) ? { background: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#ef4444' } : {}}
                   >
                     {opt.label}
                   </div>

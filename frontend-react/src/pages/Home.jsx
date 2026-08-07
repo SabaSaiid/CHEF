@@ -125,24 +125,20 @@ export default function Home() {
   }, [selectedFactCategory, activePool]);
 
   const handleShuffleFact = () => {
-    // Pick a random fact from all 50+ facts in foodFacts database
-    const randomFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+    // Fisher-Yates shuffle the entire foodFacts array and pick 6 fresh facts
+    const pool = selectedFactCategory === 'All'
+      ? [...foodFacts]
+      : foodFacts.filter(f => f.category === selectedFactCategory);
     
-    // Check if it's already in the pool, if not prepend it so it's active immediately
-    let newPool = [...activePool];
-    let existingIndex = newPool.findIndex(f => f.id === randomFact.id);
-    
-    if (existingIndex === -1) {
-      newPool = [randomFact, ...newPool];
-      existingIndex = 0;
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
     }
     
+    const newPool = pool.slice(0, 6);
     setCustomFactPool(newPool);
-    if (selectedFactCategory !== 'All' && randomFact.category !== selectedFactCategory) {
-      setSelectedFactCategory('All');
-    }
-    setActiveFact(existingIndex);
-    toast.success(`Shuffled: "${randomFact.category}" fact 💡`);
+    setActiveFact(0);
+    toast.success(`Shuffled ${newPool.length} new facts! 💡`);
   };
 
   const handleCopyFact = (factText) => {
@@ -155,6 +151,11 @@ export default function Home() {
   // Auto-rotate facts
   const nextFact = useCallback(() => {
     setActiveFact(prev => (prev + 1) % filteredFacts.length);
+  }, [filteredFacts.length]);
+
+  // Clamp activeFact when filteredFacts shrinks (e.g. after shuffle or category change)
+  useEffect(() => {
+    setActiveFact(prev => (prev >= filteredFacts.length ? 0 : prev));
   }, [filteredFacts.length]);
 
   useEffect(() => {
@@ -804,7 +805,9 @@ export default function Home() {
         {(() => {
           const targetWater = targets.water || 2500;
           const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
+          const actualPctWater = Math.round((waterTotal / targetWater) * 100);
           const isGoalReached = waterTotal >= targetWater;
+          const isOverHydrated = actualPctWater > 125;
 
           return (
             <div className="card glass dashboard-widget-card water-widget">
@@ -816,7 +819,9 @@ export default function Home() {
                   </h3>
                   <p className="subtitle" style={{ margin: 0, fontSize: '0.82rem' }}>Target: <strong>{targetWater} ml</strong></p>
                 </div>
-                {isGoalReached ? (
+                {isOverHydrated ? (
+                  <span className="water-goal-badge" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', animation: 'none' }}>⚠️ Over-hydrated</span>
+                ) : isGoalReached ? (
                   <span className="water-goal-badge pulse-glow">🎉 Goal Met!</span>
                 ) : (
                   <span className="water-pct-badge">{pctWater}%</span>
@@ -866,8 +871,12 @@ export default function Home() {
                   <span className="water-current-num">{waterTotal}</span>
                   <span className="water-target-total">/ {targetWater} ml</span>
                 </div>
-                <span className={`water-status-tag ${isGoalReached ? 'success' : ''}`}>
-                  {isGoalReached ? '✨ Fully Hydrated' : `${Math.max(0, targetWater - waterTotal)} ml remaining`}
+                <span className={`water-status-tag ${isGoalReached ? 'success' : ''} ${isOverHydrated ? 'warning' : ''}`}>
+                  {isOverHydrated 
+                    ? '⚠️ Over upper limit — moderate intake'
+                    : isGoalReached 
+                      ? '✨ Fully Hydrated' 
+                      : `${Math.max(0, targetWater - waterTotal)} ml remaining`}
                 </span>
               </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { 
   FileText, 
@@ -106,18 +106,17 @@ export default function TermsAndConditions() {
     );
   };
 
-  // Match counter for current active tab
+  // Match counter based on actual rendered content
+  const contentRef = useRef(null);
   const matchCount = useMemo(() => {
     if (!searchQuery.trim()) return 0;
-    const contentMap = {
-      terms: 'terms of service acceptance agreement platform license grant user accounts security content recipe logs limitation liability',
-      privacy: 'privacy policy collection data account metrics biometric dietary preferences meal logs storage portability erasure zero sales',
-      disclaimer: 'nutritional medical disclaimer medical advice TDEE BMR algorithms allergens restrictions physician consult RD doctor',
-      data: 'data AI image processing food detection vision computer vision local storage cookie usage export database backup'
-    };
-    const targetText = contentMap[activeTab] || '';
-    const regex = new RegExp(searchQuery.trim(), 'gi');
-    const matches = targetText.match(regex);
+    // Use the actual text content of the terms page body
+    const el = contentRef.current;
+    if (!el) return 0;
+    const textContent = el.textContent || el.innerText || '';
+    const escapedQuery = searchQuery.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedQuery, 'gi');
+    const matches = textContent.match(regex);
     return matches ? matches.length : 0;
   }, [searchQuery, activeTab]);
 
@@ -306,7 +305,7 @@ export default function TermsAndConditions() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="terms-content-area">
+        <main className="terms-content-area" ref={contentRef}>
 
           {/* TL;DR SUMMARY MODE */}
           {viewMode === 'tldr' && (
@@ -645,8 +644,8 @@ export default function TermsAndConditions() {
           )}
 
           {/* Interactive Bottom Acknowledgement Bar */}
-          <div className="terms-acknowledge-bar">
-            <div className="acknowledge-info">
+          <div className="terms-acknowledge-bar" style={{ flexDirection: 'column', alignItems: 'center', gap: '12px', textAlign: 'center' }}>
+            <div className="acknowledge-info" style={{ justifyContent: 'center' }}>
               <BookOpen size={18} className="acknowledge-icon" />
               <span>
                 {isAcknowledged 

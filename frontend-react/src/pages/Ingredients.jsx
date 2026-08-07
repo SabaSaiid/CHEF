@@ -127,6 +127,57 @@ export default function Ingredients() {
           </>
         )}
       </div>
+
+      {/* Ingredient Directory Catalog */}
+      {!results && (
+        <div style={{ marginTop: '24px' }}>
+          <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            📚 Ingredient Directory
+          </h2>
+          <p className="subtitle" style={{ marginBottom: '16px' }}>Quick-click any ingredient to analyze it instantly.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+            {[
+              { cat: '🥬 Produce', items: ['Tomato', 'Onion', 'Potato', 'Spinach', 'Garlic', 'Ginger', 'Green Chili', 'Coriander', 'Carrot', 'Capsicum'] },
+              { cat: '🍗 Proteins', items: ['Chicken', 'Paneer', 'Eggs', 'Tofu', 'Lentils (Dal)', 'Chickpeas', 'Fish', 'Mutton', 'Soy Chunks', 'Kidney Beans'] },
+              { cat: '🧈 Dairy & Oils', items: ['Ghee', 'Butter', 'Milk', 'Yogurt (Curd)', 'Cream', 'Coconut Oil', 'Mustard Oil', 'Olive Oil', 'Cheese', 'Coconut Milk'] },
+              { cat: '🌾 Grains & Flour', items: ['Rice', 'Wheat Flour (Atta)', 'Besan (Gram Flour)', 'Semolina (Suji)', 'Oats', 'Maida', 'Poha (Flattened Rice)', 'Quinoa', 'Bread', 'Pasta'] },
+              { cat: '🫙 Spices', items: ['Turmeric', 'Cumin', 'Coriander Powder', 'Red Chili Powder', 'Garam Masala', 'Mustard Seeds', 'Black Pepper', 'Cinnamon', 'Cardamom', 'Bay Leaf'] },
+              { cat: '🫒 Condiments', items: ['Salt', 'Sugar', 'Lemon Juice', 'Vinegar', 'Soy Sauce', 'Tamarind', 'Jaggery', 'Honey', 'Tomato Paste', 'Amchur (Dry Mango)'] },
+            ].map((group) => (
+              <div key={group.cat} className="card glass" style={{ padding: '16px' }}>
+                <h3 style={{ margin: '0 0 10px', fontSize: '1rem', fontWeight: 700 }}>{group.cat}</h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {group.items.map(item => (
+                    <button
+                      key={item}
+                      className="sub-tag"
+                      style={{ 
+                        cursor: 'pointer', 
+                        border: '1px solid var(--border-glass)', 
+                        background: 'var(--bg-secondary)', 
+                        color: 'var(--text-main)',
+                        padding: '4px 10px',
+                        borderRadius: '16px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        transition: 'all 0.2s ease'
+                      }}
+                      onClick={() => {
+                        setText(item);
+                        handleParse(item);
+                      }}
+                      onMouseOver={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.color = '#fff'; }}
+                      onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-secondary)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

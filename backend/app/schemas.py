@@ -265,6 +265,14 @@ class RecipeSearchRequest(BaseModel):
         None,
         description="Alias for min_nutri_score."
     )
+    allergies: Optional[list[str]] = Field(
+        default_factory=list,
+        description="List of allergens to exclude: peanut, dairy, gluten, egg, soy, shellfish, fish, tree nuts"
+    )
+    exclude_ingredients: Optional[list[str]] = Field(
+        default_factory=list,
+        description="Specific ingredient names to exclude from results"
+    )
 
 
 class RecipeSearchResponse(BaseModel):

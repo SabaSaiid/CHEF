@@ -784,10 +784,50 @@ export default function NutritionTracker() {
                   {waterTotal} ml / {targetWater} ml <span style={{ color: isGoalReached ? '#10b981' : '#38bdf8', fontWeight: '700', marginLeft: '6px' }}>({actualPctWater}%)</span>
                 </p>
 
-                {/* Progress bar background */}
-                <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginBottom: '16px' }}>
-                  <div style={{ width: `${barWidthPct}%`, height: '100%', background: 'linear-gradient(90deg, #38bdf8, #0284c7)', transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', borderRadius: '3px' }} />
+                {/* Progress bar with upper limit marker */}
+                <div style={{ width: '100%', position: 'relative', marginBottom: '16px' }}>
+                  <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ 
+                      width: `${Math.min(barWidthPct, 100)}%`, 
+                      height: '100%', 
+                      background: barWidthPct > 125 
+                        ? 'linear-gradient(90deg, #f59e0b, #ef4444)' 
+                        : 'linear-gradient(90deg, #38bdf8, #0284c7)', 
+                      transition: 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)', 
+                      borderRadius: '4px' 
+                    }} />
+                  </div>
+                  {/* Upper limit marker at 125% */}
+                  <div style={{ 
+                    position: 'absolute', top: '-4px', left: '80%', 
+                    width: '2px', height: '16px', 
+                    background: '#f59e0b', borderRadius: '1px',
+                    opacity: 0.8
+                  }} title="Upper hydration limit (125%)" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', fontSize: '10px', color: 'var(--text-muted)' }}>
+                    <span>0%</span>
+                    <span style={{ color: '#f59e0b', fontWeight: 700 }}>⚠️ 125%</span>
+                  </div>
                 </div>
+
+                {/* Over-hydration warning */}
+                {actualPctWater > 125 && (
+                  <div style={{ 
+                    background: 'rgba(239, 68, 68, 0.12)', 
+                    border: '1px solid rgba(239, 68, 68, 0.3)', 
+                    borderRadius: '10px', 
+                    padding: '6px 12px', 
+                    marginBottom: '12px',
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    color: '#ef4444',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}>
+                    ⚠️ Upper Hydration Limit Exceeded — Consider moderating intake
+                  </div>
+                )}
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
                   <div style={{ flex: 1 }}>
@@ -802,20 +842,15 @@ export default function NutritionTracker() {
 
                   </div>
 
-                  {/* The Fluid Glass Tumbler */}
-                  <div className="water-display" style={{ margin: 0, width: '70px', height: '90px', borderRadius: '4px 4px 24px 24px' }}>
+                  {/* The Wider Fluid Glass Tumbler */}
+                  <div className="water-display" style={{ margin: 0, width: '100px', height: '100px', borderRadius: '6px 6px 28px 28px' }}>
                     <div
                       className="water-level"
-                      style={{ height: `${barWidthPct}%` }}
+                      style={{ height: `${Math.min(barWidthPct, 100)}%` }}
                     >
                       <div className="water-wave" />
                       <div className="water-bubble" />
                       <div className="water-bubble" />
-                    </div>
-                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 6 }}>
-                      <span style={{ fontSize: '11px', fontWeight: '800', color: barWidthPct > 45 ? '#ffffff' : 'var(--text-primary)', textShadow: barWidthPct > 45 ? '0 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
-                        {actualPctWater}%
-                      </span>
                     </div>
                   </div>
                 </div>

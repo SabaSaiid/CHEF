@@ -46,21 +46,26 @@ export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAss
     loadSaved();
   }, [isOpen, token]);
 
-  // Handle Search
+  // Handle Search - uses POST to match backend endpoint
   useEffect(() => {
-    if (!searchQuery.trim() || activeTab !== 'search') return;
+    if (activeTab !== 'search') return;
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await api.get(`/recipes/search?query=${encodeURIComponent(searchQuery)}&number=8`);
-        setSearchResults(res.results || res.recipes || res || []);
+        const body = { max_results: 12 };
+        if (searchQuery.trim()) {
+          // Use the query as ingredient search
+          body.ingredients = searchQuery.split(',').map(s => s.trim()).filter(Boolean);
+        }
+        const res = await api.post('/recipes/search', body);
+        setSearchResults(res.recipes || res.results || []);
       } catch (err) {
         console.error('Search failed in picker:', err);
       } finally {
         setLoading(false);
       }
-    }, 350);
+    }, searchQuery.trim() ? 350 : 0);
 
     return () => clearTimeout(timer);
   }, [searchQuery, activeTab]);
