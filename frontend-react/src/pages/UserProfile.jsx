@@ -11,6 +11,7 @@ export default function UserProfile() {
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   useEffect(() => {
     if (targetUsername) {
@@ -47,33 +48,41 @@ export default function UserProfile() {
 
   if (loading) {
     return (
-      <div className="page-container" style={{ textAlign: 'center', padding: '60px 0' }}>
-        <p style={{ color: 'var(--text-muted)' }}>Loading chef profile...</p>
+      <div className="page-container" style={{ maxWidth: '820px', margin: '0 auto', padding: '60px 16px', textAlign: 'center' }}>
+        <div className="community-card-glass community-skeleton" style={{ height: '220px', width: '100%' }} />
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div className="page-container" style={{ textAlign: 'center', padding: '60px 0' }}>
-        <h2>Chef Not Found</h2>
-        <Link to="/community" style={{ color: '#f97316' }}>Return to Community Hub</Link>
+      <div className="page-container" style={{ maxWidth: '820px', margin: '0 auto', padding: '60px 16px', textAlign: 'center' }}>
+        <div className="community-card-glass" style={{ padding: '40px' }}>
+          <h2>Chef Profile Not Found</h2>
+          <Link to="/community" style={{ color: 'var(--accent-1)', fontWeight: 700 }}>← Return to Community Hub</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="page-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '20px 15px' }}>
-      {/* Profile Banner Header */}
-      <div style={{ background: 'var(--card-bg, #ffffff)', borderRadius: '16px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #f97316, #f59e0b)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '28px' }}>
+    <div className="page-container" style={{ maxWidth: '820px', margin: '0 auto', padding: '24px 16px' }}>
+      
+      {/* Back Link */}
+      <Link to="/community" style={{ textDecoration: 'none', color: 'var(--accent-1)', fontWeight: 700, fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '20px' }}>
+        ← Back to Community Hub
+      </Link>
+
+      {/* Profile Card Header */}
+      <div className="community-card-glass community-animate-card" style={{ padding: '28px', marginBottom: '28px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+            <div style={{ width: '68px', height: '68px', borderRadius: '50%', background: 'var(--gradient-primary)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '30px', boxShadow: '0 4px 16px rgba(255, 90, 54, 0.3)' }}>
               {profile.username.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 style={{ margin: 0, fontSize: '1.6rem', color: 'var(--text-primary)' }}>@{profile.username}</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>CHEF Community Member</p>
+              <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-primary)' }}>@{profile.username}</h1>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>CHEF Culinary Community Member</p>
             </div>
           </div>
 
@@ -81,49 +90,80 @@ export default function UserProfile() {
             <button
               onClick={handleToggleFollow}
               className={`action-btn ${profile.is_following ? 'secondary' : 'primary'}`}
-              style={{ padding: '8px 20px', fontSize: '14px' }}
+              style={{ padding: '10px 24px', fontSize: '14px', borderRadius: '10px', fontWeight: '700' }}
             >
-              {profile.is_following ? 'Following' : 'Follow Chef'}
+              {profile.is_following ? '✓ Following' : '➕ Follow Chef'}
             </button>
           )}
         </div>
 
         {/* Stats Row */}
-        <div style={{ display: 'flex', gap: '24px', marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+        <div style={{ display: 'flex', gap: '32px', marginTop: '24px', borderTop: '1px solid var(--border-glass)', paddingTop: '20px' }}>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '18px', color: 'var(--text-primary)' }}>{profile.posts_count}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Posts</div>
+            <div style={{ fontWeight: '800', fontSize: '20px', color: 'var(--text-primary)' }}>{profile.posts_count}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Posts</div>
           </div>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '18px', color: 'var(--text-primary)' }}>{profile.followers_count}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Followers</div>
+            <div style={{ fontWeight: '800', fontSize: '20px', color: 'var(--text-primary)' }}>{profile.followers_count}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Followers</div>
           </div>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '18px', color: 'var(--text-primary)' }}>{profile.following_count}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Following</div>
+            <div style={{ fontWeight: '800', fontSize: '20px', color: 'var(--text-primary)' }}>{profile.following_count}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Following</div>
           </div>
         </div>
       </div>
 
-      {/* Chef Posts */}
-      <h2 style={{ fontSize: '1.3rem', marginBottom: '16px' }}>Recent Posts by @{profile.username}</h2>
+      {/* Chef Posts Stream */}
+      <h2 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '18px', color: 'var(--text-primary)' }}>
+        Recent Posts by @{profile.username}
+      </h2>
+
       {profile.recent_posts.length > 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           {profile.recent_posts.map(post => (
-            <div key={post.id} style={{ background: 'var(--card-bg, #ffffff)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '16px' }}>
-              <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: 'var(--text-primary)', whiteSpace: 'pre-line' }}>{post.content}</p>
+            <div key={post.id} className="community-card-glass community-animate-card" style={{ padding: '20px' }}>
+              <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: 'var(--text-primary)', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
+                {post.content}
+              </p>
+
               {post.image_url && (
-                <img src={post.image_url} alt="Post attachment" style={{ width: '100%', maxHeight: '350px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} />
+                <div style={{ position: 'relative', marginBottom: '12px', borderRadius: '10px', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setLightboxImage(post.image_url)}>
+                  <img
+                    src={post.image_url}
+                    alt="Post attachment"
+                    style={{ width: '100%', maxHeight: '380px', objectFit: 'cover', display: 'block' }}
+                  />
+                </div>
               )}
-              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                ❤️ {post.likes_count} likes · 💬 {post.comments_count} comments · {new Date(post.created_at).toLocaleDateString()}
+
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)', borderTop: '1px solid var(--border-glass)', paddingTop: '10px', display: 'flex', gap: '16px' }}>
+                <span>❤️ {post.likes_count} likes</span>
+                <span>💬 {post.comments_count} comments</span>
+                <span>• {new Date(post.created_at).toLocaleDateString()}</span>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No public posts from this chef yet.</p>
+        <div className="community-card-glass" style={{ padding: '30px', textAlign: 'center', color: 'var(--text-muted)' }}>
+          No public posts published by this chef yet.
+        </div>
       )}
+
+      {/* Lightbox modal */}
+      {lightboxImage && (
+        <div className="community-lightbox-backdrop" onClick={() => setLightboxImage(null)}>
+          <img src={lightboxImage} alt="Expanded photo" className="community-lightbox-content" onClick={e => e.stopPropagation()} />
+          <button
+            onClick={() => setLightboxImage(null)}
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer', borderRadius: '50%', width: '40px', height: '40px' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
     </div>
   );
 }
