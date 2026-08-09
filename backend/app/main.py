@@ -549,6 +549,12 @@ def health_check():
 # ── Serve React frontend (production build) ───────────────────
 FRONTEND_DIR = Path(__file__).resolve().parent.parent.parent / "frontend-react" / "dist"
 
+NO_CACHE_HEADERS = {
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
+
 if FRONTEND_DIR.is_dir():
     app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
 
@@ -557,6 +563,7 @@ if FRONTEND_DIR.is_dir():
         if full_path.startswith("api/"):
             raise HTTPException(status_code=404, detail="API route not found")
         path = FRONTEND_DIR / full_path
-        if path.is_file():
+        if path.is_file() and full_path != "index.html":
             return FileResponse(str(path))
-        return FileResponse(str(FRONTEND_DIR / "index.html"))
+        return FileResponse(str(FRONTEND_DIR / "index.html"), headers=NO_CACHE_HEADERS)
+
