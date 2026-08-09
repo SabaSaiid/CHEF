@@ -18,6 +18,15 @@ from app.auth import hash_password
 # List of realistic demo usernames created by the seeder
 DEMO_USERNAMES = [
     "aisha_kitchen",
+    "aaradhya_t",
+    "ashgar_ali",
+    "ali_cooks",
+    "shubham_v",
+    "zaid_fit",
+    "neel_bites",
+    "vikas_k",
+    "nishant_m",
+    "ayushman_d",
     "priya.sharma",
     "karan_verma",
     "ananya.roy",
@@ -68,6 +77,15 @@ def seed_community_demo_data(db: Session) -> dict:
     
     user_definitions = [
         {"username": "aisha_kitchen", "email": "aisha@demo.chef", "display_name": "Aisha Khan", "diet": "non-vegetarian"},
+        {"username": "aaradhya_t", "email": "aaradhya@demo.chef", "display_name": "Aaradhya Tiwari", "diet": "vegetarian"},
+        {"username": "ashgar_ali", "email": "ashgar@demo.chef", "display_name": "Ashgar Ali", "diet": "non-vegetarian"},
+        {"username": "ali_cooks", "email": "ali@demo.chef", "display_name": "Ali Raza", "diet": "non-vegetarian"},
+        {"username": "shubham_v", "email": "shubham@demo.chef", "display_name": "Shubham Verma", "diet": "high-protein"},
+        {"username": "zaid_fit", "email": "zaid@demo.chef", "display_name": "Zaid Sheikh", "diet": "high-protein"},
+        {"username": "neel_bites", "email": "neel@demo.chef", "display_name": "Neel Sharma", "diet": "vegetarian"},
+        {"username": "vikas_k", "email": "vikas@demo.chef", "display_name": "Vikas Kumar", "diet": "non-vegetarian"},
+        {"username": "nishant_m", "email": "nishant@demo.chef", "display_name": "Nishant Mishra", "diet": "vegetarian"},
+        {"username": "ayushman_d", "email": "ayushman@demo.chef", "display_name": "Ayushman Dutt", "diet": "non-vegetarian"},
         {"username": "priya.sharma", "email": "priya@demo.chef", "display_name": "Priya Sharma", "diet": "vegetarian"},
         {"username": "karan_verma", "email": "karan@demo.chef", "display_name": "Karan Verma", "diet": "high-protein"},
         {"username": "ananya.roy", "email": "ananya@demo.chef", "display_name": "Ananya Roy", "diet": "vegetarian"},
@@ -107,7 +125,6 @@ def seed_community_demo_data(db: Session) -> dict:
         db.flush()
         user_map[udef["username"]] = u
 
-
     demo_user_ids = [u.id for u in user_map.values()]
 
     # ── 2. Clear old demo community data ──────────────────────────────
@@ -132,10 +149,19 @@ def seed_community_demo_data(db: Session) -> dict:
         ("aisha_kitchen", "priya.sharma"),
         ("aisha_kitchen", "karan_verma"),
         ("aisha_kitchen", "dr_meera"),
+        ("aisha_kitchen", "aaradhya_t"),
+        ("aisha_kitchen", "ali_cooks"),
         ("karan_verma", "aisha_kitchen"),
+        ("karan_verma", "zaid_fit"),
         ("priya.sharma", "ananya.roy"),
+        ("priya.sharma", "aaradhya_t"),
         ("rohan_gupta", "priya.sharma"),
         ("rohan_gupta", "karan_verma"),
+        ("aaradhya_t", "neel_bites"),
+        ("shubham_v", "zaid_fit"),
+        ("ashgar_ali", "ali_cooks"),
+        ("vikas_k", "shubham_v"),
+        ("ayushman_d", "ali_cooks"),
     ]
     for follower, following in follows:
         if follower in user_map and following in user_map:
@@ -190,17 +216,17 @@ def seed_community_demo_data(db: Session) -> dict:
                 description=gdef["description"],
                 category=gdef["category"],
                 creator_id=creator_id,
-                members_count=4,
+                members_count=8,
             )
             db.add(grp)
             db.flush()
         else:
-            grp.members_count = max(4, grp.members_count)
+            grp.members_count = max(8, grp.members_count)
         group_map[gdef["slug"]] = grp
 
     # Add Group Memberships
     for grp in group_map.values():
-        for uname in ["aisha_kitchen", "priya.sharma", "karan_verma", "rohan_gupta"]:
+        for uname in ["aisha_kitchen", "priya.sharma", "karan_verma", "rohan_gupta", "aaradhya_t", "shubham_v", "zaid_fit", "ali_cooks", "vikas_k"]:
             if uname in user_map:
                 existing = db.query(CommunityGroupMember).filter(
                     CommunityGroupMember.group_id == grp.id,
@@ -279,6 +305,14 @@ def seed_community_demo_data(db: Session) -> dict:
             joined_at=now - timedelta(days=6),
             completed_at=now - timedelta(hours=12),
         ))
+        db.add(CommunityChallengeParticipant(
+            challenge_id=ch_protein.id,
+            user_id=user_map["vikas_k"].id,
+            current_progress=5.0,
+            is_completed=True,
+            joined_at=now - timedelta(days=6),
+            completed_at=now - timedelta(hours=4),
+        ))
 
     ch_nutri = challenge_map.get("Nutri-Score A/B Streak")
     if ch_nutri:
@@ -290,6 +324,13 @@ def seed_community_demo_data(db: Session) -> dict:
             joined_at=now - timedelta(days=5),
             completed_at=now - timedelta(hours=18),
         ))
+        db.add(CommunityChallengeParticipant(
+            challenge_id=ch_nutri.id,
+            user_id=user_map["aaradhya_t"].id,
+            current_progress=4.0,
+            is_completed=False,
+            joined_at=now - timedelta(days=3),
+        ))
 
     ch_water = challenge_map.get("Hydration Hero")
     if ch_water:
@@ -300,6 +341,14 @@ def seed_community_demo_data(db: Session) -> dict:
             is_completed=False,
             joined_at=now - timedelta(days=3),
         ))
+        db.add(CommunityChallengeParticipant(
+            challenge_id=ch_water.id,
+            user_id=user_map["shubham_v"].id,
+            current_progress=3.0,
+            is_completed=True,
+            joined_at=now - timedelta(days=4),
+            completed_at=now - timedelta(hours=2),
+        ))
 
     db.flush()
 
@@ -307,101 +356,136 @@ def seed_community_demo_data(db: Session) -> dict:
 
     posts_data = [
         {
+            "username": "aaradhya_t",
+            "content": "Tried making Bihari Sattu Drink with roasted cumin, green chili, and fresh mint for post-workout hydration! 🥤\n\n18g plant protein, super refreshing, and costs under ₹30. Perfect desi protein shake for North Indian summers!",
+            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(hours=4),
+            "group_slug": None,
+            "likes": ["ashgar_ali", "shubham_v", "neel_bites", "aisha_kitchen", "priya.sharma"],
+            "comments": [
+                ("ashgar_ali", "Sattu drink with chilled buttermilk (chaas) is my absolute favorite! Do you add black salt or regular salt?"),
+                ("aaradhya_t", "@ashgar_ali Black salt + roasted cumin powder! Gives it that authentic street flavor."),
+                ("shubham_v", "Tried this right after leg day. Much lighter on stomach than whey protein powder!"),
+                ("neel_bites", "Adding lemon juice and rock salt makes it taste like Jaljeera. Loved it!"),
+            ]
+        },
+        {
+            "username": "ali_cooks",
+            "content": "Weekend Special: Slow-cooked Mutton Yakhni Pulao using controlled ghee and whole spices! 🍲\n\nGot 36g protein per serving with half the fat of regular biryani. Hit 2,100 kcal target cleanly today!",
+            "image_url": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(hours=8),
+            "group_slug": None,
+            "likes": ["zaid_fit", "ayushman_d", "ashgar_ali", "vikas_k"],
+            "comments": [
+                ("zaid_fit", "Yakhni broth is rich in collagen and protein! What cut of meat did you use?"),
+                ("ali_cooks", "@zaid_fit Lean shank portion with marrow bones! Slow simmered for 2 hours."),
+                ("ayushman_d", "Looks restaurant quality Ali! Did you track this using CHEF's AI scanner?"),
+                ("ali_cooks", "@ayushman_d Yes! Scanned the plate and it estimated the macros surprisingly accurately."),
+            ]
+        },
+        {
+            "username": "zaid_fit",
+            "content": "Pushing for 130g protein daily on a budget! 💪 Here is my daily staple:\n\n6 Egg Whites + 2 Whole Eggs + 50g Paneer Scramble + 1 bowl Soya Chunks Curry. Total cost: ~₹90/day!",
+            "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(hours=12),
+            "group_slug": None,
+            "likes": ["vikas_k", "nishant_m", "shubham_v", "karan_verma"],
+            "comments": [
+                ("vikas_k", "Soya chunks are unmatched for budget protein. 52g protein per 100g dry weight is crazy value!"),
+                ("nishant_m", "How do you remove the raw smell from soya chunks?"),
+                ("zaid_fit", "@nishant_m Boil them in salted water for 5 mins, squeeze out the water completely 2-3 times, then sauté with garlic paste before adding gravy!"),
+                ("shubham_v", "Great tip Zaid! Doing this for my meal prep tonight."),
+            ]
+        },
+        {
+            "username": "shubham_v",
+            "content": "Swapped white bread for Oats & Besan Cheela stuffed with paneer for breakfast! 🥞\n\nHit 24g protein before 9 AM. Fiber content keeps me full till 2 PM without mid-morning snack cravings.",
+            "image_url": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(days=1),
+            "group_slug": None,
+            "likes": ["aaradhya_t", "ayushman_d", "priya.sharma", "neel_bites"],
+            "comments": [
+                ("aaradhya_t", "Besan cheela is a North Indian classic! Adding grated carrots and green chilies takes it to next level."),
+                ("ayushman_d", "What is the carb to protein ratio in this?"),
+                ("shubham_v", "@ayushman_d Roughly 1.5:1 (32g carbs, 24g protein). Super balanced!"),
+            ]
+        },
+        {
+            "username": "neel_bites",
+            "content": "Healthy Snack Hack: Air-fried Crispy Makhana (Fox Nuts) with a dash of ghee, turmeric, and black pepper! 🥣\n\nHigh in antioxidants, low calories (140 kcal), and way better than potato chips.",
+            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(days=1, hours=6),
+            "group_slug": None,
+            "likes": ["nishant_m", "priya.sharma", "aaradhya_t", "dr_meera"],
+            "comments": [
+                ("nishant_m", "Makhana with chai in the evening is the best guilt-free combo."),
+                ("priya.sharma", "Black pepper enhances curcumin absorption from turmeric! Great combo Neel."),
+                ("neel_bites", "@priya.sharma Thanks Priya! Learned that tip from Dr. Meera's post."),
+            ]
+        },
+        {
+            "username": "vikas_k",
+            "content": "Hit a new personal record: 10,000 steps + 120g protein target achieved for 6 consecutive days! 🏃‍♂️ Consistency with CHEF meal planner has been game changing.",
+            "image_url": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&auto=format&fit=crop&q=80",
+            "created_at": now - timedelta(days=2),
+            "group_slug": None,
+            "likes": ["zaid_fit", "ashgar_ali", "shubham_v", "aisha_kitchen"],
+            "comments": [
+                ("zaid_fit", "Keep grinding Vikas! 💪 6 day streak is huge."),
+                ("ashgar_ali", "Consistency is key! Are you doing the 7-Day High-Protein Challenge?"),
+                ("vikas_k", "@ashgar_ali Yes! On day 6 right now, finishing strong tomorrow."),
+            ]
+        },
+        {
             "username": "priya.sharma",
             "content": "Hit 112g protein today with purely vegetarian Indian meals! 🌱 High-protein Palak Paneer with Sattu Roti + Greek Yogurt. Swipe for macros breakdown!\n\n🔥 Cal: 1,820 | P: 112g | C: 190g | F: 62g | Fiber: 34g\n\nWhat's your go-to veg protein hack for hitting daily targets?",
             "image_url": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80",
-            "created_at": now - timedelta(hours=3),
+            "created_at": now - timedelta(days=2, hours=4),
             "group_slug": None,
             "likes": ["karan_verma", "aisha_kitchen", "rohan_gupta", "dr_meera", "ananya.roy"],
             "comments": [
                 ("karan_verma", "Sattu roti is such an underrated protein source! Do you mix it with regular wheat flour or pure sattu?"),
                 ("priya.sharma", "@karan_verma I use a 50:50 ratio of whole wheat and Chana Sattu. Keeps the rotis soft and adds ~8g protein per roti!"),
                 ("aisha_kitchen", "Tried this today and it was amazing! Thanks for sharing Priya 🙌"),
-                ("rohan_gupta", "Bookmarked! Need more high protein veg ideas for my Mondays."),
-                ("dr_meera", "Combining legumes (sattu) with grains (wheat) also completes the essential amino acid profile! Great nutrition science in action."),
             ]
         },
         {
             "username": "karan_verma",
-            "content": "Sunday Prep Complete! 🍱 Packed 5 days of Tandoori Chicken Breast + Quinoa + Roasted Broccoli & Peppers.\n\n📊 450 kcal & 42g protein per meal box. Prepping on Sunday saves me from mid-week takeout temptations! Who else is meal prepping today?",
+            "content": "Sunday Prep Complete! 🍱 Packed 5 days of Tandoori Chicken Breast + Quinoa + Roasted Broccoli & Peppers.\n\n📊 450 kcal & 42g protein per meal box. Prepping on Sunday saves me from mid-week takeout temptations!",
             "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
-            "created_at": now - timedelta(hours=7),
+            "created_at": now - timedelta(days=3),
             "group_slug": None,
             "likes": ["aisha_kitchen", "priya.sharma", "rohan_gupta", "ananya.roy"],
             "comments": [
                 ("ananya.roy", "That tandoori marinade looks incredible! What spices do you use?"),
                 ("karan_verma", "@ananya.roy Hung curd, Kashmiri red chili, garam masala, ginger-garlic paste, and lemon juice. Marinate overnight for best flavor!"),
-                ("aisha_kitchen", "42g protein per meal prep box is impressive! Definitely copying this for next week."),
-                ("priya.sharma", "Do you freeze them or just keep them in the fridge?"),
-                ("karan_verma", "@priya.sharma 3 days in fridge, 2 days in freezer. Heats up perfectly in 2 mins!"),
-            ]
-        },
-        {
-            "username": "ananya.roy",
-            "content": "Tried making Ragi & Jaggery Pancakes with crushed almond topping! 🥞\n\nZero refined sugar, super fluffy, and rich in calcium. Perfect breakfast after a morning 5k run!",
-            "image_url": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&auto=format&fit=crop&q=80",
-            "created_at": now - timedelta(hours=15),
-            "group_slug": None,
-            "likes": ["priya.sharma", "dr_meera", "aisha_kitchen"],
-            "comments": [
-                ("dr_meera", "Excellent choice using Ragi! Great complex carbs with high micronutrient value (calcium & iron)."),
-                ("priya.sharma", "Add a touch of cardamom powder next time, makes it smell like festive sweets!"),
-                ("ananya.roy", "@priya.sharma Ooh cardamom sounds delicious, trying that tomorrow!"),
-            ]
-        },
-        {
-            "username": "aisha_kitchen",
-            "content": "Logged my full day of eating using CHEF's AI Food Scanner! 📱 Scanned my home-made Chicken Biryani and got instant macro estimates. Loving how easy it is to keep track of calories and stay consistent.",
-            "image_url": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
-            "created_at": now - timedelta(days=1),
-            "group_slug": None,
-            "likes": ["karan_verma", "priya.sharma", "rohan_gupta"],
-            "comments": [
-                ("rohan_gupta", "Nice! Biryani is hard to track manually so the AI scanner is a lifesaver."),
-                ("priya.sharma", "Homemade biryani with controlled oil is actually super balanced in macros!"),
-                ("karan_verma", "Drop the recipe link if you saved it in CHEF!"),
-                ("aisha_kitchen", "@karan_verma Saved it in my collection! Will publish it to Community Recipes soon."),
-            ]
-        },
-        {
-            "username": "dr_meera",
-            "content": "Quick Tip on Glycemic Index 💡: Pair your high-carb foods (like white rice or roti) with fiber-dense veggies or lentils (dal) and a splash of ghee or lemon juice.\n\nThis simple habit slows down glucose absorption and prevents post-meal energy slumps!",
-            "image_url": None,
-            "created_at": now - timedelta(days=1, hours=4),
-            "group_slug": None,
-            "likes": ["aisha_kitchen", "priya.sharma", "rohan_gupta", "ananya.roy", "karan_verma"],
-            "comments": [
-                ("rohan_gupta", "Did not know lemon juice helps with glycemic response, super helpful tip Dr. Meera!"),
-                ("ananya.roy", "Ghee with rice makes it taste so much better too! Win-win."),
-                ("dr_meera", "@ananya.roy Absolutely! Healthy fats delay gastric emptying."),
-            ]
-        },
-        {
-            "username": "rohan_gupta",
-            "content": "Just completed the 7-Day High-Protein Challenge! 🥩 Big thanks to @priya.sharma for recommending the Sattu shake post-workout. Muscle recovery has been night and day!",
-            "image_url": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&auto=format&fit=crop&q=80",
-            "created_at": now - timedelta(days=2),
-            "group_slug": None,
-            "likes": ["karan_verma", "aisha_kitchen", "priya.sharma"],
-            "comments": [
-                ("karan_verma", "Congrats on finishing the challenge man! 💪 On to the next one!"),
-                ("aisha_kitchen", "Awesome achievement! I'm on day 4 right now."),
-                ("priya.sharma", "So glad the Sattu shake worked for you! Way to go Rohan 🎉"),
             ]
         },
 
         # ── Group-Specific Posts ───────────────────────────────────────
         {
-            "username": "karan_verma",
-            "content": "What is your #1 budget protein source in India for hitting 100g+ daily without expensive supplements?",
+            "username": "nishant_m",
+            "content": "What is everyone's go-to vegetarian post-workout meal when you don't want whey protein?",
             "image_url": None,
-            "created_at": now - timedelta(days=1, hours=8),
+            "created_at": now - timedelta(days=1, hours=2),
             "group_slug": "high-protein-beginners",
-            "likes": ["priya.sharma", "aisha_kitchen", "rohan_gupta"],
+            "likes": ["aaradhya_t", "neel_bites", "shubham_v"],
             "comments": [
-                ("priya.sharma", "Chana sattu, boiled eggs, paneer, and soybean chunks! 100g soya chunks gives ~52g protein for just ₹20."),
-                ("rohan_gupta", "Egg whites + Paneer bhurji is my daily staple."),
-                ("aisha_kitchen", "Soybean chunks and Greek curd have been game changers for me."),
+                ("aaradhya_t", "Sattu buttermilk or Paneer bhurji with 2 multigrain rotis!"),
+                ("neel_bites", "Sprouted moong & makhana chaat + 200g Greek curd."),
+                ("shubham_v", "Soya chunk bhurji with roasted chana!"),
+            ]
+        },
+        {
+            "username": "ayushman_d",
+            "content": "Tips for storing cooked brown rice and quinoa for 5-day meal preps without getting dry?",
+            "image_url": None,
+            "created_at": now - timedelta(days=1, hours=10),
+            "group_slug": "desi-meal-preppers",
+            "likes": ["ali_cooks", "karan_verma", "ashgar_ali"],
+            "comments": [
+                ("ali_cooks", "Sprinkle a few drops of water before microwaving, and keep lid loosely covered!"),
+                ("karan_verma", "Store in airtight glass containers instead of thin plastic tubs. Keeps moisture locked in."),
             ]
         },
         {
@@ -410,22 +494,10 @@ def seed_community_demo_data(db: Session) -> dict:
             "image_url": None,
             "created_at": now - timedelta(days=2, hours=2),
             "group_slug": "diabetic-friendly-cooking",
-            "likes": ["ananya.roy", "aisha_kitchen"],
+            "likes": ["ananya.roy", "aisha_kitchen", "aaradhya_t"],
             "comments": [
                 ("ananya.roy", "Works great for parathas! 70% besan + 30% oat flour has a very low glycemic index."),
                 ("aisha_kitchen", "My dad has Type 2 diabetes, definitely sharing this recipe with him!"),
-            ]
-        },
-        {
-            "username": "priya.sharma",
-            "content": "Batch cooking Gravy Bases on Sunday: Onion-Tomato Masala & Spinach Paste 🥘",
-            "image_url": None,
-            "created_at": now - timedelta(days=3),
-            "group_slug": "desi-meal-preppers",
-            "likes": ["karan_verma", "rohan_gupta", "aisha_kitchen"],
-            "comments": [
-                ("karan_verma", "Saves 20 mins every single weeknight! I freeze them in silicone ice cube trays."),
-                ("rohan_gupta", "Pro tip: add ginger-garlic paste right at the end to keep the fresh aroma sharp."),
             ]
         },
     ]
@@ -484,82 +556,102 @@ def seed_community_demo_data(db: Session) -> dict:
     # ── 7. Seed User-Submitted Community Recipes ─────────────────────
     community_recipes_data = [
         {
-            "submitter": "priya.sharma",
-            "title": "High-Protein Sattu Stuffed Paratha",
-            "summary": "Nutritious roasted chana sattu paratha spiced with carom seeds, green chilies, and fresh lemon juice. 16g protein per paratha!",
-            "image_url": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
-            "ready_in_minutes": 20,
-            "servings": 2,
-            "ingredients": json.dumps(["1 cup Roasted Chana Sattu", "1 cup Whole Wheat Atta", "1 Green Chili chopped", "1 tsp Ajwain (carom seeds)", "1 tbsp Lemon Juice", "Salt & Mustard oil"]),
-            "instructions": "1. Knead soft dough with wheat atta.\n2. Mix sattu with green chilies, ajwain, lemon juice, salt, and 1 tsp mustard oil with 2 tbsp water till crumbly.\n3. Stuff into dough balls and roll flat.\n4. Cook on hot tawa with ghee till golden spots appear.",
-            "diets": "Vegetarian, High-Protein",
-            "meal_type": "Breakfast",
+            "submitter": "aaradhya_t",
+            "title": "Desi Sattu Coolant & Protein Shake",
+            "summary": "Refreshing Bihar-style chana sattu drink spiced with roasted cumin, mint leaves, black salt, and lemon juice. 18g plant protein!",
+            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "ready_in_minutes": 5,
+            "servings": 1,
+            "ingredients": json.dumps(["4 tbsp Roasted Chana Sattu", "1 glass Chilled Water or Chaas", "1/2 tsp Roasted Cumin Powder", "1/2 tsp Black Salt", "1 tbsp Lemon Juice", "Fresh Mint leaves"]),
+            "instructions": "1. Add chana sattu, black salt, and roasted cumin powder to a glass.\n2. Pour in chilled water or buttermilk.\n3. Stir vigorously till smooth and lump-free.\n4. Garnish with chopped mint leaves and lemon juice. Serve chilled!",
+            "diets": "Vegetarian, Vegan, High-Protein",
+            "meal_type": "Snack",
             "region": "North Indian / Bihari",
-            "calories": 380.0,
-            "protein_g": 16.0,
-            "carbs_g": 52.0,
-            "fat_g": 10.0,
-            "fiber_g": 8.5,
-            "nutri_score_grade": "A",
-            "moderation_status": "approved",
-        },
-        {
-            "submitter": "karan_verma",
-            "title": "Meal-Prep Tandoori Chicken & Quinoa Bowl",
-            "summary": "Juicy tandoori-marinated chicken breast served over fluffy quinoa and steamed broccoli. High protein, clean macros.",
-            "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
-            "ready_in_minutes": 35,
-            "servings": 4,
-            "ingredients": json.dumps(["500g Chicken Breast Cubes", "1 cup Quinoa cooked", "2 cups Broccoli florets", "3 tbsp Hung Curd", "1 tbsp Kashmiri Chili Powder", "1 tsp Garam Masala", "1 tbsp Lemon juice"]),
-            "instructions": "1. Marinate chicken cubes in hung curd, lemon juice, and spices for 30 mins.\n2. Air fry or grill chicken at 200°C for 14-16 minutes.\n3. Fluff cooked quinoa and steam broccoli.\n4. Divide equally into 4 meal prep containers.",
-            "diets": "High-Protein, Gluten-Free",
-            "meal_type": "Lunch",
-            "region": "North Indian",
-            "calories": 450.0,
-            "protein_g": 42.0,
-            "carbs_g": 38.0,
-            "fat_g": 12.0,
-            "fiber_g": 6.0,
-            "nutri_score_grade": "A",
-            "moderation_status": "approved",
-        },
-        {
-            "submitter": "ananya.roy",
-            "title": "Fluffy Ragi & Banana Jaggery Pancakes",
-            "summary": "Gluten-free finger millet pancakes sweetened naturally with ripe bananas and organic jaggery powder.",
-            "image_url": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&auto=format&fit=crop&q=80",
-            "ready_in_minutes": 15,
-            "servings": 2,
-            "ingredients": json.dumps(["1 cup Ragi Flour", "1 Ripe Banana mashed", "2 tbsp Organic Jaggery powder", "1/2 cup Milk", "1/4 tsp Cardamom powder", "1 tsp Ghee for cooking"]),
-            "instructions": "1. Mash ripe banana in a bowl, add jaggery, milk, and cardamom powder.\n2. Whisk in ragi flour to form smooth batter.\n3. Pour ladlefuls on warm ghee-greased pan.\n4. Cook 2 mins per side till golden.",
-            "diets": "Vegetarian, Gluten-Free",
-            "meal_type": "Breakfast",
-            "region": "South Indian",
-            "calories": 290.0,
-            "protein_g": 9.5,
-            "carbs_g": 54.0,
-            "fat_g": 4.5,
+            "calories": 210.0,
+            "protein_g": 18.0,
+            "carbs_g": 28.0,
+            "fat_g": 3.5,
             "fiber_g": 7.0,
             "nutri_score_grade": "A",
             "moderation_status": "approved",
         },
         {
-            "submitter": "dr_meera",
-            "title": "Sprouts & Roasted Makhana Protein Chaat",
-            "summary": "Tangy crunchy evening snack packed with sprouted moong, fox nuts, pomegranate seeds, and chaat masala.",
-            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
-            "ready_in_minutes": 10,
+            "submitter": "ali_cooks",
+            "title": "Slow-Cooked Mutton Yakhni Pulao",
+            "summary": "Fragrant Kashmiri-style mutton pulao simmered in whole spice bone broth with lean meat cuts.",
+            "image_url": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+            "ready_in_minutes": 50,
+            "servings": 4,
+            "ingredients": json.dumps(["500g Lean Mutton Shanks", "2 cups Basmati Rice soaked", "1 cup Curd", "2 tbsp Ghee", "Whole Spices (fennel, cloves, cardamom, cinnamon)", "2 Onions sliced"]),
+            "instructions": "1. Simmer mutton shanks with whole spices and 4 cups water for 40 mins to prepare Yakhni broth.\n2. Sauté onions in ghee until golden, add curd and strained mutton.\n3. Add rice and Yakhni broth, cook covered on low flame for 15 minutes till fluffy.",
+            "diets": "High-Protein, Gluten-Free",
+            "meal_type": "Dinner",
+            "region": "North Indian / Kashmiri",
+            "calories": 520.0,
+            "protein_g": 36.0,
+            "carbs_g": 48.0,
+            "fat_g": 18.0,
+            "fiber_g": 3.0,
+            "nutri_score_grade": "B",
+            "moderation_status": "approved",
+        },
+        {
+            "submitter": "zaid_fit",
+            "title": "High-Protein Soya Chunks & Egg Bhurji",
+            "summary": "Budget-friendly 35g protein scramble made with boiled soya chunks, egg whites, and onion-tomato masala.",
+            "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+            "ready_in_minutes": 15,
+            "servings": 1,
+            "ingredients": json.dumps(["50g Soya Chunks boiled & squeezed", "4 Egg Whites + 1 Whole Egg", "1 Onion finely chopped", "1 Tomato diced", "1 Green chili", "1 tsp Oil", "Turmeric & Chili powder"]),
+            "instructions": "1. Coarsely mince boiled soya chunks.\n2. Sauté onion, green chili, and tomato in oil with spices.\n3. Add soya chunks and whisked egg whites/whole egg.\n4. Scramble on high heat for 3 mins until dry and cooked. Serve hot!",
+            "diets": "High-Protein, Low-Carb",
+            "meal_type": "Breakfast",
+            "region": "Indian",
+            "calories": 320.0,
+            "protein_g": 35.0,
+            "carbs_g": 14.0,
+            "fat_g": 11.0,
+            "fiber_g": 5.0,
+            "nutri_score_grade": "A",
+            "moderation_status": "approved",
+        },
+        {
+            "submitter": "shubham_v",
+            "title": "Paneer Stuffed Oats & Besan Cheela",
+            "summary": "Low-glycemic savory pancake made from gram flour and oat flour, filled with spiced cottage cheese.",
+            "image_url": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+            "ready_in_minutes": 15,
             "servings": 2,
-            "ingredients": json.dumps(["1 cup Sprouted Moong", "1 cup Roasted Makhana", "1/2 cup Pomegranate seeds", "1/2 Onion finely chopped", "1 Cucumber diced", "1 tsp Chaat Masala", "Lemon juice"]),
-            "instructions": "1. Dry roast makhana in pan till crispy.\n2. Combine steamed moong sprouts, makhana, onion, cucumber, and pomegranate.\n3. Toss with chaat masala and fresh lemon juice. Serve immediately.",
-            "diets": "Vegetarian, Vegan, Low-Fat",
+            "ingredients": json.dumps(["1/2 cup Besan", "1/2 cup Oat Flour", "100g Paneer crumbled", "1/2 Onion finely chopped", "1 tsp Ajwain", "1/2 tsp Turmeric", "1 tsp Ghee"]),
+            "instructions": "1. Whisk besan, oat flour, ajwain, turmeric, and water into batter.\n2. Pour ladleful on pan and cook till crisp.\n3. Stuff with crumbled paneer and chopped onion, fold over and serve with mint chutney.",
+            "diets": "Vegetarian, High-Protein",
+            "meal_type": "Breakfast",
+            "region": "North Indian",
+            "calories": 340.0,
+            "protein_g": 24.0,
+            "carbs_g": 32.0,
+            "fat_g": 13.0,
+            "fiber_g": 6.5,
+            "nutri_score_grade": "A",
+            "moderation_status": "approved",
+        },
+        {
+            "submitter": "neel_bites",
+            "title": "Turmeric & Black Pepper Roasted Makhana",
+            "summary": "Crunchy air-roasted fox nuts tossed in desi ghee, turmeric, and black pepper. Perfect 140 kcal snack.",
+            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "ready_in_minutes": 8,
+            "servings": 2,
+            "ingredients": json.dumps(["2 cups Phool Makhana (Fox Nuts)", "1 tsp Desi Ghee", "1/2 tsp Turmeric powder", "1/2 tsp Freshly crushed Black Pepper", "1/2 tsp Rock Salt"]),
+            "instructions": "1. Heat ghee in a heavy bottom pan.\n2. Add makhana and roast on low flame for 6-8 minutes till super crispy.\n3. Sprinkle turmeric, black pepper, and rock salt. Toss well and enjoy warm!",
+            "diets": "Vegetarian, Gluten-Free, Low-Calorie",
             "meal_type": "Snack",
             "region": "Indian",
-            "calories": 210.0,
-            "protein_g": 11.5,
-            "carbs_g": 34.0,
-            "fat_g": 3.5,
-            "fiber_g": 9.0,
+            "calories": 140.0,
+            "protein_g": 4.5,
+            "carbs_g": 22.0,
+            "fat_g": 4.0,
+            "fiber_g": 3.5,
             "nutri_score_grade": "A",
             "moderation_status": "approved",
         },
@@ -584,6 +676,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "moderation_status": "pending",
         },
     ]
+
 
     for rdata in community_recipes_data:
         sub = user_map.get(rdata["submitter"])

@@ -8700,3 +8700,54 @@ input[type="text"].help-search-input,
   box-shadow: 0 4px 15px rgba(255, 90, 54, 0.3);
   border-color: transparent;
 }
+
+/* Filter pills & badge utility styles */
+.community-filter-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-glass, rgba(0,0,0,0.1));
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.community-filter-pill:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  background: rgba(255, 90, 54, 0.06);
+}
+
+.community-filter-pill.active {
+  background: rgba(255, 90, 54, 0.15);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  font-weight: 700;
+}
+
+.community-comment-animate {
+  animation: communityFadeInUp 0.25s ease cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.community-heart-active {
+  animation: heartPulse 0.35s ease;
+}
+
+.community-attachment-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+.community-attachment-card:hover {
+  border-color: rgba(255, 90, 54, 0.3);
+  background: var(--bg-primary);
+}
+

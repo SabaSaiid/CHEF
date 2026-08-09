@@ -40,7 +40,9 @@ export default function Community() {
   const [groups, setGroups] = useState([]);
   const [loadingGroups, setLoadingGroups] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [groupCategoryFilter, setGroupCategoryFilter] = useState('All');
   const [groupPosts, setGroupPosts] = useState([]);
+
   const [loadingGroupFeed, setLoadingGroupFeed] = useState(false);
   const [newGroupPostContent, setNewGroupPostContent] = useState('');
   const [newGroupPostImage, setNewGroupPostImage] = useState('');
@@ -167,20 +169,62 @@ export default function Community() {
   };
 
   // Like Post (Global or Group)
+function formatRelativeTime(isoString) {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffSec = Math.floor((now - date) / 1000);
+
+  if (diffSec < 45) return 'Just now';
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  const diffDays = Math.floor(diffHr / 24);
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays}d ago`;
+
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+  // Like Post (Global or Group) with Optimistic UI Update
   const handleLikePost = async (postId, isGroupPost = false) => {
     if (!token) {
       toast.showError("Please log in to like posts.");
       return;
     }
+
+    const updateOptimistic = prev => prev.map(p => {
+      if (p.id === postId) {
+        const nextIsLiked = !p.is_liked;
+        const nextCount = nextIsLiked ? p.likes_count + 1 : Math.max(0, p.likes_count - 1);
+        return { ...p, is_liked: nextIsLiked, likes_count: nextCount };
+      }
+      return p;
+    });
+
+    if (isGroupPost) {
+      setGroupPosts(updateOptimistic);
+    } else {
+      setPosts(updateOptimistic);
+    }
+
     try {
       const res = await api.post(`/community/posts/${postId}/like`);
-      const updateFn = prev => prev.map(p => p.id === postId ? { ...p, likes_count: res.likes_count, is_liked: res.is_liked } : p);
-      if (isGroupPost) {
-        setGroupPosts(updateFn);
-      } else {
-        setPosts(updateFn);
-      }
+      const syncFn = prev => prev.map(p => p.id === postId ? { ...p, likes_count: res.likes_count, is_liked: res.is_liked } : p);
+      if (isGroupPost) setGroupPosts(syncFn);
+      else setPosts(syncFn);
     } catch (err) {
+      const rollbackFn = prev => prev.map(p => {
+        if (p.id === postId) {
+          const revertIsLiked = !p.is_liked;
+          const revertCount = revertIsLiked ? p.likes_count + 1 : Math.max(0, p.likes_count - 1);
+          return { ...p, is_liked: revertIsLiked, likes_count: revertCount };
+        }
+        return p;
+      });
+      if (isGroupPost) setGroupPosts(rollbackFn);
+      else setPosts(rollbackFn);
       toast.showError("Failed to update like status.");
     }
   };
@@ -205,7 +249,7 @@ export default function Community() {
     }
   };
 
-  // Add Comment
+  // Add Comment with Optimistic UI Update
   const handleAddComment = async (postId, isGroupPost = false) => {
     if (!token) {
       toast.showError("Please log in to comment.");
@@ -213,23 +257,71 @@ export default function Community() {
     }
     if (!newCommentText.trim()) return;
 
+    const commentText = newCommentText.trim();
+    setNewCommentText('');
+
+    const tempComment = {
+      id: 'temp-' + Date.now(),
+      post_id: postId,
+      user_id: 9999,
+      username: currentUsername || 'You',
+      content: commentText,
+      created_at: new Date().toISOString()
+    };
+
+    setCommentsMap(prev => ({
+      ...prev,
+      [postId]: [...(prev[postId] || []), tempComment]
+    }));
+
+    const incCountFn = prev => prev.map(p => p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p);
+    if (isGroupPost) setGroupPosts(incCountFn);
+    else setPosts(incCountFn);
+
     try {
-      const comm = await api.post(`/community/posts/${postId}/comments`, { content: newCommentText.trim() });
+      const comm = await api.post(`/community/posts/${postId}/comments`, { content: commentText });
       setCommentsMap(prev => ({
         ...prev,
-        [postId]: [...(prev[postId] || []), comm]
+        [postId]: (prev[postId] || []).map(c => c.id === tempComment.id ? comm : c)
       }));
-      const updateCountFn = prev => prev.map(p => p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p);
-      if (isGroupPost) {
-        setGroupPosts(updateCountFn);
-      } else {
-        setPosts(updateCountFn);
-      }
-      setNewCommentText('');
     } catch (err) {
+      setCommentsMap(prev => ({
+        ...prev,
+        [postId]: (prev[postId] || []).filter(c => c.id !== tempComment.id)
+      }));
+      const decCountFn = prev => prev.map(p => p.id === postId ? { ...p, comments_count: Math.max(0, p.comments_count - 1) } : p);
+      if (isGroupPost) setGroupPosts(decCountFn);
+      else setPosts(decCountFn);
       toast.showError(err.response?.data?.detail || "Failed to add comment.");
     }
   };
+
+  // Save Community Recipe to personal saved collection
+  const handleSaveCommunityRecipe = async (e, r) => {
+    e.stopPropagation();
+    if (!token) {
+      toast.showError("Please log in to save recipes.");
+      return;
+    }
+    try {
+      await api.post('/recipes/save', {
+        title: r.title,
+        image_url: r.image_url,
+        summary: r.summary,
+        ingredients: typeof r.ingredients === 'string' ? r.ingredients : JSON.stringify(r.ingredients),
+        instructions: r.instructions,
+        calories: r.calories,
+        protein_g: r.protein_g,
+        carbs_g: r.carbs_g,
+        fat_g: r.fat_g,
+        ready_in_minutes: r.ready_in_minutes
+      });
+      toast.showSuccess(`Saved "${r.title}" to your personal collection! 🔖`);
+    } catch (err) {
+      toast.showError(err.response?.data?.detail || "Failed to save recipe.");
+    }
+  };
+
 
   // Toggle Group Join
   const handleToggleGroup = async (groupId) => {
@@ -523,7 +615,7 @@ export default function Community() {
                       <div style={{ fontWeight: '700', fontSize: '15px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         @{post.username}
                       </div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{new Date(post.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{formatRelativeTime(post.created_at)}</div>
                     </div>
                   </Link>
 
@@ -633,11 +725,15 @@ export default function Community() {
                     ) : (commentsMap[post.id] || []).length > 0 ? (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {(commentsMap[post.id] || []).map(comm => (
-                          <div key={comm.id} style={{ background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', fontSize: '13px', border: '1px solid var(--border-glass)' }}>
-                            <span style={{ fontWeight: '700', marginRight: '8px', color: 'var(--text-primary)' }}>@{comm.username}:</span>
-                            <span style={{ color: 'var(--text-secondary)' }}>{comm.content}</span>
+                          <div key={comm.id} className="community-comment-animate" style={{ background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '10px', fontSize: '13px', border: '1px solid var(--border-glass)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                            <div>
+                              <span style={{ fontWeight: '700', marginRight: '8px', color: 'var(--text-primary)' }}>@{comm.username}:</span>
+                              <span style={{ color: 'var(--text-secondary)' }}>{comm.content}</span>
+                            </div>
+                            <span style={{ fontSize: '11px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{formatRelativeTime(comm.created_at)}</span>
                           </div>
                         ))}
+
                       </div>
                     ) : (
                       <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic', margin: 0 }}>No comments yet. Start the conversation!</p>
@@ -744,9 +840,28 @@ export default function Community() {
                   </div>
 
                   <div style={{ fontSize: '12px', color: 'var(--text-secondary)', borderTop: '1px solid var(--border-glass)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>💪 {Math.round(r.protein_g)}g P | 🍞 {Math.round(r.carbs_g)}g C | 🥑 {Math.round(r.fat_g)}g F</span>
-                    <span style={{ color: 'var(--accent-1)', fontWeight: '700', fontSize: '13px' }}>View Details →</span>
+                    <span>💪 {Math.round(r.protein_g)}g P | 🍞 {Math.round(r.carbs_g)}g C</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button
+                        onClick={(e) => handleSaveCommunityRecipe(e, r)}
+                        style={{
+                          padding: '4px 10px',
+                          borderRadius: '14px',
+                          border: '1px solid var(--border-glass)',
+                          background: 'rgba(255, 90, 54, 0.08)',
+                          color: 'var(--accent-1)',
+                          fontSize: '11px',
+                          fontWeight: '700',
+                          cursor: 'pointer'
+                        }}
+                        title="Save recipe to your personal collection"
+                      >
+                        🔖 Save
+                      </button>
+                      <span style={{ color: 'var(--accent-1)', fontWeight: '700', fontSize: '13px' }}>View →</span>
+                    </div>
                   </div>
+
                 </div>
               ))}
             </div>
@@ -874,6 +989,20 @@ export default function Community() {
                 )}
               </div>
 
+              {/* Category Filter Pills */}
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', marginRight: '4px' }}>Filter Category:</span>
+                {['All', 'Goal', 'Diet', 'Cuisine', 'Lifestyle'].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setGroupCategoryFilter(cat)}
+                    className={`community-filter-pill ${groupCategoryFilter === cat ? 'active' : ''}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
               {/* Group Cards Grid */}
               {loadingGroups ? (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '18px' }}>
@@ -883,8 +1012,9 @@ export default function Community() {
                 </div>
               ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '18px' }}>
-                  {groups.map(g => (
+                  {groups.filter(g => groupCategoryFilter === 'All' || g.category === groupCategoryFilter).map(g => (
                     <div key={g.id} className="community-card-glass community-animate-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                           <span style={{ fontSize: '11px', textTransform: 'uppercase', fontWeight: 800, background: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', padding: '3px 8px', borderRadius: '6px' }}>
