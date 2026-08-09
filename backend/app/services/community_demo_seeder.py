@@ -364,16 +364,16 @@ def seed_community_demo_data(db: Session) -> dict:
     posts_data = [
         {
             "username": "ZamZam",
-            "content": "What is your go-to light, high-protein Indian dinner when you want to hit your calorie target before sleep without feeling bloated? 🥣 Need some quick 15-minute ideas!",
+            "content": "Has anyone tried fermenting home-made Sattu or Millet batter with probiotic yogurt for lower anti-nutrients & better gut absorption? 🧪 What’s your experience?",
             "image_url": None,  # Question post — no image needed
             "created_at": now - timedelta(hours=2),
             "group_slug": None,
-            "likes": ["karan_verma", "priya.sharma", "aaradhya_t", "zaid_fit", "aisha_kitchen"],
+            "likes": ["dr_meera", "priya.sharma", "aaradhya_t", "zaid_fit", "aisha_kitchen"],
             "comments": [
-                ("priya.sharma", "Paneer Bhurji with 2 Sattu Rotis or Moong Dal Cheela with cottage cheese filling! Super light and high protein."),
-                ("karan_verma", "Grilled Tandoori Chicken breast + cucumber mint salad. Light, 40g+ protein, and zero morning bloating."),
-                ("dr_meera", "Lauki Chana Dal or Egg White Omelette with spinach! Great for digestion and steady blood sugar overnight."),
-                ("ZamZam", "@dr_meera Lauki Chana Dal sounds super soothing! Adding that to my meal plan tonight."),
+                ("dr_meera", "Fascinating experiment @ZamZam! Fermentation degrades phytic acid in millets/sattu by up to 60%, drastically improving iron & zinc bioavailability."),
+                ("aaradhya_t", "In Bihar, traditional Sattu Ghol is left in clay pots overnight for mild natural fermentation during hot summers! It turns super gut-friendly."),
+                ("priya.sharma", "I do 12-hour fermentation for Ragi & Besan cheela batter with curd. It gets super airy, fluffy, and way easier to digest!"),
+                ("ZamZam", "@dr_meera That 60% phytic acid reduction figure is amazing! Definitely letting my batter sit overnight tonight."),
             ]
         },
         {

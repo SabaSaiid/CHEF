@@ -3,6 +3,7 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { calculateMacroPercentages } from '../utils/nutrition';
+import { CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
 
 const DIET_OPTIONS = [
   { value: 'non-vegetarian', label: 'Non-Veg' },
