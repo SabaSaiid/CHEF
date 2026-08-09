@@ -37,12 +37,13 @@ class TestCommunityDemoSeeder(unittest.TestCase):
         # Check users were created
         users = self.db.query(User).all()
         usernames = {u.username for u in users}
-        self.assertIn("ZamZam", usernames)
-        self.assertIn("ChefPriya_M", usernames)
-        self.assertIn("FitnessKaran", usernames)
-        self.assertIn("Ananya_Bakes", usernames)
-        self.assertIn("Rohan_FitMeal", usernames)
-        self.assertIn("DrMeera_Nutri", usernames)
+        self.assertIn("aisha_kitchen", usernames)
+        self.assertIn("priya.sharma", usernames)
+        self.assertIn("karan_verma", usernames)
+        self.assertIn("ananya.roy", usernames)
+        self.assertIn("rohan_gupta", usernames)
+        self.assertIn("dr_meera", usernames)
+
 
         # Check posts & comments
         posts = self.db.query(CommunityPost).all()

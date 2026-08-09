@@ -49,8 +49,8 @@ def seed_demo_data(db: Session = Depends(get_db)):
     """
 
     # ── 1. Create or find demo user ─────────────────────────────
-    DEMO_USERNAME = "ZamZam"
-    DEMO_EMAIL = "zamzam@demo.chef"
+    DEMO_USERNAME = "aisha_kitchen"
+    DEMO_EMAIL = "aisha@demo.chef"
     DEMO_PASSWORD = "demo123"
 
     user = db.query(User).filter(User.username == DEMO_USERNAME).first()
@@ -77,7 +77,8 @@ def seed_demo_data(db: Session = Depends(get_db)):
         profile = UserProfile(user_id=user.id, profile_name="Demo Profile")
         db.add(profile)
     
-    profile.display_name = "ZamZam"
+    profile.display_name = "Aisha Khan"
+
     profile.diet_type = "non-vegetarian"
     profile.is_active = True
     profile.age = 21
