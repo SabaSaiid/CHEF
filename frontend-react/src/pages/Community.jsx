@@ -169,23 +169,23 @@ export default function Community() {
   };
 
   // Like Post (Global or Group)
-function formatRelativeTime(isoString) {
-  if (!isoString) return '';
-  const date = new Date(isoString);
-  const now = new Date();
-  const diffSec = Math.floor((now - date) / 1000);
+  function formatRelativeTime(isoString) {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    const now = new Date();
+    const diffSec = Math.floor((now - date) / 1000);
 
-  if (diffSec < 45) return 'Just now';
-  const diffMin = Math.floor(diffSec / 60);
-  if (diffMin < 60) return `${diffMin}m ago`;
-  const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}h ago`;
-  const diffDays = Math.floor(diffHr / 24);
-  if (diffDays === 1) return 'Yesterday';
-  if (diffDays < 7) return `${diffDays}d ago`;
+    if (diffSec < 45) return 'Just now';
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    const diffHr = Math.floor(diffMin / 60);
+    if (diffHr < 24) return `${diffHr}h ago`;
+    const diffDays = Math.floor(diffHr / 24);
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays}d ago`;
 
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
 
   // Like Post (Global or Group) with Optimistic UI Update
   const handleLikePost = async (postId, isGroupPost = false) => {
@@ -451,7 +451,7 @@ function formatRelativeTime(isoString) {
 
   return (
     <div className="page-container" style={{ maxWidth: '1020px', margin: '0 auto', padding: '24px 16px' }}>
-      
+
       {/* ── Page Header ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
@@ -509,7 +509,7 @@ function formatRelativeTime(isoString) {
       {/* ── TAB 1 & 2: Social Feed (Global / Following) ── */}
       {(activeTab === 'global' || activeTab === 'following') && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
-          
+
           {/* Post Creation Box */}
           {token ? (
             <form onSubmit={handleCreatePost} className="community-card-glass" style={{ padding: '20px' }}>
@@ -604,7 +604,7 @@ function formatRelativeTime(isoString) {
           ) : posts.length > 0 ? (
             posts.map(post => (
               <div key={post.id} className="community-card-glass community-animate-card" style={{ padding: '20px' }}>
-                
+
                 {/* Author Header */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                   <Link to={`/profile/${post.username}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -756,7 +756,7 @@ function formatRelativeTime(isoString) {
       {/* ── TAB 3: Community Recipes ── */}
       {activeTab === 'recipes' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          
+
           {/* Controls: Search, Diet Pills, Sorting */}
           <div className="community-card-glass" style={{ padding: '18px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -879,7 +879,7 @@ function formatRelativeTime(isoString) {
           {/* If a group is selected, render Group Thread Discussion View */}
           {selectedGroup ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
+
               {/* Group Thread Header */}
               <div className="community-card-glass" style={{ padding: '20px' }}>
                 <button
@@ -972,7 +972,7 @@ function formatRelativeTime(isoString) {
           ) : (
             /* All Groups Directory View */
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
+
               {/* Header with Create Group Button */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                 <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '14px' }}>

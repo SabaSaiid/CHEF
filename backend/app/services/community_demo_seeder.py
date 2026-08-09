@@ -17,6 +17,7 @@ from app.auth import hash_password
 
 # List of realistic demo usernames created by the seeder
 DEMO_USERNAMES = [
+    "ZamZam",
     "aisha_kitchen",
     "aaradhya_t",
     "ashgar_ali",
@@ -76,6 +77,7 @@ def seed_community_demo_data(db: Session) -> dict:
     user_map = {}
     
     user_definitions = [
+        {"username": "ZamZam", "email": "zamzam@demo.chef", "display_name": "ZamZam", "diet": "high-protein"},
         {"username": "aisha_kitchen", "email": "aisha@demo.chef", "display_name": "Aisha Khan", "diet": "non-vegetarian"},
         {"username": "aaradhya_t", "email": "aaradhya@demo.chef", "display_name": "Aaradhya Tiwari", "diet": "vegetarian"},
         {"username": "ashgar_ali", "email": "ashgar@demo.chef", "display_name": "Ashgar Ali", "diet": "non-vegetarian"},
@@ -128,7 +130,11 @@ def seed_community_demo_data(db: Session) -> dict:
     demo_user_ids = [u.id for u in user_map.values()]
 
     # ── 2. Clear old demo community data ──────────────────────────────
-    old_posts = db.query(CommunityPost).filter(CommunityPost.user_id.in_(demo_user_ids)).all()
+    # Also clean up posts from *any* stale @demo.chef user not in current seeder
+    all_demo_users = db.query(User).filter(User.email.like("%@demo.chef")).all()
+    all_demo_user_ids = [u.id for u in all_demo_users]
+
+    old_posts = db.query(CommunityPost).filter(CommunityPost.user_id.in_(all_demo_user_ids)).all()
     old_post_ids = [p.id for p in old_posts]
     if old_post_ids:
         db.query(CommunityComment).filter(CommunityComment.post_id.in_(old_post_ids)).delete(synchronize_session='evaluate')
@@ -136,13 +142,14 @@ def seed_community_demo_data(db: Session) -> dict:
         db.query(CommunityPost).filter(CommunityPost.id.in_(old_post_ids)).delete(synchronize_session='evaluate')
 
     db.query(CommunityFollow).filter(
-        (CommunityFollow.follower_id.in_(demo_user_ids)) | (CommunityFollow.following_id.in_(demo_user_ids))
+        (CommunityFollow.follower_id.in_(all_demo_user_ids)) | (CommunityFollow.following_id.in_(all_demo_user_ids))
     ).delete(synchronize_session='evaluate')
 
-    db.query(CommunityRecipe).filter(CommunityRecipe.submitter_id.in_(demo_user_ids)).delete(synchronize_session='evaluate')
-    db.query(CommunityGroupMember).filter(CommunityGroupMember.user_id.in_(demo_user_ids)).delete(synchronize_session='evaluate')
-    db.query(CommunityChallengeParticipant).filter(CommunityChallengeParticipant.user_id.in_(demo_user_ids)).delete(synchronize_session='evaluate')
+    db.query(CommunityRecipe).filter(CommunityRecipe.submitter_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
+    db.query(CommunityGroupMember).filter(CommunityGroupMember.user_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
+    db.query(CommunityChallengeParticipant).filter(CommunityChallengeParticipant.user_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
     db.flush()
+
 
     # ── 3. Seed Follow Relationships ─────────────────────────────────
     follows = [
@@ -356,9 +363,23 @@ def seed_community_demo_data(db: Session) -> dict:
 
     posts_data = [
         {
+            "username": "ZamZam",
+            "content": "What is your go-to light, high-protein Indian dinner when you want to hit your calorie target before sleep without feeling bloated? 🥣 Need some quick 15-minute ideas!",
+            "image_url": None,  # Question post — no image needed
+            "created_at": now - timedelta(hours=2),
+            "group_slug": None,
+            "likes": ["karan_verma", "priya.sharma", "aaradhya_t", "zaid_fit", "aisha_kitchen"],
+            "comments": [
+                ("priya.sharma", "Paneer Bhurji with 2 Sattu Rotis or Moong Dal Cheela with cottage cheese filling! Super light and high protein."),
+                ("karan_verma", "Grilled Tandoori Chicken breast + cucumber mint salad. Light, 40g+ protein, and zero morning bloating."),
+                ("dr_meera", "Lauki Chana Dal or Egg White Omelette with spinach! Great for digestion and steady blood sugar overnight."),
+                ("ZamZam", "@dr_meera Lauki Chana Dal sounds super soothing! Adding that to my meal plan tonight."),
+            ]
+        },
+        {
             "username": "aaradhya_t",
             "content": "Tried making Bihari Sattu Drink with roasted cumin, green chili, and fresh mint for post-workout hydration! 🥤\n\n18g plant protein, super refreshing, and costs under ₹30. Perfect desi protein shake for North Indian summers!",
-            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/54/Sattu_Ghol.jpg",
             "created_at": now - timedelta(hours=4),
             "group_slug": None,
             "likes": ["ashgar_ali", "shubham_v", "neel_bites", "aisha_kitchen", "priya.sharma"],
@@ -372,7 +393,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "ali_cooks",
             "content": "Weekend Special: Slow-cooked Mutton Yakhni Pulao using controlled ghee and whole spices! 🍲\n\nGot 36g protein per serving with half the fat of regular biryani. Hit 2,100 kcal target cleanly today!",
-            "image_url": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Punjabi_Yakhni_Pulao.jpg",
             "created_at": now - timedelta(hours=8),
             "group_slug": None,
             "likes": ["zaid_fit", "ayushman_d", "ashgar_ali", "vikas_k"],
@@ -386,7 +407,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "zaid_fit",
             "content": "Pushing for 130g protein daily on a budget! 💪 Here is my daily staple:\n\n6 Egg Whites + 2 Whole Eggs + 50g Paneer Scramble + 1 bowl Soya Chunks Curry. Total cost: ~₹90/day!",
-            "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Spicy_egg_bhurji_%40_the_eggfactory.jpg",
             "created_at": now - timedelta(hours=12),
             "group_slug": None,
             "likes": ["vikas_k", "nishant_m", "shubham_v", "karan_verma"],
@@ -400,7 +421,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "shubham_v",
             "content": "Swapped white bread for Oats & Besan Cheela stuffed with paneer for breakfast! 🥞\n\nHit 24g protein before 9 AM. Fiber content keeps me full till 2 PM without mid-morning snack cravings.",
-            "image_url": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Besan_chilla.jpg",
             "created_at": now - timedelta(days=1),
             "group_slug": None,
             "likes": ["aaradhya_t", "ayushman_d", "priya.sharma", "neel_bites"],
@@ -413,7 +434,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "neel_bites",
             "content": "Healthy Snack Hack: Air-fried Crispy Makhana (Fox Nuts) with a dash of ghee, turmeric, and black pepper! 🥣\n\nHigh in antioxidants, low calories (140 kcal), and way better than potato chips.",
-            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Roasted_and_spiced_Foxnuts_%28Phool_Makhana%29.jpg",
             "created_at": now - timedelta(days=1, hours=6),
             "group_slug": None,
             "likes": ["nishant_m", "priya.sharma", "aaradhya_t", "dr_meera"],
@@ -426,7 +447,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "vikas_k",
             "content": "Hit a new personal record: 10,000 steps + 120g protein target achieved for 6 consecutive days! 🏃‍♂️ Consistency with CHEF meal planner has been game changing.",
-            "image_url": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&auto=format&fit=crop&q=80",
+            "image_url": None,  # Achievement/motivation post — no specific food photo
             "created_at": now - timedelta(days=2),
             "group_slug": None,
             "likes": ["zaid_fit", "ashgar_ali", "shubham_v", "aisha_kitchen"],
@@ -439,7 +460,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "priya.sharma",
             "content": "Hit 112g protein today with purely vegetarian Indian meals! 🌱 High-protein Palak Paneer with Sattu Roti + Greek Yogurt. Swipe for macros breakdown!\n\n🔥 Cal: 1,820 | P: 112g | C: 190g | F: 62g | Fiber: 34g\n\nWhat's your go-to veg protein hack for hitting daily targets?",
-            "image_url": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Palakpaneer_Rayagada_Odisha_0009.jpg",
             "created_at": now - timedelta(days=2, hours=4),
             "group_slug": None,
             "likes": ["karan_verma", "aisha_kitchen", "rohan_gupta", "dr_meera", "ananya.roy"],
@@ -452,7 +473,7 @@ def seed_community_demo_data(db: Session) -> dict:
         {
             "username": "karan_verma",
             "content": "Sunday Prep Complete! 🍱 Packed 5 days of Tandoori Chicken Breast + Quinoa + Roasted Broccoli & Peppers.\n\n📊 450 kcal & 42g protein per meal box. Prepping on Sunday saves me from mid-week takeout temptations!",
-            "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Chickentandoori.jpg",
             "created_at": now - timedelta(days=3),
             "group_slug": None,
             "likes": ["aisha_kitchen", "priya.sharma", "rohan_gupta", "ananya.roy"],
@@ -559,7 +580,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "aaradhya_t",
             "title": "Desi Sattu Coolant & Protein Shake",
             "summary": "Refreshing Bihar-style chana sattu drink spiced with roasted cumin, mint leaves, black salt, and lemon juice. 18g plant protein!",
-            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/54/Sattu_Ghol.jpg",
             "ready_in_minutes": 5,
             "servings": 1,
             "ingredients": json.dumps(["4 tbsp Roasted Chana Sattu", "1 glass Chilled Water or Chaas", "1/2 tsp Roasted Cumin Powder", "1/2 tsp Black Salt", "1 tbsp Lemon Juice", "Fresh Mint leaves"]),
@@ -579,7 +600,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "ali_cooks",
             "title": "Slow-Cooked Mutton Yakhni Pulao",
             "summary": "Fragrant Kashmiri-style mutton pulao simmered in whole spice bone broth with lean meat cuts.",
-            "image_url": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Punjabi_Yakhni_Pulao.jpg",
             "ready_in_minutes": 50,
             "servings": 4,
             "ingredients": json.dumps(["500g Lean Mutton Shanks", "2 cups Basmati Rice soaked", "1 cup Curd", "2 tbsp Ghee", "Whole Spices (fennel, cloves, cardamom, cinnamon)", "2 Onions sliced"]),
@@ -599,7 +620,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "zaid_fit",
             "title": "High-Protein Soya Chunks & Egg Bhurji",
             "summary": "Budget-friendly 35g protein scramble made with boiled soya chunks, egg whites, and onion-tomato masala.",
-            "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Spicy_egg_bhurji_%40_the_eggfactory.jpg",
             "ready_in_minutes": 15,
             "servings": 1,
             "ingredients": json.dumps(["50g Soya Chunks boiled & squeezed", "4 Egg Whites + 1 Whole Egg", "1 Onion finely chopped", "1 Tomato diced", "1 Green chili", "1 tsp Oil", "Turmeric & Chili powder"]),
@@ -619,7 +640,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "shubham_v",
             "title": "Paneer Stuffed Oats & Besan Cheela",
             "summary": "Low-glycemic savory pancake made from gram flour and oat flour, filled with spiced cottage cheese.",
-            "image_url": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Besan_chilla.jpg",
             "ready_in_minutes": 15,
             "servings": 2,
             "ingredients": json.dumps(["1/2 cup Besan", "1/2 cup Oat Flour", "100g Paneer crumbled", "1/2 Onion finely chopped", "1 tsp Ajwain", "1/2 tsp Turmeric", "1 tsp Ghee"]),
@@ -639,7 +660,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "neel_bites",
             "title": "Turmeric & Black Pepper Roasted Makhana",
             "summary": "Crunchy air-roasted fox nuts tossed in desi ghee, turmeric, and black pepper. Perfect 140 kcal snack.",
-            "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Roasted_and_spiced_Foxnuts_%28Phool_Makhana%29.jpg",
             "ready_in_minutes": 8,
             "servings": 2,
             "ingredients": json.dumps(["2 cups Phool Makhana (Fox Nuts)", "1 tsp Desi Ghee", "1/2 tsp Turmeric powder", "1/2 tsp Freshly crushed Black Pepper", "1/2 tsp Rock Salt"]),
@@ -659,7 +680,7 @@ def seed_community_demo_data(db: Session) -> dict:
             "submitter": "rohan_gupta",
             "title": "Keto Paneer & Spinach Bhurji",
             "summary": "Quick 10-minute scrambled cottage cheese with fresh spinach, green chilies, and desi ghee.",
-            "image_url": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&auto=format&fit=crop&q=80",
+            "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Palakpaneer_Rayagada_Odisha_0009.jpg",
             "ready_in_minutes": 10,
             "servings": 1,
             "ingredients": json.dumps(["150g Paneer crumbled", "1 cup Baby Spinach chopped", "1 tsp Cumin seeds", "1 Green chili", "1 tsp Ghee", "1/2 tsp Turmeric & Garam Masala"]),
