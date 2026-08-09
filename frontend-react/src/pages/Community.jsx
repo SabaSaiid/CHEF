@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -10,7 +10,7 @@ export default function Community() {
   const { token, username: currentUsername } = useContext(AuthContext);
   const toast = useToast();
 
-  const [activeTab, setActiveTab] = useState('global'); // 'global' | 'following' | 'recipes' | 'groups' | 'challenges'
+  const [activeTab, setActiveTab] = useState('global'); // 'global' | 'following' | 'recipes' | 'groups' | 'challenges' | 'moderation'
 
   // Social Feed state
   const [posts, setPosts] = useState([]);
@@ -58,6 +58,13 @@ export default function Community() {
   const [loadingChallenges, setLoadingChallenges] = useState(false);
   const [evaluatingProgress, setEvaluatingProgress] = useState({});
 
+  // Admin Moderation state
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [pendingRecipes, setPendingRecipes] = useState([]);
+  const [loadingPending, setLoadingPending] = useState(false);
+  const [moderatingId, setModeratingId] = useState(null);
+  const [moderationNote, setModerationNote] = useState('');
+
   // 1. Fetch posts & tab data
   useEffect(() => {
     if (activeTab === 'global') {
@@ -91,8 +98,23 @@ export default function Community() {
         .then(data => setChallenges(data))
         .catch(err => console.error("Error fetching challenges:", err))
         .finally(() => setLoadingChallenges(false));
+    } else if (activeTab === 'moderation') {
+      setLoadingPending(true);
+      api.get('/community/recipes/pending')
+        .then(data => setPendingRecipes(data))
+        .catch(err => console.error("Error fetching pending recipes:", err))
+        .finally(() => setLoadingPending(false));
     }
   }, [activeTab, token]);
+
+  // Check admin status on mount
+  useEffect(() => {
+    if (token) {
+      api.get('/community/recipes/admin/check')
+        .then(data => setIsAdmin(data.is_admin))
+        .catch(() => setIsAdmin(false));
+    }
+  }, [token]);
 
   // Create Global Post
   const handleCreatePost = async (e) => {
@@ -298,6 +320,25 @@ export default function Community() {
     toast.showSuccess("Post link copied to clipboard!");
   };
 
+  // Admin: Moderate Recipe
+  const handleModerateRecipe = async (recipeId, action) => {
+    if (!token || !isAdmin) return;
+    setModeratingId(recipeId);
+    try {
+      await api.post(`/community/recipes/${recipeId}/moderate`, {
+        action,
+        moderation_note: moderationNote.trim() || null,
+      });
+      toast.showSuccess(`Recipe ${action === 'approve' ? 'approved' : 'rejected'} successfully!`);
+      setPendingRecipes(prev => prev.filter(r => r.id !== recipeId));
+      setModerationNote('');
+    } catch (err) {
+      toast.showError(err.response?.data?.detail || `Failed to ${action} recipe.`);
+    } finally {
+      setModeratingId(null);
+    }
+  };
+
   // Filtered & Sorted Community Recipes
   const filteredRecipes = communityRecipes
     .filter(r => {
@@ -358,6 +399,7 @@ export default function Community() {
           { id: 'recipes', label: '👨‍🍳 Community Recipes' },
           { id: 'groups', label: '💬 Culinary Groups' },
           { id: 'challenges', label: '🏆 Habit Challenges' },
+          ...(isAdmin ? [{ id: 'moderation', label: '🛡️ Moderation' }] : []),
         ].map(t => (
           <button
             key={t.id}
@@ -498,6 +540,32 @@ export default function Community() {
                 <p style={{ fontSize: '15px', color: 'var(--text-primary)', lineHeight: '1.6', margin: '0 0 14px 0', whiteSpace: 'pre-line' }}>
                   {post.content}
                 </p>
+
+                {/* Shared Meal Plan Card Embed */}
+                {post.shared_meal_plan && (
+                  <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--accent-1)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span>🗓️</span> Weekly Meal Plan ({post.shared_meal_plan.week_start || 'Shared'})
+                      </span>
+                      {post.shared_meal_plan.total_calories && (
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                          🔥 ~{Math.round(post.shared_meal_plan.total_calories)} kcal total
+                        </span>
+                      )}
+                    </div>
+                    {post.shared_meal_plan.slots && post.shared_meal_plan.slots.length > 0 ? (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '8px' }}>
+                        {post.shared_meal_plan.slots.slice(0, 6).map((slot, idx) => (
+                          <div key={idx} style={{ background: 'var(--bg-primary)', padding: '8px 10px', borderRadius: '8px', border: '1px solid var(--border-glass)', fontSize: '12px' }}>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '10px', textTransform: 'uppercase', fontWeight: 700 }}>{slot.date || slot.day} • {slot.meal_slot}</div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{slot.recipe_title || 'Planned Meal'}</div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                )}
 
                 {/* Post photo attachment */}
                 {post.image_url && (
@@ -916,6 +984,95 @@ export default function Community() {
                 )}
               </div>
             ))
+          )}
+        </div>
+      )}
+
+      {/* ── TAB 6: Admin Moderation Queue ── */}
+      {activeTab === 'moderation' && isAdmin && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="community-card-glass" style={{ padding: '20px' }}>
+            <h2 style={{ margin: '0 0 6px 0', fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span>🛡️</span> Recipe Moderation Queue
+            </h2>
+            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
+              Review community recipe submissions flagged for potential macro density discrepancies or pending approval.
+            </p>
+          </div>
+
+          {loadingPending ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[1, 2].map(i => (
+                <div key={i} className="community-card-glass community-skeleton" style={{ height: '180px' }} />
+              ))}
+            </div>
+          ) : pendingRecipes.length > 0 ? (
+            pendingRecipes.map(r => (
+              <div key={r.id} className="community-card-glass community-animate-card" style={{ padding: '22px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', marginBottom: '14px' }}>
+                  <div>
+                    <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', padding: '4px 10px', borderRadius: '8px' }}>
+                      Pending Moderation
+                    </span>
+                    <h3 style={{ margin: '8px 0 4px 0', fontSize: '1.3rem', color: 'var(--text-primary)' }}>{r.title}</h3>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Submitted by @{r.submitter_username} • {new Date(r.created_at).toLocaleDateString()}</p>
+                  </div>
+
+                  {r.nutri_score_grade && <ChefScoreBadge grade={r.nutri_score_grade} size="sm" />}
+                </div>
+
+                {r.moderation_note && (
+                  <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', color: '#d97706', marginBottom: '14px' }}>
+                    ⚠️ <strong>Flag Note:</strong> {r.moderation_note}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '18px', fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '14px', flexWrap: 'wrap' }}>
+                  <span>⏱️ {r.ready_in_minutes} mins</span>
+                  <span>🍽️ {r.servings} servings</span>
+                  <span>🔥 {Math.round(r.calories)} kcal</span>
+                  <span>💪 {Math.round(r.protein_g)}g P</span>
+                  <span>🍞 {Math.round(r.carbs_g)}g C</span>
+                  <span>🥑 {Math.round(r.fat_g)}g F</span>
+                </div>
+
+                <p style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: '1.5', margin: '0 0 16px 0' }}>{r.instructions}</p>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', borderTop: '1px solid var(--border-glass)', paddingTop: '14px' }}>
+                  <input
+                    type="text"
+                    placeholder="Optional feedback note for submitter..."
+                    value={moderationNote}
+                    onChange={e => setModerationNote(e.target.value)}
+                    style={{ flex: 1, padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: '13px' }}
+                  />
+
+                  <button
+                    onClick={() => handleModerateRecipe(r.id, 'approve')}
+                    disabled={moderatingId === r.id}
+                    className="action-btn primary"
+                    style={{ padding: '8px 18px', fontSize: '13px', borderRadius: '8px', background: '#10b981', borderColor: '#10b981' }}
+                  >
+                    ✓ Approve
+                  </button>
+
+                  <button
+                    onClick={() => handleModerateRecipe(r.id, 'reject')}
+                    disabled={moderatingId === r.id}
+                    className="action-btn secondary"
+                    style={{ padding: '8px 18px', fontSize: '13px', borderRadius: '8px', color: '#ef4444', borderColor: '#ef4444' }}
+                  >
+                    ✕ Reject
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="community-card-glass" style={{ padding: '40px', textAlign: 'center' }}>
+              <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '15px' }}>
+                🎉 Moderation queue is empty! All submitted recipes have been reviewed.
+              </p>
+            </div>
           )}
         </div>
       )}

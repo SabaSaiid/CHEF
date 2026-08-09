@@ -112,6 +112,38 @@ export default function UserProfile() {
             <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Following</div>
           </div>
         </div>
+
+        {/* Challenge Badges Cabinet */}
+        <div style={{ marginTop: '24px', borderTop: '1px dashed var(--border-glass)', paddingTop: '20px' }}>
+          <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', fontWeight: '800', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>🏆</span> Achievements & Badges
+          </h3>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{ background: 'rgba(255, 90, 54, 0.12)', border: '1px solid rgba(255, 90, 54, 0.25)', borderRadius: '12px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '22px' }}>🥩</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>High-Protein Master</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>7-Day Target Achieved</div>
+              </div>
+            </div>
+
+            <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '12px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '22px' }}>🥗</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>Nutri-Score Champion</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Grade A/B Streak</div>
+              </div>
+            </div>
+
+            <div style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', borderRadius: '12px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '22px' }}>💧</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>Hydration Hero</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Daily Water Target Met</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Chef Posts Stream */}

@@ -17,6 +17,8 @@ from app.config import settings
 import httpx
 import json
 
+import math
+
 router = APIRouter(prefix="/api/pantry", tags=["pantry"])
 
 # Standard Unit Conversions to a base unit (grams for mass, ml for volume)
@@ -49,6 +51,51 @@ def normalize_quantity(qty: float, from_unit: str, to_unit: str) -> float:
         return (qty * UNIT_TO_BASE[fu]) / UNIT_TO_BASE[tu]
     return qty
 
+
+# ── Expiry Status Computation ──────────────────────────────────
+EXPIRY_WARNING_DAYS = 2  # Items expiring within this many days are flagged as 'expiring_soon'
+
+def _compute_expiry_status(item: PantryItem) -> tuple[str, int]:
+    """Compute freshness status and days remaining for a pantry item.
+    Returns (expiry_status, days_remaining) where:
+      - expiry_status: 'fresh' | 'expiring_soon' | 'expired'
+      - days_remaining: integer days until expiration (negative = already expired)
+    """
+    now = datetime.now(timezone.utc)
+    updated = item.updated_at
+    if updated.tzinfo is None:
+        # Assume UTC if naive
+        updated = updated.replace(tzinfo=timezone.utc)
+    
+    days_fresh = item.days_fresh if item.days_fresh else 7
+    elapsed_days = (now - updated).total_seconds() / 86400.0
+    days_remaining = math.ceil(days_fresh - elapsed_days)
+
+    if days_remaining <= 0:
+        return "expired", days_remaining
+    elif days_remaining <= EXPIRY_WARNING_DAYS:
+        return "expiring_soon", days_remaining
+    else:
+        return "fresh", days_remaining
+
+
+def _pantry_item_to_response(item: PantryItem) -> PantryItemResponse:
+    """Convert a PantryItem ORM object to a PantryItemResponse with computed expiry fields."""
+    expiry_status, days_remaining = _compute_expiry_status(item)
+    return PantryItemResponse(
+        id=item.id,
+        user_id=item.user_id,
+        ingredient_name=item.ingredient_name,
+        quantity=item.quantity,
+        unit=item.unit,
+        category=item.category,
+        days_fresh=item.days_fresh,
+        updated_at=item.updated_at,
+        expiry_status=expiry_status,
+        days_remaining=days_remaining,
+    )
+
+
 class IngredientDeduct(BaseModel):
     name: str
     qty: float
@@ -62,8 +109,9 @@ def get_pantry(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Retrieve all pantry items for the current user."""
-    return db.query(PantryItem).filter(PantryItem.user_id == current_user.id).all()
+    """Retrieve all pantry items for the current user with computed expiry status."""
+    items = db.query(PantryItem).filter(PantryItem.user_id == current_user.id).all()
+    return [_pantry_item_to_response(item) for item in items]
 
 @router.post("", response_model=PantryItemResponse, status_code=201)
 def add_pantry_item(

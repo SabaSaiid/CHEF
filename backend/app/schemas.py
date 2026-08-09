@@ -635,6 +635,9 @@ class PantryItemResponse(BaseModel):
     category: str
     days_fresh: int
     updated_at: datetime
+    # Computed expiry fields — populated by the API endpoint
+    expiry_status: Optional[str] = None   # 'fresh' | 'expiring_soon' | 'expired'
+    days_remaining: Optional[int] = None  # Days until expiration (negative = past)
 
 
 # ── Recipe Reviews & Tips ──────────────────────────────────────
@@ -678,6 +681,7 @@ class PostCreateRequest(BaseModel):
     recipe_id: Optional[str] = Field(None, max_length=255, description="Optional attached recipe ID")
     recipe_source: Optional[str] = Field("catalog", description="catalog, spoonacular, or community")
     group_id: Optional[int] = Field(None, description="Optional group ID")
+    shared_meal_plan: Optional[dict] = Field(None, description="Optional structured meal plan payload: {week_start, slots: [{date, meal_slot, recipe_title, calories}]}")
 
 
 class CommentCreateRequest(BaseModel):
@@ -706,6 +710,7 @@ class PostResponse(BaseModel):
     recipe_id: Optional[str] = None
     recipe_source: Optional[str] = None
     group_id: Optional[int] = None
+    shared_meal_plan: Optional[dict] = None
     likes_count: int = 0
     comments_count: int = 0
     is_liked: bool = False

@@ -145,15 +145,77 @@ if _GROUPS_FILE.exists():
 _GROUPS = _GROUPS_DATA.get("groups", {})
 _TYPOS = _GROUPS_DATA.get("common_typos", {})
 
+
+def _levenshtein_distance(s1: str, s2: str) -> int:
+    """Compute the Levenshtein (edit) distance between two strings. O(m*n)."""
+    if len(s1) < len(s2):
+        return _levenshtein_distance(s2, s1)
+    if len(s2) == 0:
+        return len(s1)
+    prev_row = list(range(len(s2) + 1))
+    for i, c1 in enumerate(s1):
+        curr_row = [i + 1]
+        for j, c2 in enumerate(s2):
+            cost = 0 if c1 == c2 else 1
+            curr_row.append(min(
+                curr_row[j] + 1,       # insert
+                prev_row[j + 1] + 1,   # delete
+                prev_row[j] + cost,    # substitute
+            ))
+        prev_row = curr_row
+    return prev_row[-1]
+
+
+def _fuzzy_match_token(token: str, max_distance: int = 1) -> set[str]:
+    """Find inverted index tokens and group names within Levenshtein distance of `token`.
+    Only considers candidates of similar length (±max_distance) to avoid spurious matches.
+    """
+    if len(token) <= 3:
+        return set()  # Too short for meaningful fuzzy matching
+
+    fuzzy_hits: set[str] = set()
+    # Check against inverted index keys
+    for idx_token in _INGREDIENT_INDEX:
+        if abs(len(idx_token) - len(token)) > max_distance:
+            continue
+        if _levenshtein_distance(token, idx_token) <= max_distance:
+            fuzzy_hits.add(idx_token)
+
+    # Check against group names
+    for group_name in _GROUPS:
+        if abs(len(group_name) - len(token)) > max_distance:
+            continue
+        if _levenshtein_distance(token, group_name) <= max_distance:
+            fuzzy_hits.add(group_name)
+
+    return fuzzy_hits
+
+
 def _expand_ingredient_synonyms(ing: str) -> set[str]:
-    """Returns set of synonyms/family members for an ingredient name."""
+    """Returns set of synonyms/family members for an ingredient name.
+    Falls back to fuzzy matching (Levenshtein distance ≤ 1) when no exact
+    typo or group match is found.
+    """
     s = ing.lower().strip()
     s = _TYPOS.get(s, s)
     synonyms = {s}
+    found_group = False
     for group_name, members in _GROUPS.items():
         if s == group_name or s in members:
             synonyms.update(members)
             synonyms.add(group_name)
+            found_group = True
+
+    # Fuzzy fallback: if no group/typo match, try Levenshtein distance ≤ 1
+    if not found_group and len(s) > 3:
+        fuzzy_matches = _fuzzy_match_token(s, max_distance=1)
+        for fm in fuzzy_matches:
+            synonyms.add(fm)
+            # Also expand group members if the fuzzy match is a group name
+            if fm in _GROUPS:
+                synonyms.update(_GROUPS[fm])
+                synonyms.add(fm)
+
     return synonyms
 
 
@@ -191,7 +253,10 @@ def _match_score(recipe: RecipeItem, search_ingredients: list[str]) -> float:
 def _get_candidate_ids(search_ingredients: list[str]) -> set[str] | None:
     """
     Use the inverted index to find candidate recipe IDs that contain at least
-    one of the search ingredient tokens or taxonomy synonyms. Returns None if no ingredients given.
+    one of the search ingredient tokens or taxonomy synonyms.
+    Falls back to fuzzy matching (Levenshtein distance ≤ 1) when exact token
+    lookups yield no results for a given ingredient term.
+    Returns None if no ingredients given.
     """
     if not search_ingredients:
         return None  # No filtering — use full list
@@ -199,11 +264,22 @@ def _get_candidate_ids(search_ingredients: list[str]) -> set[str] | None:
     candidate_ids: set[str] = set()
     for ing in search_ingredients:
         terms = _expand_ingredient_synonyms(ing)
+        ing_candidates: set[str] = set()
         for term in terms:
             for token in term.split():
                 if len(token) > 2 and token in _INGREDIENT_INDEX:
-                    candidate_ids |= _INGREDIENT_INDEX[token]
+                    ing_candidates |= _INGREDIENT_INDEX[token]
+        # Fuzzy fallback: if no candidates found for this ingredient, try fuzzy index lookup
+        if not ing_candidates:
+            for token in ing.lower().strip().split():
+                if len(token) > 3:
+                    fuzzy_tokens = _fuzzy_match_token(token, max_distance=1)
+                    for ft in fuzzy_tokens:
+                        if ft in _INGREDIENT_INDEX:
+                            ing_candidates |= _INGREDIENT_INDEX[ft]
+        candidate_ids |= ing_candidates
     return candidate_ids
+
 
 
 

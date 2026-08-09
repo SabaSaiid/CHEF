@@ -1,7 +1,7 @@
 """
 Community User-Submitted Recipes Router — Phase 3 Community Module.
 Handles custom recipe submissions, Nutri-Score engine calculation, macro sanity checks,
-and moderation status pipeline.
+moderation status pipeline, and admin moderation queue.
 """
 
 import json
@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Query, status
 from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from pydantic import BaseModel, Field
 
 from app.database import get_db
 from app.models import CommunityRecipe, User
@@ -20,6 +21,22 @@ from app.services.moderation import validate_clean_text
 
 router = APIRouter(prefix="/api/community/recipes", tags=["community_recipes"])
 limiter = Limiter(key_func=get_remote_address)
+
+# ── Admin Authorization ────────────────────────────────────────
+# Designate admin usernames who can moderate community recipe submissions.
+# In production, this would come from a database role or environment variable.
+ADMIN_USERNAMES = {"saba", "admin"}
+
+
+def _is_admin(user: User) -> bool:
+    """Check if a user has admin privileges for moderation."""
+    return user.username.lower() in ADMIN_USERNAMES
+
+
+class ModerationRequest(BaseModel):
+    """Request body for moderating a community recipe."""
+    action: str = Field(..., description="'approve' or 'reject'")
+    moderation_note: Optional[str] = Field(None, max_length=1000, description="Optional note for the submitter")
 
 
 def _format_community_recipe_response(recipe: CommunityRecipe, submitter_username: str) -> CommunityRecipeResponse:
@@ -187,6 +204,94 @@ def get_my_submissions(
         .all()
     )
     return [_format_community_recipe_response(r, current_user.username) for r in recipes]
+
+
+@router.get(
+    "/admin/check",
+    summary="Check if current user has admin moderation privileges",
+)
+def check_admin_status(
+    current_user: User = Depends(get_current_user),
+):
+    """Auth required — returns whether the current user is an admin moderator."""
+    return {"is_admin": _is_admin(current_user)}
+
+
+@router.get(
+    "/pending",
+    response_model=list[CommunityRecipeResponse],
+    summary="Get pending community recipes (admin only)",
+)
+def get_pending_recipes(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Admin only — returns all community recipes with 'pending' moderation status."""
+    if not _is_admin(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required to view pending recipes."
+        )
+
+    results = (
+        db.query(CommunityRecipe, User.username)
+        .join(User, CommunityRecipe.submitter_id == User.id)
+        .filter(CommunityRecipe.moderation_status == "pending")
+        .order_by(CommunityRecipe.created_at.asc())
+        .all()
+    )
+    return [_format_community_recipe_response(r, uname) for r, uname in results]
+
+
+@router.post(
+    "/{recipe_id}/moderate",
+    response_model=CommunityRecipeResponse,
+    summary="Approve or reject a community recipe (admin only)",
+)
+def moderate_recipe(
+    recipe_id: int,
+    req: ModerationRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Admin only — approve or reject a pending community recipe submission."""
+    if not _is_admin(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required to moderate recipes."
+        )
+
+    if req.action not in ("approve", "reject"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Action must be 'approve' or 'reject'."
+        )
+
+    res = (
+        db.query(CommunityRecipe, User.username)
+        .join(User, CommunityRecipe.submitter_id == User.id)
+        .filter(CommunityRecipe.id == recipe_id)
+        .first()
+    )
+    if not res:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Community recipe not found."
+        )
+
+    recipe, submitter_username = res
+    recipe.moderation_status = "approved" if req.action == "approve" else "rejected"
+    if req.moderation_note:
+        recipe.moderation_note = req.moderation_note
+    elif req.action == "approve":
+        recipe.moderation_note = f"Approved by @{current_user.username}"
+    else:
+        recipe.moderation_note = req.moderation_note or f"Rejected by @{current_user.username}"
+
+    db.commit()
+    db.refresh(recipe)
+
+    return _format_community_recipe_response(recipe, submitter_username)
 
 
 @router.get(

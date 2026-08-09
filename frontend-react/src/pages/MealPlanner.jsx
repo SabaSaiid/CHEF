@@ -334,7 +334,10 @@ export default function MealPlanner() {
           <h1>Weekly Meal Planner</h1>
           <p className="subtitle">Plan your meals, automatically log them, and generate groceries.</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '10px', flexWrap: 'wrap' }}>
+          <button className="btn-secondary" onClick={handleSharePlanToFeed} disabled={sharingPlan} style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(8px)', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-card)', transition: 'all 0.2s', padding: '10px 16px' }}>
+            {sharingPlan ? 'Sharing...' : '📢 Share to Feed'}
+          </button>
           <button className="btn-secondary" onClick={handleSmartAutofill} disabled={smartFilling} style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(8px)', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-card)', transition: 'all 0.2s', padding: '10px 16px' }}>
             {smartFilling ? '🤖 Thinking...' : '✨ Magic Fill'}
           </button>

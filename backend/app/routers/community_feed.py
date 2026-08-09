@@ -4,6 +4,7 @@ Handles posts, comments, likes, user follows, and global/following feed streams.
 """
 
 from typing import Optional
+import json
 from fastapi import APIRouter, Depends, HTTPException, Request, Query, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -34,6 +35,14 @@ def _format_post_response(post: CommunityPost, author_username: str, current_use
             ).first()
             is_liked = like_exists is not None
 
+    # Parse shared_meal_plan JSON if present
+    meal_plan_data = None
+    if post.shared_meal_plan:
+        try:
+            meal_plan_data = json.loads(post.shared_meal_plan)
+        except (json.JSONDecodeError, TypeError):
+            meal_plan_data = None
+
     return PostResponse(
         id=post.id,
         user_id=post.user_id,
@@ -43,6 +52,7 @@ def _format_post_response(post: CommunityPost, author_username: str, current_use
         recipe_id=post.recipe_id,
         recipe_source=post.recipe_source,
         group_id=post.group_id,
+        shared_meal_plan=meal_plan_data,
         likes_count=post.likes_count,
         comments_count=post.comments_count,
         is_liked=is_liked,
@@ -135,6 +145,7 @@ def create_post(
         recipe_id=req.recipe_id,
         recipe_source=req.recipe_source,
         group_id=req.group_id,
+        shared_meal_plan=json.dumps(req.shared_meal_plan) if req.shared_meal_plan else None,
     )
     db.add(post)
     db.commit()

@@ -298,6 +298,7 @@ class CommunityPost(Base):
     recipe_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
     recipe_source: Mapped[str | None] = mapped_column(String(50), nullable=True, default="catalog")
     group_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("community_groups.id", ondelete="SET NULL"), nullable=True, index=True)
+    shared_meal_plan: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON-serialized meal plan data
     likes_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     comments_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     created_at: Mapped[datetime] = mapped_column(
