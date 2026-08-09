@@ -70,8 +70,8 @@ FROM backend-base AS backend-prod
 # Copy the pre-built frontend from Stage 1
 COPY --from=frontend-builder /app/frontend-react/dist /app/frontend-react/dist
 
-# Create a non-root user for security
-RUN useradd -m -u 1000 user
+# Create a non-root user for security and grant full ownership of /app
+RUN useradd -m -u 1000 user && chown -R user:user /app
 USER user
 ENV HOME=/home/user
 

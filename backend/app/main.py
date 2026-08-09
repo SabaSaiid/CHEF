@@ -55,6 +55,7 @@ async def lifespan(app: FastAPI):
         alembic_ini = Path(__file__).resolve().parent.parent / "alembic.ini"
         if alembic_ini.exists():
             alembic_cfg = AlembicConfig(str(alembic_ini))
+            alembic_cfg.set_main_option("script_location", str(alembic_ini.parent / "alembic"))
             alembic_command.upgrade(alembic_cfg, "head")
             logger.info("✅ Database migrations applied via Alembic")
         else:
