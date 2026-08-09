@@ -10,12 +10,7 @@ npm run build
 cd ..
 
 echo "Installing Backend Dependencies..."
-cd backend
-if [ -n "$VIRTUAL_ENV" ]; then
-    pip install -r requirements.txt
-else
-    pip install -r requirements.txt || pip install -r requirements.txt --break-system-packages || true
-fi
-cd ..
+python3 -m pip install --upgrade pip setuptools wheel 2>/dev/null || true
+python3 -m pip install -r backend/requirements.txt || pip install -r backend/requirements.txt || true
 
 echo "Build complete!"

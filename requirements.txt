@@ -1,0 +1,2 @@
+# Root requirements.txt for Render and cloud build automatic dependency detection
+-r backend/requirements.txt
