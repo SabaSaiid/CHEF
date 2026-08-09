@@ -234,7 +234,17 @@ def seed_demo_data(db: Session = Depends(get_db)):
 
     db.commit()
 
-    # ── 6. Return JWT token ─────────────────────────────────────
+    # ── 6. Seed Community Feed, Posts, Comments & Groups ────────
+    comm_msg = ""
+    try:
+        from app.services.community_demo_seeder import seed_community_demo_data
+        community_stats = seed_community_demo_data(db)
+        comm_msg = f" ({community_stats.get('posts_seeded', 0)} posts, {community_stats.get('comments_seeded', 0)} comments)"
+    except Exception as e:
+        import logging
+        logging.getLogger("chef.demo").warning("Community demo seeding error: %s", e)
+
+    # ── 7. Return JWT token ─────────────────────────────────────
     token = create_access_token({"sub": str(user.id)})
 
     return {
@@ -242,5 +252,7 @@ def seed_demo_data(db: Session = Depends(get_db)):
         "token_type": "bearer",
         "username": user.username,
         "user_id": user.id,
-        "message": "Demo data loaded successfully!",
+        "message": f"Demo data loaded successfully!{comm_msg}",
     }
+
+

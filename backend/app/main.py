@@ -126,8 +126,26 @@ async def lifespan(app: FastAPI):
                 logger.info("🔧 Upgrading table 'pantry_items' with 'days_fresh' column")
                 cursor.execute("ALTER TABLE pantry_items ADD COLUMN days_fresh INTEGER NOT NULL DEFAULT 7;")
 
+            # Upgrade community_posts columns if table already existed
+            cursor.execute("PRAGMA table_info(community_posts);")
+            cp_cols = [col[1] for col in cursor.fetchall()]
+            if cp_cols:
+                if "shared_meal_plan" not in cp_cols:
+                    logger.info("🔧 Upgrading table 'community_posts' with 'shared_meal_plan' column")
+                    cursor.execute("ALTER TABLE community_posts ADD COLUMN shared_meal_plan TEXT;")
+                if "group_id" not in cp_cols:
+                    logger.info("🔧 Upgrading table 'community_posts' with 'group_id' column")
+                    cursor.execute("ALTER TABLE community_posts ADD COLUMN group_id INTEGER;")
+                if "recipe_id" not in cp_cols:
+                    logger.info("🔧 Upgrading table 'community_posts' with 'recipe_id' column")
+                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_id VARCHAR(255);")
+                if "recipe_source" not in cp_cols:
+                    logger.info("🔧 Upgrading table 'community_posts' with 'recipe_source' column")
+                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_source VARCHAR(50);")
+
             conn.commit()
             conn.close()
+
             logger.info("✅ Database schema is up to date!")
     except Exception as emig:
         logger.error(f"⚠️  Startup migrations failed: {emig}")

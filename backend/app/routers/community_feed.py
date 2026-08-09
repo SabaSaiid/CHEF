@@ -61,6 +61,13 @@ def _format_post_response(post: CommunityPost, author_username: str, current_use
     )
 
 
+def _ensure_community_demo_data(db: Session):
+    count = db.query(func.count(CommunityPost.id)).scalar() or 0
+    if count == 0:
+        from app.services.community_demo_seeder import seed_community_demo_data
+        seed_community_demo_data(db)
+
+
 @router.get(
     "/feed/global",
     response_model=list[PostResponse],
@@ -73,6 +80,8 @@ def get_global_feed(
     db: Session = Depends(get_db),
 ):
     """Public read endpoint — returns paginated stream of all public community posts."""
+    _ensure_community_demo_data(db)
+
     posts_with_users = (
         db.query(CommunityPost, User.username)
         .join(User, CommunityPost.user_id == User.id)
@@ -85,6 +94,7 @@ def get_global_feed(
 
     current_user_id = current_user.id if current_user else None
     return [_format_post_response(post, uname, current_user_id) for post, uname in posts_with_users]
+
 
 
 @router.get(

@@ -40,7 +40,8 @@ class Settings(BaseSettings):
     # Database — dual-backend support (SQLite for local dev, PostgreSQL for production)
     # Set DATABASE_BACKEND=postgresql and DATABASE_URL=postgresql://... in .env to use PG
     DATABASE_BACKEND: str = "sqlite"  # "sqlite" or "postgresql"
-    DATABASE_URL: str = f"sqlite:///{os.environ.get('HOME', '.')}/chef.db"
+    DATABASE_URL: str = "sqlite:///./chef.db"
+
 
     # Optional external API keys — leave blank to use demo data
     SPOONACULAR_API_KEY: str = ""
