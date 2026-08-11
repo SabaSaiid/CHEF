@@ -435,7 +435,13 @@ export default function Community() {
   const filteredRecipes = communityRecipes
     .filter(r => {
       const matchesSearch = !recipeSearch || r.title.toLowerCase().includes(recipeSearch.toLowerCase());
-      const matchesDiet = recipeDietFilter === 'All' || (r.diets && r.diets.includes(recipeDietFilter));
+      const matchesDiet = recipeDietFilter === 'All' || (
+        Array.isArray(r.diets) 
+          ? r.diets.some(d => d.toLowerCase().replace(/[\s_]+/g, '-') === recipeDietFilter.toLowerCase().replace(/[\s_]+/g, '-'))
+          : typeof r.diets === 'string'
+            ? r.diets.toLowerCase().replace(/[\s_]+/g, '-').includes(recipeDietFilter.toLowerCase().replace(/[\s_]+/g, '-'))
+            : false
+      );
       return matchesSearch && matchesDiet;
     })
     .sort((a, b) => {

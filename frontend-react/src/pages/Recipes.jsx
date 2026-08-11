@@ -178,11 +178,11 @@ export default function Recipes() {
   };
 
   useEffect(() => {
-    if (location.state?.ingredients && !didInitRef.current) {
+    if (!didInitRef.current) {
       didInitRef.current = true;
-      handleSearch();
+      handleSearch(1);
     }
-  }, [location.state?.ingredients, handleSearch]);
+  }, [handleSearch]);
 
   const clearFilters = () => {
     setDiet('');
@@ -401,11 +401,16 @@ export default function Recipes() {
               <input type="number" placeholder="Max kcal" min="50" max="5000" step="50" className="constraint-input" value={maxCal} onChange={e => setMaxCal(e.target.value)} />
               <input type="number" placeholder="Max min" min="5" max="300" step="5" className="constraint-input" value={maxTime} onChange={e => setMaxTime(e.target.value)} />
               
-              {activeFilterCount > 0 && (
-                <button className="btn-secondary" onClick={clearFilters} style={{ color: 'var(--accent-1)', borderColor: 'var(--accent-1)' }}>
-                  Clear all filters ({activeFilterCount})
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginLeft: 'auto' }}>
+                <button className="btn-primary" onClick={() => handleSearch(1)} style={{ padding: '8px 16px', fontSize: '13px' }}>
+                  ✨ Apply Filters
                 </button>
-              )}
+                {activeFilterCount > 0 && (
+                  <button className="btn-secondary" onClick={clearFilters} style={{ color: 'var(--accent-1)', borderColor: 'var(--accent-1)', padding: '8px 14px', fontSize: '13px' }}>
+                    Clear all ({activeFilterCount})
+                  </button>
+                )}
+              </div>
             </div>
 
           </div>
