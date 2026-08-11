@@ -217,7 +217,7 @@ export default function Recipes() {
       
       {/* Compact Search & Filter Control Bar (Max 25% Page Height) */}
       <div className="hero-search-container fade-in-up" style={{ padding: '24px 20px', borderRadius: '16px', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px', position: 'relative', zIndex: 2 }}>
           <div>
             <h1 className="hero-search-title" style={{ fontSize: '24px', margin: 0 }}>What's in your fridge?</h1>
             <p className="hero-search-subtitle" style={{ fontSize: '13px', margin: '4px 0 0', opacity: 0.85 }}>
