@@ -8752,3 +8752,25 @@ input[type="text"].help-search-input,
   background: var(--bg-primary);
 }
 
+/* ── Ingredient Directory Catalog Enhancements ──────────────── */
+.selected-ingredients-bar {
+  animation: directorySlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes directorySlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sub-tag-more:hover {
+  background: rgba(255, 90, 54, 0.25) !important;
+  transform: scale(1.04);
+}
+
+

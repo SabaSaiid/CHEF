@@ -50,6 +50,21 @@ ALL_KNOWN_INGREDIENTS = list(set(
     [item for group in _GROUPS_DATA.get("groups", {}).values() for item in group]
 ))
 
+_TOP_FILE = Path(__file__).resolve().parent.parent / "top_ingredients.json"
+_TOP_INGREDIENTS = []
+if _TOP_FILE.exists():
+    with open(_TOP_FILE, "r") as f:
+        _TOP_INGREDIENTS = json.load(f)
+
+DEFAULT_DIRECTORY_GROUPS = [
+    { "category": "Produce", "icon": "🥬", "items": ["Tomato", "Onion", "Potato", "Spinach", "Garlic", "Ginger", "Green Chili", "Coriander", "Carrot", "Capsicum", "Cauliflower", "Eggplant", "Mushroom", "Zucchini", "Lemon", "Lime"] },
+    { "category": "Proteins", "icon": "🍗", "items": ["Chicken", "Paneer", "Eggs", "Tofu", "Lentils (Dal)", "Chickpeas", "Fish", "Mutton", "Pork", "Shrimp", "Soy Chunks", "Kidney Beans", "Beef", "Turkey"] },
+    { "category": "Dairy & Oils", "icon": "🧈", "items": ["Ghee", "Butter", "Milk", "Yogurt (Curd)", "Cream", "Coconut Oil", "Mustard Oil", "Olive Oil", "Cheese", "Coconut Milk", "Heavy Cream", "Mozzarella", "Parmesan"] },
+    { "category": "Grains & Flour", "icon": "🌾", "items": ["Rice", "Wheat Flour (Atta)", "Besan (Gram Flour)", "Semolina (Suji)", "Oats", "Maida", "Poha", "Quinoa", "Bread", "Pasta", "Cornstarch", "Basmati Rice", "Noodles"] },
+    { "category": "Spices", "icon": "🫙", "items": ["Turmeric", "Cumin", "Coriander Powder", "Red Chili Powder", "Garam Masala", "Mustard Seeds", "Black Pepper", "Cinnamon", "Cardamom", "Bay Leaf", "Fennel", "Cloves", "Nutmeg", "Kashmiri Chili"] },
+    { "category": "Condiments", "icon": "🫒", "items": ["Salt", "Sugar", "Lemon Juice", "Vinegar", "Soy Sauce", "Tamarind", "Jaggery", "Honey", "Tomato Paste", "Amchur", "Fish Sauce", "Sesame Oil", "Salsa", "Ketchup"] }
+]
+
 def spell_correct_ingredient(query: str) -> tuple[str, bool]:
     """
     Auto-correct typos like 'chaiken' -> 'chicken'.
@@ -388,4 +403,42 @@ def autocorrect_query(query: str):
         "corrected": corrected,
         "is_corrected": is_corrected
     }
+
+
+@router.get("/directory")
+def get_ingredient_directory(query: str | None = None, category: str | None = None):
+    """
+    Get the full ingredients directory catalog grouped by categories, with optional search query & category filter.
+    """
+    results = []
+    q = query.lower().strip() if query else None
+    cat_filter = category.lower().strip() if category else None
+
+    for group in DEFAULT_DIRECTORY_GROUPS:
+        if cat_filter and cat_filter != "all" and group["category"].lower() != cat_filter:
+            continue
+        
+        filtered_items = []
+        for item in group["items"]:
+            if not q or q in item.lower():
+                has_sub = item.lower() in ALL_KNOWN_INGREDIENTS or item.lower() in _SUBSTITUTIONS
+                filtered_items.append({
+                    "name": item,
+                    "has_substitutes": has_sub
+                })
+        
+        if filtered_items or not q:
+            results.append({
+                "category": group["category"],
+                "icon": group["icon"],
+                "items": filtered_items
+            })
+            
+    return {
+        "total_categories": len(results),
+        "groups": results,
+        "query": query,
+        "category_filter": category
+    }
+
 
