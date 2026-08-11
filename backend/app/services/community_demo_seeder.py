@@ -134,20 +134,21 @@ def seed_community_demo_data(db: Session) -> dict:
     all_demo_users = db.query(User).filter(User.email.like("%@demo.chef")).all()
     all_demo_user_ids = [u.id for u in all_demo_users]
 
-    old_posts = db.query(CommunityPost).filter(CommunityPost.user_id.in_(all_demo_user_ids)).all()
-    old_post_ids = [p.id for p in old_posts]
-    if old_post_ids:
-        db.query(CommunityComment).filter(CommunityComment.post_id.in_(old_post_ids)).delete(synchronize_session='evaluate')
-        db.query(CommunityLike).filter(CommunityLike.post_id.in_(old_post_ids)).delete(synchronize_session='evaluate')
-        db.query(CommunityPost).filter(CommunityPost.id.in_(old_post_ids)).delete(synchronize_session='evaluate')
+    if all_demo_user_ids:
+        old_posts = db.query(CommunityPost).filter(CommunityPost.user_id.in_(all_demo_user_ids)).all()
+        old_post_ids = [p.id for p in old_posts]
+        if old_post_ids:
+            db.query(CommunityComment).filter(CommunityComment.post_id.in_(old_post_ids)).delete(synchronize_session=False)
+            db.query(CommunityLike).filter(CommunityLike.post_id.in_(old_post_ids)).delete(synchronize_session=False)
+            db.query(CommunityPost).filter(CommunityPost.id.in_(old_post_ids)).delete(synchronize_session=False)
 
-    db.query(CommunityFollow).filter(
-        (CommunityFollow.follower_id.in_(all_demo_user_ids)) | (CommunityFollow.following_id.in_(all_demo_user_ids))
-    ).delete(synchronize_session='evaluate')
+        db.query(CommunityFollow).filter(
+            (CommunityFollow.follower_id.in_(all_demo_user_ids)) | (CommunityFollow.following_id.in_(all_demo_user_ids))
+        ).delete(synchronize_session=False)
 
-    db.query(CommunityRecipe).filter(CommunityRecipe.submitter_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
-    db.query(CommunityGroupMember).filter(CommunityGroupMember.user_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
-    db.query(CommunityChallengeParticipant).filter(CommunityChallengeParticipant.user_id.in_(all_demo_user_ids)).delete(synchronize_session='evaluate')
+        db.query(CommunityRecipe).filter(CommunityRecipe.submitter_id.in_(all_demo_user_ids)).delete(synchronize_session=False)
+        db.query(CommunityGroupMember).filter(CommunityGroupMember.user_id.in_(all_demo_user_ids)).delete(synchronize_session=False)
+        db.query(CommunityChallengeParticipant).filter(CommunityChallengeParticipant.user_id.in_(all_demo_user_ids)).delete(synchronize_session=False)
     db.flush()
 
 

@@ -137,9 +137,9 @@ def seed_demo_data(db: Session = Depends(get_db)):
 
     # ── 3. Seed saved recipes ───────────────────────────────────
     # Clear old demo data first
-    db.query(NutritionLog).filter(NutritionLog.user_id == user.id).delete()
-    db.query(MealPlan).filter(MealPlan.user_id == user.id).delete()
-    db.query(SavedRecipe).filter(SavedRecipe.user_id == user.id).delete()
+    db.query(NutritionLog).filter(NutritionLog.user_id == user.id).delete(synchronize_session=False)
+    db.query(MealPlan).filter(MealPlan.user_id == user.id).delete(synchronize_session=False)
+    db.query(SavedRecipe).filter(SavedRecipe.user_id == user.id).delete(synchronize_session=False)
     db.flush()
 
     demo_recipes = _load_demo_recipes()
