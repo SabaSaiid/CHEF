@@ -195,6 +195,13 @@ export default function Recipes() {
     setSelectedAllergies([]);
     setError(null);
     setPage(1);
+    setTimeout(() => {
+      api.post('/recipes/search', {
+        ingredients: ingredients.split(',').map(s => s.trim()).filter(Boolean),
+        max_results: 25,
+        page: 1,
+      }).then(data => setResults(data)).catch(() => {});
+    }, 0);
   };
 
   const toggleAllergy = (value) => {

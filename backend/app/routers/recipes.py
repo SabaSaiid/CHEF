@@ -291,7 +291,14 @@ def _diet_matches(recipe: RecipeItem, diet: str) -> bool:
     if normalized_diet == "high-protein":
         return bool(recipe.nutrition and recipe.nutrition.protein_g and recipe.nutrition.protein_g >= 20)
     recipe_diets = {d.lower().replace(" ", "-") for d in recipe.diets}
-    return normalized_diet in recipe_diets
+    if normalized_diet in recipe_diets:
+        return True
+    # Synonyms & variations
+    if normalized_diet in ("non-veg", "non-vegetarian") and any(d in ("non-veg", "non-vegetarian") for d in recipe_diets):
+        return True
+    if normalized_diet in ("veg", "vegetarian") and any(d in ("veg", "vegetarian") for d in recipe_diets):
+        return True
+    return any(normalized_diet in d or d in normalized_diet for d in recipe_diets)
 
 
 def _extract_instructions(recipe_info: dict) -> str:
@@ -548,13 +555,20 @@ async def search_recipes(req: RecipeSearchRequest):
 
     # ── Local database search ────────────────────────────────────
 
-    # Step 1: Apply region / meal-type set filters first (O(1) lookups)
+    # Step 1: Apply region / meal-type set filters first (O(1) lookups with substring fallback)
     allowed_ids: set[str] | None = None
     if req.region:
-        region_ids = RECIPES_BY_REGION.get(req.region.lower(), set())
+        reg_key = req.region.lower()
+        region_ids = RECIPES_BY_REGION.get(reg_key)
+        if not region_ids:
+            region_ids = {rid for rname, rset in RECIPES_BY_REGION.items() if reg_key in rname or rname in reg_key for rid in rset}
         allowed_ids = region_ids if allowed_ids is None else allowed_ids & region_ids
+
     if req.meal_type:
-        meal_ids = RECIPES_BY_MEAL_TYPE.get(req.meal_type.lower(), set())
+        meal_key = req.meal_type.lower()
+        meal_ids = RECIPES_BY_MEAL_TYPE.get(meal_key)
+        if not meal_ids:
+            meal_ids = {rid for mname, mset in RECIPES_BY_MEAL_TYPE.items() if meal_key in mname or mname in meal_key for rid in mset}
         allowed_ids = meal_ids if allowed_ids is None else allowed_ids & meal_ids
 
     # Step 2: Use the inverted index to narrow ingredient candidates

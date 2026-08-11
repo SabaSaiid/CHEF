@@ -70,86 +70,56 @@ async def lifespan(app: FastAPI):
         logger.warning("⚠️  Alembic migration failed (%s), falling back to create_all()", e)
         Base.metadata.create_all(bind=engine)
 
-    # ── Startup column/table migrations for SQLite ───────────────
+    # ── Startup column/table safety verification (SQLAlchemy inspect) ───
     try:
-        import sqlite3
-        import os
-        db_url = settings.DATABASE_URL
-        if db_url.startswith("sqlite:///"):
-            db_path = db_url.replace("sqlite:///", "")
-            # Resolve home directory
-            if db_path.startswith("~/"):
-                db_path = os.path.expanduser(db_path)
-            else:
-                db_path = os.path.abspath(db_path)
-                
-            logger.info(f"🔧 Verifying SQLite database schema at: {db_path}")
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            
-            # Check columns in user_profiles
-            cursor.execute("PRAGMA table_info(user_profiles);")
-            cols = [col[1] for col in cursor.fetchall()]
-            if "allergens" not in cols:
-                logger.info("🔧 Adding 'allergens' column to table 'user_profiles'")
-                cursor.execute("ALTER TABLE user_profiles ADD COLUMN allergens VARCHAR(500);")
-            if "health_conditions" not in cols:
-                logger.info("🔧 Adding 'health_conditions' column to table 'user_profiles'")
-                cursor.execute("ALTER TABLE user_profiles ADD COLUMN health_conditions VARCHAR(500);")
-            if "taste_preferences" not in cols:
-                logger.info("🔧 Adding 'taste_preferences' column to table 'user_profiles'")
-                cursor.execute("ALTER TABLE user_profiles ADD COLUMN taste_preferences VARCHAR(500);")
-                
-            # Create pantry_items table
-            cursor.execute("""
-            CREATE TABLE IF NOT EXISTS pantry_items (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER NOT NULL,
-                ingredient_name VARCHAR(255) NOT NULL,
-                quantity FLOAT NOT NULL DEFAULT 1.0,
-                unit VARCHAR(50) NOT NULL DEFAULT 'serving',
-                category VARCHAR(100) NOT NULL DEFAULT 'Other',
-                days_fresh INTEGER NOT NULL DEFAULT 7,
-                updated_at DATETIME NOT NULL,
-                FOREIGN KEY(user_id) REFERENCES users(id)
-            );
-            """)
-            cursor.execute("CREATE INDEX IF NOT EXISTS ix_pantry_items_user_id ON pantry_items (user_id);")
-            cursor.execute("CREATE INDEX IF NOT EXISTS ix_pantry_items_ingredient_name ON pantry_items (ingredient_name);")
-            
-            # Check and upgrade existing pantry_items columns if table already existed
-            cursor.execute("PRAGMA table_info(pantry_items);")
-            p_cols = [col[1] for col in cursor.fetchall()]
-            if "category" not in p_cols:
-                logger.info("🔧 Upgrading table 'pantry_items' with 'category' column")
-                cursor.execute("ALTER TABLE pantry_items ADD COLUMN category VARCHAR(100) NOT NULL DEFAULT 'Other';")
-            if "days_fresh" not in p_cols:
-                logger.info("🔧 Upgrading table 'pantry_items' with 'days_fresh' column")
-                cursor.execute("ALTER TABLE pantry_items ADD COLUMN days_fresh INTEGER NOT NULL DEFAULT 7;")
+        from sqlalchemy import inspect, text
+        inspector = inspect(engine)
+        
+        # 1. user_profiles columns check
+        if inspector.has_table("user_profiles"):
+            cols = [c["name"] for c in inspector.get_columns("user_profiles")]
+            with engine.begin() as conn:
+                if "allergens" not in cols:
+                    logger.info("🔧 Adding 'allergens' column to table 'user_profiles'")
+                    conn.execute(text("ALTER TABLE user_profiles ADD COLUMN allergens VARCHAR(500)"))
+                if "health_conditions" not in cols:
+                    logger.info("🔧 Adding 'health_conditions' column to table 'user_profiles'")
+                    conn.execute(text("ALTER TABLE user_profiles ADD COLUMN health_conditions VARCHAR(500)"))
+                if "taste_preferences" not in cols:
+                    logger.info("🔧 Adding 'taste_preferences' column to table 'user_profiles'")
+                    conn.execute(text("ALTER TABLE user_profiles ADD COLUMN taste_preferences VARCHAR(500)"))
 
-            # Upgrade community_posts columns if table already existed
-            cursor.execute("PRAGMA table_info(community_posts);")
-            cp_cols = [col[1] for col in cursor.fetchall()]
-            if cp_cols:
+        # 2. pantry_items columns check
+        if inspector.has_table("pantry_items"):
+            p_cols = [c["name"] for c in inspector.get_columns("pantry_items")]
+            with engine.begin() as conn:
+                if "category" not in p_cols:
+                    logger.info("🔧 Upgrading table 'pantry_items' with 'category' column")
+                    conn.execute(text("ALTER TABLE pantry_items ADD COLUMN category VARCHAR(100) DEFAULT 'Other'"))
+                if "days_fresh" not in p_cols:
+                    logger.info("🔧 Upgrading table 'pantry_items' with 'days_fresh' column")
+                    conn.execute(text("ALTER TABLE pantry_items ADD COLUMN days_fresh INTEGER DEFAULT 7"))
+
+        # 3. community_posts columns check
+        if inspector.has_table("community_posts"):
+            cp_cols = [c["name"] for c in inspector.get_columns("community_posts")]
+            with engine.begin() as conn:
                 if "shared_meal_plan" not in cp_cols:
                     logger.info("🔧 Upgrading table 'community_posts' with 'shared_meal_plan' column")
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN shared_meal_plan TEXT;")
+                    conn.execute(text("ALTER TABLE community_posts ADD COLUMN shared_meal_plan TEXT"))
                 if "group_id" not in cp_cols:
                     logger.info("🔧 Upgrading table 'community_posts' with 'group_id' column")
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN group_id INTEGER;")
+                    conn.execute(text("ALTER TABLE community_posts ADD COLUMN group_id INTEGER"))
                 if "recipe_id" not in cp_cols:
                     logger.info("🔧 Upgrading table 'community_posts' with 'recipe_id' column")
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_id VARCHAR(255);")
+                    conn.execute(text("ALTER TABLE community_posts ADD COLUMN recipe_id VARCHAR(255)"))
                 if "recipe_source" not in cp_cols:
                     logger.info("🔧 Upgrading table 'community_posts' with 'recipe_source' column")
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_source VARCHAR(50);")
+                    conn.execute(text("ALTER TABLE community_posts ADD COLUMN recipe_source VARCHAR(50)"))
 
-            conn.commit()
-            conn.close()
-
-            logger.info("✅ Database schema is up to date!")
+        logger.info("✅ Database schema safety verification complete!")
     except Exception as emig:
-        logger.error(f"⚠️  Startup migrations failed: {emig}")
+        logger.error(f"⚠️  Startup schema verification warning: {emig}")
 
     yield
 

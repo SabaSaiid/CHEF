@@ -36,27 +36,24 @@ DEMO_USERNAMES = [
 ]
 
 def _verify_and_migrate_community_tables(db: Session):
-    """Ensure missing columns in existing SQLite tables are added seamlessly."""
+    """Ensure missing columns in existing database tables (SQLite, PostgreSQL, etc.) are added seamlessly."""
     try:
+        from sqlalchemy import inspect, text
         bind = db.get_bind()
-        if bind.dialect.name == "sqlite":
-            conn = bind.raw_connection()
-            cursor = conn.cursor()
-            
-            # Check community_posts columns
-            cursor.execute("PRAGMA table_info(community_posts);")
-            cols = [col[1] for col in cursor.fetchall()]
-            if cols:
-                if "shared_meal_plan" not in cols:
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN shared_meal_plan TEXT;")
-                if "group_id" not in cols:
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN group_id INTEGER;")
-                if "recipe_id" not in cols:
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_id VARCHAR(255);")
-                if "recipe_source" not in cols:
-                    cursor.execute("ALTER TABLE community_posts ADD COLUMN recipe_source VARCHAR(50);")
-                conn.commit()
+        inspector = inspect(bind)
+        if inspector.has_table("community_posts"):
+            cols = [c['name'] for c in inspector.get_columns("community_posts")]
+            if "shared_meal_plan" not in cols:
+                db.execute(text("ALTER TABLE community_posts ADD COLUMN shared_meal_plan TEXT"))
+            if "group_id" not in cols:
+                db.execute(text("ALTER TABLE community_posts ADD COLUMN group_id INTEGER"))
+            if "recipe_id" not in cols:
+                db.execute(text("ALTER TABLE community_posts ADD COLUMN recipe_id VARCHAR(255)"))
+            if "recipe_source" not in cols:
+                db.execute(text("ALTER TABLE community_posts ADD COLUMN recipe_source VARCHAR(50)"))
+            db.commit()
     except Exception as e:
+        db.rollback()
         import logging
         logging.getLogger("chef.seeder").warning("Community table migration check: %s", e)
 
