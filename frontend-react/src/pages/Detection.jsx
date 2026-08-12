@@ -388,7 +388,7 @@ export default function Detection() {
                 <div>
                   <div style={{fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px'}}>Total Estimated Calories</div>
                   <div style={{fontSize: '28px', fontWeight: 700, color: 'var(--primary-color)'}}>
-                    🔥 {results.total_estimated_calories} kcal
+                    🔥 {Math.round(results.total_estimated_calories)} kcal
                   </div>
                 </div>
                 {localStorage.getItem('chef_token') && results.detected_foods?.length > 0 && (
@@ -431,7 +431,7 @@ export default function Detection() {
                               background: 'rgba(255,154,0,0.12)', color: '#ff9a00',
                               padding: '3px 10px', borderRadius: '20px', fontWeight: 500
                             }}>
-                              ~{item.estimated_calories} kcal
+                              ~{Math.round(item.estimated_calories)} kcal
                             </span>
                           )}
                         </div>

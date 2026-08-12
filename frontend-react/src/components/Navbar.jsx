@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Bell, Trash2, CheckCircle2, AlertCircle, AlertTriangle, Info, CheckCheck, SlidersHorizontal, Settings as SettingsIcon } from 'lucide-react';
+import { Bell, Trash2, CheckCircle2, AlertCircle, AlertTriangle, Info, CheckCheck, PanelRightOpen, Settings as SettingsIcon, LogIn } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import AuthModal from './AuthModal';
@@ -126,23 +126,26 @@ export default function Navbar({ onToggleSidebar }) {
           </div>
 
           {!token ? (
-            <button className="btn-auth" onClick={() => setAuthModalOpen(true)}>🔐 Login</button>
+            <button className="btn-auth" onClick={() => setAuthModalOpen(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <LogIn size={15} />
+              <span>Login</span>
+            </button>
           ) : (
-            <div className="user-greeting" onClick={onToggleSidebar} style={{ cursor: 'pointer' }} title="Toggle Sidebar Panel">
+            <div className="user-greeting" onClick={onToggleSidebar} style={{ cursor: 'pointer' }} title="Toggle Profile & Quick Tools Drawer">
               <span>👤 {username}</span>
             </div>
           )}
 
-          {/* Toggle Sidebar Button */}
+          {/* Toggle Sidebar / Quick Panel Drawer Button */}
           <button 
             type="button"
             className="nav-icon-btn"
             onClick={onToggleSidebar}
-            title="Toggle Preferences & Sidebar"
-            aria-label="Toggle Sidebar"
+            title="Quick Tools & Profile Drawer"
+            aria-label="Toggle Quick Tools & Profile Drawer"
             style={{ margin: 0 }}
           >
-            <SlidersHorizontal size={18} />
+            <PanelRightOpen size={18} />
           </button>
 
           {/* App Settings Modal Button */}
@@ -150,8 +153,8 @@ export default function Navbar({ onToggleSidebar }) {
             type="button"
             className="nav-icon-btn"
             onClick={() => setSettingsOpen(true)}
-            title="App Settings"
-            aria-label="App Settings"
+            title="App Configuration & Settings"
+            aria-label="Open App Configuration & Settings"
             style={{ margin: 0 }}
           >
             <SettingsIcon size={18} />

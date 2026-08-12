@@ -87,7 +87,7 @@ export default function SavedRecipes() {
           textContent += `============================================================\n\n`;
           if (recipe.calories || recipe.protein_g || recipe.carbs_g || recipe.fat_g) {
             textContent += `NUTRITION\n----------------------------------------\n`;
-            if (recipe.calories) textContent += `  Calories: ${recipe.calories} kcal\n`;
+            if (recipe.calories) textContent += `  Calories: ${Math.round(recipe.calories)} kcal\n`;
             if (recipe.protein_g) textContent += `  Protein: ${recipe.protein_g}g\n`;
             if (recipe.carbs_g) textContent += `  Carbs: ${recipe.carbs_g}g\n`;
             if (recipe.fat_g) textContent += `  Fat: ${recipe.fat_g}g\n`;
@@ -177,7 +177,7 @@ export default function SavedRecipes() {
       <body>
         <h1>${cleanTitle}</h1>
         <div class="meta">
-          ${recipe.calories ? `<span>🔥 ${recipe.calories} kcal</span> &nbsp;•&nbsp; ` : ''}
+          ${recipe.calories ? `<span>🔥 ${Math.round(recipe.calories)} kcal</span> &nbsp;•&nbsp; ` : ''}
           ${recipe.ready_in_minutes ? `<span>⏱️ ${recipe.ready_in_minutes} mins</span> &nbsp;•&nbsp; ` : ''}
           ${recipe.rating ? `<span>★ ${recipe.rating}/5</span>` : ''}
         </div>
@@ -270,7 +270,7 @@ export default function SavedRecipes() {
                   {r.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(r.summary)}}></div>}
                   <div className="recipe-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      {r.calories && <span className="recipe-meta-item" style={{marginRight: '10px'}}>🔥 <span className="value">{r.calories} kcal</span></span>}
+                      {r.calories && <span className="recipe-meta-item" style={{marginRight: '10px'}}>🔥 <span className="value">{Math.round(r.calories)} kcal</span></span>}
                       {r.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{r.ready_in_minutes} min</span></span>}
                     </div>
                     <div className="recipe-rating" style={{ fontSize: '1.2rem', cursor: 'pointer' }}>

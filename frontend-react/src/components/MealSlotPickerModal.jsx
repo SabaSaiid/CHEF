@@ -249,7 +249,7 @@ export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAss
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                       {recipe.calories && (
                         <span style={{ color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '2px' }}>
-                          <Flame size={12} /> {recipe.calories} kcal
+                          <Flame size={12} /> {Math.round(recipe.calories)} kcal
                         </span>
                       )}
                       {recipe.ready_in_minutes && (

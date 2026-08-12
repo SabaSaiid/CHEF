@@ -458,7 +458,7 @@ export default function MealPlanner() {
                              <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '2px' }}>{slot}</div>
                              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{meal.recipe?.title}</div>
                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                               <span>{meal.recipe?.calories} kcal</span>
+                               <span>{Math.round(meal.recipe?.calories)} kcal</span>
                                {(meal.recipe?.nutri_score || meal.recipe?.chef_score) && <ChefScoreBadge grade={(meal.recipe?.nutri_score || meal.recipe?.chef_score).grade} size="sm" />}
                              </div>
                           </div>
@@ -533,7 +533,7 @@ export default function MealPlanner() {
                     })()}
                     <div className="recipe-info" style={{ padding: '12px' }}>
                       <div className="recipe-title" style={{ fontSize: '1rem', WebkitLineClamp: 2 }}>{r.title}</div>
-                      {r.calories && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', marginTop: '6px', fontWeight: '600' }}>🔥 {r.calories} kcal</div>}
+                      {r.calories && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', marginTop: '6px', fontWeight: '600' }}>🔥 {Math.round(r.calories)} kcal</div>}
                     </div>
                   </div>
                 ))}

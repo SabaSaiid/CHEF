@@ -542,7 +542,7 @@ export default function Recipes() {
                     
                     <div className="magazine-card-meta">
                       {recipe.ready_in_minutes && <span>⏱️ {recipe.ready_in_minutes}m</span>}
-                      {recipe.nutrition?.calories && <span>🔥 {recipe.nutrition.calories} kcal</span>}
+                      {recipe.nutrition?.calories && <span>🔥 {Math.round(recipe.nutrition.calories)} kcal</span>}
                     </div>
                   </div>
                 </div>

@@ -542,7 +542,7 @@ export default function Home() {
                   )}
                   <div className="recipe-meta" style={{ marginBottom: '15px' }}>
                     {dailyRecipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{dailyRecipe.ready_in_minutes} min</span></span>}
-                    {dailyRecipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{dailyRecipe.nutrition.calories} kcal</span></span>}
+                    {dailyRecipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{Math.round(dailyRecipe.nutrition.calories)} kcal</span></span>}
                     {dailyRecipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{dailyRecipe.servings} servings</span></span>}
                   </div>
                   {dailyRecipe.video_url && (
@@ -973,7 +973,7 @@ export default function Home() {
                     <p className="slot-recipe-title">{recipe.title}</p>
                     
                     <div className="slot-macro-row">
-                      {recipe.calories && <span className="slot-recipe-cals">🔥 {recipe.calories} kcal</span>}
+                      {recipe.calories && <span className="slot-recipe-cals">🔥 {Math.round(recipe.calories)} kcal</span>}
                       {(recipe.protein_g || recipe.protein) && (
                         <span className="slot-recipe-macro">💪 {recipe.protein_g || recipe.protein}g P</span>
                       )}
