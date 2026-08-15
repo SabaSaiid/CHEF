@@ -136,7 +136,7 @@ def add_pantry_item(
         existing.updated_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(existing)
-        return existing
+        return _pantry_item_to_response(existing)
 
     item = PantryItem(
         user_id=current_user.id,
@@ -150,7 +150,7 @@ def add_pantry_item(
     db.add(item)
     db.commit()
     db.refresh(item)
-    return item
+    return _pantry_item_to_response(item)
 
 @router.put("/{item_id}", response_model=PantryItemResponse)
 def update_pantry_item(
@@ -189,7 +189,7 @@ def update_pantry_item(
         item.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(item)
-    return item
+    return _pantry_item_to_response(item)
 
 @router.delete("/{item_id}")
 def delete_pantry_item(
@@ -391,6 +391,7 @@ async def magic_import_pantry(
         
         if existing:
             existing.quantity = (existing.quantity or 0) + (item.get("quantity", 1) or 1)
+            existing.updated_at = datetime.now(timezone.utc)
         else:
             new_item = PantryItem(
                 user_id=current_user.id,
@@ -410,7 +411,7 @@ async def magic_import_pantry(
         "message": f"Successfully imported {saved_count} items into your pantry!"
     }
 
-@router.get("/generate-recipe")
+@router.api_route("/generate-recipe", methods=["GET", "POST"])
 async def generate_pantry_recipe(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)

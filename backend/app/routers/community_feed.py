@@ -23,17 +23,21 @@ router = APIRouter(prefix="/api/community", tags=["community_feed"])
 limiter = Limiter(key_func=get_remote_address)
 
 
-def _format_post_response(post: CommunityPost, author_username: str, current_user_id: Optional[int]) -> PostResponse:
+def _format_post_response(post: CommunityPost, author_username: str, current_user_id: Optional[int], liked_post_ids: Optional[set] = None) -> PostResponse:
     """Helper to format CommunityPost into PostResponse with is_liked and is_author flags."""
     is_liked = False
     if current_user_id and post.id:
-        db = Session.object_session(post)
-        if db:
-            like_exists = db.query(CommunityLike).filter(
-                CommunityLike.post_id == post.id,
-                CommunityLike.user_id == current_user_id,
-            ).first()
-            is_liked = like_exists is not None
+        if liked_post_ids is not None:
+            is_liked = post.id in liked_post_ids
+        else:
+            # Fallback: per-post query (kept for single-post use cases like create_post)
+            db = Session.object_session(post)
+            if db:
+                like_exists = db.query(CommunityLike).filter(
+                    CommunityLike.post_id == post.id,
+                    CommunityLike.user_id == current_user_id,
+                ).first()
+                is_liked = like_exists is not None
 
     # Parse shared_meal_plan JSON if present
     meal_plan_data = None
@@ -59,6 +63,17 @@ def _format_post_response(post: CommunityPost, author_username: str, current_use
         is_author=(current_user_id == post.user_id) if current_user_id else False,
         created_at=post.created_at,
     )
+
+
+def _batch_liked_post_ids(db: Session, user_id: Optional[int], post_ids: list[int]) -> set:
+    """Fetch all post IDs that a user has liked in a single query."""
+    if not user_id or not post_ids:
+        return set()
+    rows = db.query(CommunityLike.post_id).filter(
+        CommunityLike.user_id == user_id,
+        CommunityLike.post_id.in_(post_ids),
+    ).all()
+    return {r[0] for r in rows}
 
 
 def _ensure_community_demo_data(db: Session):
@@ -93,7 +108,9 @@ def get_global_feed(
     )
 
     current_user_id = current_user.id if current_user else None
-    return [_format_post_response(post, uname, current_user_id) for post, uname in posts_with_users]
+    post_ids = [post.id for post, _ in posts_with_users]
+    liked_ids = _batch_liked_post_ids(db, current_user_id, post_ids)
+    return [_format_post_response(post, uname, current_user_id, liked_ids) for post, uname in posts_with_users]
 
 
 
@@ -129,7 +146,9 @@ def get_following_feed(
         .all()
     )
 
-    return [_format_post_response(post, uname, current_user.id) for post, uname in posts_with_users]
+    post_ids = [post.id for post, _ in posts_with_users]
+    liked_ids = _batch_liked_post_ids(db, current_user.id, post_ids)
+    return [_format_post_response(post, uname, current_user.id, liked_ids) for post, uname in posts_with_users]
 
 
 @router.post(

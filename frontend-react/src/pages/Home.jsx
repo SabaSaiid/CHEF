@@ -306,14 +306,16 @@ export default function Home() {
     try {
       if (token) {
         await api.post('/nutrition/log', {
-          recipe_id: recipe.id,
-          food_name: recipe.title,
+          food_item: recipe.title,
           calories: recipe.calories || 0,
           protein_g: recipe.protein_g || recipe.protein || 0,
           carbs_g: recipe.carbs_g || recipe.carbs || 0,
           fat_g: recipe.fat_g || recipe.fat || 0,
+          fiber_g: 0,
+          quantity: 1,
+          unit: 'serving',
           date: todayStr,
-          meal_type: slotName ? slotName.toLowerCase() : 'snack'
+          meal_slot: slotName ? slotName.charAt(0).toUpperCase() + slotName.slice(1).toLowerCase() : 'Snack'
         });
       } else {
         const newLog = {

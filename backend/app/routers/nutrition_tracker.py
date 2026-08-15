@@ -4,6 +4,7 @@ Requires authentication for all endpoints.
 """
 
 from datetime import datetime, timezone, date
+from collections import defaultdict
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func

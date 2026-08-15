@@ -156,11 +156,8 @@ def _calculate_and_save_targets(profile: UserProfile, data) -> None:
                 profile.target_fiber_g = adj.target_fiber_g
             if adj.target_water_ml is not None:
                 profile.target_water_ml = adj.target_water_ml
-            if adj.protein_pct is not None:
-                profile.protein_pct = adj.protein_pct
-            if adj.carbs_pct is not None:
-                profile.carbs_pct = adj.carbs_pct
-            if adj.fat_pct is not None:
-                profile.fat_pct = adj.fat_pct
-    except Exception:
-        pass
+            # Note: protein_pct/carbs_pct/fat_pct are not stored on UserProfile;
+            # percentage breakdowns are computed on the fly by the frontend.
+    except Exception as e:
+        import logging
+        logging.getLogger("chef.profiles").warning("Failed to calculate targets for profile %s: %s", profile.id, e)

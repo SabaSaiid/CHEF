@@ -468,7 +468,7 @@ export default function Recipes() {
 
                 return (
                   <div 
-                    key={idx} 
+                    key={recipe.id || idx} 
                     className="magazine-card" 
                     style={{animationDelay: `${idx * 0.05}s`}}
                     onClick={() => setSelectedRecipe(recipe)}

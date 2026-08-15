@@ -3,6 +3,7 @@ Meal planner router — create, retrieve, and delete weekly meal plan entries.
 Also generates an aggregated shopping list from planned meals.
 """
 
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from collections import defaultdict
@@ -273,17 +274,32 @@ def log_today_meals(
             log_entry = NutritionLog(
                 user_id=current_user.id,
                 date=date,
-                food_name=f"[Planned] {mp.recipe.title}",
-                meal_type=mp.meal_slot or "Meal",
+                food_item=f"[Planned] {mp.recipe.title}",
+                meal_slot=mp.meal_slot or "Snack",
                 calories=float(cal),
                 protein_g=float(prot),
                 carbs_g=float(carbs),
-                fat_g=float(fat)
+                fat_g=float(fat),
+                fiber_g=0.0,
+                quantity=1.0,
+                unit="serving",
             )
             db.add(log_entry)
             logged_count += 1
 
     db.commit()
     return {"message": f"Successfully logged {logged_count} planned meals into your Nutrition Tracker! ⚡", "logged_count": logged_count}
+
+
+@router.post("/autofill")
+def autofill_meal_plan(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Generate weekly smart meal plan matching user targets and preferences."""
+    from app.routers.diet_planner import generate_weekly_diet_plan
+    return generate_weekly_diet_plan(current_user=current_user, db=db)
 
 

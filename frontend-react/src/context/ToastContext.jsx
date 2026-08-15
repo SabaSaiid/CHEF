@@ -158,7 +158,12 @@ export function ToastProvider({ children }) {
     history,
     unreadCount,
     markAllAsRead,
-    clearHistory
+    clearHistory,
+    // Aliases for legacy callers (SubmitRecipe, Community, UserProfile, RecipeModal)
+    showSuccess: success,
+    showError: error,
+    showInfo: info,
+    showWarning: warning,
   };
 
   const renderIcon = (type) => {

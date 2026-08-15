@@ -113,20 +113,24 @@ export default function Ingredients() {
     if (items.length === 0) return;
 
     setLoading(true);
-    let successCount = 0;
     try {
-      for (const item of items) {
-        const name = typeof item === 'string' ? item : (item.name || item.raw_text);
-        if (!name) continue;
-        await api.post('/pantry', {
-          ingredient_name: name,
-          quantity: item.quantity || 1,
-          unit: item.unit || 'unit',
-          days_fresh: 7
-        });
-        successCount++;
-      }
-      toast.success(`Added ${successCount} ingredient(s) to your pantry! 🛒`);
+      const validItems = items
+        .map(item => {
+          const name = typeof item === 'string' ? item : (item.name || item.raw_text);
+          if (!name) return null;
+          return {
+            ingredient_name: name,
+            quantity: item.quantity || 1,
+            unit: item.unit || 'unit',
+            days_fresh: 7
+          };
+        })
+        .filter(Boolean);
+
+      if (validItems.length === 0) return;
+
+      await Promise.all(validItems.map(item => api.post('/pantry', item)));
+      toast.success(`Added ${validItems.length} ingredient(s) to your pantry! 🛒`);
     } catch (err) {
       toast.error(err.message || 'Failed to add items to pantry.');
     } finally {
