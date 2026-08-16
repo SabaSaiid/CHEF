@@ -26,40 +26,61 @@ const CULINARY_ESTIMATES = [
   { regex: /\b(arhar dal|toor dal|tur dal|moong dal|chana dal|urad dal|masoor dal|dal|lentil|lentils)\b/i, qtyPerServing: 0.33, unit: 'cup' },
   { regex: /\b(basmati rice|rice)\b/i, qtyPerServing: 0.5, unit: 'cup' },
   { regex: /\b(chickpeas|chana|chole|rajma|kidney beans|beans)\b/i, qtyPerServing: 0.38, unit: 'cup' },
-  { regex: /\b(atta|whole wheat flour|maida|flour|all-purpose flour|suji|rawa|semolina|besan|poha|sabudana|oats|quinoa)\b/i, qtyPerServing: 0.5, unit: 'cup' },
+  { regex: /\b(atta|whole wheat flour|maida|flour|all-purpose flour|suji|rawa|semolina|besan|poha|sabudana|oats|quinoa|sattu)\b/i, qtyPerServing: 0.5, unit: 'cup' },
   { regex: /\b(pasta|spaghetti|macaroni|noodles)\b/i, qtyPerServing: 75, unit: 'g' },
+  { regex: /\b(lasagna sheets|lasagna sheet|lasagna)\b/i, qtyPerServing: 3, unit: 'sheets' },
   { regex: /\b(bread|pav|naan|roti|puri|bhatura|tortilla|bun|buns)\b/i, qtyPerServing: 1, unit: 'pcs' },
 
   // Nuts, Dried Fruits & Seeds
   { regex: /\b(peanuts|cashews|cashew|almonds|almond|raisins|walnuts|pistachios|seeds|sesame seeds|chia seeds|flaxseeds)\b/i, qtyPerServing: 0.67, unit: 'tbsp' },
 
-  // Proteins
+  // Proteins & Seafood
   { regex: /\b(paneer|tofu)\b/i, qtyPerServing: 100, unit: 'g' },
-  { regex: /\b(chicken|chicken breast|mutton|lamb|beef|pork|fish|shrimp|prawn|salmon|tuna|meat)\b/i, qtyPerServing: 125, unit: 'g' },
+  { regex: /\b(chicken|chicken breast|mutton|lamb|beef|pork|fish|salmon|tuna|meat)\b/i, qtyPerServing: 125, unit: 'g' },
+  { regex: /\b(shrimp|prawn|prawns|clams|crab|lobster|squid)\b/i, qtyPerServing: 100, unit: 'g' },
   { regex: /\b(egg|eggs)\b/i, qtyPerServing: 1, unit: 'pcs' },
 
-  // Vegetables & Fruits
+  // Vegetables & Fruits (Piece, Head, Cup, or Gram measurements — NEVER tbsp)
   { regex: /\b(potato|potatoes|aloo)\b/i, qtyPerServing: 0.67, unit: 'medium' },
+  { regex: /\b(sweet potato|sweet potatoes)\b/i, qtyPerServing: 0.5, unit: 'medium' },
   { regex: /\b(cauliflower|gobi)\b/i, qtyPerServing: 0.33, unit: 'head' },
   { regex: /\b(cabbage)\b/i, qtyPerServing: 0.25, unit: 'head' },
-  { regex: /\b(bell pepper|capsicum)\b/i, qtyPerServing: 0.5, unit: 'medium' },
-  { regex: /\b(spinach|palak)\b/i, qtyPerServing: 0.67, unit: 'cup' },
+  { regex: /\b(eggplant|brinjal|baingan|aubergine)\b/i, qtyPerServing: 0.5, unit: 'medium' },
+  { regex: /\b(bell pepper|capsicum|peppers|bell peppers)\b/i, qtyPerServing: 0.5, unit: 'medium' },
+  { regex: /\b(spinach|palak)\b/i, qtyPerServing: 1.0, unit: 'cup' },
   { regex: /\b(tomato|tomatoes|tamatar)\b/i, qtyPerServing: 0.67, unit: 'medium' },
-  { regex: /\b(onion|onions|pyaaz)\b/i, qtyPerServing: 0.33, unit: 'medium' },
+  { regex: /\b(onion|onions|pyaaz|shallots|shallot)\b/i, qtyPerServing: 0.33, unit: 'medium' },
+  { regex: /\b(carrot|carrots|gajar)\b/i, qtyPerServing: 0.5, unit: 'medium' },
+  { regex: /\b(mushroom|mushrooms)\b/i, qtyPerServing: 75, unit: 'g' },
+  { regex: /\b(bean sprouts|sprouts)\b/i, qtyPerServing: 0.5, unit: 'cup' },
   { regex: /\b(peas|matar|corn|sweet corn)\b/i, qtyPerServing: 0.33, unit: 'cup' },
   { regex: /\b(coconut|grated coconut)\b/i, qtyPerServing: 0.33, unit: 'cup' },
   { regex: /\b(drumstick|drumsticks)\b/i, qtyPerServing: 1, unit: 'pcs' },
-  { regex: /\b(tamarind)\b/i, qtyPerServing: 1, unit: 'tbsp' },
+  { regex: /\b(cucumber|kheera|zucchini)\b/i, qtyPerServing: 0.5, unit: 'medium' },
+  { regex: /\b(broccoli)\b/i, qtyPerServing: 0.33, unit: 'head' },
+  { regex: /\b(scallions|spring onion|green onion)\b/i, qtyPerServing: 2, unit: 'stalks' },
+  { regex: /\b(tamarind pulp|tamarind paste|tamarind)\b/i, qtyPerServing: 0.5, unit: 'tbsp' },
+  { regex: /\b(kokum)\b/i, qtyPerServing: 2, unit: 'pieces' },
 
-  // Chutneys, Sauces & Masala Powders
-  { regex: /\b(tamarind chutney|green chutney|mint chutney|coconut chutney|ketchup|sauce|soy sauce|vinegar|mayonnaise|mustard)\b/i, qtyPerServing: 0.67, unit: 'tbsp' },
-  { regex: /\b(pav bhaji masala|sambar powder|rasam powder|chana masala powder|kitchen king masala|biryani masala|chai masala|curry powder)\b/i, qtyPerServing: 0.33, unit: 'tsp' },
+  // Broths, Stocks & Liquids
+  { regex: /\b(beef broth|chicken broth|vegetable broth|bone broth|broth|stock)\b/i, qtyPerServing: 1, unit: 'cup' },
+  { regex: /\b(milk|whole milk|almond milk|soy milk|oat milk)\b/i, qtyPerServing: 0.5, unit: 'cup' },
+  { regex: /\b(coconut milk)\b/i, qtyPerServing: 0.33, unit: 'cup' },
 
-  // Aromatics & Herbs
+  // Sauces & Condiments
+  { regex: /\b(soy sauce|tamari)\b/i, qtyPerServing: 0.5, unit: 'tbsp' },
+  { regex: /\b(tamarind chutney|green chutney|mint chutney|coconut chutney|ketchup|sauce|vinegar|mayonnaise|mustard)\b/i, qtyPerServing: 0.67, unit: 'tbsp' },
+  { regex: /\b(pav bhaji masala|sambar powder|rasam powder|chana masala powder|kitchen king masala|biryani masala|chai masala|curry powder|garam masala)\b/i, qtyPerServing: 0.33, unit: 'tsp' },
+
+  // Aromatics, Herbs & Baking
   { regex: /\b(garlic|lahsun)\b/i, qtyPerServing: 1.33, unit: 'clove' },
   { regex: /\b(ginger|adrak)\b/i, qtyPerServing: 0.33, unit: 'inch' },
   { regex: /\b(green chili|chili|chilies|chillie|chile|hari mirch)\b/i, qtyPerServing: 0.67, unit: 'pcs' },
-  { regex: /\b(coriander leaves|cilantro|mint|pudina|curry leaves|herbs)\b/i, qtyPerServing: 1, unit: 'tbsp' },
+  { regex: /\b(curry leaves)\b/i, isSpecial: true, text: '6–8 fresh curry leaves' },
+  { regex: /\b(coriander leaves|cilantro|mint|pudina|herbs|basil|parsley)\b/i, qtyPerServing: 1, unit: 'tbsp' },
+  { regex: /\b(tea leaves|black tea)\b/i, qtyPerServing: 0.75, unit: 'tbsp' },
+  { regex: /\b(cardamom|elaichi)\b/i, qtyPerServing: 1.5, unit: 'pods' },
+  { regex: /\b(yeast|active dry yeast)\b/i, qtyPerServing: 0.25, unit: 'tsp' },
   { regex: /\b(saffron|kesar)\b/i, isSpecial: true, text: '1 pinch saffron (soaked in 1 tbsp warm milk)' },
   { regex: /\b(hing|asafoetida)\b/i, isSpecial: true, text: '1 pinch hing (asafoetida)' },
 
@@ -68,16 +89,15 @@ const CULINARY_ESTIMATES = [
   { regex: /\b(cumin|jeera)\b/i, qtyPerServing: 0.33, unit: 'tsp' },
   { regex: /\b(mustard seeds|rai)\b/i, qtyPerServing: 0.33, unit: 'tsp' },
   { regex: /\b(coriander powder|dhaniya powder)\b/i, qtyPerServing: 0.33, unit: 'tsp' },
-  { regex: /\b(garam masala)\b/i, qtyPerServing: 0.25, unit: 'tsp' },
   { regex: /\b(red chili powder|chili powder|paprika)\b/i, qtyPerServing: 0.25, unit: 'tsp' },
-  { regex: /\b(amchur)\b/i, qtyPerServing: 0.25, unit: 'tsp' },
+  { regex: /\b(amchur|dry mango powder)\b/i, qtyPerServing: 0.25, unit: 'tsp' },
 
   // Oils & Dairy
   { regex: /\b(ghee)\b/i, qtyPerServing: 0.5, unit: 'tbsp' },
   { regex: /\b(mustard oil|olive oil|cooking oil|vegetable oil|oil)\b/i, qtyPerServing: 0.5, unit: 'tbsp' },
   { regex: /\b(butter)\b/i, qtyPerServing: 0.5, unit: 'tbsp' },
   { regex: /\b(curd|yogurt|dahi)\b/i, qtyPerServing: 0.25, unit: 'cup' },
-  { regex: /\b(cream|malai)\b/i, qtyPerServing: 1, unit: 'tbsp' },
+  { regex: /\b(cream|heavy cream|malai)\b/i, qtyPerServing: 1, unit: 'tbsp' },
 
   // Seasonings
   { regex: /\b(salt)\b/i, isSpecial: true, text: 'Salt to taste' },
@@ -161,10 +181,10 @@ export function formatQuantityValue(num) {
 }
 
 /**
- * Formats unit and ingredient name grammatically.
+ * Formats unit and ingredient name grammatically without spelling distortions.
  */
 function formatQuantityUnitAndName(qty, unit, name) {
-  const isDiscrete = ['medium', 'clove', 'cloves', 'inch', 'inches', 'pcs', 'piece', 'pieces', 'head', 'heads', 'bunch', 'bunches'].includes(unit.toLowerCase());
+  const isDiscrete = ['medium', 'clove', 'cloves', 'inch', 'inches', 'pcs', 'piece', 'pieces', 'head', 'heads', 'bunch', 'bunches', 'stalks', 'stalk', 'sheets', 'sheet', 'pods', 'pod'].includes(unit.toLowerCase());
 
   let finalQty = qty;
   if (isDiscrete) {
@@ -174,29 +194,47 @@ function formatQuantityUnitAndName(qty, unit, name) {
   const isPlural = finalQty > 1.05;
   const formattedQty = formatQuantityValue(finalQty);
 
+  // Normalize base ingredient name from common misspellings/trailing plurals
+  let cleanName = name.trim()
+    .replace(/\bpotatoe\b/gi, 'potato')
+    .replace(/\btomatoe\b/gi, 'tomato')
+    .replace(/\bchillies\b/gi, 'chilies');
+
   if (!unit || unit === 'pcs' || unit === 'piece' || unit === 'pieces') {
-    let pluralName = name;
+    let pluralName = cleanName;
     if (isPlural) {
-      const lower = name.toLowerCase();
-      if (lower.endsWith('chili') || lower.endsWith('chilli')) pluralName = `${name}es`;
-      else if (lower.endsWith('potato') || lower.endsWith('tomato')) pluralName = `${name}es`;
-      else if (!lower.endsWith('s')) pluralName = `${name}s`;
+      const lower = cleanName.toLowerCase();
+      if (lower.endsWith('chili') || lower.endsWith('chilli')) pluralName = `${cleanName.replace(/chilli?$/i, '')}chilies`;
+      else if (lower.endsWith('potato')) pluralName = `${cleanName}es`;
+      else if (lower.endsWith('tomato')) pluralName = `${cleanName}es`;
+      else if (!lower.endsWith('s')) pluralName = `${cleanName}s`;
+    } else {
+      const lower = cleanName.toLowerCase();
+      if (lower.endsWith('chilies') || lower.endsWith('chillies')) pluralName = `${cleanName.replace(/chilli?es$/i, '')}chili`;
+      else if (lower.endsWith('potatoes')) pluralName = cleanName.replace(/es$/i, '');
+      else if (lower.endsWith('tomatoes')) pluralName = cleanName.replace(/es$/i, '');
     }
     return `${formattedQty} ${pluralName}`.trim();
   }
 
   let formattedUnit = unit;
-  let formattedName = name;
+  let formattedName = cleanName;
 
   if (unit === 'medium') {
     formattedUnit = 'medium';
     if (isPlural) {
-      const lower = name.toLowerCase();
-      if (lower.endsWith('potato') || lower.endsWith('tomato')) formattedName = `${name}es`;
-      else if (lower.endsWith('onion') || lower.endsWith('pepper') || lower.endsWith('bell pepper')) formattedName = `${name}s`;
-      else if (!lower.endsWith('s')) formattedName = `${name}s`;
+      const lower = cleanName.toLowerCase();
+      if (lower.endsWith('potato')) formattedName = `${cleanName}es`;
+      else if (lower.endsWith('tomato')) formattedName = `${cleanName}es`;
+      else if (lower.endsWith('onion') || lower.endsWith('pepper') || lower.endsWith('bell pepper') || lower.endsWith('carrot') || lower.endsWith('eggplant') || lower.endsWith('brinjal')) {
+        if (!lower.endsWith('s')) formattedName = `${cleanName}s`;
+      }
+    } else {
+      const lower = cleanName.toLowerCase();
+      if (lower.endsWith('potatoes') || lower.endsWith('tomatoes')) formattedName = cleanName.replace(/es$/i, '');
+      else if (lower.endsWith('onions') || lower.endsWith('peppers') || lower.endsWith('carrots')) formattedName = cleanName.replace(/s$/i, '');
     }
-  } else if (unit === 'cup') {
+  } else if (unit === 'cup' || unit === 'cups') {
     formattedUnit = isPlural ? 'cups' : 'cup';
   } else if (unit === 'clove' || unit === 'cloves') {
     formattedUnit = isPlural ? 'cloves' : 'clove';
@@ -204,7 +242,13 @@ function formatQuantityUnitAndName(qty, unit, name) {
     formattedUnit = isPlural ? 'inches' : 'inch';
   } else if (unit === 'head' || unit === 'heads') {
     formattedUnit = isPlural ? 'heads' : 'head';
-  } else if (unit === 'tbsp' || unit === 'tsp' || unit === 'g' || unit === 'ml') {
+  } else if (unit === 'stalk' || unit === 'stalks') {
+    formattedUnit = isPlural ? 'stalks' : 'stalk';
+  } else if (unit === 'sheet' || unit === 'sheets') {
+    formattedUnit = isPlural ? 'sheets' : 'sheet';
+  } else if (unit === 'pod' || unit === 'pods') {
+    formattedUnit = isPlural ? 'pods' : 'pod';
+  } else if (unit === 'tbsp' || unit === 'tsp' || unit === 'g' || unit === 'ml' || unit === 'kg' || unit === 'l') {
     formattedUnit = unit;
   }
 
@@ -329,7 +373,18 @@ export function formatIngredientForServings(ingStr, ratio = 1.0, targetServings 
     }
   }
 
-  // Universal Fallback: Ensure 100% of ingredients receive an accurate quantity tag!
+  // Category-Aware Culinary Fallback (NEVER assign flat 'tbsp' to produce, grains or meats!)
+  const lower = ingName.toLowerCase();
+  if (/meat|beef|pork|chicken|mutton|fish|lamb|tofu|paneer|prawn|shrimp/i.test(lower)) {
+    return `${actualServings * 100} g ${ingName}`;
+  }
+  if (/vegetable|curry|sauce|broth|soup|water|stock|milk|curd/i.test(lower)) {
+    return `${formatQuantityValue(actualServings * 0.5)} cups ${ingName}`;
+  }
+  if (/powder|masala|spice|seeds|herb|seasoning/i.test(lower)) {
+    return `${formatQuantityValue(actualServings * 0.33)} tsp ${ingName}`;
+  }
+  
   const fallbackQty = actualServings <= 2 ? 1 : 2;
-  return `${fallbackQty} tbsp ${ingName}`;
+  return `${fallbackQty} medium ${ingName}`;
 }
