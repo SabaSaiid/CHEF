@@ -66,7 +66,7 @@ export default function Navbar({ onToggleSidebar }) {
         <div className="nav-auth">
           {/* Notification Center Trigger */}
           <div className="notif-center-wrapper" ref={notifRef}>
-            <button 
+            <button
               type="button"
               className={`nav-icon-btn ${unreadCount > 0 ? 'has-unread' : ''}`}
               onClick={handleToggleNotif}
@@ -89,9 +89,9 @@ export default function Navbar({ onToggleSidebar }) {
                     {history.length > 0 && <span className="notif-count-tag">{history.length}</span>}
                   </div>
                   {history.length > 0 && (
-                    <button 
-                      type="button" 
-                      className="notif-clear-btn" 
+                    <button
+                      type="button"
+                      className="notif-clear-btn"
                       onClick={clearHistory}
                       title="Clear notification history"
                     >
@@ -137,7 +137,7 @@ export default function Navbar({ onToggleSidebar }) {
           )}
 
           {/* Toggle Sidebar / Quick Panel Drawer Button */}
-          <button 
+          <button
             type="button"
             className="nav-icon-btn"
             onClick={onToggleSidebar}
@@ -149,7 +149,7 @@ export default function Navbar({ onToggleSidebar }) {
           </button>
 
           {/* App Settings Modal Button */}
-          <button 
+          <button
             type="button"
             className="nav-icon-btn"
             onClick={() => setSettingsOpen(true)}

@@ -90,8 +90,8 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
         <div className="sidebar-title-group">
           <h3 className="sidebar-title">Preferences</h3>
         </div>
-        <button 
-          className="sidebar-close-btn" 
+        <button
+          className="sidebar-close-btn"
           onClick={() => setIsOpen(false)}
           title="Close Panel"
           aria-label="Close sidebar"
@@ -104,7 +104,7 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
         {/* Profile / Auth Section */}
         <div className="sidebar-section">
           <h4 className="sidebar-section-title">Account Details</h4>
-          
+
           {!token ? (
             <div className="sidebar-profile-card guest">
               <div className="guest-header">
@@ -143,7 +143,7 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                       <span className="stat-value">{activeProfile.weight_kg} <span className="stat-unit">kg</span></span>
                     </div>
                   </div>
-                  
+
                   {activeProfile.target_calories && (
                     <div className="profile-target-box">
                       <span className="target-label">Daily Target</span>
@@ -156,8 +156,8 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                     <div className="profile-completion-section" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
                       <svg width="32" height="32" viewBox="0 0 36 36">
                         <circle cx="18" cy="18" r="16" fill="none" stroke="var(--border-glass)" strokeWidth="3.5" />
-                        <circle 
-                          cx="18" cy="18" r="16" fill="none" stroke="var(--accent-2)" strokeWidth="3.5" 
+                        <circle
+                          cx="18" cy="18" r="16" fill="none" stroke="var(--accent-2)" strokeWidth="3.5"
                           strokeDasharray="100 100"
                           strokeDashoffset={100 - setupProgress}
                           strokeLinecap="round"
@@ -182,7 +182,7 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                   )}
                 </div>
               )}
-              
+
               <button className="btn-auth btn-logout sidebar-logout-btn" onClick={logout}>
                 Logout
               </button>
@@ -208,14 +208,14 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                   </span>
                 </div>
                 <div className="tracker-glimpse-bar" style={{ height: '6px', background: 'rgba(0,0,0,0.05)', borderRadius: '3px', overflow: 'hidden', position: 'relative' }}>
-                  <div 
-                    className="tracker-glimpse-bar-fill" 
-                    style={{ 
+                  <div
+                    className="tracker-glimpse-bar-fill"
+                    style={{
                       height: '100%',
-                      width: `${barWidth}%`, 
+                      width: `${barWidth}%`,
                       background: isOverTarget ? 'linear-gradient(90deg, #ff5a36, #ef4444)' : 'var(--accent-1)',
                       borderRadius: '3px',
-                      transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)' 
+                      transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
                     }}
                   />
                 </div>
@@ -247,18 +247,18 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
         {/* Preferences & Demo Mode */}
         <div className="sidebar-section">
           <h4 className="sidebar-section-title">Preferences</h4>
-          
+
           <div className="sidebar-item-column">
             <span className="sidebar-label">Theme Mode</span>
             <div className="theme-selector" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '2px', display: 'flex', gap: '2px' }}>
-              <button 
+              <button
                 className={`theme-opt ${theme === 'light' ? 'active' : ''}`}
                 onClick={() => { if (theme !== 'light') toggleTheme(); }}
                 style={{ flex: 1, border: 'none', background: theme === 'light' ? 'var(--text-primary)' : 'transparent', color: theme === 'light' ? 'var(--bg-primary)' : 'var(--text-secondary)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', transition: 'all 0.2s ease' }}
               >
                 Light
               </button>
-              <button 
+              <button
                 className={`theme-opt ${theme === 'dark' ? 'active' : ''}`}
                 onClick={() => { if (theme !== 'dark') toggleTheme(); }}
                 style={{ flex: 1, border: 'none', background: theme === 'dark' ? 'var(--text-primary)' : 'transparent', color: theme === 'dark' ? 'var(--bg-primary)' : 'var(--text-secondary)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', transition: 'all 0.2s ease' }}

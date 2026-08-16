@@ -42,6 +42,7 @@ function AnimatedRoutes() {
         <Route path="/tdee" element={<TDEEProfile />} />
         <Route path="/saved" element={<SavedRecipes />} />
         <Route path="/planner" element={<MealPlanner />} />
+        <Route path="/meal-planner" element={<MealPlanner />} />
         <Route path="/tracker" element={<NutritionTracker />} />
         <Route path="/pantry" element={<Pantry />} />
         <Route path="/community" element={<Community />} />

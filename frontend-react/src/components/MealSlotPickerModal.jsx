@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { 
   X, 
   Search, 
@@ -15,6 +16,7 @@ import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import { useToast } from '../context/ToastContext';
+import { getLocalDateString } from '../utils/dateUtils';
 
 export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAssignSuccess }) {
   const { token } = useContext(AuthContext);
@@ -75,9 +77,28 @@ export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAss
   const handleAssign = async (recipe) => {
     setAssigningId(recipe.id);
     try {
+      let targetRecipeId = recipe.id;
+      if (activeTab === 'search') {
+        // Save first so backend mealplan table can associate the SavedRecipe
+        const saved = await api.post('/recipes/save', {
+          title: recipe.title,
+          image_url: recipe.image_url || null,
+          summary: recipe.summary || null,
+          ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : (typeof recipe.ingredients === 'string' ? recipe.ingredients : ''),
+          instructions: recipe.instructions || null,
+          calories: recipe.calories || recipe.nutrition?.calories || null,
+          protein_g: recipe.protein_g || recipe.nutrition?.protein_g || null,
+          carbs_g: recipe.carbs_g || recipe.nutrition?.carbs_g || null,
+          fat_g: recipe.fat_g || recipe.nutrition?.fat_g || null,
+          ready_in_minutes: recipe.ready_in_minutes || null,
+          servings: recipe.servings || null,
+        });
+        targetRecipeId = saved.id;
+      }
+
       await api.post('/mealplan', {
-        recipe_id: recipe.id,
-        date: date || new Date().toISOString().split('T')[0],
+        recipe_id: targetRecipeId,
+        date: date || getLocalDateString(),
         meal_slot: slot
       });
       toast.success(`Assigned ${recipe.title} to ${slot}! ✨`);
@@ -301,12 +322,13 @@ export default function MealSlotPickerModal({ isOpen, slot, date, onClose, onAss
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             Need full meal planner calendar?
           </span>
-          <a 
-            href="/meal-planner" 
+          <Link 
+            to="/planner" 
+            onClick={onClose}
             style={{ fontSize: '0.85rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
           >
             Open Meal Planner <ChevronRight size={14} />
-          </a>
+          </Link>
         </div>
 
       </div>

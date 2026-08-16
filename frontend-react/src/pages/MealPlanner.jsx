@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useSettings } from '../context/SettingsContext';
+import { getLocalDateString } from '../utils/dateUtils';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
@@ -9,6 +11,7 @@ import AuthModal from '../components/AuthModal';
 
 export default function MealPlanner() {
   const { token, activeProfile } = useContext(AuthContext);
+  const { settings } = useSettings();
   const toast = useToast();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
@@ -37,6 +40,7 @@ export default function MealPlanner() {
 
   const [smartFilling, setSmartFilling] = useState(false);
   const [loggingToday, setLoggingToday] = useState(false);
+  const [sharingPlan, setSharingPlan] = useState(false);
 
   const [groceryFilter, setGroceryFilter] = useState('all'); // 'all' | 'tobuy' | 'checked'
   const [customItems, setCustomItems] = useState([]);
@@ -44,13 +48,15 @@ export default function MealPlanner() {
   const [showPantryInPrint, setShowPantryInPrint] = useState(true);
 
   // Mouse / Touch Drag state for Meal Planner Grid
-  const gridRef = React.useRef(null);
+  const gridRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragScrollLeft, setDragScrollLeft] = useState(0);
 
+  const isDragEnabled = settings?.dragPlannerEnabled ?? true;
+
   const handleGridMouseDown = (e) => {
-    if (!gridRef.current) return;
+    if (!isDragEnabled || !gridRef.current) return;
     setIsDragging(true);
     setDragStartX(e.pageX - gridRef.current.offsetLeft);
     setDragScrollLeft(gridRef.current.scrollLeft);
@@ -85,8 +91,8 @@ export default function MealPlanner() {
   };
 
   const weekDays = getWeekDays();
-  const startDateStr = weekDays[0].toISOString().split('T')[0];
-  const endDateStr = weekDays[6].toISOString().split('T')[0];
+  const startDateStr = getLocalDateString(weekDays[0]);
+  const endDateStr = getLocalDateString(weekDays[6]);
 
   const fetchData = async () => {
     if (!token) return;
@@ -184,7 +190,7 @@ export default function MealPlanner() {
   const handleLogToday = async () => {
     setLoggingToday(true);
     try {
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateString();
       const result = await api.post(`/mealplan/log-today?date=${todayStr}`);
       toast.success(result.message || "Today's planned meals logged into tracker! ⚡");
     } catch (err) {
@@ -194,11 +200,44 @@ export default function MealPlanner() {
     }
   };
 
+  const handleSharePlanToFeed = async () => {
+    if (mealPlans.length === 0) {
+      toast.error("No meals scheduled for this week to share!");
+      return;
+    }
+    setSharingPlan(true);
+    try {
+      const slotsData = mealPlans.map(mp => ({
+        date: mp.date,
+        meal_slot: mp.meal_slot,
+        recipe_title: mp.recipe?.title || 'Unknown Recipe',
+        calories: mp.recipe?.calories || 0,
+        image_url: mp.recipe?.image_url || null,
+      }));
+
+      const content = `🗓️ My Meal Plan for the week of ${weekDays[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${weekDays[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} (${mealPlans.length} meals planned)`;
+
+      await api.post('/community/posts', {
+        content,
+        shared_meal_plan: {
+          week_start: startDateStr,
+          slots: slotsData
+        }
+      });
+
+      toast.success("🗓️ Meal plan shared to Community Feed!");
+    } catch (err) {
+      toast.error(err.message || "Failed to share meal plan to feed.");
+    } finally {
+      setSharingPlan(false);
+    }
+  };
+
   const generateShoppingList = async () => {
     setIsShoppingListOpen(true);
     setLoadingShoppingList(true);
     try {
-      const data = await api.get(`/mealplan/shopping-list?start_date=${startDateStr}&end_date=${endDateStr}`);
+      const data = await api.get(`/mealplan/grocery-list?start_date=${startDateStr}&end_date=${endDateStr}`);
       setShoppingList(data || { categories: {}, in_pantry_skipped: [] });
     } catch (err) {
       toast.error(err.message || 'Failed to generate shopping list.');
@@ -371,14 +410,14 @@ export default function MealPlanner() {
           display: 'flex', 
           gap: '20px', 
           overflowX: 'auto', 
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: isDragEnabled ? (isDragging ? 'grabbing' : 'grab') : 'default',
           userSelect: isDragging ? 'none' : 'auto',
           padding: '12px 20px 30px 20px' 
         }}
       >
         {weekDays.map((dateObj, dayIdx) => {
-          const dateStr = dateObj.toISOString().split('T')[0];
-          const isToday = dateStr === new Date().toISOString().split('T')[0];
+          const dateStr = getLocalDateString(dateObj);
+          const isToday = dateStr === getLocalDateString();
           
           // Calculate daily planned macros
           const todaysMeals = SLOTS.map(slot => getMealForSlot(dateStr, slot)).filter(Boolean);
