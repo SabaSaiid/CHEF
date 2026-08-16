@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react';
 import { 
   Calendar, 
   ChevronLeft, 
@@ -13,6 +13,7 @@ import {
   MoreHorizontal, 
   RotateCcw, 
   Check, 
+  CheckCircle2,
   Printer, 
   Search, 
   SlidersHorizontal, 
@@ -28,13 +29,16 @@ import {
   Heart, 
   Info,
   Layers,
-  ChevronDown
+  ChevronDown,
+  ChefHat,
+  Droplet
 } from 'lucide-react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
-import { getLocalDateString } from '../utils/dateUtils';
+import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
+import { playSuccessSound, playAddSound, playClickSound } from '../utils/soundEffects';
 import RecipeModal from '../components/RecipeModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
@@ -76,6 +80,11 @@ export default function MealPlanner() {
   const [customDishName, setCustomDishName] = useState('');
   const [customDishCals, setCustomDishCals] = useState('');
   const [customDishProtein, setCustomDishProtein] = useState('');
+
+  // Daily Focus & Nutrition Tracker Sync State
+  const [dayNutritionLogs, setDayNutritionLogs] = useState([]);
+  const [activeMacroHighlight, setActiveMacroHighlight] = useState(null);
+  const [tipIndexOffset, setTipIndexOffset] = useState(0);
 
   // Active Single Recipe Modal
   const [activeRecipeModal, setActiveRecipeModal] = useState(null);
@@ -158,10 +167,10 @@ export default function MealPlanner() {
   };
 
   const SLOTS = [
-    { name: 'Breakfast', icon: '🌅', time: '8:00 AM', defaultRatio: 0.25 },
-    { name: 'Lunch', icon: '☀️', time: '1:00 PM', defaultRatio: 0.35 },
-    { name: 'Snack', icon: '🍎', time: '4:30 PM', defaultRatio: 0.10 },
-    { name: 'Dinner', icon: '🌙', time: '7:30 PM', defaultRatio: 0.30 }
+    { name: 'Breakfast', icon: '🌅', time: '8:00 AM', defaultRatio: 0.25, recPercent: 25 },
+    { name: 'Lunch', icon: '☀️', time: '1:00 PM', defaultRatio: 0.35, recPercent: 35 },
+    { name: 'Snack', icon: '🍎', time: '4:30 PM', defaultRatio: 0.10, recPercent: 10 },
+    { name: 'Dinner', icon: '🌙', time: '7:30 PM', defaultRatio: 0.30, recPercent: 30 }
   ];
 
   const getWeekDays = () => {
@@ -178,6 +187,11 @@ export default function MealPlanner() {
   const startDateStr = getLocalDateString(weekDays[0]);
   const endDateStr = getLocalDateString(weekDays[6]);
 
+  const activeFocusedDateStr = useMemo(() => {
+    const d = weekDays[focusedDayIndex] || weekDays[0];
+    return getLocalDateString(d);
+  }, [weekDays, focusedDayIndex]);
+
   const isCurrentWeek = useMemo(() => {
     const today = new Date();
     const day = today.getDay();
@@ -187,7 +201,17 @@ export default function MealPlanner() {
     return getLocalDateString(thisMon) === startDateStr;
   }, [startDateStr]);
 
-  const fetchData = async () => {
+  const fetchDayNutritionLogs = useCallback(async (dateStr) => {
+    if (!token || !dateStr) return;
+    try {
+      const logs = await api.get(`/nutrition/log?date=${dateStr}`);
+      setDayNutritionLogs(Array.isArray(logs) ? logs : []);
+    } catch (err) {
+      console.warn("Failed to fetch day nutrition logs:", err);
+    }
+  }, [token]);
+
+  const fetchData = useCallback(async () => {
     if (!token) return;
     setLoading(true);
     setError(null);
@@ -198,16 +222,36 @@ export default function MealPlanner() {
       ]);
       setMealPlans(plans || []);
       setSavedRecipes(recipes || []);
+      fetchDayNutritionLogs(activeFocusedDateStr);
     } catch (err) {
       setError(err.message || 'Failed to load meal planner data.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, startDateStr, endDateStr, activeFocusedDateStr, fetchDayNutritionLogs]);
 
   useEffect(() => {
     fetchData();
-  }, [token, startDateStr, endDateStr]);
+  }, [fetchData]);
+
+  useEffect(() => {
+    fetchDayNutritionLogs(activeFocusedDateStr);
+  }, [activeFocusedDateStr, fetchDayNutritionLogs]);
+
+  // Keyboard navigation for Daily Focus
+  useEffect(() => {
+    if (viewMode !== 'day') return;
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft') {
+        setFocusedDayIndex(prev => Math.max(0, prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setFocusedDayIndex(prev => Math.min(6, prev + 1));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [viewMode]);
 
   // Load checked state & custom items from localStorage for active week
   useEffect(() => {
@@ -412,11 +456,104 @@ export default function MealPlanner() {
     try {
       const todayStr = getLocalDateString();
       const result = await api.post(`/mealplan/log-today?date=${todayStr}`);
+      playSuccessSound();
       toast.success(result.message || "Today's planned meals logged into tracker! ⚡");
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
+      fetchDayNutritionLogs(todayStr);
     } catch (err) {
       toast.error(err.message || 'Failed to log today\'s meals.');
     } finally {
       setLoggingToday(false);
+    }
+  };
+
+  // Check if a specific slot recipe is already logged on that date
+  const isMealSlotLogged = useCallback((recipe, slotName) => {
+    if (!recipe) return false;
+    const title = (recipe.title || '').toLowerCase().trim();
+    const slotLower = (slotName || '').toLowerCase().trim();
+    return dayNutritionLogs.some(log => {
+      const logTitle = (log.food_item || '').toLowerCase().trim();
+      const logSlot = (log.meal_slot || '').toLowerCase().trim();
+      const cleanLogTitle = logTitle.replace(/^\[planned\]\s*/i, '').trim();
+      const matchesTitle = cleanLogTitle === title || logTitle.includes(title) || title.includes(cleanLogTitle);
+      const matchesSlot = !logSlot || logSlot === slotLower;
+      return matchesTitle && matchesSlot;
+    });
+  }, [dayNutritionLogs]);
+
+  // 1-Click Quick-Log Single Meal from Daily Focus
+  const handleQuickLogSingleMeal = async (e, meal, dateStr, slotName) => {
+    if (e) e.stopPropagation();
+    if (!meal?.recipe) return;
+    playAddSound();
+    const recipe = meal.recipe;
+
+    try {
+      await api.post('/nutrition/log', {
+        food_item: recipe.title,
+        calories: recipe.calories || 0,
+        protein_g: recipe.protein_g || recipe.protein || 0,
+        carbs_g: recipe.carbs_g || recipe.carbs || 0,
+        fat_g: recipe.fat_g || recipe.fat || 0,
+        fiber_g: 0,
+        quantity: 1,
+        unit: 'serving',
+        date: dateStr,
+        meal_slot: slotName ? slotName.charAt(0).toUpperCase() + slotName.slice(1).toLowerCase() : 'Snack'
+      });
+
+      playSuccessSound();
+      toast.success(`Logged "${recipe.title}" for ${slotName}! 🎯`);
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
+      fetchDayNutritionLogs(dateStr);
+    } catch (err) {
+      toast.error(err.message || "Failed to log meal to tracker.");
+    }
+  };
+
+  // 1-Click Log All Meals for a specific day
+  const handleLogAllMealsForDay = async (dateStr) => {
+    playClickSound();
+    try {
+      const result = await api.post(`/mealplan/log-today?date=${dateStr}`);
+      playSuccessSound();
+      toast.success(result.message || `All planned meals logged for ${dateStr}! ⚡`);
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
+      fetchDayNutritionLogs(dateStr);
+    } catch (err) {
+      toast.error(err.message || "Failed to log day's meals.");
+    }
+  };
+
+  // 1-Click Smart Autofill only for the active day's empty slots
+  const handleSmartAutofillDay = async (dateStr) => {
+    playClickSound();
+    if (savedRecipes.length === 0) {
+      toast.info("Save recipes to your bookmarks or use weekly Magic Fill! 💡");
+      return;
+    }
+    try {
+      const emptySlots = SLOTS.filter(s => !getMealForSlot(dateStr, s.name));
+      if (emptySlots.length === 0) {
+        toast.info("All meal slots are already planned for this day! ✨");
+        return;
+      }
+      for (const slot of emptySlots) {
+        const randomRecipe = savedRecipes[Math.floor(Math.random() * savedRecipes.length)];
+        if (randomRecipe?.id) {
+          await api.post('/mealplan', {
+            recipe_id: randomRecipe.id,
+            date: dateStr,
+            meal_slot: slot.name
+          });
+        }
+      }
+      playSuccessSound();
+      toast.success(`Smart filled ${emptySlots.length} meals for ${dateStr}! ✨`);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to autofill day.");
     }
   };
 
@@ -1086,164 +1223,435 @@ export default function MealPlanner() {
       {/* ───────────────────────────────────────────────────────────── */}
       {/* VIEW MODE 2: DAILY FOCUS DEEP-DIVE                            */}
       {/* ───────────────────────────────────────────────────────────── */}
-      {viewMode === 'day' && (
+      {viewMode === 'day' && (() => {
+        const activeDateObj = weekDays[focusedDayIndex] || weekDays[0];
+        const activeDateStr = getLocalDateString(activeDateObj);
+        const isActiveToday = activeDateStr === getLocalDateString();
+        const dayMeals = SLOTS.map(s => getMealForSlot(activeDateStr, s.name)).filter(Boolean);
+        const totalCals = dayMeals.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
+        const totalP = dayMeals.reduce((sum, m) => sum + (m.recipe?.protein_g || 0), 0);
+        const totalC = dayMeals.reduce((sum, m) => sum + (m.recipe?.carbs_g || 0), 0);
+        const totalF = dayMeals.reduce((sum, m) => sum + (m.recipe?.fat_g || 0), 0);
+
+        const targetCals = activeProfile?.target_calories || 2000;
+        const targetP = activeProfile?.target_protein || 125;
+        const targetC = activeProfile?.target_carbs || 240;
+        const targetFt = activeProfile?.target_fat || 60;
+
+        const calPct = Math.min(100, Math.round((totalCals / targetCals) * 100));
+        const calRemaining = Math.max(0, targetCals - totalCals);
+        const isOverBudget = totalCals > targetCals;
+
+        // SVG ring math
+        const ringRadius = 52;
+        const ringCircumference = 2 * Math.PI * ringRadius;
+        const ringOffset = ringCircumference - (Math.min(totalCals / targetCals, 1.0) * ringCircumference);
+
+        // Active eating window
+        const currentHour = new Date().getHours();
+        const getActiveSlot = () => {
+          if (currentHour >= 6 && currentHour < 11) return 'Breakfast';
+          if (currentHour >= 11 && currentHour < 16) return 'Lunch';
+          if (currentHour >= 16 && currentHour < 18) return 'Snack';
+          if (currentHour >= 18 && currentHour < 22) return 'Dinner';
+          return null;
+        };
+        const activeSlotName = isActiveToday ? getActiveSlot() : null;
+
+        // Nutri-Score for day
+        const dayScores = dayMeals.map(m => m.recipe?.nutri_score || m.recipe?.chef_score).filter(Boolean);
+        let dayGrade = null;
+        if (dayScores.length > 0) {
+          const avg = Math.round(dayScores.reduce((a, s) => a + (s.numeric_score ?? 0), 0) / dayScores.length);
+          if (avg <= -4) dayGrade = 'S';
+          else if (avg <= -1) dayGrade = 'A';
+          else if (avg <= 2) dayGrade = 'B';
+          else if (avg <= 10) dayGrade = 'C';
+          else if (avg <= 18) dayGrade = 'D';
+          else dayGrade = 'E';
+        }
+
+        // Rotating daily tips based on day + offset
+        const FOCUS_TIPS = [
+          { icon: '🥘', title: 'Smart Batch Cooking', text: 'Prep whole grains and lean proteins in bulk — reheat all week for 10-minute gourmet lunches.' },
+          { icon: '🧊', title: 'Pre-portioning Hack', text: 'Portion snacks and meals into clear containers immediately after cooking to stick effortlessly to macro goals.' },
+          { icon: '🥬', title: 'Volume Eating', text: 'Fill half your plate with colorful high-fiber vegetables to maximize satiety and micronutrient density.' },
+          { icon: '🍋', title: 'Flavor Balancing', text: 'A fresh squeeze of lemon or splash of apple cider vinegar brightens flavors while enhancing iron absorption.' },
+          { icon: '🧈', title: 'Healthy Fat Timing', text: 'Drizzle extra virgin olive oil or toasted seed oils post-heat to preserve polyphenol integrity and aromas.' },
+          { icon: '🥩', title: 'Protein Distribution', text: 'Aim for 25–40g of protein per main meal for steady amino acid release and sustained daytime focus.' },
+          { icon: '🌿', title: 'Aromatics & Herbs', text: 'Stir tender fresh herbs (basil, cilantro, chives) in at the final 30 seconds for peak flavor and phytonutrients.' },
+        ];
+        const tipIndex = (activeDateObj.getDay() + focusedDayIndex + tipIndexOffset) % FOCUS_TIPS.length;
+        const dailyTip = FOCUS_TIPS[Math.abs(tipIndex)];
+
+        const macroItems = [
+          { label: '🥩 Protein', val: Math.round(totalP), target: targetP, color: '#3b82f6', cls: 'protein', key: 'protein' },
+          { label: '🍞 Carbs', val: Math.round(totalC), target: targetC, color: '#f59e0b', cls: 'carbs', key: 'carbs' },
+          { label: '🥑 Fats', val: Math.round(totalF), target: targetFt, color: '#10b981', cls: 'fat', key: 'fat' },
+        ];
+
+        const unloggedCount = dayMeals.filter(m => !isMealSlotLogged(m.recipe, m.meal_slot)).length;
+
+        return (
         <div className="daily-focus-container fade-in">
           {/* Day Selector Carousel Header */}
           <div className="focus-day-carousel glass">
+            <button 
+              className="focus-nav-arrow" 
+              onClick={() => { playClickSound(); setFocusedDayIndex(prev => Math.max(0, prev - 1)); }} 
+              disabled={focusedDayIndex === 0} 
+              aria-label="Previous day"
+            >
+              <ChevronLeft size={18} />
+            </button>
             {weekDays.map((dObj, idx) => {
               const dStr = getLocalDateString(dObj);
               const isSelected = focusedDayIndex === idx;
               const isToday = dStr === getLocalDateString();
-              const dayMeals = SLOTS.map(s => getMealForSlot(dStr, s.name)).filter(Boolean);
+              const mealsForDay = SLOTS.map(s => getMealForSlot(dStr, s.name)).filter(Boolean);
+              const dayMealCount = mealsForDay.length;
+              const dayCalTotal = mealsForDay.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
 
               return (
                 <button 
                   key={dStr}
                   className={`focus-day-tab ${isSelected ? 'active' : ''} ${isToday ? 'is-today' : ''}`}
-                  onClick={() => setFocusedDayIndex(idx)}
+                  onClick={() => { playClickSound(); setFocusedDayIndex(idx); }}
                 >
                   <span className="focus-tab-weekday">{dObj.toLocaleDateString('en-US', { weekday: 'short' })}</span>
                   <span className="focus-tab-daynum">{dObj.getDate()}</span>
-                  <span className="focus-tab-meals-badge">{dayMeals.length}/4</span>
+                  <div className="focus-tab-bottom-row">
+                    <span className={`focus-tab-meals-badge ${dayMealCount === 4 ? 'badge-full' : ''}`}>{dayMealCount}/4</span>
+                    {dayCalTotal > 0 && <span className="focus-tab-cal-hint">{Math.round(dayCalTotal)}k</span>}
+                  </div>
+                  {isToday && <span className="focus-tab-today-dot" />}
                 </button>
               );
             })}
+            <button 
+              className="focus-nav-arrow" 
+              onClick={() => { playClickSound(); setFocusedDayIndex(prev => Math.min(6, prev + 1)); }} 
+              disabled={focusedDayIndex === 6} 
+              aria-label="Next day"
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
 
           {/* Focused Day Timeline Content */}
-          {(() => {
-            const activeDateObj = weekDays[focusedDayIndex];
-            const activeDateStr = getLocalDateString(activeDateObj);
-            const dayMeals = SLOTS.map(s => getMealForSlot(activeDateStr, s.name)).filter(Boolean);
-            const totalCals = dayMeals.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
-            const totalP = dayMeals.reduce((sum, m) => sum + (m.recipe?.protein_g || 0), 0);
-            const totalC = dayMeals.reduce((sum, m) => sum + (m.recipe?.carbs_g || 0), 0);
-            const totalF = dayMeals.reduce((sum, m) => sum + (m.recipe?.fat_g || 0), 0);
-            const targetCals = activeProfile?.target_calories || 2000;
-
-            return (
-              <div className="focus-day-content-grid">
-                {/* Timeline Slots */}
-                <div className="focus-timeline-column">
-                  <div className="focus-column-header">
-                    <h2>
+          <div className="focus-day-content-grid">
+            {/* Timeline Slots */}
+            <div className="focus-timeline-column">
+              <div className="focus-column-header">
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                    <h2 style={{ margin: 0 }}>
                       {activeDateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                     </h2>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <button className="btn-secondary-sm" onClick={() => handleCopyDayToTomorrow(activeDateStr)}>
-                        <Copy size={13} /> Copy to Tomorrow
+                    {!isActiveToday && (
+                      <button 
+                        className="focus-jump-today-btn" 
+                        onClick={() => {
+                          const today = new Date();
+                          const day = today.getDay();
+                          const todayIdx = day === 0 ? 6 : day - 1;
+                          setFocusedDayIndex(todayIdx);
+                        }}
+                      >
+                        Jump to Today
                       </button>
-                      <button className="btn-secondary-sm" onClick={() => handleClearDay(activeDateStr)}>
-                        <Trash2 size={13} /> Clear
-                      </button>
-                    </div>
+                    )}
                   </div>
+                  <div className="focus-header-meta">
+                    {isActiveToday && <span className="focus-today-live-tag">● Today</span>}
+                    <span className="focus-meals-count">{dayMeals.length} of 4 slots planned</span>
+                    {dayGrade && <ChefScoreBadge grade={dayGrade} size="sm" showTooltip={true} />}
+                  </div>
+                </div>
 
-                  <div className="focus-slots-timeline">
-                    {SLOTS.map((slot, sIdx) => {
-                      const meal = getMealForSlot(activeDateStr, slot.name);
-                      return (
-                        <div key={slot.name} className="focus-timeline-slot glass">
-                          <div className="timeline-slot-left">
-                            <div className="timeline-time">{slot.time}</div>
-                            <div className="timeline-icon">{slot.icon}</div>
-                            <div className="timeline-slot-name">{slot.name}</div>
-                          </div>
+                {/* Day Action Buttons */}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {dayMeals.length < 4 && (
+                    <button 
+                      className="btn-primary-sm" 
+                      onClick={() => handleSmartAutofillDay(activeDateStr)} 
+                      title="Autofill empty slots for this day"
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                    >
+                      <Sparkles size={13} /> Fill Day
+                    </button>
+                  )}
 
-                          <div className="timeline-slot-body">
-                            {meal ? (
-                              <div className="focus-meal-card" onClick={() => setActiveRecipeModal(meal.recipe)}>
-                                {meal.recipe?.image_url && (
-                                  <img src={meal.recipe.image_url} alt={meal.recipe.title} className="focus-meal-img" />
+                  {dayMeals.length > 0 && unloggedCount > 0 && (
+                    <button 
+                      className="btn-success-sm" 
+                      onClick={() => handleLogAllMealsForDay(activeDateStr)} 
+                      title="Log all planned meals into Nutrition Tracker"
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                    >
+                      <Zap size={13} /> Log All Day
+                    </button>
+                  )}
+
+                  <button className="btn-secondary-sm" onClick={() => handleCopyDayToTomorrow(activeDateStr)} title="Copy all meals to next day">
+                    <Copy size={13} /> Copy Day
+                  </button>
+
+                  {dayMeals.length > 0 && (
+                    <button className="btn-secondary-sm" onClick={() => handleClearDay(activeDateStr)} title="Remove all meals from this day">
+                      <Trash2 size={13} /> Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="focus-slots-timeline">
+                {SLOTS.map((slot) => {
+                  const meal = getMealForSlot(activeDateStr, slot.name);
+                  const isActiveWindow = activeSlotName === slot.name;
+                  const visual = meal?.recipe ? getRecipeCardVisual(meal.recipe) : null;
+                  const isLogged = meal ? isMealSlotLogged(meal.recipe, slot.name) : false;
+                  const slotTargetCals = Math.round(targetCals * slot.defaultRatio);
+
+                  // Check if ingredient count is available
+                  const ingredientCount = meal?.recipe?.ingredients 
+                    ? (typeof meal.recipe.ingredients === 'string' ? meal.recipe.ingredients.split(',').length : (Array.isArray(meal.recipe.ingredients) ? meal.recipe.ingredients.length : null))
+                    : null;
+
+                  return (
+                    <div 
+                      key={slot.name} 
+                      className={`focus-timeline-slot glass ${isActiveWindow ? 'slot-active-now' : ''} ${meal ? 'slot-filled' : 'slot-vacant'} ${isLogged ? 'slot-logged-border' : ''}`}
+                    >
+                      {/* Left: Time & Icon Column */}
+                      <div className="timeline-slot-left">
+                        <div className="timeline-time">{slot.time}</div>
+                        <div className="timeline-icon">{slot.icon}</div>
+                        <div className="timeline-slot-name">{slot.name}</div>
+                        <div className="timeline-slot-target-hint">~{slotTargetCals} kcal</div>
+                        {isActiveWindow && <span className="focus-now-badge">NOW</span>}
+                      </div>
+
+                      {/* Right: Meal Content */}
+                      <div className="timeline-slot-body">
+                        {meal ? (
+                          <div className="focus-meal-card" onClick={() => setActiveRecipeModal(meal.recipe)}>
+                            {/* Recipe Image or Fallback */}
+                            <div className="focus-meal-visual-wrap">
+                              {meal.recipe?.image_url ? (
+                                <img 
+                                  src={meal.recipe.image_url} 
+                                  alt={meal.recipe.title} 
+                                  className="focus-meal-img"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.style.display = 'none';
+                                    if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                                  }}
+                                />
+                              ) : null}
+                              <div 
+                                className="focus-meal-img-fallback"
+                                style={{ 
+                                  display: meal.recipe?.image_url ? 'none' : 'flex', 
+                                  background: visual?.gradient || 'linear-gradient(135deg, #667eea, #764ba2)' 
+                                }}
+                              >
+                                <span>{visual?.icon || slot.icon}</span>
+                              </div>
+                            </div>
+
+                            {/* Meal Info */}
+                            <div className="focus-meal-info">
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                                <h4 className="focus-meal-title" title={meal.recipe?.title}>{meal.recipe?.title}</h4>
+                                {isLogged && (
+                                  <span className="focus-logged-pill" title="Meal tracked in Nutrition Log">
+                                    <CheckCircle2 size={11} /> Logged
+                                  </span>
                                 )}
-                                <div style={{ flex: 1 }}>
-                                  <h4 style={{ margin: '0 0 6px 0', fontSize: '1.1rem' }}>{meal.recipe?.title}</h4>
-                                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', fontSize: '0.85rem' }}>
-                                    <span style={{ color: 'var(--primary)', fontWeight: 700 }}>🔥 {Math.round(meal.recipe?.calories || 0)} kcal</span>
-                                    <span>🥩 {Math.round(meal.recipe?.protein_g || 0)}g Protein</span>
-                                    <span>🍞 {Math.round(meal.recipe?.carbs_g || 0)}g Carbs</span>
-                                    <span>🥑 {Math.round(meal.recipe?.fat_g || 0)}g Fat</span>
-                                  </div>
+                              </div>
+
+                              <div className="focus-meal-macros">
+                                <span className="focus-macro-pill cal">🔥 {Math.round(meal.recipe?.calories || 0)} kcal</span>
+                                {(meal.recipe?.protein_g > 0) && <span className="focus-macro-pill prot">💪 {Math.round(meal.recipe.protein_g)}g P</span>}
+                                {(meal.recipe?.carbs_g > 0) && <span className="focus-macro-pill carb">🍞 {Math.round(meal.recipe.carbs_g)}g C</span>}
+                                {(meal.recipe?.fat_g > 0) && <span className="focus-macro-pill fat">🥑 {Math.round(meal.recipe.fat_g)}g F</span>}
+                                {meal.recipe?.ready_in_minutes > 0 && (
+                                  <span className="focus-macro-pill time">⏱️ {meal.recipe.ready_in_minutes}m</span>
+                                )}
+                                {ingredientCount && (
+                                  <span className="focus-macro-pill ing">🛒 {ingredientCount} ing</span>
+                                )}
+                              </div>
+
+                              {(meal.recipe?.nutri_score || meal.recipe?.chef_score) && (
+                                <div style={{ marginTop: '4px' }}>
+                                  <ChefScoreBadge grade={(meal.recipe.nutri_score || meal.recipe.chef_score).grade} size="sm" />
                                 </div>
-                                <button className="btn-ghost-sm" onClick={(e) => removeMeal(meal.id, e)} title="Remove">
-                                  <Trash2 size={15} style={{ color: '#ef4444' }} />
+                              )}
+                            </div>
+
+                            {/* Actions */}
+                            <div className="focus-meal-actions" onClick={(e) => e.stopPropagation()}>
+                              {!isLogged && (
+                                <button 
+                                  className="focus-action-btn-log" 
+                                  onClick={(e) => handleQuickLogSingleMeal(e, meal, activeDateStr, slot.name)} 
+                                  title="Log to Nutrition Tracker"
+                                >
+                                  <Check size={12} /> Log
                                 </button>
-                              </div>
-                            ) : (
-                              <div className="focus-empty-slot">
-                                <span>No meal scheduled for {slot.name}</span>
-                                <button className="btn-primary-sm" onClick={() => openRecipePicker(activeDateStr, slot.name)}>
-                                  <Plus size={14} /> Add Recipe
-                                </button>
-                              </div>
-                            )}
+                              )}
+                              <button className="focus-action-icon-btn swap-btn" onClick={() => openRecipePicker(activeDateStr, slot.name)} title="Swap recipe">
+                                <RefreshCw size={13} />
+                              </button>
+                              <button className="focus-action-icon-btn copy-btn" onClick={(e) => handleDuplicateMealToNextDay(meal, e)} title="Repeat to next day">
+                                <Copy size={13} />
+                              </button>
+                              <button className="focus-action-icon-btn del-btn" onClick={(e) => removeMeal(meal.id, e)} title="Remove meal">
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
                           </div>
+                        ) : (
+                          <div className="focus-empty-slot" onClick={() => openRecipePicker(activeDateStr, slot.name)}>
+                            <div className="focus-empty-content">
+                              <Plus size={20} className="focus-empty-plus" />
+                              <div>
+                                <span className="focus-empty-label">Add {slot.name}</span>
+                                <span className="focus-empty-hint">Target ~{slotTargetCals} kcal • Pick from saved or custom dish</span>
+                              </div>
+                            </div>
+                            <ArrowRight size={16} className="focus-empty-arrow" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Sidebar: Nutrition Budget */}
+            <div className="focus-nutrition-column glass">
+              <div className="focus-sidebar-header">
+                <h3 style={{ margin: 0, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Flame size={18} style={{ color: 'var(--primary)' }} /> Daily Nutrition Budget
+                </h3>
+              </div>
+
+              {/* Calorie Ring */}
+              <div className="focus-cal-ring-section">
+                <svg width="130" height="130" viewBox="0 0 130 130" className="focus-ring-svg">
+                  <defs>
+                    <linearGradient id="focusRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={isOverBudget ? '#ef4444' : '#ff6b00'} />
+                      <stop offset="100%" stopColor={isOverBudget ? '#dc2626' : '#ff9f43'} />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="65" cy="65" r={ringRadius} stroke="var(--border-glass)" strokeWidth="9" fill="transparent" opacity="0.4" />
+                  <circle 
+                    cx="65" cy="65" r={ringRadius}
+                    stroke="url(#focusRingGrad)" strokeWidth="9" fill="transparent"
+                    strokeDasharray={ringCircumference} strokeDashoffset={ringOffset}
+                    strokeLinecap="round"
+                    style={{ transition: 'stroke-dashoffset 0.6s cubic-bezier(0.16, 1, 0.3, 1)', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+                  />
+                </svg>
+                <div className="focus-ring-inner-text">
+                  <span className="focus-ring-val">{Math.round(totalCals)}</span>
+                  <span className="focus-ring-label">kcal</span>
+                </div>
+              </div>
+
+              <div className="focus-cal-status-row">
+                {isOverBudget ? (
+                  <span className="focus-cal-status over">⚠️ {Math.round(totalCals - targetCals)} kcal over budget</span>
+                ) : totalCals === 0 ? (
+                  <span className="focus-cal-status empty">Plan meals to fill budget</span>
+                ) : (
+                  <span className="focus-cal-status ok">🔥 {calRemaining} kcal remaining</span>
+                )}
+                <span className="focus-cal-target-label">Target: {targetCals} kcal ({calPct}%)</span>
+              </div>
+
+              {/* Macro Progress Bars */}
+              <div className="focus-macro-list">
+                <h4 className="focus-macro-heading"><Layers size={15} /> Macro Breakdown</h4>
+                {macroItems.map(macro => {
+                  const pct = Math.min(100, Math.round((macro.val / (macro.target || 1)) * 100));
+                  const isOver = macro.val > macro.target;
+                  const isHighlighted = activeMacroHighlight === macro.key;
+
+                  return (
+                    <div 
+                      key={macro.cls} 
+                      className={`focus-macro-row ${isHighlighted ? 'is-highlighted' : ''}`}
+                      onClick={() => setActiveMacroHighlight(prev => prev === macro.key ? null : macro.key)}
+                      style={{ cursor: 'pointer' }}
+                      title={`Click to filter meals by ${macro.label}`}
+                    >
+                      <div className="focus-macro-header">
+                        <span className="focus-macro-name">{macro.label}</span>
+                        <span className="focus-macro-vals">
+                          <strong>{macro.val}g</strong> / {macro.target}g
+                          <span className={`focus-macro-pct ${isOver ? 'over' : ''}`}>{pct}%</span>
+                        </span>
+                      </div>
+                      <div className="macro-bar-track">
+                        <div className={`macro-bar-fill ${macro.cls}`} style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Meal Slot Calorie Split */}
+              {dayMeals.length > 0 && (
+                <div className="focus-slot-split-section">
+                  <h4 className="focus-macro-heading">📊 Energy Partition</h4>
+                  <div className="focus-slot-split-bars">
+                    {SLOTS.map(slot => {
+                      const meal = getMealForSlot(activeDateStr, slot.name);
+                      const slotCal = meal?.recipe?.calories || 0;
+                      const splitPct = totalCals > 0 ? Math.round((slotCal / totalCals) * 100) : 0;
+                      return (
+                        <div key={slot.name} className="focus-split-item">
+                          <span className="focus-split-label">{slot.icon} {slot.name}</span>
+                          <div className="focus-split-bar-track">
+                            <div className="focus-split-bar-fill" style={{ width: `${splitPct}%` }} />
+                          </div>
+                          <span className="focus-split-val">{Math.round(slotCal)} kcal <span style={{ opacity: 0.6 }}>({splitPct}%)</span></span>
                         </div>
                       );
                     })}
                   </div>
                 </div>
+              )}
 
-                {/* Day Nutrition Breakdown Card */}
-                <div className="focus-nutrition-column glass">
-                  <h3 style={{ marginTop: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Flame size={20} style={{ color: 'var(--primary)' }} /> Daily Macro Budget
-                  </h3>
-
-                  <div className="focus-cal-summary-card">
-                    <div style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                      {Math.round(totalCals)}
-                      <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}> / {targetCals} kcal</span>
-                    </div>
-                    <div className="calorie-progress-container" style={{ height: '10px', marginTop: '12px' }}>
-                      <div 
-                        className="calorie-progress-bar" 
-                        style={{ 
-                          width: `${Math.min(100, (totalCals / targetCals) * 100)}%`,
-                          backgroundColor: totalCals > targetCals ? '#ef4444' : 'var(--primary)'
-                        }} 
-                      />
-                    </div>
+              {/* Contextual Daily Tip with Shuffle Button */}
+              <div className="focus-daily-tip">
+                <div className="focus-tip-header-row">
+                  <div className="focus-tip-icon">{dailyTip.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <div className="focus-tip-title">{dailyTip.title}</div>
+                    <div className="focus-tip-text">{dailyTip.text}</div>
                   </div>
-
-                  <div className="focus-macro-progress-list" style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
-                        <span>🥩 Protein</span>
-                        <span>{Math.round(totalP)}g</span>
-                      </div>
-                      <div className="macro-bar-track"><div className="macro-bar-fill protein" style={{ width: `${Math.min(100, (totalP / 120) * 100)}%` }} /></div>
-                    </div>
-
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
-                        <span>🍞 Carbohydrates</span>
-                        <span>{Math.round(totalC)}g</span>
-                      </div>
-                      <div className="macro-bar-track"><div className="macro-bar-fill carbs" style={{ width: `${Math.min(100, (totalC / 200) * 100)}%` }} /></div>
-                    </div>
-
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
-                        <span>🥑 Healthy Fats</span>
-                        <span>{Math.round(totalF)}g</span>
-                      </div>
-                      <div className="macro-bar-track"><div className="macro-bar-fill fat" style={{ width: `${Math.min(100, (totalF / 60) * 100)}%` }} /></div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: '30px', padding: '16px', background: 'rgba(255, 90, 54, 0.08)', borderRadius: '16px', border: '1px solid rgba(255, 90, 54, 0.2)' }}>
-                    <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--primary)', marginBottom: '4px' }}>💡 Chef's Prep Tip</div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                      Prep vegetables and marinate proteins the evening before to shave 15 minutes off your morning and lunch cooking times.
-                    </div>
-                  </div>
+                  <button 
+                    className="focus-tip-shuffle-btn" 
+                    onClick={() => setTipIndexOffset(prev => prev + 1)}
+                    title="Shuffle culinary tip"
+                  >
+                    <RefreshCw size={12} />
+                  </button>
                 </div>
               </div>
-            );
-          })()}
+            </div>
+          </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* ───────────────────────────────────────────────────────────── */}
       {/* VIEW MODE 3: WEEKLY NUTRITION & MACRO ANALYTICS               */}

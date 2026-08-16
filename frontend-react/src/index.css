@@ -7088,6 +7088,7 @@ h6 {
 }
 
 /* ── Daily Focus View ───────────────────────────────────────── */
+/* ── Daily Focus View (Planner) ────────────────────────────── */
 .daily-focus-container {
     display: flex;
     flex-direction: column;
@@ -7096,27 +7097,54 @@ h6 {
 
 .focus-day-carousel {
     display: flex;
-    gap: 10px;
-    padding: 10px 14px;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
     border-radius: 18px;
     border: 1px solid var(--border-glass);
     background: var(--bg-card, rgba(255, 255, 255, 0.7));
     overflow-x: auto;
 }
 
+.focus-nav-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.focus-nav-arrow:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.focus-nav-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 .focus-day-tab {
     flex: 1;
-    min-width: 80px;
+    min-width: 72px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 8px;
+    padding: 10px 8px 8px;
     border-radius: 14px;
     border: 1px solid transparent;
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
 }
 
 .focus-day-tab:hover {
@@ -7130,30 +7158,63 @@ h6 {
     box-shadow: 0 4px 14px rgba(255, 90, 54, 0.3);
 }
 
+.focus-day-tab.is-today:not(.active) {
+    border: 1.5px solid var(--primary);
+    background: rgba(255, 90, 54, 0.06);
+}
+
 .focus-tab-weekday {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .focus-tab-daynum {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 800;
     margin: 2px 0;
 }
 
 .focus-tab-meals-badge {
-    font-size: 0.7rem;
-    opacity: 0.8;
+    font-size: 0.68rem;
+    opacity: 0.75;
+    font-weight: 600;
 }
 
+.focus-tab-meals-badge.badge-full {
+    color: #10b981;
+    opacity: 1;
+    font-weight: 700;
+}
+
+.focus-day-tab.active .focus-tab-meals-badge.badge-full {
+    color: #b9ffd0;
+}
+
+.focus-tab-today-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.focus-day-tab.active .focus-tab-today-dot {
+    background: #ffffff;
+}
+
+/* Focus Day Content Grid */
 .focus-day-content-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 340px;
     gap: 20px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .focus-day-content-grid {
         grid-template-columns: 1fr;
     }
@@ -7168,15 +7229,51 @@ h6 {
 .focus-column-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
 }
 
+.focus-column-header h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.focus-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.focus-today-live-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.focus-meals-count {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Timeline Slots */
 .focus-slots-timeline {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
 .focus-timeline-slot {
@@ -7186,32 +7283,63 @@ h6 {
     border-radius: 20px;
     border: 1px solid var(--border-glass);
     background: var(--bg-card, rgba(255, 255, 255, 0.8));
+    transition: all 0.25s ease;
+}
+
+.focus-timeline-slot.slot-active-now {
+    border-color: rgba(255, 90, 54, 0.35);
+    box-shadow: 0 0 0 3px rgba(255, 90, 54, 0.08), 0 4px 16px rgba(255, 90, 54, 0.1);
+}
+
+.focus-timeline-slot.slot-vacant {
+    border-style: dashed;
+    opacity: 0.85;
+}
+
+.focus-timeline-slot.slot-vacant:hover {
+    opacity: 1;
+    border-color: rgba(255, 90, 54, 0.4);
+    background: rgba(255, 90, 54, 0.03);
 }
 
 .timeline-slot-left {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
+    min-width: 75px;
     border-right: 1px solid var(--border-glass);
     padding-right: 16px;
+    gap: 2px;
 }
 
 .timeline-time {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-muted);
+    letter-spacing: 0.3px;
 }
 
 .timeline-icon {
-    font-size: 1.8rem;
-    margin: 6px 0;
+    font-size: 1.6rem;
+    margin: 4px 0;
 }
 
 .timeline-slot-name {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--text-primary);
+}
+
+.focus-now-badge {
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: var(--primary);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    animation: pulseGreen 2s infinite;
 }
 
 .timeline-slot-body {
@@ -7220,37 +7348,580 @@ h6 {
     align-items: center;
 }
 
+/* Meal Card in Focus */
 .focus-meal-card {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     width: 100%;
     cursor: pointer;
+    padding: 4px;
+    border-radius: 14px;
+    transition: background 0.2s ease;
+}
+
+.focus-meal-card:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.focus-meal-visual-wrap {
+    flex-shrink: 0;
 }
 
 .focus-meal-img {
-    width: 70px;
-    height: 70px;
+    width: 68px;
+    height: 68px;
     border-radius: 14px;
     object-fit: cover;
 }
 
+.focus-meal-img-fallback {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.focus-meal-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.focus-meal-title {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.focus-meal-macros {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.focus-macro-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.focus-macro-pill.cal {
+    background: rgba(255, 90, 54, 0.1);
+    color: var(--primary);
+}
+
+.focus-macro-pill.prot {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.focus-macro-pill.carb {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+}
+
+.focus-macro-pill.fat {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+/* Meal Action Buttons */
+.focus-meal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.focus-meal-card:hover .focus-meal-actions {
+    opacity: 1;
+}
+
+.focus-action-icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border-glass);
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.focus-action-icon-btn.swap-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.focus-action-icon-btn.copy-btn:hover {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.focus-action-icon-btn.del-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Empty Slot (Focus) */
 .focus-empty-slot {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    padding: 10px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
+.focus-empty-slot:hover {
+    background: rgba(255, 90, 54, 0.05);
+}
+
+.focus-empty-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.focus-empty-plus {
+    color: var(--primary);
+    opacity: 0.6;
+}
+
+.focus-empty-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.focus-empty-hint {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+.focus-empty-arrow {
+    color: var(--text-muted);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.focus-empty-slot:hover .focus-empty-arrow {
+    opacity: 1;
+    color: var(--primary);
+    transform: translateX(3px);
+}
+
+.focus-empty-slot:hover .focus-empty-plus {
+    opacity: 1;
+}
+
+/* ── Nutrition Sidebar (Focus) ─────────────────────────────── */
 .focus-nutrition-column {
     padding: 24px;
     border-radius: 24px;
     border: 1px solid var(--border-glass);
     background: var(--bg-card, rgba(255, 255, 255, 0.8));
     height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
+
+/* Calorie Ring */
+.focus-cal-ring-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 4px 0;
+}
+
+.focus-ring-svg {
+    display: block;
+}
+
+.focus-ring-inner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.focus-ring-val {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.focus-ring-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Calorie Status Row */
+.focus-cal-status-row {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.focus-cal-status {
+    font-size: 0.88rem;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 5px 14px;
+    display: inline-block;
+}
+
+.focus-cal-status.ok {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+.focus-cal-status.over {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.focus-cal-status.empty {
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--text-muted);
+}
+
+.focus-cal-target-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Macro Bars Section */
+.focus-macro-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.focus-macro-heading {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-primary);
+}
+
+.focus-macro-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.focus-macro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+}
+
+.focus-macro-name {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.focus-macro-vals {
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.focus-macro-vals strong {
+    color: var(--text-primary);
+}
+
+.focus-macro-pct {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.focus-macro-pct.over {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Calorie Split by Slot */
+.focus-slot-split-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.focus-slot-split-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.focus-split-item {
+    display: grid;
+    grid-template-columns: 85px 1fr 65px;
+    align-items: center;
+    gap: 8px;
+}
+
+.focus-split-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.focus-split-bar-track {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.focus-split-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--primary);
+    transition: width 0.5s ease;
+}
+
+.focus-split-val {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+.focus-jump-today-btn {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: rgba(255, 90, 54, 0.08);
+    border: 1px solid rgba(255, 90, 54, 0.2);
+    padding: 3px 9px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.focus-jump-today-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.focus-tab-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1px;
+}
+
+.focus-tab-cal-hint {
+    font-size: 0.62rem;
+    opacity: 0.65;
+    font-weight: 600;
+}
+
+.focus-day-tab.active .focus-tab-cal-hint {
+    opacity: 0.9;
+    color: #ffffff;
+}
+
+.timeline-slot-target-hint {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.focus-timeline-slot.slot-logged-border {
+    border-color: rgba(16, 185, 129, 0.35);
+    background: rgba(16, 185, 129, 0.02);
+}
+
+.focus-logged-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.focus-macro-pill.time {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.focus-macro-pill.ing {
+    background: rgba(14, 165, 233, 0.1);
+    color: #0284c7;
+}
+
+.focus-action-btn-log {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.focus-action-btn-log:hover {
+    background: #10b981;
+    color: #ffffff;
+    border-color: #10b981;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.btn-success-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: #10b981;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.btn-success-sm:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.focus-macro-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.focus-macro-row:hover,
+.focus-macro-row.is-highlighted {
+    background: var(--bg-secondary);
+}
+
+.focus-macro-row.is-highlighted {
+    border: 1px solid var(--border-glass);
+}
+
+.focus-tip-header-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+}
+
+.focus-tip-shuffle-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    border: 1px solid rgba(255, 90, 54, 0.2);
+    background: transparent;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.focus-tip-shuffle-btn:hover {
+    background: rgba(255, 90, 54, 0.15);
+    transform: rotate(45deg);
+}
+
+/* Daily Tip Card */
+.focus-daily-tip {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    background: rgba(255, 90, 54, 0.06);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 90, 54, 0.15);
+}
+
+.focus-tip-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.focus-tip-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--primary);
+    margin-bottom: 3px;
+}
+
+.focus-tip-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Reusable macro bar track/fill (shared with analytics) */
 
 .macro-bar-track {
     height: 8px;
