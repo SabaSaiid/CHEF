@@ -6,6 +6,8 @@ from app.routers.pantry import (
     _tokenize_name,
     _clean_recipe_ingredient_line,
     _fallback_parse_grocery_text,
+    SYNONYM_LOOKUP,
+    ASSUMED_BASIC_STAPLES,
 )
 from app.models import PantryItem
 
@@ -84,6 +86,24 @@ class TestPantryEnhancements(unittest.TestCase):
 
         cleaned = _clean_recipe_ingredient_line("2 cups chopped fresh spinach")
         self.assertIn("spinach", cleaned)
+
+    def test_synonym_lookup(self):
+        # Coriander & Cilantro
+        self.assertIn("coriander", SYNONYM_LOOKUP)
+        self.assertTrue("cilantro" in SYNONYM_LOOKUP["coriander"] or "coriander" in SYNONYM_LOOKUP.get("cilantro", set()))
+
+        # Chicken
+        self.assertIn("chicken", SYNONYM_LOOKUP)
+        self.assertTrue(len(SYNONYM_LOOKUP["chicken"]) > 1)
+
+        # Paneer & Cheese
+        self.assertIn("paneer", SYNONYM_LOOKUP)
+        self.assertTrue("cheese" in SYNONYM_LOOKUP["paneer"] or "paneer" in SYNONYM_LOOKUP.get("cheese", set()))
+
+    def test_assumed_basic_staples(self):
+        self.assertIn("salt", ASSUMED_BASIC_STAPLES)
+        self.assertIn("water", ASSUMED_BASIC_STAPLES)
+        self.assertIn("oil", ASSUMED_BASIC_STAPLES)
 
     def test_fallback_grocery_parser(self):
         raw_text = "2 cartons of milk\n500g chicken breast\n12 eggs\n1 loaf of bread"

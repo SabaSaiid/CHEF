@@ -379,8 +379,9 @@ export default function Pantry() {
   const [loadingMatched, setLoadingMatched] = useState(false);
   const [matchFilterType, setMatchFilterType] = useState('all'); // 'all' | 'cookable' | 'almost' | 'expiring'
   const [matchMealType, setMatchMealType] = useState('all');
+  const [matchSortBy, setMatchSortBy] = useState('match'); // 'match' | 'fastest' | 'nutri'
   const [matchSearch, setMatchSearch] = useState('');
-  const [matchStats, setMatchStats] = useState({ total_matched: 0, cookable_now_count: 0, expiring_soon_count: 0 });
+  const [matchStats, setMatchStats] = useState({ total_matched: 0, cookable_now_count: 0, expiring_soon_count: 0, almost_cookable_count: 0 });
 
   // Modals & Exports
   const [selectedRecipeForModal, setSelectedRecipeForModal] = useState(null);
@@ -412,6 +413,7 @@ export default function Pantry() {
       const params = new URLSearchParams();
       if (matchFilterType !== 'all') params.append('filter_type', matchFilterType);
       if (matchMealType !== 'all') params.append('meal_type', matchMealType);
+      if (matchSortBy !== 'match') params.append('sort_by', matchSortBy);
       if (matchSearch.trim()) params.append('search', matchSearch.trim());
       params.append('limit', '40');
 
@@ -420,7 +422,8 @@ export default function Pantry() {
       setMatchStats({
         total_matched: res.total_matched || 0,
         cookable_now_count: res.cookable_now_count || 0,
-        expiring_soon_count: res.expiring_soon_count || 0
+        expiring_soon_count: res.expiring_soon_count || 0,
+        almost_cookable_count: res.almost_cookable_count || 0,
       });
     } catch (err) {
       toast.error(err.message || 'Failed to fetch recipe matches');
@@ -437,7 +440,7 @@ export default function Pantry() {
     if (activeTab === 'cook' && token) {
       fetchMatchedRecipes();
     }
-  }, [activeTab, matchFilterType, matchMealType, token]);
+  }, [activeTab, matchFilterType, matchMealType, matchSortBy, token]);
 
   // Freshness calculation
   const getFreshnessStatus = (item) => {
@@ -1525,7 +1528,7 @@ export default function Pantry() {
                   </div>
                 </div>
 
-                {/* Filter Pills */}
+                {/* Filter & Sort Bar */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', paddingTop: '4px', borderTop: '1px solid var(--border-glass)' }}>
                   <div className="pantry-cat-selector">
                     <button
@@ -1544,7 +1547,7 @@ export default function Pantry() {
                       className={`pantry-cat-pill ${matchFilterType === 'almost' ? 'active' : ''}`}
                       onClick={() => setMatchFilterType('almost')}
                     >
-                      ⚡ Missing &le; 2 Items
+                      ⚡ Missing &le; 2 Items ({matchStats.almost_cookable_count || 0})
                     </button>
                     <button
                       className={`pantry-cat-pill ${matchFilterType === 'expiring' ? 'active' : ''}`}
@@ -1554,18 +1557,37 @@ export default function Pantry() {
                     </button>
                   </div>
 
-                  {/* Meal Type */}
-                  <select
-                    value={matchMealType}
-                    onChange={(e) => setMatchMealType(e.target.value)}
-                    className="pantry-select-sm"
-                  >
-                    <option value="all">All Meal Types</option>
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                    <option value="snack">Snack & Appetizer</option>
-                  </select>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                    {/* Sort Dropdown */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>Sort:</span>
+                      <select
+                        value={matchSortBy}
+                        onChange={(e) => setMatchSortBy(e.target.value)}
+                        className="pantry-select-sm"
+                      >
+                        <option value="match">Best Match %</option>
+                        <option value="fastest">⏱️ Fastest (&lt; 30m)</option>
+                        <option value="nutri">🥗 Highest Nutri-Score</option>
+                      </select>
+                    </div>
+
+                    {/* Meal Type */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>Meal:</span>
+                      <select
+                        value={matchMealType}
+                        onChange={(e) => setMatchMealType(e.target.value)}
+                        className="pantry-select-sm"
+                      >
+                        <option value="all">All Meals</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snack">Snack & Appetizer</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1582,7 +1604,7 @@ export default function Pantry() {
                   <p style={{ color: 'var(--text-secondary)', maxWidth: '380px', margin: '0 auto 14px', fontSize: '13px' }}>
                     Add more ingredients to your pantry or try relaxing your filter criteria.
                   </p>
-                  <button className="btn-secondary small" onClick={() => { setMatchFilterType('all'); setMatchMealType('all'); }}>
+                  <button className="btn-secondary small" onClick={() => { setMatchFilterType('all'); setMatchMealType('all'); setMatchSearch(''); }}>
                     Show All Matches
                   </button>
                 </div>
@@ -1590,12 +1612,14 @@ export default function Pantry() {
                 <div className="pantry-recipes-grid">
                   {matchedRecipes.map((recipe) => {
                     const is100 = recipe.is_cookable_now;
+                    const imgUrl = recipe.image_url || recipe.image;
+                    const grade = recipe.nutri_score_grade || recipe.nutri_score?.grade || 'B';
 
                     return (
                       <div key={recipe.id} className="card glass pantry-recipe-card fade-in-up">
-                        {recipe.image && (
+                        {imgUrl && (
                           <div className="pantry-recipe-img-wrap">
-                            <img src={recipe.image} alt={recipe.title} className="pantry-recipe-img" />
+                            <img src={imgUrl} alt={recipe.title} className="pantry-recipe-img" />
                             <div className="pantry-recipe-match-chip" style={{ background: is100 ? '#27ae60' : recipe.match_pct >= 70 ? '#e67e22' : '#7f8c8d' }}>
                               {is100 ? '✓ 100% Ready' : `${recipe.match_pct}% Match`}
                             </div>
@@ -1608,22 +1632,31 @@ export default function Pantry() {
                         )}
 
                         <div className="pantry-recipe-body">
-                          <h3 className="pantry-recipe-title">{recipe.title}</h3>
+                          <h3 className="pantry-recipe-title" title={recipe.title}>{recipe.title}</h3>
 
                           <div className="pantry-recipe-meta">
                             <span>⏱️ {recipe.ready_in_minutes}m</span>
                             <span>🍽️ {recipe.servings} serv</span>
-                            {recipe.nutri_score && (
-                              <span className="nutri-badge-sm">Score {recipe.nutri_score}</span>
-                            )}
+                            <span className="nutri-badge-sm">Nutri-Score {grade}</span>
                           </div>
 
                           {/* Ingredient Match Breakdown */}
                           <div className="pantry-recipe-ing-breakdown">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>
                               <span>In Stock: {recipe.matched_count} / {recipe.total_count}</span>
                               {recipe.missing_ingredients.length > 0 && (
-                                <span style={{ color: '#e74c3c' }}>Missing {recipe.missing_ingredients.length}</span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(`🛒 Missing for ${recipe.title}:\n• ` + recipe.missing_ingredients.join('\n• '));
+                                    toast.success(`Copied ${recipe.missing_ingredients.length} missing items to clipboard! 📋`);
+                                  }}
+                                  style={{ background: 'none', border: 'none', color: '#e74c3c', cursor: 'pointer', fontSize: '11px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '3px' }}
+                                  title="Copy missing ingredients to clipboard"
+                                >
+                                  <ShoppingBag size={11} /> Missing {recipe.missing_ingredients.length} (Copy)
+                                </button>
                               )}
                             </div>
 

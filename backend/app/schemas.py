@@ -767,17 +767,26 @@ class PantryClearExpiredResponse(BaseModel):
 class PantryMatchedRecipeItem(BaseModel):
     id: str
     title: str
+    image_url: Optional[str] = None
     image: Optional[str] = None
+    summary: Optional[str] = None
+    instructions: Optional[str] = None
     ready_in_minutes: Optional[int] = 30
     servings: Optional[int] = 2
+    ingredients: list[str] = []
     dish_types: list[str] = []
     cuisines: list[str] = []
-    nutri_score: Optional[str] = "B"
-    chef_score: Optional[int] = 85
+    diets: list[str] = []
+    meal_type: Optional[str] = None
+    region: Optional[str] = None
+    nutri_score: Optional[Any] = None
+    chef_score: Optional[Any] = None
+    nutri_score_grade: Optional[str] = "B"
     calories: Optional[float] = None
     protein: Optional[float] = None
     carbs: Optional[float] = None
     fat: Optional[float] = None
+    nutrition: Optional[RecipeNutrition] = None
     match_pct: int
     matched_count: int
     total_count: int
@@ -791,6 +800,7 @@ class PantryMatchResponse(BaseModel):
     total_matched: int
     cookable_now_count: int
     expiring_soon_count: int
+    almost_cookable_count: int = 0
 
 
 
