@@ -1,17 +1,34 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import AuthModal from './AuthModal';
 import { getLocalDateString, CHEF_EVENTS } from '../utils/dateUtils';
+import {
+  X, Sun, Moon, User,
+  Home, UtensilsCrossed, CalendarDays, BarChart3, Bookmark, Users,
+  Search, Camera, Apple,
+  ChevronDown, HelpCircle, ScrollText, Lock, AlertTriangle, MessageSquare, Award,
+  LogOut, SlidersHorizontal, Flame, Compass, Wrench, Palette, ShieldCheck, UserCheck
+} from 'lucide-react';
+
+const QUICK_NAV_ITEMS = [
+  { path: '/',          label: 'Kitchen',   icon: Home,              end: true },
+  { path: '/recipes',   label: 'Recipes',   icon: UtensilsCrossed },
+  { path: '/planner',   label: 'Planner',   icon: CalendarDays },
+  { path: '/tracker',   label: 'Tracker',   icon: BarChart3 },
+  { path: '/saved',     label: 'Saved',     icon: Bookmark },
+  { path: '/community', label: 'Community', icon: Users },
+];
 
 export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
   const { token, username, logout, seedDemo, userProfile, activeProfile, refreshActiveProfile } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const toast = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [demoLoading, setDemoLoading] = useState(false);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [todayCalories, setTodayCalories] = useState(0);
@@ -57,6 +74,15 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
     };
   }, [fetchTodayCalories, refreshActiveProfile]);
 
+  // Escape key closes sidebar
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && isOpen) setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [isOpen, setIsOpen]);
+
   const handleDemoClick = async () => {
     setDemoLoading(true);
     try {
@@ -82,51 +108,76 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
     return Math.round((filled / fields.length) * 100);
   };
 
+  const isNavActive = (path, end) => {
+    if (end) return location.pathname === path;
+    return location.pathname.startsWith(path);
+  };
+
   const setupProgress = getProfileSetupProgress();
+  const displayName = activeProfile?.display_name || username || '';
+  const userInitial = displayName ? displayName.charAt(0).toUpperCase() : '?';
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+    <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} role="complementary" aria-label="Control panel and profile drawer">
       <div className="sidebar-header">
         <div className="sidebar-title-group">
-          <h3 className="sidebar-title">Preferences</h3>
+          <div className="sidebar-header-icon-box">
+            <SlidersHorizontal size={17} />
+          </div>
+          <div className="sidebar-title-text-group">
+            <h3 className="sidebar-title">CHEF Hub</h3>
+            <span className="sidebar-subtitle">Quick Actions & Profile</span>
+          </div>
         </div>
         <button
           className="sidebar-close-btn"
           onClick={() => setIsOpen(false)}
-          title="Close Panel"
-          aria-label="Close sidebar"
+          title="Close Drawer (Esc)"
+          aria-label="Close sidebar drawer"
         >
-          ✕
+          <X size={16} />
         </button>
       </div>
 
       <div className="sidebar-body">
-        {/* Profile / Auth Section */}
-        <div className="sidebar-section">
-          <h4 className="sidebar-section-title">Account Details</h4>
+        {/* ── Section 1: Profile / Auth ── */}
+        <div className="sidebar-section sidebar-section-animated">
+          <h4 className="sidebar-section-title">
+            <User size={13} /> Account
+          </h4>
 
           {!token ? (
             <div className="sidebar-profile-card guest">
-              <div className="guest-header">
-                <div className="guest-info">
-                  <div className="guest-title">Guest Profile</div>
-                  <div className="guest-subtitle">Track macros & plan meals</div>
+              <div className="sidebar-profile-header">
+                <div className="sidebar-avatar guest">
+                  <User size={20} />
+                </div>
+                <div className="sidebar-profile-info">
+                  <div className="sidebar-profile-name">Guest Profile</div>
+                  <div className="sidebar-profile-subtitle">Track macros & plan meals</div>
                 </div>
               </div>
-              <button className="btn-primary sidebar-login-btn" onClick={() => setAuthModalOpen(true)}>
+              <div className="sidebar-guest-tagline">
+                Sign in to unlock personalized meal plans, calorie tracking & community features
+              </div>
+              <button className="sidebar-login-btn-enhanced" onClick={() => setAuthModalOpen(true)}>
                 Log In / Sign Up
               </button>
             </div>
           ) : (
             <div className="sidebar-profile-card">
-              <div className="sidebar-profile-user">
-                {activeProfile?.display_name || username}
-              </div>
-              {activeProfile?.diet_type && (
-                <div className="sidebar-diet-badge">
-                  {activeProfile.diet_type}
+              <div className="sidebar-profile-header">
+                <div className="sidebar-avatar">
+                  {userInitial}
                 </div>
-              )}
+                <div className="sidebar-profile-info">
+                  <div className="sidebar-profile-name">{displayName}</div>
+                  {activeProfile?.diet_type && (
+                    <div className="sidebar-diet-badge">{activeProfile.diet_type}</div>
+                  )}
+                </div>
+              </div>
+
               {activeProfile && activeProfile.age && (
                 <div className="sidebar-profile-stats">
                   <div className="profile-details-grid">
@@ -151,9 +202,9 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                     </div>
                   )}
 
-                  {/* Circular Profile Setup Ring / Collapsible setup summary */}
+                  {/* Profile Setup Ring / Collapsible summary */}
                   {setupProgress < 100 ? (
-                    <div className="profile-completion-section" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
+                    <div className="profile-completion-row">
                       <svg width="32" height="32" viewBox="0 0 36 36">
                         <circle cx="18" cy="18" r="16" fill="none" stroke="var(--border-glass)" strokeWidth="3.5" />
                         <circle
@@ -166,16 +217,16 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                         />
                       </svg>
                       <div>
-                        <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>Profile Setup</span>
-                        <span style={{ fontSize: '11px', display: 'block', color: 'var(--text-muted)', fontWeight: 'bold' }}>{setupProgress}% Complete</span>
+                        <span className="profile-completion-label">Profile Setup</span>
+                        <span className="profile-completion-pct">{setupProgress}% Complete</span>
                       </div>
                     </div>
                   ) : (
-                    <details style={{ marginTop: '16px', borderTop: '1px solid var(--border-glass)', paddingTop: '12px' }}>
-                      <summary style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-muted)', cursor: 'pointer', listStylePosition: 'inside' }}>
+                    <details className="sidebar-setup-details">
+                      <summary className="sidebar-setup-summary">
                         Setup Complete
                       </summary>
-                      <div style={{ marginTop: '6px', fontSize: '11.5px', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                      <div className="sidebar-setup-text">
                         All profile metrics (Age, Height, Weight, Activity, Goal) are fully configured.
                       </div>
                     </details>
@@ -183,43 +234,47 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                 </div>
               )}
 
-              <button className="btn-auth btn-logout sidebar-logout-btn" onClick={logout}>
-                Logout
-              </button>
+              <div className="sidebar-profile-actions">
+                <button className="sidebar-profile-action-btn" onClick={() => handleNav('/tdee')}>
+                  <UserCheck size={13} /> Edit Profile
+                </button>
+                <button className="sidebar-profile-action-btn" onClick={logout} style={{ color: '#ef4444' }}>
+                  <LogOut size={13} /> Logout
+                </button>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Live Calories Progress Bar */}
+        {/* ── Section 2: Today's Progress (logged-in only) ── */}
         {token && activeProfile && activeProfile.target_calories && (() => {
           const actualCalPct = Math.round((todayCalories / activeProfile.target_calories) * 100);
           const barWidth = Math.min(100, actualCalPct);
           const isOverTarget = todayCalories > activeProfile.target_calories;
+          const isNearTarget = actualCalPct >= 80 && actualCalPct <= 100;
           const overKcal = todayCalories - activeProfile.target_calories;
 
+          const fillClass = isOverTarget ? 'over' : isNearTarget ? 'normal near-target' : 'normal';
+
           return (
-            <div className="sidebar-section">
-              <h4 className="sidebar-section-title">Today's Progress</h4>
-              <div className="sidebar-tracker-glimpse" style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-glass)' }}>
-                <div className="tracker-glimpse-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>Calories</span>
-                  <span style={{ fontSize: '11px', fontWeight: '800', color: isOverTarget ? '#ef4444' : 'var(--text-primary)' }}>
+            <div className="sidebar-section sidebar-section-animated">
+              <h4 className="sidebar-section-title">
+                <Flame size={13} /> Today's Progress
+              </h4>
+              <div className="sidebar-tracker-card">
+                <div className="tracker-glimpse-header">
+                  <span className="tracker-glimpse-label">Calories</span>
+                  <span className={`tracker-glimpse-pct ${isOverTarget ? 'over' : 'normal'}`}>
                     {actualCalPct}% {isOverTarget && `(🔥 +${overKcal} kcal over)`}
                   </span>
                 </div>
-                <div className="tracker-glimpse-bar" style={{ height: '6px', background: 'rgba(0,0,0,0.05)', borderRadius: '3px', overflow: 'hidden', position: 'relative' }}>
+                <div className="tracker-bar-track">
                   <div
-                    className="tracker-glimpse-bar-fill"
-                    style={{
-                      height: '100%',
-                      width: `${barWidth}%`,
-                      background: isOverTarget ? 'linear-gradient(90deg, #ff5a36, #ef4444)' : 'var(--accent-1)',
-                      borderRadius: '3px',
-                      transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
+                    className={`tracker-bar-fill ${fillClass}`}
+                    style={{ width: `${barWidth}%` }}
                   />
                 </div>
-                <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--text-muted)', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>
+                <div className="tracker-totals">
                   <span>{todayCalories} kcal</span>
                   <span>Target: {activeProfile.target_calories}</span>
                 </div>
@@ -228,42 +283,82 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
           );
         })()}
 
-        {/* CHEF Utility Tools */}
-        <div className="sidebar-section">
-          <h4 className="sidebar-section-title">CHEF Tools</h4>
+        {/* ── Section 3: Quick Access Navigation ── */}
+        <div className="sidebar-section sidebar-section-animated">
+          <h4 className="sidebar-section-title">
+            <Compass size={13} /> Quick Navigation
+          </h4>
+          <div className="sidebar-quick-nav">
+            {QUICK_NAV_ITEMS.map(({ path, label, icon: Icon, end }) => (
+              <button
+                key={path}
+                className={`quick-nav-item ${isNavActive(path, end) ? 'active' : ''}`}
+                onClick={() => handleNav(path)}
+                aria-current={isNavActive(path, end) ? 'page' : undefined}
+              >
+                <Icon className="quick-nav-icon" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Section 4: CHEF Tools (with icons & subtitles) ── */}
+        <div className="sidebar-section sidebar-section-animated">
+          <h4 className="sidebar-section-title">
+            <Wrench size={13} /> Specialized Tools
+          </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/ingredients')}>
-              Ingredients Directory
+            <button className="sidebar-tool-btn-enhanced" onClick={() => handleNav('/ingredients')}>
+              <div className="tool-icon-wrapper ingredients">
+                <Search size={16} />
+              </div>
+              <div className="sidebar-tool-info">
+                <span className="sidebar-tool-name">Ingredients Directory</span>
+                <span className="sidebar-tool-subtitle">Browse & search 500+ ingredients</span>
+              </div>
             </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/detection')}>
-              Food Image Detector
+            <button className="sidebar-tool-btn-enhanced" onClick={() => handleNav('/detection')}>
+              <div className="tool-icon-wrapper detection">
+                <Camera size={16} />
+              </div>
+              <div className="sidebar-tool-info">
+                <span className="sidebar-tool-name">Food Image Detector</span>
+                <span className="sidebar-tool-subtitle">Snap a photo, get nutrition info</span>
+              </div>
             </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/nutrition')}>
-              Nutrition Lookup
+            <button className="sidebar-tool-btn-enhanced" onClick={() => handleNav('/nutrition')}>
+              <div className="tool-icon-wrapper nutrition">
+                <Apple size={16} />
+              </div>
+              <div className="sidebar-tool-info">
+                <span className="sidebar-tool-name">Nutrition Lookup</span>
+                <span className="sidebar-tool-subtitle">Detailed macro & micro data</span>
+              </div>
             </button>
           </div>
         </div>
 
-        {/* Preferences & Demo Mode */}
-        <div className="sidebar-section">
-          <h4 className="sidebar-section-title">Preferences</h4>
+        {/* ── Section 5: Appearance & Mode ── */}
+        <div className="sidebar-section sidebar-section-animated">
+          <h4 className="sidebar-section-title">
+            <Palette size={13} /> Appearance & Mode
+          </h4>
 
           <div className="sidebar-item-column">
             <span className="sidebar-label">Theme Mode</span>
-            <div className="theme-selector" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '2px', display: 'flex', gap: '2px' }}>
+            <div className="sidebar-theme-selector">
               <button
-                className={`theme-opt ${theme === 'light' ? 'active' : ''}`}
+                className={`sidebar-theme-opt ${theme === 'light' ? 'selected' : 'inactive'}`}
                 onClick={() => { if (theme !== 'light') toggleTheme(); }}
-                style={{ flex: 1, border: 'none', background: theme === 'light' ? 'var(--text-primary)' : 'transparent', color: theme === 'light' ? 'var(--bg-primary)' : 'var(--text-secondary)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', transition: 'all 0.2s ease' }}
               >
-                Light
+                <Sun size={13} /> Light
               </button>
               <button
-                className={`theme-opt ${theme === 'dark' ? 'active' : ''}`}
+                className={`sidebar-theme-opt ${theme === 'dark' ? 'selected' : 'inactive'}`}
                 onClick={() => { if (theme !== 'dark') toggleTheme(); }}
-                style={{ flex: 1, border: 'none', background: theme === 'dark' ? 'var(--text-primary)' : 'transparent', color: theme === 'dark' ? 'var(--bg-primary)' : 'var(--text-secondary)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', transition: 'all 0.2s ease' }}
               >
-                Dark
+                <Moon size={13} /> Dark
               </button>
             </div>
           </div>
@@ -275,7 +370,6 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
                 className={`btn-demo sidebar-btn-demo ${demoLoading ? 'loading' : ''}`}
                 onClick={handleDemoClick}
                 disabled={demoLoading}
-                style={{ background: 'var(--text-primary)', color: 'var(--bg-primary)' }}
               >
                 {demoLoading ? 'Loading...' : 'Load Demo Mode'}
               </button>
@@ -283,31 +377,43 @@ export default function Sidebar({ isOpen, setIsOpen, onOpenFeedback }) {
           )}
         </div>
 
-        {/* Legal & Governance */}
-        <div className="sidebar-section">
-          <h4 className="sidebar-section-title">Legal & Governance</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/help')}>
-              ❓ Help & FAQ
+        {/* ── Section 6: Support & Legal (Accordion + Standalone Feedback) ── */}
+        <div className="sidebar-section sidebar-section-animated">
+          <h4 className="sidebar-section-title">
+            <ShieldCheck size={13} /> Support & Privacy
+          </h4>
+
+          {onOpenFeedback && (
+            <button className="sidebar-feedback-standalone" onClick={() => { setIsOpen(false); onOpenFeedback(); }}>
+              <MessageSquare size={15} />
+              Report Feedback
             </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/attributions')}>
-              📜 Open Source Credits
-            </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=terms')}>
-              📜 Terms of Service
-            </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=privacy')}>
-              🔒 Privacy Policy
-            </button>
-            <button className="sidebar-tool-btn" onClick={() => handleNav('/terms?tab=disclaimer')}>
-              ⚠️ Medical Disclaimer
-            </button>
-            {onOpenFeedback && (
-              <button className="sidebar-tool-btn" onClick={() => { setIsOpen(false); onOpenFeedback(); }}>
-                💬 Report Feedback
+          )}
+
+          <details className="sidebar-legal-accordion">
+            <summary>
+              <ScrollText size={13} />
+              Legal & Governance
+              <ChevronDown className="legal-chevron" />
+            </summary>
+            <div className="sidebar-legal-links">
+              <button className="sidebar-legal-link" onClick={() => handleNav('/help')}>
+                <HelpCircle size={13} /> Help & FAQ
               </button>
-            )}
-          </div>
+              <button className="sidebar-legal-link" onClick={() => handleNav('/attributions')}>
+                <Award size={13} /> Open Source Credits
+              </button>
+              <button className="sidebar-legal-link" onClick={() => handleNav('/terms?tab=terms')}>
+                <ScrollText size={13} /> Terms of Service
+              </button>
+              <button className="sidebar-legal-link" onClick={() => handleNav('/terms?tab=privacy')}>
+                <Lock size={13} /> Privacy Policy
+              </button>
+              <button className="sidebar-legal-link" onClick={() => handleNav('/terms?tab=disclaimer')}>
+                <AlertTriangle size={13} /> Medical Disclaimer
+              </button>
+            </div>
+          </details>
         </div>
       </div>
 

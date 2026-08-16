@@ -216,7 +216,7 @@ export default function Recipes() {
     <section className="page active" style={{ padding: '0 20px 30px', maxWidth: '1100px', margin: '0 auto' }}>
       
       {/* Compact Search & Filter Control Bar (Max 25% Page Height) */}
-      <div className="hero-search-container fade-in-up" style={{ padding: '24px 20px', borderRadius: '16px', marginBottom: '20px' }}>
+      <div className="hero-search-container fade-in-up" style={{ padding: '24px 20px', borderRadius: '16px', marginBottom: '8px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px', position: 'relative', zIndex: 2 }}>
           <div>
             <h1 className="hero-search-title" style={{ fontSize: '24px', margin: 0 }}>What's in your fridge?</h1>
@@ -425,7 +425,7 @@ export default function Recipes() {
       </div>
 
       {/* Results Area */}
-      <div className="results-area" style={{ maxWidth: '1000px', margin: '0 auto', paddingTop: '20px' }}>
+      <div className="results-area" style={{ maxWidth: '1000px', margin: '0 auto', paddingTop: '0' }}>
         {error && <div style={{color: 'red', marginBottom: '20px'}}>{error}</div>}
         {loading && !results && (
           <div className="magazine-grid">
@@ -543,9 +543,6 @@ export default function Recipes() {
                     <div className="magazine-card-meta">
                       {recipe.ready_in_minutes && <span>⏱️ {recipe.ready_in_minutes}m</span>}
                       {recipe.nutrition?.calories && <span>🔥 {Math.round(recipe.nutrition.calories)} kcal</span>}
-                      <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
-                        {isSpoonacular ? '🌐 Spoonacular' : '📁 Local Dataset'}
-                      </span>
                     </div>
                   </div>
                 </div>
