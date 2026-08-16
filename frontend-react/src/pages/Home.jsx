@@ -11,33 +11,34 @@ import ChefScoreBadge from '../components/ChefScoreBadge';
 import KitchenTimerWidget from '../components/KitchenTimerWidget';
 import KitchenToolsDrawer from '../components/KitchenToolsDrawer';
 import PantryQuickCookBar from '../components/PantryQuickCookBar';
+import DailyTargetsWidget from '../components/DailyTargetsWidget';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import foodFacts from '../data/foodFacts';
 import kitchenTips from '../data/kitchenTips';
 import kitchenSubstitutes from '../data/kitchenSubstitutes';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
-import { 
-  playSuccessSound, 
-  playAddSound, 
-  playClickSound 
+import {
+  playSuccessSound,
+  playAddSound,
+  playClickSound
 } from '../utils/soundEffects';
-import { 
-  Droplet, 
-  Droplets, 
-  Plus, 
-  Minus, 
-  Coffee, 
-  Sun, 
-  Utensils, 
-  Moon, 
-  Apple, 
-  Calendar, 
-  CheckCircle2, 
-  PlusCircle, 
-  Check, 
-  Trash2, 
-  Flame, 
-  ExternalLink, 
+import {
+  Droplet,
+  Droplets,
+  Plus,
+  Minus,
+  Coffee,
+  Sun,
+  Utensils,
+  Moon,
+  Apple,
+  Calendar,
+  CheckCircle2,
+  PlusCircle,
+  Check,
+  Trash2,
+  Flame,
+  ExternalLink,
   Sparkles,
   Lightbulb,
   RefreshCw,
@@ -393,7 +394,7 @@ export default function Home() {
     const title = slotEntry.recipe.title?.toLowerCase();
     const logSource = token ? todayLog : guestLogs;
 
-    return logSource.some(log => 
+    return logSource.some(log =>
       (recipeId && log.recipe_id === recipeId) ||
       (log.food_name && log.food_name.toLowerCase() === title)
     );
@@ -770,7 +771,7 @@ export default function Home() {
             <span className="greeting-pill-icon">{greeting.icon}</span>
             <span className="greeting-pill-text">{greeting.text}</span>
             <span className="greeting-pill-dot">•</span>
-            <span className="greeting-pill-kitchen">Kitchen Cockpit</span>
+            <span className="greeting-pill-kitchen">Chef</span>
           </div>
           <h1 className="kitchen-greeting-title">
             {username ? (
@@ -822,30 +823,30 @@ export default function Home() {
                 {(() => {
                   const visual = getRecipeCardVisual(spotlightRecipe);
                   return spotlightRecipe.image_url ? (
-                    <img 
-                      className="recipe-image" 
-                      style={{ maxHeight: '260px', objectFit: 'cover' }} 
-                      src={spotlightRecipe.image_url} 
-                      alt={spotlightRecipe.title} 
+                    <img
+                      className="recipe-image"
+                      style={{ maxHeight: '260px', objectFit: 'cover' }}
+                      src={spotlightRecipe.image_url}
+                      alt={spotlightRecipe.title}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.style.display = 'none';
                         if (e.currentTarget.nextSibling) {
                           e.currentTarget.nextSibling.style.display = 'flex';
                         }
-                      }} 
+                      }}
                     />
                   ) : null;
                 })()}
-                <div 
-                  className="recipe-image" 
-                  style={{ 
-                    display: spotlightRecipe.image_url ? 'none' : 'flex', 
+                <div
+                  className="recipe-image"
+                  style={{
+                    display: spotlightRecipe.image_url ? 'none' : 'flex',
                     maxHeight: '260px',
                     height: '180px',
-                    background: getRecipeCardVisual(spotlightRecipe).gradient, 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
+                    background: getRecipeCardVisual(spotlightRecipe).gradient,
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     justifyContent: 'center',
                     gap: '8px'
                   }}
@@ -862,9 +863,9 @@ export default function Home() {
                   </div>
 
                   {spotlightRecipe.summary && (
-                    <div 
-                      className="recipe-summary" 
-                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(spotlightRecipe.summary) }} 
+                    <div
+                      className="recipe-summary"
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(spotlightRecipe.summary) }}
                       style={{ marginBottom: '14px' }}
                     />
                   )}
@@ -928,8 +929,8 @@ export default function Home() {
                   <CheckCircle2 size={13} /> Log All Planned
                 </button>
 
-                <button 
-                  className="btn-ghost-sm" 
+                <button
+                  className="btn-ghost-sm"
                   onClick={() => navigate('/planner')}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', padding: '6px 12px', borderRadius: '10px', color: 'var(--primary)' }}
                 >
@@ -975,7 +976,7 @@ export default function Home() {
                     {recipe ? (
                       <div className="slot-recipe-body">
                         <h4 className="slot-recipe-title" title={recipe.title}>{recipe.title}</h4>
-                        
+
                         <div className="slot-macro-line">
                           {recipe.calories ? (
                             <span className="slot-macro-val cal">🔥 {Math.round(recipe.calories)} kcal</span>
@@ -1132,7 +1133,7 @@ export default function Home() {
                       <span className={`fun-fact-category-badge cat-${(fact.category || 'Nutrition').toLowerCase().replace(/\s+/g, '')}`}>
                         {fact.category}
                       </span>
-                      <button 
+                      <button
                         className="btn-fact-copy"
                         onClick={() => handleCopyText(fact.fact)}
                         title="Copy fact text"
@@ -1156,7 +1157,7 @@ export default function Home() {
                       <span className="fun-fact-category-badge cat-cooking">
                         {tip.category}
                       </span>
-                      <button 
+                      <button
                         className="btn-fact-copy"
                         onClick={() => handleCopyText(tip.tip)}
                         title="Copy tip text"
@@ -1225,147 +1226,8 @@ export default function Home() {
             <KitchenTimerWidget />
           </div>
 
-          {/* Daily Nutrition Targets Card */}
-          <div className="card glass dashboard-widget-card daily-targets-card" style={{ marginTop: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '6px' }}>
-              <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>🎯</span> Daily Targets
-              </h3>
-              <button 
-                onClick={() => navigate('/tdee')}
-                className="target-edit-pill"
-                title="Edit Target Profile"
-              >
-                ⚙️ Adjust
-              </button>
-            </div>
-
-            <p className="subtitle" style={{ marginBottom: '14px' }}>
-              {token ? (activeProfile ? `Profile: ${activeProfile.profile_name}` : "Set target profile") : "Demo preview"}
-            </p>
-
-            <div className="calorie-tracker-layout">
-              {/* SVG Progress Ring */}
-              <div className="progress-ring-container">
-                <svg width="140" height="140" viewBox="0 0 140 140">
-                  <defs>
-                    <linearGradient id="homeRingGradUnified" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#10b981" />
-                      <stop offset="50%" stopColor="#3b82f6" />
-                      <stop offset="100%" stopColor="#8b5cf6" />
-                    </linearGradient>
-                  </defs>
-                  <circle
-                    cx="70"
-                    cy="70"
-                    r="54"
-                    stroke="var(--border-glass)"
-                    strokeWidth="10"
-                    fill="transparent"
-                    style={{ opacity: 0.5 }}
-                  />
-                  <circle
-                    className="progress-ring-circle"
-                    cx="70"
-                    cy="70"
-                    r="54"
-                    stroke="url(#homeRingGradUnified)"
-                    strokeWidth="10"
-                    fill="transparent"
-                    strokeDasharray="339"
-                    strokeDashoffset={339 - (Math.min(totals.calories / (targets.calories || 1), 1.0) * 339)}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="progress-ring-text">
-                  <span className="progress-ring-val">
-                    <AnimatedCounter end={totals.calories} />
-                  </span>
-                  <span className="progress-ring-label">of {targets.calories} kcal</span>
-                  <span className="progress-ring-pct-badge" style={{
-                    background: totals.calories > targets.calories ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                    color: totals.calories > targets.calories ? '#ef4444' : '#10b981',
-                  }}>
-                    {Math.round((totals.calories / (targets.calories || 1)) * 100)}%
-                  </span>
-                </div>
-              </div>
-
-              {/* Macro Mini Bars */}
-              <div className="macro-bars-grid">
-                <div className="macro-summary-header">
-                  <span className="macro-summary-remaining">
-                    {targets.calories - totals.calories >= 0 
-                      ? `🔥 ${targets.calories - totals.calories} kcal left`
-                      : `⚠️ ${totals.calories - targets.calories} kcal over`}
-                  </span>
-                  <button 
-                    className="macro-quick-log-btn"
-                    onClick={() => navigate('/nutrition')}
-                    title="Log Meal"
-                  >
-                    ➕ Log
-                  </button>
-                </div>
-
-                {[
-                  { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: 'linear-gradient(90deg, #10b981, #059669)' },
-                  { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: 'linear-gradient(90deg, #3b82f6, #2563eb)' },
-                  { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: 'linear-gradient(90deg, #f59e0b, #d97706)' }
-                ].map(macro => {
-                  const pct = Math.min((macro.val / (macro.target || 1)) * 100, 100);
-                  const isOver = macro.val > macro.target;
-                  return (
-                    <div key={macro.label} className="macro-bar-item">
-                      <div className="macro-bar-header">
-                        <span className="macro-label-title">{macro.label}</span>
-                        <span className="macro-val-text">
-                          <strong>{macro.val}g</strong> / {macro.target}g
-                          <span className={`macro-pct-chip ${isOver ? 'over' : ''}`}>
-                            {Math.round((macro.val / (macro.target || 1)) * 100)}%
-                          </span>
-                        </span>
-                      </div>
-                      <div className="macro-bar-container">
-                        <div
-                          className="macro-bar-fill"
-                          style={{ width: `${pct}%`, background: macro.color }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {totals.calories > 0 && (
-                  <div className="macro-distribution-section">
-                    <div className="distribution-header">
-                      <span className="dist-title">📊 Energy Partition</span>
-                    </div>
-                    <div className="distribution-segmented-bar">
-                      {macroDistribution.breakfastPct > 0 && (
-                        <div className="dist-seg seg-breakfast" style={{ width: `${macroDistribution.breakfastPct}%` }} title={`Breakfast: ${macroDistribution.breakfastPct}%`} />
-                      )}
-                      {macroDistribution.lunchPct > 0 && (
-                        <div className="dist-seg seg-lunch" style={{ width: `${macroDistribution.lunchPct}%` }} title={`Lunch: ${macroDistribution.lunchPct}%`} />
-                      )}
-                      {macroDistribution.dinnerPct > 0 && (
-                        <div className="dist-seg seg-dinner" style={{ width: `${macroDistribution.dinnerPct}%` }} title={`Dinner: ${macroDistribution.dinnerPct}%`} />
-                      )}
-                      {macroDistribution.snackPct > 0 && (
-                        <div className="dist-seg seg-snack" style={{ width: `${macroDistribution.snackPct}%` }} title={`Snack: ${macroDistribution.snackPct}%`} />
-                      )}
-                    </div>
-                    <div className="distribution-legend">
-                      <span className="leg-item leg-b">🍳 {macroDistribution.breakfastPct}%</span>
-                      <span className="leg-item leg-l">🍲 {macroDistribution.lunchPct}%</span>
-                      <span className="leg-item leg-d">🥗 {macroDistribution.dinnerPct}%</span>
-                      <span className="leg-item leg-s">🍎 {macroDistribution.snackPct}%</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* Daily Nutrition Targets Widget */}
+          <DailyTargetsWidget onAdjustNavigate={() => navigate('/tdee')} />
 
           {/* Daily Hydration Glass Widget */}
           {(() => {
@@ -1432,8 +1294,8 @@ export default function Home() {
                     <span className="water-target-total">/ {targetWater} ml</span>
                   </div>
                   <span className={`water-status-tag ${isGoalReached ? 'success' : ''}`}>
-                    {isGoalReached 
-                      ? '✨ Goal Complete' 
+                    {isGoalReached
+                      ? '✨ Goal Complete'
                       : `${Math.max(0, targetWater - waterTotal)} ml left`}
                   </span>
                 </div>
@@ -1447,10 +1309,10 @@ export default function Home() {
                     <Droplets size={14} className="btn-icon-svg" />
                     <span className="btn-text">+500ml</span>
                   </button>
-                  <button 
-                    className="water-btn subtract-btn" 
-                    onClick={() => handleLogWater(-250)} 
-                    disabled={waterTotal <= 0} 
+                  <button
+                    className="water-btn subtract-btn"
+                    onClick={() => handleLogWater(-250)}
+                    disabled={waterTotal <= 0}
                     title="Remove 250ml"
                   >
                     <Minus size={14} className="btn-icon-svg" />
