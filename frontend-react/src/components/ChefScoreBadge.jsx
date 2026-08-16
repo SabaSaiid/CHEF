@@ -19,7 +19,7 @@ const TIER_DATA = {
  *   onClick  – optional click handler
  *   style    – additional inline styles
  */
-export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, nextTier, pointsToNextTier, onClick, style = {} }) {
+export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, placement, nextTier, pointsToNextTier, onClick, style = {} }) {
   const [hovered, setHovered] = useState(false);
   
   if (!grade || !TIER_DATA[grade]) return null;
@@ -51,7 +51,7 @@ export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, nextTi
     cursor: onClick ? 'pointer' : (showTooltip ? 'help' : 'default'),
     position: 'relative',
     transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-    transform: hovered ? 'scale(1.12)' : 'scale(1)',
+    transform: hovered ? 'scale(1.1)' : 'scale(1)',
     boxShadow: hovered
       ? `0 4px 14px ${tier.bg}80`
       : `0 2px 6px ${tier.bg}40`,
@@ -65,10 +65,15 @@ export function NutriScoreBadge({ grade, size = 'sm', showTooltip = true, nextTi
     ...style,
   };
 
-  const isLarge = size === 'lg';
+  // Determine tooltip placement: 'bottom-start' is safe for headers
+  const isBottom = placement === 'bottom' || placement === 'bottom-start' || size === 'md' || size === 'lg';
+  const alignLeft = placement === 'bottom-start' || size === 'md';
+
   const tooltipStyle = {
     position: 'absolute',
-    ...(isLarge ? { top: '115%', right: 0 } : { bottom: '115%', left: '50%', transform: 'translateX(-50%)' }),
+    ...(isBottom
+      ? (alignLeft ? { top: '120%', left: 0 } : { top: '120%', left: '50%', transform: 'translateX(-50%)' })
+      : { bottom: '120%', left: '50%', transform: 'translateX(-50%)' }),
     background: 'rgba(20, 20, 20, 0.96)',
     color: '#fff',
     padding: '6px 12px',

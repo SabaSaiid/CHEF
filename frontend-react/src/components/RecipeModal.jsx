@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { AlertTriangle } from 'lucide-react';
@@ -13,28 +13,41 @@ import SupplementaryBadges from './SupplementaryBadges';
 import { checkRecipeAllergens } from '../utils/allergenUtils';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
 
-
 function InstructionSteps({ instructions }) {
   if (!instructions) {
     return (
-      <div className="modal-section" style={{marginTop: '15px'}}>
+      <div className="modal-section" style={{ marginTop: '15px' }}>
         <h3>Instructions</h3>
-        <p style={{color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '14px'}}>
+        <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '14px' }}>
           No instructions available for this recipe. Try searching for this recipe online for detailed steps.
         </p>
       </div>
     );
   }
 
-  const lines = instructions.split('\n').filter(s => s.trim());
-  const hasSections = lines.some(l => l.trim().startsWith('—'));
+  const lines = Array.isArray(instructions)
+    ? instructions.map(s => String(s).trim()).filter(Boolean)
+    : typeof instructions === 'string'
+      ? instructions.split('\n').map(s => s.trim()).filter(Boolean)
+      : [];
+
+  if (lines.length === 0) {
+    return (
+      <div className="modal-section" style={{ marginTop: '15px' }}>
+        <h3>Instructions</h3>
+        <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '14px' }}>
+          No instructions available for this recipe.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="modal-section" style={{marginTop: '15px'}}>
+    <div className="modal-section" style={{ marginTop: '15px' }}>
       <h3>Instructions</h3>
       <div className="instructions-steps">
         {lines.map((line, i) => {
-          const trimmed = line.trim();
+          const trimmed = typeof line === 'string' ? line.trim() : String(line);
           
           if (trimmed.startsWith('—') && trimmed.endsWith('—')) {
             return (
@@ -45,7 +58,7 @@ function InstructionSteps({ instructions }) {
           }
 
           const stepText = trimmed.replace(/^\d+[\.\\)]\s*/, '');
-          const stepNum = i + 1 - lines.slice(0, i).filter(l => l.trim().startsWith('—')).length;
+          const stepNum = i + 1 - lines.slice(0, i).filter(l => (typeof l === 'string' ? l.trim() : '').startsWith('—')).length;
 
           return (
             <div key={i} className="instruction-step">
@@ -108,6 +121,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   // Auto-Deduct states
   const [showDeductModal, setShowDeductModal] = useState(false);
   const [deductList, setDeductList] = useState([]);
+  const [savedBookmark, setSavedBookmark] = useState(false);
 
   // Servings state
   const [targetServings, setTargetServings] = useState(recipe?.servings || 1);
@@ -117,6 +131,13 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   useEffect(() => {
     if (recipe) {
       setTargetServings(recipe.servings || 1);
+      setAppliedSwaps({});
+      setSubstitution({});
+      setIsCookingMode(false);
+      setCurrentStepIdx(0);
+      setTimerSeconds(0);
+      setTimerActive(false);
+      setSavedBookmark(false);
     }
   }, [recipe]);
 
@@ -128,7 +149,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   const [tipCategoryInput, setTipCategoryInput] = useState('General');
   const [submittingReview, setSubmittingReview] = useState(false);
 
-  const fetchReviews = useEffect(() => {
+  useEffect(() => {
     if (recipe?.id) {
       const source = recipe.source || 'catalog';
       api.get(`/reviews/summary/${recipe.id}?recipe_source=${source}`)
@@ -139,7 +160,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
         .then(res => setReviews(res))
         .catch(err => console.error("Error fetching reviews:", err));
     }
-  }, [recipe]);
+  }, [recipe?.id, recipe?.source]);
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
@@ -198,7 +219,50 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
     };
   }, []);
 
+  // Safe parsed ingredient array
+  const ingredientList = useMemo(() => {
+    if (!recipe?.ingredients) return [];
+    if (Array.isArray(recipe.ingredients)) {
+      return recipe.ingredients.map(i => (typeof i === 'string' ? i : i?.name || String(i))).filter(Boolean);
+    }
+    if (typeof recipe.ingredients === 'string') {
+      try {
+        const parsed = JSON.parse(recipe.ingredients);
+        if (Array.isArray(parsed)) return parsed.map(i => String(i)).filter(Boolean);
+      } catch (e) {}
+      return recipe.ingredients.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    return [];
+  }, [recipe?.ingredients]);
+
+  // Safe parsed steps array
+  const steps = useMemo(() => {
+    if (!recipe?.instructions) return [];
+    if (Array.isArray(recipe.instructions)) {
+      return recipe.instructions.map(s => String(s).trim()).filter(Boolean);
+    }
+    if (typeof recipe.instructions === 'string') {
+      return recipe.instructions
+        .split('\n')
+        .map(s => s.trim())
+        .filter(s => s && !s.startsWith('—'));
+    }
+    return [];
+  }, [recipe?.instructions]);
+
+  // Safe allergen check
+  const detectedAllergens = useMemo(() => {
+    if (!recipe) return [];
+    const rawProfileAllergens = activeProfile?.allergens
+      ? activeProfile.allergens.split(',').map(s => s.trim()).filter(Boolean)
+      : [];
+    return checkRecipeAllergens(ingredientList, rawProfileAllergens);
+  }, [recipe, ingredientList, activeProfile]);
+
   if (!recipe) return null;
+
+  const scoreData = recipe.nutri_score || recipe.chef_score;
+  const grade = typeof scoreData === 'string' ? scoreData : scoreData?.grade;
 
   const handleSaveBookmark = async () => {
     if (!token) {
@@ -210,8 +274,8 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
         title: recipe.title,
         image_url: recipe.image_url || null,
         summary: recipe.summary || null,
-        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : (typeof recipe.ingredients === 'string' ? recipe.ingredients : ''),
-        instructions: recipe.instructions || null,
+        ingredients: Array.isArray(ingredientList) ? ingredientList.join(', ') : '',
+        instructions: typeof recipe.instructions === 'string' ? recipe.instructions : (Array.isArray(recipe.instructions) ? recipe.instructions.join('\n') : null),
         calories: recipe.calories || recipe.nutrition?.calories || null,
         protein_g: recipe.protein_g || recipe.nutrition?.protein_g || null,
         carbs_g: recipe.carbs_g || recipe.nutrition?.carbs_g || null,
@@ -219,6 +283,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
         ready_in_minutes: recipe.ready_in_minutes || null,
         servings: targetServings || recipe.servings || null,
       });
+      setSavedBookmark(true);
       toast.success(`"${recipe.title}" saved to bookmarks! 🔖`);
     } catch (err) {
       toast.error(err.message || 'Failed to save recipe');
@@ -235,29 +300,17 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
 
   let videoUrl = recipe.video_url;
   if (!videoUrl && recipe.image_url && recipe.image_url.includes('img.youtube.com/vi/')) {
-    const videoId = recipe.image_url.split('/vi/')[1].split('/')[0];
-    videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const videoId = recipe.image_url.split('/vi/')[1]?.split('/')[0];
+    if (videoId) videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
   }
-
-  // Parse instructions into steps
-  const steps = recipe.instructions
-    ? recipe.instructions.split('\n')
-        .map(s => s.trim())
-        .filter(s => s && !s.startsWith('—'))
-    : [];
-
-  // Allergen Checking
-  const rawProfileAllergens = activeProfile?.allergens
-    ? activeProfile.allergens.split(',').map(s => s.trim()).filter(Boolean)
-    : [];
-  
-  const detectedAllergens = checkRecipeAllergens(recipe.ingredients || [], rawProfileAllergens);
 
   // Pantry check
   const getPantryStatus = (ingStr) => {
+    if (!ingStr || typeof ingStr !== 'string') return { inStock: false };
     const parsed = parseIngredient(ingStr);
     const targetName = (parsed.name || ingStr).toLowerCase().trim();
-    const match = pantry.find(p => {
+    const match = (pantry || []).find(p => {
+      if (!p?.ingredient_name) return false;
       const pNorm = p.ingredient_name.toLowerCase().trim();
       return targetName.includes(pNorm) || pNorm.includes(targetName);
     });
@@ -265,23 +318,22 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   };
 
   const handleFinishCooking = () => {
-    if (!token || !recipe.ingredients) {
+    if (!token || ingredientList.length === 0) {
       setIsCookingMode(false);
       return;
     }
     
     // Convert ingredients to checklist
-    const list = (Array.isArray(recipe.ingredients) ? recipe.ingredients : [])
-      .map(ingStr => {
-        const parsed = parseIngredient(ingStr);
-        const matchInfo = getPantryStatus(ingStr);
-        const qtyToDeduct = (parsed.hasQuantity && parsed.qty) ? Number((parsed.qty * servingRatio).toFixed(2)) : 1.0;
-        return {
-          name: parsed.name || ingStr,
-          qty: qtyToDeduct,
-          checked: matchInfo.inStock
-        };
-      });
+    const list = ingredientList.map(ingStr => {
+      const parsed = parseIngredient(ingStr);
+      const matchInfo = getPantryStatus(ingStr);
+      const qtyToDeduct = (parsed.hasQuantity && parsed.qty) ? Number((parsed.qty * servingRatio).toFixed(2)) : 1.0;
+      return {
+        name: parsed.name || ingStr,
+        qty: qtyToDeduct,
+        checked: matchInfo.inStock
+      };
+    });
 
     setDeductList(list);
     setShowDeductModal(true);
@@ -500,53 +552,72 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               </div>
             )}
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <h2 className="modal-title" style={{ margin: 0, flex: 1 }}>{recipe.title}</h2>
-              {onOpenFeedback && (
+            {/* ── Recipe Modal Header (Guaranteed No Overlap with modal-close) ── */}
+            <div className="recipe-modal-header">
+              {/* Row 1: NutriScore Badge + Title */}
+              <div className="recipe-modal-title-row">
+                <div className="recipe-modal-title-left">
+                  {(recipe.nutri_score || recipe.chef_score) && (
+                    <ChefScoreBadge
+                      grade={(recipe.nutri_score || recipe.chef_score).grade}
+                      size="md"
+                      nextTier={(recipe.nutri_score || recipe.chef_score).next_tier}
+                      pointsToNextTier={(recipe.nutri_score || recipe.chef_score).points_to_next_tier}
+                    />
+                  )}
+                  <h2>{recipe.title}</h2>
+                </div>
+              </div>
+
+              {/* Row 2: Action Toolbar & Meta Chips */}
+              <div className="recipe-modal-toolbar">
                 <button
                   type="button"
-                  onClick={() => onOpenFeedback(`Recipe Data: ${recipe.title}`)}
-                  style={{
-                    background: 'rgba(239, 68, 68, 0.08)',
-                    color: '#ef4444',
-                    border: '1px solid rgba(239, 68, 68, 0.25)',
-                    padding: '4px 10px',
-                    borderRadius: '8px',
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}
-                  title="Report inaccurate macros or ingredients for this recipe"
+                  onClick={handleSaveBookmark}
+                  className={`modal-action-btn ${savedBookmark ? 'btn-saved' : 'btn-save'}`}
+                  title={savedBookmark ? 'Saved to bookmarks' : 'Save recipe to bookmarks'}
                 >
-                  🚩 Report Error
+                  {savedBookmark ? '✓ Saved' : '🔖 Save'}
                 </button>
-              )}
-              <button
-                type="button"
-                onClick={handleSaveBookmark}
-                style={{
-                  background: 'rgba(255, 90, 54, 0.12)',
-                  color: 'var(--primary)',
-                  border: '1px solid var(--primary)',
-                  padding: '4px 10px',
-                  borderRadius: '8px',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-                title="Save recipe to bookmarks"
-              >
-                🔖 Save
-              </button>
-              {(recipe.nutri_score || recipe.chef_score) && (
-                <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="lg" />
-              )}
+                {onOpenFeedback && (
+                  <button
+                    type="button"
+                    onClick={() => onOpenFeedback(`Recipe Data: ${recipe.title}`)}
+                    className="modal-action-btn btn-report"
+                    title="Report inaccurate macros or ingredients for this recipe"
+                  >
+                    🚩 Report Issue
+                  </button>
+                )}
+                {recipe.ready_in_minutes && (
+                  <span style={{
+                    fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600,
+                    padding: '5px 10px', borderRadius: '8px', background: 'var(--bg-hover)',
+                    border: '1px solid var(--border-glass)', display: 'inline-flex', alignItems: 'center', gap: '4px'
+                  }}>
+                    ⏱️ {recipe.ready_in_minutes} mins
+                  </span>
+                )}
+                {recipe.region && (
+                  <span style={{
+                    fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600,
+                    padding: '5px 10px', borderRadius: '8px', background: 'var(--bg-hover)',
+                    border: '1px solid var(--border-glass)', display: 'inline-flex', alignItems: 'center', gap: '4px'
+                  }}>
+                    🌍 {recipe.region}
+                  </span>
+                )}
+                {recipe.meal_type && (
+                  <span style={{
+                    fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600,
+                    padding: '5px 10px', borderRadius: '8px', background: 'var(--bg-hover)',
+                    border: '1px solid var(--border-glass)', display: 'inline-flex', alignItems: 'center', gap: '4px',
+                    textTransform: 'capitalize'
+                  }}>
+                    🍽️ {recipe.meal_type}
+                  </span>
+                )}
+              </div>
             </div>
             {recipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(recipe.summary)}}></p>}
             
@@ -604,35 +675,39 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
             <SupplementaryBadges
               badges={recipe.supplementary_badges || (recipe.nutri_score && recipe.nutri_score.supplementary_badges)}
               nutrition={recipe.nutrition}
-              ingredients={recipe.ingredients}
+              ingredients={ingredientList}
             />
 
             {/* Servings Adjuster */}
-            {recipe.ingredients && recipe.ingredients.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '15px', padding: '10px 15px', background: 'rgba(242, 204, 143, 0.1)', borderRadius: '10px' }}>
-                <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>Servings:</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {ingredientList && ingredientList.length > 0 && (
+              <div className="servings-control-box">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '18px' }}>👥</span>
+                  <span style={{ fontWeight: '700', color: 'var(--text-primary)', fontSize: '14px' }}>Recipe Servings</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <button 
-                    className="nav-btn" 
+                    className="servings-control-btn" 
                     onClick={() => setTargetServings(prev => Math.max(1, prev - 1))}
-                    style={{ padding: '4px 10px', fontSize: '14px' }}
+                    disabled={targetServings <= 1}
+                    title="Decrease Servings"
                   >-</button>
-                  <span style={{ fontWeight: '700', fontSize: '1.1rem', minWidth: '30px', textAlign: 'center' }}>{targetServings}</span>
+                  <span style={{ fontWeight: '800', fontSize: '1.15rem', minWidth: '32px', textAlign: 'center', color: 'var(--text-primary)' }}>{targetServings}</span>
                   <button 
-                    className="nav-btn" 
+                    className="servings-control-btn" 
                     onClick={() => setTargetServings(prev => prev + 1)}
-                    style={{ padding: '4px 10px', fontSize: '14px' }}
+                    title="Increase Servings"
                   >+</button>
                 </div>
               </div>
             )}
 
             {/* Ingredients Check List */}
-            {recipe.ingredients && recipe.ingredients.length > 0 && (
+            {ingredientList && ingredientList.length > 0 && (
               <div className="modal-section" style={{marginTop: '15px'}}>
                 <h3>Ingredients</h3>
                 <ul style={{ listStyle: 'none', paddingLeft: 0, marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {recipe.ingredients.map((ing, i) => {
+                  {ingredientList.map((ing, i) => {
                     const check = getPantryStatus(ing);
                     return (
                       <li key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -664,7 +739,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
                                     const next = { ...prev };
                                     delete next[ing];
                                     return next;
-                                  });
+                                    });
                                 } else {
                                   handleSuggestSubstitute(ing);
                                 }
@@ -738,7 +813,7 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               </div>
             )}
 
-            <InstructionSteps instructions={recipe.instructions} />
+            <InstructionSteps instructions={steps} />
 
             {/* ── Community Reviews & Cooking Tips ── */}
             <div className="modal-section" style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid var(--border-color)' }}>
@@ -884,16 +959,43 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: '15px', marginTop: '24px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
               {steps.length > 0 && (
-                <button className="btn-primary" onClick={() => setIsCookingMode(true)} style={{ padding: '10px 24px', fontSize: '1rem', borderRadius: '10px' }}>
+                <button
+                  className="btn-primary"
+                  onClick={() => setIsCookingMode(true)}
+                  style={{
+                    padding: '12px 28px',
+                    fontSize: '0.95rem',
+                    fontWeight: 700,
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 14px rgba(255, 90, 54, 0.35)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
                   🍳 Start Cooking Mode
                 </button>
               )}
               {recipe.source_url && (
-                <a href={recipe.source_url} target="_blank" rel="noopener noreferrer" 
-                   className="water-btn"
-                   style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 'auto', padding: '10px 20px', textDecoration: 'none' }}>
+                <a
+                  href={recipe.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="water-btn"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 'auto',
+                    padding: '12px 22px',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                  }}
+                >
                   View Original Recipe ↗
                 </a>
               )}
