@@ -31,27 +31,40 @@ export default function SubmitRecipe() {
   const [sugarG, setSugarG] = useState(5);
 
   const [submitting, setSubmitting] = useState(false);
+  const [liveScore, setLiveScore] = useState(null);
 
   const availableDiets = ['Vegetarian', 'Vegan', 'Gluten-Free', 'High-Protein', 'Low-Carb', 'Keto', 'Mediterranean'];
 
-  // Quick Nutri-Score grade estimation preview helper
-  const estimateNutriScoreGrade = () => {
-    const c = Number(calories) || 0;
-    const s = Number(sugarG) || 0;
-    const f = Number(fatG) || 0;
-    const p = Number(proteinG) || 0;
-    const fib = Number(fiberG) || 0;
-
-    let points = (c / 80) + (s / 4.5) + (f / 3);
-    let goodPoints = (p / 2) + (fib / 1.5);
-    let netScore = points - goodPoints;
-
-    if (netScore <= 2) return 'A';
-    if (netScore <= 6) return 'B';
-    if (netScore <= 11) return 'C';
-    if (netScore <= 16) return 'D';
-    return 'E';
-  };
+  // Live Nutri-Score calculation via backend engine
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const c = Number(calories);
+      if (!c || c <= 0) {
+        setLiveScore(null);
+        return;
+      }
+      try {
+        const filteredIngs = ingredients.map(i => i.trim()).filter(Boolean);
+        const res = await api.post('/nutrition/nutri-score/calculate', {
+          title: title.trim() || 'Custom Recipe',
+          calories: c,
+          protein_g: Number(proteinG) || 0,
+          carbs_g: Number(carbsG) || 0,
+          fat_g: Number(fatG) || 0,
+          fiber_g: Number(fiberG) || 0,
+          sodium_mg: Number(sodiumMg) || 0,
+          sugar_g: Number(sugarG) || 0,
+          servings: Number(servings) || 1,
+          ingredients: filteredIngs,
+          meal_type: mealType,
+        });
+        setLiveScore(res);
+      } catch (err) {
+        // silent fallback
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [calories, proteinG, carbsG, fatG, fiberG, sodiumMg, sugarG, servings, ingredients, mealType, title]);
 
   const handleAddIngredient = () => {
     setIngredients(prev => [...prev, '']);
@@ -120,7 +133,7 @@ export default function SubmitRecipe() {
     }
   };
 
-  const estimatedGrade = estimateNutriScoreGrade();
+  const currentGrade = liveScore?.grade || 'C';
 
   return (
     <div className="page-container" style={{ maxWidth: '820px', margin: '0 auto', padding: '24px 16px' }}>
@@ -273,7 +286,12 @@ export default function SubmitRecipe() {
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
               <span style={{ color: 'var(--text-muted)' }}>Estimated Score:</span>
-              <ChefScoreBadge grade={estimatedGrade} size="sm" />
+              <ChefScoreBadge
+                grade={currentGrade}
+                size="sm"
+                nextTier={liveScore?.next_tier}
+                pointsToNextTier={liveScore?.points_to_next_tier}
+              />
             </div>
           </div>
 

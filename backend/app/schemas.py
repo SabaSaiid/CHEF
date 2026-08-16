@@ -189,6 +189,27 @@ class SupplementaryBadgesSchema(BaseModel):
     glycemic_load: Optional[dict] = None
 
 
+class NutriScoreBreakdownSchema(BaseModel):
+    neg_energy: int = 0
+    neg_saturated_fat: int = 0
+    neg_sugars: int = 0
+    neg_sodium: int = 0
+    pos_fiber: int = 0
+    pos_protein: int = 0
+    pos_fvl: int = 0
+    protein_excluded: bool = False
+    fvl_pct: float = 0.0
+    estimated_serving_weight_g: Optional[float] = 300.0
+    confidence: str = "high"
+    nutrients_estimated: bool = False
+    energy_kj_per_100g: Optional[float] = None
+    sat_fat_per_100g: Optional[float] = None
+    sugars_per_100g: Optional[float] = None
+    sodium_per_100g: Optional[float] = None
+    fiber_per_100g: Optional[float] = None
+    protein_per_100g: Optional[float] = None
+
+
 class NutriScoreResponse(BaseModel):
     """Nutri-Score rating for a recipe."""
     grade: str = Field(..., description="Nutri-Score grade: S | A | B | C | D | E")
@@ -199,12 +220,33 @@ class NutriScoreResponse(BaseModel):
     description: str = Field("", description="Human-readable tier description")
     category: str = Field("general", description="Scoring category used")
     negative_total: int = Field(0, description="Sum of negative points (0-40)")
+    positive_total: int = Field(0, description="Sum of positive points (0-15)")
     confidence: Optional[str] = Field("high", description="Weight parsing confidence: high | medium | low")
+    next_tier: Optional[str] = Field(None, description="Next attainable grade tier")
+    points_to_next_tier: int = Field(0, description="Points needed to reach next tier")
+    upgrade_recommendations: list[str] = Field(default_factory=list, description="Actionable tips to improve score")
     algorithm_version: Optional[str] = Field("1.0.0", description="Scoring algorithm version")
+    breakdown: Optional[NutriScoreBreakdownSchema] = None
     supplementary_badges: Optional[SupplementaryBadgesSchema] = None
 
 
 ChefScoreResponse = NutriScoreResponse
+
+
+class NutriScoreCalculateRequest(BaseModel):
+    """Request model for on-the-fly Nutri-Score calculation."""
+    title: Optional[str] = ""
+    calories: float = Field(..., ge=0, description="Calories per serving in kcal")
+    protein_g: float = Field(0.0, ge=0, description="Protein in grams")
+    carbs_g: float = Field(0.0, ge=0, description="Carbohydrates in grams")
+    fat_g: float = Field(0.0, ge=0, description="Fat in grams")
+    fiber_g: Optional[float] = Field(None, ge=0, description="Dietary fiber in grams")
+    saturated_fat_g: Optional[float] = Field(None, ge=0, description="Saturated fat in grams")
+    sugar_g: Optional[float] = Field(None, ge=0, description="Sugar in grams")
+    sodium_mg: Optional[float] = Field(None, ge=0, description="Sodium in mg")
+    servings: Optional[int] = Field(1, ge=1, description="Number of servings")
+    ingredients: list[str] = Field(default_factory=list, description="List of ingredient strings")
+    meal_type: Optional[str] = None
 
 
 class RecipeItem(BaseModel):
@@ -317,6 +359,7 @@ class SavedRecipeResponse(BaseModel):
     ready_in_minutes: Optional[int] = None
     servings: Optional[int] = None
     rating: Optional[int] = None
+    nutri_score: Optional[NutriScoreResponse] = None
 
 
 # ── Nutrition ───────────────────────────────────────────────────

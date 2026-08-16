@@ -134,8 +134,15 @@ class NutriScoreResult:
                 "pos_fvl": self.breakdown.pos_fvl,
                 "protein_excluded": self.breakdown.protein_excluded,
                 "fvl_pct": self.breakdown.fvl_pct,
+                "estimated_serving_weight_g": self.breakdown.estimated_serving_weight_g,
                 "confidence": self.breakdown.confidence,
                 "nutrients_estimated": self.breakdown.nutrients_estimated,
+                "energy_kj_per_100g": self.breakdown.energy_kj_per_100g,
+                "sat_fat_per_100g": self.breakdown.sat_fat_per_100g,
+                "sugars_per_100g": self.breakdown.sugars_per_100g,
+                "sodium_per_100g": self.breakdown.sodium_per_100g,
+                "fiber_per_100g": self.breakdown.fiber_per_100g,
+                "protein_per_100g": self.breakdown.protein_per_100g,
             },
         }
 

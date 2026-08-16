@@ -9,8 +9,10 @@ import json
 import re
 import difflib
 from pathlib import Path
-from fastapi import APIRouter, Query
-from app.schemas import NutritionRequest, NutritionData
+from fastapi import APIRouter, Query, HTTPException
+from app.schemas import NutritionRequest, NutritionData, NutriScoreCalculateRequest, NutriScoreResponse
+from app.scoring.calculator import compute_nutri_score
+from app.scoring.supplementary import compute_supplementary_badges
 
 router = APIRouter(prefix="/api/nutrition", tags=["nutrition"])
 
@@ -239,3 +241,45 @@ def analyze_nutrition(req: NutritionRequest):
         matched_food=matched_key,
         suggestions=[],
     )
+
+
+@router.post("/nutri-score/calculate", response_model=NutriScoreResponse, summary="Calculate full 6-tier Nutri-Score on demand")
+def calculate_nutri_score_endpoint(req: NutriScoreCalculateRequest):
+    """
+    Calculate full 6-tier Nutri-Score (FSA-NPS 2023 revision) on the fly for
+    custom nutrition values, servings, and ingredient lists.
+    Returns complete breakdown, positive and negative component scores, next-tier progression, and actionable recommendations.
+    """
+    nutrition_dict = {
+        "calories": req.calories,
+        "protein_g": req.protein_g,
+        "carbs_g": req.carbs_g,
+        "fat_g": req.fat_g,
+    }
+    if req.fiber_g is not None:
+        nutrition_dict["fiber_g"] = req.fiber_g
+    if req.saturated_fat_g is not None:
+        nutrition_dict["saturated_fat_g"] = req.saturated_fat_g
+    if req.sugar_g is not None:
+        nutrition_dict["sugar_g"] = req.sugar_g
+    if req.sodium_mg is not None:
+        nutrition_dict["sodium_mg"] = req.sodium_mg
+
+    result = compute_nutri_score(
+        nutrition=nutrition_dict,
+        ingredients=req.ingredients,
+        servings=req.servings or 1,
+        title=req.title or "",
+        meal_type=req.meal_type,
+    )
+
+    # Compute supplementary indicators
+    supp = compute_supplementary_badges(
+        nutrition=nutrition_dict,
+        ingredients=req.ingredients,
+    )
+
+    res_dict = result.to_dict()
+    res_dict["supplementary_badges"] = supp.to_dict()
+
+    return NutriScoreResponse(**res_dict)

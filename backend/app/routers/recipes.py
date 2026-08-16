@@ -96,7 +96,21 @@ def load_recipes():
             region = _r.get("region")
             meal_type = _r.get("meal_type")
             _ns = _r.get("nutri_score") or _r.get("chef_score")
-            _nutri_score_obj = NutriScoreResponse(**_ns) if _ns else None
+            if _ns and "positive_total" in _ns and "breakdown" in _ns and _ns.get("breakdown"):
+                _nutri_score_obj = NutriScoreResponse(**_ns)
+            elif _nutr and _nutr.get("calories"):
+                calc_res = compute_nutri_score(
+                    nutrition=_nutr,
+                    ingredients=_r.get("ingredients", []),
+                    servings=_r.get("servings", 1) or 1,
+                    title=_r.get("title", ""),
+                    meal_type=meal_type,
+                )
+                _nutri_score_obj = NutriScoreResponse(**calc_res.to_dict())
+            elif _ns:
+                _nutri_score_obj = NutriScoreResponse(**_ns)
+            else:
+                _nutri_score_obj = None
             item = RecipeItem(
                 id=_r["id"], title=_r["title"], summary=_r.get("summary", ""),
                 image_url=_r.get("image_url"),
@@ -644,6 +658,50 @@ async def search_recipes(req: RecipeSearchRequest):
     )
 
 
+def _format_saved_recipe_response(recipe: SavedRecipe) -> SavedRecipeResponse:
+    """Format SavedRecipe model into SavedRecipeResponse with computed Nutri-Score."""
+    ns_obj = None
+    if recipe.calories and recipe.calories > 0:
+        ing_list = []
+        if recipe.ingredients:
+            try:
+                ing_list = json.loads(recipe.ingredients)
+                if not isinstance(ing_list, list):
+                    ing_list = [recipe.ingredients]
+            except Exception:
+                ing_list = [i.strip() for i in recipe.ingredients.split(",") if i.strip()]
+
+        calc = compute_nutri_score(
+            nutrition={
+                "calories": recipe.calories or 0,
+                "protein_g": recipe.protein_g or 0,
+                "carbs_g": recipe.carbs_g or 0,
+                "fat_g": recipe.fat_g or 0,
+            },
+            ingredients=ing_list,
+            servings=recipe.servings or 1,
+            title=recipe.title,
+        )
+        ns_obj = NutriScoreResponse(**calc.to_dict())
+
+    return SavedRecipeResponse(
+        id=recipe.id,
+        title=recipe.title,
+        image_url=recipe.image_url,
+        summary=recipe.summary,
+        ingredients=recipe.ingredients,
+        instructions=recipe.instructions,
+        calories=recipe.calories,
+        protein_g=recipe.protein_g,
+        carbs_g=recipe.carbs_g,
+        fat_g=recipe.fat_g,
+        ready_in_minutes=recipe.ready_in_minutes,
+        servings=recipe.servings,
+        rating=recipe.rating,
+        nutri_score=ns_obj,
+    )
+
+
 @router.post("/save", response_model=SavedRecipeResponse, response_model_exclude_none=True, status_code=201)
 def save_recipe(
     req: SaveRecipeRequest,
@@ -657,7 +715,7 @@ def save_recipe(
         SavedRecipe.title == req.title
     ).first()
     if existing:
-        return existing
+        return _format_saved_recipe_response(existing)
 
     recipe = SavedRecipe(
         user_id=current_user.id,
@@ -677,7 +735,7 @@ def save_recipe(
     db.add(recipe)
     db.commit()
     db.refresh(recipe)
-    return recipe
+    return _format_saved_recipe_response(recipe)
 
 
 @router.get("/saved", response_model=list[SavedRecipeResponse], response_model_exclude_none=True)
@@ -692,7 +750,8 @@ def list_saved_recipes(
         query = query.order_by(SavedRecipe.rating.desc().nullslast(), SavedRecipe.saved_at.desc())
     else:
         query = query.order_by(SavedRecipe.saved_at.desc())
-    return query.all()
+    saved_list = query.all()
+    return [_format_saved_recipe_response(r) for r in saved_list]
 
 
 @router.put(
@@ -717,7 +776,7 @@ def rate_saved_recipe(
     recipe.rating = req.rating
     db.commit()
     db.refresh(recipe)
-    return recipe
+    return _format_saved_recipe_response(recipe)
 
 
 @router.delete(
@@ -900,4 +959,37 @@ async def get_quick_recipes(
     # Randomly select up to 4
     sample_size = min(4, len(quick_filter))
     return rng.sample(quick_filter, sample_size)
+
+
+@router.get(
+    "/{recipe_id}/nutri-score",
+    response_model=NutriScoreResponse,
+    summary="Get detailed Nutri-Score analysis with complete component breakdown",
+)
+def get_recipe_nutri_score(recipe_id: str):
+    """
+    Get or compute detailed Nutri-Score with complete nutrient point breakdown,
+    next-tier goals, and actionable upgrade recommendations for any recipe.
+    """
+    recipe = _RECIPE_BY_ID.get(recipe_id)
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+
+    if recipe.nutri_score and recipe.nutri_score.breakdown:
+        return recipe.nutri_score
+
+    nutr = recipe.nutrition
+    calc_res = compute_nutri_score(
+        nutrition={
+            "calories": nutr.calories if nutr else 0,
+            "protein_g": nutr.protein_g if nutr else 0,
+            "carbs_g": nutr.carbs_g if nutr else 0,
+            "fat_g": nutr.fat_g if nutr else 0,
+        },
+        ingredients=recipe.ingredients,
+        servings=recipe.servings or 1,
+        title=recipe.title,
+        meal_type=recipe.meal_type,
+    )
+    return NutriScoreResponse(**calc_res.to_dict())
 
