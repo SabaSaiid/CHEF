@@ -558,6 +558,25 @@ class NutritionLogCreate(BaseModel):
     )
 
 
+class NutritionLogUpdate(BaseModel):
+    food_item: Optional[str] = Field(None, min_length=1, max_length=255)
+    calories: Optional[float] = Field(None, ge=0)
+    protein_g: Optional[float] = Field(None, ge=0)
+    carbs_g: Optional[float] = Field(None, ge=0)
+    fat_g: Optional[float] = Field(None, ge=0)
+    fiber_g: Optional[float] = Field(None, ge=0)
+    quantity: Optional[float] = Field(None, gt=0)
+    unit: Optional[str] = Field(None, max_length=50)
+    meal_slot: Optional[str] = Field(None, pattern="^(Breakfast|Lunch|Dinner|Snack)$")
+    date: Optional[str] = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$")
+
+
+class NutritionLogCopyRequest(BaseModel):
+    source_date: str = Field(..., pattern=r"^\d{4}-\d{2}-\d{2}$", description="Source date YYYY-MM-DD")
+    target_date: str = Field(..., pattern=r"^\d{4}-\d{2}-\d{2}$", description="Target date YYYY-MM-DD")
+    meal_slot: Optional[str] = Field(None, pattern="^(Breakfast|Lunch|Dinner|Snack)$", description="Optional filter by meal slot")
+
+
 class NutritionLogResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

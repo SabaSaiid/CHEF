@@ -14,6 +14,8 @@ from app.models import NutritionLog, User, WaterLog
 from app.auth import get_current_user
 from app.schemas import (
     NutritionLogCreate,
+    NutritionLogUpdate,
+    NutritionLogCopyRequest,
     NutritionLogResponse,
     DailyNutritionSummary,
     WaterLogCreate,
@@ -38,7 +40,7 @@ def log_food(
         protein_g=req.protein_g,
         carbs_g=req.carbs_g,
         fat_g=req.fat_g,
-        fiber_g=req.fiber_g,
+        fiber_g=req.fiber_g or 0.0,
         quantity=req.quantity,
         unit=req.unit,
         meal_slot=req.meal_slot,
@@ -48,6 +50,89 @@ def log_food(
     db.commit()
     db.refresh(log)
     return log
+
+
+@router.put("/{log_id}", response_model=NutritionLogResponse)
+def update_log(
+    log_id: int,
+    req: NutritionLogUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Update a food log entry. Only the owner can modify. Requires authentication."""
+    log = db.query(NutritionLog).filter(
+        NutritionLog.id == log_id,
+        NutritionLog.user_id == current_user.id,
+    ).first()
+    if not log:
+        raise HTTPException(status_code=404, detail="Log entry not found")
+
+    if req.food_item is not None:
+        log.food_item = req.food_item
+    if req.calories is not None:
+        log.calories = req.calories
+    if req.protein_g is not None:
+        log.protein_g = req.protein_g
+    if req.carbs_g is not None:
+        log.carbs_g = req.carbs_g
+    if req.fat_g is not None:
+        log.fat_g = req.fat_g
+    if req.fiber_g is not None:
+        log.fiber_g = req.fiber_g
+    if req.quantity is not None:
+        log.quantity = req.quantity
+    if req.unit is not None:
+        log.unit = req.unit
+    if req.meal_slot is not None:
+        log.meal_slot = req.meal_slot
+    if req.date is not None:
+        log.date = req.date
+
+    db.commit()
+    db.refresh(log)
+    return log
+
+
+@router.post("/copy-day", response_model=list[NutritionLogResponse], status_code=201)
+def copy_day_logs(
+    req: NutritionLogCopyRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Copy all (or filtered by slot) meal logs from a source date into target date."""
+    query = db.query(NutritionLog).filter(
+        NutritionLog.user_id == current_user.id,
+        NutritionLog.date == req.source_date,
+    )
+    if req.meal_slot:
+        query = query.filter(NutritionLog.meal_slot == req.meal_slot)
+
+    source_logs = query.all()
+    if not source_logs:
+        raise HTTPException(status_code=404, detail=f"No food logs found on {req.source_date} to copy.")
+
+    created_logs = []
+    for s in source_logs:
+        new_log = NutritionLog(
+            user_id=current_user.id,
+            food_item=s.food_item,
+            calories=s.calories,
+            protein_g=s.protein_g,
+            carbs_g=s.carbs_g,
+            fat_g=s.fat_g,
+            fiber_g=s.fiber_g,
+            quantity=s.quantity,
+            unit=s.unit,
+            meal_slot=s.meal_slot,
+            date=req.target_date,
+        )
+        db.add(new_log)
+        created_logs.append(new_log)
+
+    db.commit()
+    for item in created_logs:
+        db.refresh(item)
+    return created_logs
 
 
 @router.get("", response_model=list[NutritionLogResponse])
