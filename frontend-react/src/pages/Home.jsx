@@ -8,9 +8,19 @@ import { useSettings } from '../context/SettingsContext';
 import RecipeModal from '../components/RecipeModal';
 import MealSlotPickerModal from '../components/MealSlotPickerModal';
 import ChefScoreBadge from '../components/ChefScoreBadge';
+import KitchenTimerWidget from '../components/KitchenTimerWidget';
+import KitchenToolsDrawer from '../components/KitchenToolsDrawer';
+import PantryQuickCookBar from '../components/PantryQuickCookBar';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
 import foodFacts from '../data/foodFacts';
+import kitchenTips from '../data/kitchenTips';
+import kitchenSubstitutes from '../data/kitchenSubstitutes';
 import { getLocalDateString, CHEF_EVENTS, dispatchChefEvent } from '../utils/dateUtils';
+import { 
+  playSuccessSound, 
+  playAddSound, 
+  playClickSound 
+} from '../utils/soundEffects';
 import { 
   Droplet, 
   Droplets, 
@@ -33,18 +43,52 @@ import {
   RefreshCw,
   Copy,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Scale,
+  ChefHat,
+  Clock,
+  ArrowRightLeft,
+  Zap,
+  Layers,
+  Heart,
+  TrendingUp,
+  Package,
+  Search,
+  BookOpen
 } from 'lucide-react';
 
 function getGreeting() {
   const hour = new Date().getHours();
-  if (hour < 12) return 'Good Morning';
-  if (hour < 17) return 'Good Afternoon';
-  return 'Evening';
+  if (hour >= 5 && hour < 12) return { text: 'Good Morning', icon: '🌅' };
+  if (hour >= 12 && hour < 17) return { text: 'Good Afternoon', icon: '☀️' };
+  if (hour >= 17 && hour < 22) return { text: 'Good Evening', icon: '🌆' };
+  return { text: 'Good Night', icon: '🌙' };
 }
 
-const FACT_COUNT = 3;
-const AUTO_ROTATE_MS = 6000;
+function getEatingWindow() {
+  const hour = new Date().getHours();
+  if (hour >= 6 && hour < 11) {
+    return { slot: 'Breakfast', label: '🍳 Breakfast Window Active', desc: 'Fuel up for the morning with protein and complex carbs.' };
+  }
+  if (hour >= 11 && hour < 16) {
+    return { slot: 'Lunch', label: '🍲 Lunch Window Active', desc: 'Maintain your energy with a balanced, nutrient-dense lunch.' };
+  }
+  if (hour >= 16 && hour < 21) {
+    return { slot: 'Dinner', label: '🥗 Dinner Window Active', desc: 'Light, wholesome dinner for optimal digestion and recovery.' };
+  }
+  return { slot: 'Rest', label: '🌙 Rest & Hydration Window', desc: 'Hydrate well and let your body recover overnight.' };
+}
+
+const AUTO_ROTATE_MS = 6500;
+
+const COOKING_VIBES = [
+  { id: 'all', label: '✨ Daily Spotlight', icon: '✨' },
+  { id: 'high_protein', label: '💪 High Protein', icon: '🥩' },
+  { id: 'quick', label: '⚡ Under 25 Mins', icon: '⏱️' },
+  { id: 'comfort', label: '🍲 Comfort Food', icon: '🥘' },
+  { id: 'veg', label: '🌱 Pure Vegetarian', icon: '🥦' },
+  { id: 'low_carb', label: '🥑 Low Carb', icon: '🥗' },
+];
 
 /* ── Animated Counter Component ─────────────────────────────── */
 function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
@@ -56,7 +100,6 @@ function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
     const animate = (now) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic for a satisfying deceleration
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(eased * end));
       if (progress < 1) {
@@ -76,6 +119,8 @@ export default function Home() {
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Recipe state
   const [dailyRecipe, setDailyRecipe] = useState(null);
   const [quickRecipes, setQuickRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,23 +129,37 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // Vibe & Scaling
+  const [activeVibe, setActiveVibe] = useState('all');
+  const [servingsScale, setServingsScale] = useState(1);
+
+  // Toolkit Drawer & Timer state
+  const [isToolsDrawerOpen, setIsToolsDrawerOpen] = useState(false);
+  const [toolsDrawerTab, setToolsDrawerTab] = useState('converter');
+
+  // Meal Planner & Nutrition Data
   const [isPickerOpen, setPickerOpen] = useState(false);
   const [pickerSlot, setPickerSlot] = useState('Breakfast');
-  const [activeFact, setActiveFact] = useState(0);
-  const [selectedFactCategory, setSelectedFactCategory] = useState('All');
-  const [copiedFact, setCopiedFact] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef(null);
-
   const [todayLog, setTodayLog] = useState([]);
   const [waterTotal, setWaterTotal] = useState(0);
   const [guestLogs, setGuestLogs] = useState([]);
   const [todayMeals, setTodayMeals] = useState({ Breakfast: null, Lunch: null, Dinner: null, Snack: null });
-  const [fridgeQuery, setFridgeQuery] = useState('');
+
+  // Fun Facts & Chef Hacks Carousel State
+  const [infoCardMode, setInfoCardMode] = useState('facts'); // 'facts' | 'tips'
+  const [activeFact, setActiveFact] = useState(0);
+  const [selectedFactCategory, setSelectedFactCategory] = useState('All');
+  const [activeTip, setActiveTip] = useState(0);
+  const [selectedTipCategory, setSelectedTipCategory] = useState('All');
+  const [copiedText, setCopiedText] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(null);
 
   const greeting = useMemo(() => getGreeting(), []);
+  const eatingWindow = useMemo(() => getEatingWindow(), []);
 
-  // Pick 5 facts per day using a deterministic daily seed
+  // Pick 6 facts per day deterministically
   const dailyFacts = useMemo(() => {
     const now = new Date();
     const dayIndex = Math.floor(now.getTime() / 86400000);
@@ -114,56 +173,64 @@ export default function Home() {
     return indices.slice(0, 6).map(i => foodFacts[i]);
   }, []);
 
-  // Dynamic facts pool state initialized with daily pool
   const [customFactPool, setCustomFactPool] = useState(null);
-
-  const activePool = customFactPool || dailyFacts;
+  const activeFactPool = customFactPool || dailyFacts;
 
   const filteredFacts = useMemo(() => {
-    if (selectedFactCategory === 'All') return activePool;
+    if (selectedFactCategory === 'All') return activeFactPool;
     const match = foodFacts.filter(f => f.category === selectedFactCategory);
-    return match.length > 0 ? match : activePool;
-  }, [selectedFactCategory, activePool]);
+    return match.length > 0 ? match : activeFactPool;
+  }, [selectedFactCategory, activeFactPool]);
 
-  const handleShuffleFact = () => {
-    // Fisher-Yates shuffle the entire foodFacts array and pick 6 fresh facts
-    const pool = selectedFactCategory === 'All'
-      ? [...foodFacts]
-      : foodFacts.filter(f => f.category === selectedFactCategory);
-    
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
+  const filteredTips = useMemo(() => {
+    if (selectedTipCategory === 'All') return kitchenTips;
+    const match = kitchenTips.filter(t => t.category === selectedTipCategory);
+    return match.length > 0 ? match : kitchenTips;
+  }, [selectedTipCategory]);
+
+  const handleShuffleFactOrTip = () => {
+    playClickSound();
+    if (infoCardMode === 'facts') {
+      const pool = selectedFactCategory === 'All'
+        ? [...foodFacts]
+        : foodFacts.filter(f => f.category === selectedFactCategory);
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      const newPool = pool.slice(0, 6);
+      setCustomFactPool(newPool);
+      setActiveFact(0);
+      toast.success(`Shuffled ${newPool.length} verified food science facts! 💡`);
+    } else {
+      setActiveTip(prev => (prev + 1) % filteredTips.length);
+      toast.success('Next Chef Culinary Hack loaded! 🔪');
     }
-    
-    const newPool = pool.slice(0, 6);
-    setCustomFactPool(newPool);
-    setActiveFact(0);
-    toast.success(`Shuffled ${newPool.length} new facts! 💡`);
   };
 
-  const handleCopyFact = (factText) => {
-    navigator.clipboard.writeText(factText);
-    setCopiedFact(true);
-    toast.success('Fact copied to clipboard! 📋');
-    setTimeout(() => setCopiedFact(false), 2000);
+  const handleCopyText = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(true);
+    toast.success('Copied to clipboard! 📋');
+    setTimeout(() => setCopiedText(false), 2000);
   };
 
-  // Auto-rotate facts
-  const nextFact = useCallback(() => {
-    setActiveFact(prev => (prev + 1) % filteredFacts.length);
-  }, [filteredFacts.length]);
+  // Auto-rotate facts or tips
+  const nextSlide = useCallback(() => {
+    if (infoCardMode === 'facts') {
+      setActiveFact(prev => (prev + 1) % filteredFacts.length);
+    } else {
+      setActiveTip(prev => (prev + 1) % filteredTips.length);
+    }
+  }, [infoCardMode, filteredFacts.length, filteredTips.length]);
 
-  // Clamp activeFact when filteredFacts shrinks (e.g. after shuffle or category change)
   useEffect(() => {
-    setActiveFact(prev => (prev >= filteredFacts.length ? 0 : prev));
-  }, [filteredFacts.length]);
-
-  useEffect(() => {
-    if (isPaused || filteredFacts.length <= 1) return;
-    timerRef.current = setInterval(nextFact, AUTO_ROTATE_MS);
+    if (isPaused) return;
+    const count = infoCardMode === 'facts' ? filteredFacts.length : filteredTips.length;
+    if (count <= 1) return;
+    timerRef.current = setInterval(nextSlide, AUTO_ROTATE_MS);
     return () => clearInterval(timerRef.current);
-  }, [isPaused, nextFact, filteredFacts.length]);
+  }, [isPaused, nextSlide, infoCardMode, filteredFacts.length, filteredTips.length]);
 
   const targets = useMemo(() => {
     return {
@@ -179,8 +246,7 @@ export default function Home() {
     const todayStr = getLocalDateString();
 
     if (!token) {
-      // Dynamic Guest Mode Data
-      const guestWater = parseInt(localStorage.getItem('chef_guest_water')) || 0;
+      const guestWater = parseInt(localStorage.getItem('chef_guest_water'), 10) || 0;
       setWaterTotal(guestWater);
       try {
         const storedLogs = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
@@ -192,7 +258,7 @@ export default function Home() {
       return;
     }
 
-    // 1. Fetch Nutrition Logs for today
+    // 1. Fetch Nutrition Logs
     try {
       const logs = await api.get(`/nutrition/log?date=${todayStr}`);
       setTodayLog(logs);
@@ -223,12 +289,11 @@ export default function Home() {
     }
   }, [token]);
 
-  // Sync on mount, token change, or route navigation back to home
   useEffect(() => {
     fetchTodayStats();
   }, [fetchTodayStats, token, location.pathname]);
 
-  // Subscribe to real-time custom window sync events from other tabs/pages
+  // Subscribe to real-time custom window sync events
   useEffect(() => {
     const handleSync = () => {
       fetchTodayStats();
@@ -238,12 +303,14 @@ export default function Home() {
     window.addEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
     window.addEventListener(CHEF_EVENTS.WATER_UPDATED, handleSync);
     window.addEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+    window.addEventListener(CHEF_EVENTS.PANTRY_UPDATED, handleSync);
     window.addEventListener('storage', handleSync);
 
     return () => {
       window.removeEventListener(CHEF_EVENTS.NUTRITION_UPDATED, handleSync);
       window.removeEventListener(CHEF_EVENTS.WATER_UPDATED, handleSync);
       window.removeEventListener(CHEF_EVENTS.PROFILE_UPDATED, handleSync);
+      window.removeEventListener(CHEF_EVENTS.PANTRY_UPDATED, handleSync);
       window.removeEventListener('storage', handleSync);
     };
   }, [fetchTodayStats, refreshActiveProfile]);
@@ -285,6 +352,30 @@ export default function Home() {
     };
   }, [todayMeals]);
 
+  // Macro distribution breakdown across meal slots
+  const macroDistribution = useMemo(() => {
+    const logSource = token ? todayLog : guestLogs;
+    const slotCals = { Breakfast: 0, Lunch: 0, Dinner: 0, Snack: 0 };
+    const totalLoggedCals = totals.calories || 1;
+
+    logSource.forEach(log => {
+      const slot = (log.meal_slot || 'Snack').charAt(0).toUpperCase() + (log.meal_slot || 'Snack').slice(1).toLowerCase();
+      if (slot in slotCals) {
+        slotCals[slot] += log.calories || 0;
+      } else {
+        slotCals.Snack += log.calories || 0;
+      }
+    });
+
+    return {
+      breakfastPct: Math.round((slotCals.Breakfast / totalLoggedCals) * 100) || 0,
+      lunchPct: Math.round((slotCals.Lunch / totalLoggedCals) * 100) || 0,
+      dinnerPct: Math.round((slotCals.Dinner / totalLoggedCals) * 100) || 0,
+      snackPct: Math.round((slotCals.Snack / totalLoggedCals) * 100) || 0,
+      slotCals
+    };
+  }, [todayLog, guestLogs, token, totals.calories]);
+
   const isMealSlotLogged = useCallback((slotEntry) => {
     if (!slotEntry?.recipe) return false;
     const recipeId = slotEntry.recipe.id;
@@ -298,9 +389,10 @@ export default function Home() {
   }, [todayLog, guestLogs, token]);
 
   const handleQuickLogMeal = async (e, slotEntry, slotName) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     if (!slotEntry?.recipe) return;
 
+    playAddSound();
     const recipe = slotEntry.recipe;
     const todayStr = getLocalDateString();
 
@@ -327,6 +419,7 @@ export default function Home() {
           protein_g: recipe.protein_g || 0,
           carbs_g: recipe.carbs_g || 0,
           fat_g: recipe.fat_g || 0,
+          meal_slot: slotName || 'Snack',
           date: todayStr
         };
         const existing = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
@@ -338,6 +431,25 @@ export default function Home() {
       fetchTodayStats();
     } catch (err) {
       toast.error(err.message || 'Failed to log meal.');
+    }
+  };
+
+  const handleLogAllPlannedMeals = async () => {
+    playClickSound();
+    const unloggedSlots = Object.entries(todayMeals).filter(([slot, entry]) => entry?.recipe && !isMealSlotLogged(entry));
+    if (unloggedSlots.length === 0) {
+      toast.info('All planned meals are already logged for today! ✨');
+      return;
+    }
+
+    try {
+      for (const [slot, entry] of unloggedSlots) {
+        await handleQuickLogMeal(null, entry, slot);
+      }
+      playSuccessSound();
+      toast.success(`All ${unloggedSlots.length} planned meals logged successfully! 🎉`);
+    } catch (err) {
+      toast.error('Failed to log all meals.');
     }
   };
 
@@ -355,6 +467,7 @@ export default function Home() {
 
   const handleLogWater = async (amount) => {
     const todayStr = getLocalDateString();
+    playClickSound();
     if (token) {
       try {
         if (amount < 0) {
@@ -386,7 +499,7 @@ export default function Home() {
         toast.error("Failed to log water: " + err.message);
       }
     } else {
-      const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water')) || 0) + amount);
+      const newTotal = Math.max(0, (parseInt(localStorage.getItem('chef_guest_water'), 10) || 0) + amount);
       localStorage.setItem('chef_guest_water', newTotal);
       setWaterTotal(newTotal);
       dispatchChefEvent(CHEF_EVENTS.WATER_UPDATED);
@@ -398,16 +511,9 @@ export default function Home() {
     }
   };
 
-  const handleFridgeSearch = (e) => {
-    e.preventDefault();
-    if (!fridgeQuery.trim()) return;
-    navigate('/recipes', { state: { ingredients: fridgeQuery } });
-  };
-
   const fetchDailyRecipe = useCallback(async (forceRefresh = false) => {
     const todayStr = getLocalDateString();
 
-    // Check session cache for instantaneous, zero-flash render on same day
     if (!forceRefresh) {
       try {
         const cached = sessionStorage.getItem(`chef_daily_recipe_${todayStr}`);
@@ -458,7 +564,6 @@ export default function Home() {
   const fetchQuickRecipes = useCallback(async (forceRefresh = false) => {
     const todayStr = getLocalDateString();
 
-    // Check session cache for instantaneous, zero-flash render on same day
     if (!forceRefresh) {
       try {
         const cached = sessionStorage.getItem(`chef_quick_recipes_${todayStr}`);
@@ -499,25 +604,118 @@ export default function Home() {
     fetchQuickRecipes();
   }, [fetchDailyRecipe, fetchQuickRecipes, location.pathname]);
 
+  // Vibe filtered spotlight recipe selection
+  const spotlightRecipe = useMemo(() => {
+    if (!dailyRecipe) return null;
+    if (activeVibe === 'all') return dailyRecipe;
+
+    // Check if quickRecipes has a match for the vibe
+    const allPool = [dailyRecipe, ...quickRecipes];
+    if (activeVibe === 'high_protein') {
+      const highProt = allPool.find(r => (r.nutrition?.protein_g || 0) >= 20);
+      if (highProt) return highProt;
+    } else if (activeVibe === 'quick') {
+      const quickOne = allPool.find(r => (r.ready_in_minutes || 99) <= 20);
+      if (quickOne) return quickOne;
+    } else if (activeVibe === 'veg') {
+      const vegOne = allPool.find(r => r.vegetarian || (r.diets && r.diets.some(d => d.toLowerCase().includes('veg'))));
+      if (vegOne) return vegOne;
+    } else if (activeVibe === 'low_carb') {
+      const lowCarbOne = allPool.find(r => (r.nutrition?.carbs_g || 999) <= 25);
+      if (lowCarbOne) return lowCarbOne;
+    }
+    return dailyRecipe;
+  }, [dailyRecipe, quickRecipes, activeVibe]);
+
+  // Scaled Nutritional Info based on servings scale
+  const scaledNutrition = useMemo(() => {
+    if (!spotlightRecipe?.nutrition) return null;
+    const baseServings = spotlightRecipe.servings || 1;
+    const factor = servingsScale / baseServings;
+    return {
+      calories: Math.round((spotlightRecipe.nutrition.calories || 0) * factor),
+      protein_g: Math.round((spotlightRecipe.nutrition.protein_g || 0) * factor),
+      carbs_g: Math.round((spotlightRecipe.nutrition.carbs_g || 0) * factor),
+      fat_g: Math.round((spotlightRecipe.nutrition.fat_g || 0) * factor),
+    };
+  }, [spotlightRecipe, servingsScale]);
+
   const handleSaveRecipe = async () => {
-    if (!dailyRecipe) return;
+    if (!spotlightRecipe) return;
+    playAddSound();
     try {
       await api.post('/recipes/save', {
-        title: dailyRecipe.title,
-        image_url: dailyRecipe.image_url || null,
-        summary: dailyRecipe.summary || null,
-        ingredients: (dailyRecipe.ingredients || []).join(', '),
-        instructions: dailyRecipe.instructions || null,
-        calories: dailyRecipe.nutrition?.calories || null,
-        protein_g: dailyRecipe.nutrition?.protein_g || null,
-        carbs_g: dailyRecipe.nutrition?.carbs_g || null,
-        fat_g: dailyRecipe.nutrition?.fat_g || null,
-        ready_in_minutes: dailyRecipe.ready_in_minutes || null,
-        servings: dailyRecipe.servings || null,
+        title: spotlightRecipe.title,
+        image_url: spotlightRecipe.image_url || null,
+        summary: spotlightRecipe.summary || null,
+        ingredients: (spotlightRecipe.ingredients || []).join(', '),
+        instructions: spotlightRecipe.instructions || null,
+        calories: spotlightRecipe.nutrition?.calories || null,
+        protein_g: spotlightRecipe.nutrition?.protein_g || null,
+        carbs_g: spotlightRecipe.nutrition?.carbs_g || null,
+        fat_g: spotlightRecipe.nutrition?.fat_g || null,
+        ready_in_minutes: spotlightRecipe.ready_in_minutes || null,
+        servings: spotlightRecipe.servings || null,
       });
-      toast.success(`"${dailyRecipe.title}" saved to bookmarks ✓`);
+      toast.success(`"${spotlightRecipe.title}" saved to bookmarks ✓`);
     } catch (err) {
       toast.error(err.message);
+    }
+  };
+
+  const handleMarkAsCooked = async () => {
+    if (!spotlightRecipe) return;
+    playSuccessSound();
+    const todayStr = getLocalDateString();
+
+    try {
+      // 1. Log to nutrition
+      if (token) {
+        await api.post('/nutrition/log', {
+          food_item: spotlightRecipe.title,
+          calories: scaledNutrition?.calories || spotlightRecipe.nutrition?.calories || 0,
+          protein_g: scaledNutrition?.protein_g || spotlightRecipe.nutrition?.protein_g || 0,
+          carbs_g: scaledNutrition?.carbs_g || spotlightRecipe.nutrition?.carbs_g || 0,
+          fat_g: scaledNutrition?.fat_g || spotlightRecipe.nutrition?.fat_g || 0,
+          fiber_g: 0,
+          quantity: servingsScale,
+          unit: 'serving',
+          date: todayStr,
+          meal_slot: eatingWindow.slot === 'Rest' ? 'Snack' : eatingWindow.slot
+        });
+
+        // 2. Auto pantry deduction
+        try {
+          await api.post('/pantry/use-recipe-ingredients', {
+            recipe_id: spotlightRecipe.id,
+            recipe_title: spotlightRecipe.title,
+            servings_used: servingsScale
+          });
+        } catch {
+          // non-blocking
+        }
+      } else {
+        const newLog = {
+          id: Date.now(),
+          recipe_id: spotlightRecipe.id,
+          food_name: spotlightRecipe.title,
+          calories: scaledNutrition?.calories || spotlightRecipe.nutrition?.calories || 0,
+          protein_g: scaledNutrition?.protein_g || spotlightRecipe.nutrition?.protein_g || 0,
+          carbs_g: scaledNutrition?.carbs_g || spotlightRecipe.nutrition?.carbs_g || 0,
+          fat_g: scaledNutrition?.fat_g || spotlightRecipe.nutrition?.fat_g || 0,
+          meal_slot: eatingWindow.slot === 'Rest' ? 'Snack' : eatingWindow.slot,
+          date: todayStr
+        };
+        const existing = JSON.parse(localStorage.getItem('chef_guest_logs') || '[]');
+        localStorage.setItem('chef_guest_logs', JSON.stringify([...existing, newLog]));
+      }
+
+      toast.success(`🎉 Great job cooking "${spotlightRecipe.title}"! Logged into daily nutrition.`);
+      dispatchChefEvent(CHEF_EVENTS.NUTRITION_UPDATED);
+      dispatchChefEvent(CHEF_EVENTS.PANTRY_UPDATED);
+      fetchTodayStats();
+    } catch (err) {
+      toast.error('Failed to log cooked meal.');
     }
   };
 
@@ -531,7 +729,6 @@ export default function Home() {
   ];
 
   const slots = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
-  const slotEmojis = { Breakfast: '🍳', Lunch: '🍲', Dinner: '🥗', Snack: '🍎' };
   const slotIcons = {
     Breakfast: <Coffee size={14} />,
     Lunch: <Utensils size={14} />,
@@ -540,39 +737,53 @@ export default function Home() {
   };
   const slotColors = { Breakfast: '#ff9f43', Lunch: '#10ac84', Dinner: '#ee5253', Snack: '#0abde3' };
 
-  const activeSlot = useMemo(() => {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 11) return 'Breakfast';
-    if (hour >= 11 && hour < 16) return 'Lunch';
-    if (hour >= 17 && hour < 23) return 'Dinner';
-    return 'Snack';
-  }, []);
-
   return (
-    <section className="page active">
-      <div className="page-header fade-in-up" style={{ '--delay': '0ms' }}>
-        <h1>{username ? `${greeting}, ${username}!` : 'My Kitchen'}</h1>
-        <p className="subtitle">Welcome to your hybrid eating framework dashboard.</p>
+    <section className="page active kitchen-page-optimized">
+      {/* ── Enhanced Hero Header ── */}
+      <div className="kitchen-hero-header fade-in-up" style={{ '--delay': '0ms' }}>
+        <div className="kitchen-hero-main">
+          <div className="kitchen-greeting-pill">
+            <span className="greeting-pill-icon">{greeting.icon}</span>
+            <span className="greeting-pill-text">{greeting.text}</span>
+            <span className="greeting-pill-dot">•</span>
+            <span className="greeting-pill-kitchen">Kitchen Cockpit</span>
+          </div>
+          <h1 className="kitchen-greeting-title">
+            {username ? (
+              <>
+                Welcome back, <span className="greeting-highlight">{username}</span> <span className="greeting-hand-wave">👋</span>
+              </>
+            ) : (
+              <>
+                Welcome to <span className="greeting-highlight">Your Kitchen</span> <span className="greeting-hand-wave">👨‍🍳</span>
+              </>
+            )}
+          </h1>
+        </div>
       </div>
 
-
-
-      {/* ── Recipe of the Day + Fun Fact ── */}
-      <div className="kitchen-layout fade-in-up" style={{ '--delay': '200ms' }}>
+      {/* ── 2-Column Culinary & Nutrition Deck ── */}
+      <div className="kitchen-layout fade-in-up" style={{ '--delay': '100ms' }}>
+        {/* Left Column: Spotlight Recipe & Meal Plan & Pantry Radar */}
         <div className="kitchen-main-col">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              ✨ Recipe of the Day
-            </h2>
-            <button
-              className="btn-fact-shuffle"
-              onClick={() => fetchDailyRecipe(true)}
-              disabled={loading || isRefreshingDaily}
-              title="Shuffle a new Recipe of the Day"
-            >
-              <RefreshCw size={13} className={isRefreshingDaily ? 'spin-anim' : ''} /> Shuffle
-            </button>
+          {/* Spotlight Header */}
+          <div className="spotlight-header-container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+              <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                ✨ Recipe of the Day
+              </h2>
+              <button
+                className="btn-fact-shuffle"
+                onClick={() => fetchDailyRecipe(true)}
+                disabled={loading || isRefreshingDaily}
+                title="Shuffle a new Recipe of the Day"
+              >
+                <RefreshCw size={13} className={isRefreshingDaily ? 'spin-anim' : ''} /> Shuffle
+              </button>
+            </div>
           </div>
+
+          {/* Spotlight Recipe Card */}
           <div className="card glass daily-recipe-card">
             {loading ? (
               <div style={{ padding: '20px' }}>
@@ -582,16 +793,16 @@ export default function Home() {
               </div>
             ) : error ? (
               <div style={{ padding: '20px', color: 'var(--accent-1)', textAlign: 'center' }}>{error}</div>
-            ) : dailyRecipe && (
+            ) : spotlightRecipe && (
               <>
                 {(() => {
-                  const visual = getRecipeCardVisual(dailyRecipe);
-                  return dailyRecipe.image_url ? (
+                  const visual = getRecipeCardVisual(spotlightRecipe);
+                  return spotlightRecipe.image_url ? (
                     <img 
                       className="recipe-image" 
-                      style={{ maxHeight: '250px', objectFit: 'cover' }} 
-                      src={dailyRecipe.image_url} 
-                      alt={dailyRecipe.title} 
+                      style={{ maxHeight: '260px', objectFit: 'cover' }} 
+                      src={spotlightRecipe.image_url} 
+                      alt={spotlightRecipe.title} 
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.style.display = 'none';
@@ -605,35 +816,76 @@ export default function Home() {
                 <div 
                   className="recipe-image" 
                   style={{ 
-                    display: dailyRecipe.image_url ? 'none' : 'flex', 
-                    maxHeight: '250px',
+                    display: spotlightRecipe.image_url ? 'none' : 'flex', 
+                    maxHeight: '260px',
                     height: '180px',
-                    background: getRecipeCardVisual(dailyRecipe).gradient, 
+                    background: getRecipeCardVisual(spotlightRecipe).gradient, 
                     flexDirection: 'column', 
                     alignItems: 'center', 
                     justifyContent: 'center',
                     gap: '8px'
                   }}
                 >
-                  <span style={{ fontSize: '48px' }}>{getRecipeCardVisual(dailyRecipe).icon}</span>
+                  <span style={{ fontSize: '48px' }}>{getRecipeCardVisual(spotlightRecipe).icon}</span>
                   <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.3)', padding: '3px 10px', borderRadius: '10px' }}>
-                    {getRecipeCardVisual(dailyRecipe).category}
+                    {getRecipeCardVisual(spotlightRecipe).category}
                   </span>
                 </div>
+
                 <div className="recipe-info" style={{ padding: '20px' }}>
-                  <div className="recipe-title" style={{ fontSize: '1.5rem' }}>{dailyRecipe.title}</div>
-                  {dailyRecipe.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(dailyRecipe.summary) }} style={{ marginBottom: '15px' }}></div>}
-                  {dailyRecipe.diets?.length > 0 && (
-                    <div className="diet-tags" style={{ marginBottom: '15px' }}>
-                      {dailyRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
+                    <div className="recipe-title" style={{ fontSize: '1.45rem', flex: 1 }}>{spotlightRecipe.title}</div>
+                    {(spotlightRecipe.nutri_score || spotlightRecipe.chef_score) && (
+                      <ChefScoreBadge grade={(spotlightRecipe.nutri_score || spotlightRecipe.chef_score).grade} size="sm" />
+                    )}
+                  </div>
+
+                  {spotlightRecipe.summary && (
+                    <div 
+                      className="recipe-summary" 
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(spotlightRecipe.summary) }} 
+                      style={{ marginBottom: '14px' }}
+                    />
+                  )}
+
+                  {spotlightRecipe.diets?.length > 0 && (
+                    <div className="diet-tags" style={{ marginBottom: '14px' }}>
+                      {spotlightRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}
                     </div>
                   )}
+
+                  {/* Servings Scaler & Scaled Macros */}
+                  <div className="spotlight-scaler-row">
+                    <div className="servings-stepper">
+                      <span className="scaler-label">Servings:</span>
+                      {[1, 2, 4, 6].map(num => (
+                        <button
+                          key={num}
+                          className={`btn-servings-chip ${servingsScale === num ? 'active' : ''}`}
+                          onClick={() => { playClickSound(); setServingsScale(num); }}
+                        >
+                          {num}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="scaled-macro-chips">
+                      <span className="scaled-macro-val">
+                        🔥 <strong>{scaledNutrition?.calories || spotlightRecipe.nutrition?.calories || 0}</strong> kcal
+                      </span>
+                      <span className="scaled-macro-val">
+                        💪 <strong>{scaledNutrition?.protein_g || spotlightRecipe.nutrition?.protein_g || 0}g</strong> P
+                      </span>
+                      <span className="scaled-macro-val">
+                        🍞 <strong>{scaledNutrition?.carbs_g || spotlightRecipe.nutrition?.carbs_g || 0}g</strong> C
+                      </span>
+                    </div>
+                  </div>
+
                   <div className="recipe-meta" style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    {dailyRecipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{dailyRecipe.ready_in_minutes} min</span></span>}
-                    {dailyRecipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{Math.round(dailyRecipe.nutrition.calories)} kcal</span></span>}
-                    {dailyRecipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{dailyRecipe.servings} servings</span></span>}
+                    {spotlightRecipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{spotlightRecipe.ready_in_minutes} min</span></span>}
                     {(() => {
-                      const isSpoonacular = dailyRecipe.source === 'Spoonacular' || String(dailyRecipe.id).startsWith('spoonacular');
+                      const isSpoonacular = spotlightRecipe.source === 'Spoonacular' || String(spotlightRecipe.id).startsWith('spoonacular');
                       return (
                         <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
                           {isSpoonacular ? '🌐 Spoonacular' : '📁 Local Dataset'}
@@ -641,546 +893,655 @@ export default function Home() {
                       );
                     })()}
                   </div>
-                  {dailyRecipe.video_url && (
+
+                  {spotlightRecipe.video_url && (
                     <div className="recipe-video" style={{ marginBottom: '15px' }}>
                       <iframe
-                        src={dailyRecipe.video_url}
-                        title={`${dailyRecipe.title} video`}
+                        src={spotlightRecipe.video_url}
+                        title={`${spotlightRecipe.title} video`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         style={{ width: '100%', aspectRatio: '16/9', borderRadius: '12px', border: 'none' }}
                       ></iframe>
                     </div>
                   )}
+
                   <div className="recipe-actions">
-                    <button className="btn-primary" onClick={() => { setSelectedRecipe(dailyRecipe); setModalOpen(true); }}>Let's Cook</button>
-                    <button className="btn-secondary" onClick={handleSaveRecipe}>💾 Bookmark</button>
+                    <button className="btn-primary" onClick={() => { setSelectedRecipe(spotlightRecipe); setModalOpen(true); }}>
+                      🍳 Let's Cook
+                    </button>
+                    <button className="btn-success-cook" onClick={handleMarkAsCooked} title="Log cooked meal and deduct ingredients">
+                      <CheckCircle2 size={15} /> Cooked It!
+                    </button>
+                    <button className="btn-secondary" onClick={handleSaveRecipe}>
+                      💾 Bookmark
+                    </button>
                   </div>
                 </div>
               </>
             )}
           </div>
-        </div>
 
-        <div
-          className="kitchen-side-col"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Lightbulb size={20} className="glowing-bulb-icon" /> Did You Know?
-            </h2>
-            <button
-              className="btn-fact-shuffle"
-              onClick={handleShuffleFact}
-              title="Shuffle a new food science fact"
-            >
-              <RefreshCw size={13} /> Shuffle
-            </button>
-          </div>
+          {/* Today's Meal Plan Widget */}
+          <div className="card glass dashboard-widget-card today-plan-widget" style={{ marginTop: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+              <div>
+                <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Calendar size={20} style={{ color: 'var(--primary)' }} /> Today's Meal Plan
+                </h3>
+                <p className="subtitle" style={{ margin: 0 }}>Scheduled meals for today</p>
+              </div>
 
-          <div className="fun-fact-widget">
-            {/* Category Filter Pills */}
-            <div className="fun-fact-categories">
-              {['All', 'Nutrition', 'Culture', 'Cooking', 'Health'].map(cat => (
-                <button
-                  key={cat}
-                  className={`fact-cat-pill ${selectedFactCategory === cat ? 'active' : ''}`}
-                  onClick={() => {
-                    setSelectedFactCategory(cat);
-                    setActiveFact(0);
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Fact slides */}
-            <div className="fun-fact-slides">
-              {filteredFacts.map((fact, idx) => (
-                <div
-                  key={fact.id || idx}
-                  className={`fun-fact-slide ${idx === activeFact ? 'active' : ''}`}
-                >
-                  <div className="fun-fact-top-row">
-                    <div className="fun-fact-icon-wrap">
-                      <span className="fun-fact-icon">{fact.icon}</span>
-                    </div>
-                    <span className={`fun-fact-category-badge cat-${(fact.category || 'Nutrition').toLowerCase().replace(/\s+/g, '')}`}>
-                      {fact.category}
-                    </span>
-                    <button 
-                      className="btn-fact-copy"
-                      onClick={() => handleCopyFact(fact.fact)}
-                      title="Copy fact text"
-                    >
-                      {copiedFact ? <Check size={13} style={{ color: '#10ac84' }} /> : <Copy size={13} />}
-                    </button>
-                  </div>
-
-                  <p className="fun-fact-text">{fact.fact}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <div className="today-plan-summary-pill">
+                  <Flame size={14} style={{ color: 'var(--primary)' }} />
+                  <span className="summary-val">{plannedTotals.calories}</span>
+                  <span className="summary-target">/ {targets.calories} kcal Planned</span>
                 </div>
-              ))}
-            </div>
 
-            {/* Navigation controls */}
-            <div className="fun-fact-controls">
-              <button
-                className="fun-fact-arrow"
-                onClick={() => setActiveFact(prev => (prev - 1 + filteredFacts.length) % filteredFacts.length)}
-                aria-label="Previous fact"
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <div className="fun-fact-dots">
-                {filteredFacts.slice(0, 8).map((_, idx) => (
-                  <button
-                    key={idx}
-                    className={`fun-fact-dot ${idx === activeFact ? 'active' : ''}`}
-                    onClick={() => setActiveFact(idx)}
-                    aria-label={`Fact ${idx + 1}`}
-                  />
-                ))}
-              </div>
-              <button
-                className="fun-fact-arrow"
-                onClick={() => setActiveFact(prev => (prev + 1) % filteredFacts.length)}
-                aria-label="Next fact"
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-
-            {/* Auto-play progress bar */}
-            <div className="fun-fact-progress">
-              <div
-                className={`fun-fact-progress-fill ${isPaused ? 'paused' : ''}`}
-                key={`${selectedFactCategory}-${activeFact}`}
-              />
-            </div>
-
-            <div className="fun-fact-footer">
-              <span className="fun-fact-counter">{activeFact + 1} / {filteredFacts.length} Facts</span>
-              <span className="fun-fact-source">
-                <Sparkles size={12} style={{ color: 'var(--primary)' }} /> Verified Food Science
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Dashboard Cards (Calorie & Water Tracker) ── */}
-      <div className="dashboard-row fade-in-up" style={{ '--delay': '300ms' }}>
-        {/* Calorie & Macro Tracker Card */}
-        <div className="card glass dashboard-widget-card daily-targets-card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '6px' }}>
-            <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>🎯</span> Daily Targets
-            </h3>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <button 
-                onClick={() => navigate('/tdee')}
-                className="target-edit-pill"
-                title="Edit Target Profile"
-              >
-                ⚙️ Adjust Profile
-              </button>
-            </div>
-          </div>
-
-          <p className="subtitle" style={{ marginBottom: '16px' }}>
-            {token ? (activeProfile ? `Active Profile: ${activeProfile.profile_name}` : "Set up a profile in settings") : "Preview mode — Sign in to track stats"}
-          </p>
-
-          <div className="calorie-tracker-layout">
-            {/* SVG circular progress ring */}
-            <div className="progress-ring-container">
-              <svg width="150" height="150" viewBox="0 0 150 150">
-                <defs>
-                  <linearGradient id="homeRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#10b981" />
-                    <stop offset="50%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#8b5cf6" />
-                  </linearGradient>
-                  <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="3" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
-                </defs>
-                {/* Background Ring */}
-                <circle
-                  cx="75"
-                  cy="75"
-                  r="58"
-                  stroke="var(--border-glass)"
-                  strokeWidth="11"
-                  fill="transparent"
-                  style={{ opacity: 0.5 }}
-                />
-                {/* Animated Progress Ring */}
-                <circle
-                  className="progress-ring-circle"
-                  cx="75"
-                  cy="75"
-                  r="58"
-                  stroke="url(#homeRingGrad)"
-                  strokeWidth="11"
-                  fill="transparent"
-                  strokeDasharray="364"
-                  strokeDashoffset={364 - (Math.min(totals.calories / (targets.calories || 1), 1.0) * 364)}
-                  strokeLinecap="round"
-                  filter="url(#ringGlow)"
-                  style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
-                />
-              </svg>
-              <div className="progress-ring-text">
-                <span className="progress-ring-val">
-                  <AnimatedCounter end={totals.calories} />
-                </span>
-                <span className="progress-ring-label">of {targets.calories} kcal</span>
-                <span className="progress-ring-pct-badge" style={{
-                  background: totals.calories > targets.calories ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                  color: totals.calories > targets.calories ? '#ef4444' : '#10b981',
-                }}>
-                  {Math.round((totals.calories / (targets.calories || 1)) * 100)}%
-                </span>
-              </div>
-            </div>
-
-            {/* Macros mini bars */}
-            <div className="macro-bars-grid">
-              <div className="macro-summary-header">
-                <span className="macro-summary-remaining">
-                  {targets.calories - totals.calories >= 0 
-                    ? `🔥 ${targets.calories - totals.calories} kcal remaining`
-                    : `⚠️ ${totals.calories - targets.calories} kcal over target`}
-                </span>
-                <button 
-                  className="macro-quick-log-btn"
-                  onClick={() => navigate('/nutrition')}
-                  title="Log Meal / Quick Add"
+                <button
+                  className="btn-log-all-plan"
+                  onClick={handleLogAllPlannedMeals}
+                  title="Log all scheduled meals into daily nutrition"
                 >
-                  ➕ Log Meal
+                  <CheckCircle2 size={13} /> Log All Planned
+                </button>
+
+                <button 
+                  className="btn-ghost-sm" 
+                  onClick={() => navigate('/planner')}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', padding: '6px 12px', borderRadius: '10px', color: 'var(--primary)' }}
+                >
+                  Planner <ExternalLink size={13} />
                 </button>
               </div>
+            </div>
 
-              {[
-                { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: 'linear-gradient(90deg, #10b981, #059669)', cals: totals.protein * 4 },
-                { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: 'linear-gradient(90deg, #3b82f6, #2563eb)', cals: totals.carbs * 4 },
-                { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: 'linear-gradient(90deg, #f59e0b, #d97706)', cals: totals.fat * 9 }
-              ].map(macro => {
-                const pct = Math.min((macro.val / (macro.target || 1)) * 100, 100);
-                const isOver = macro.val > macro.target;
+            <div className="today-plan-grid">
+              {slots.map(slot => {
+                const entry = todayMeals[slot];
+                const recipe = entry?.recipe;
+                const isActive = slot === eatingWindow.slot;
+                const logged = isMealSlotLogged(entry);
+
                 return (
-                  <div key={macro.label} className="macro-bar-item">
-                    <div className="macro-bar-header">
-                      <span className="macro-label-title">{macro.label}</span>
-                      <span className="macro-val-text">
-                        <strong>{macro.val}g</strong> / {macro.target}g
-                        <span className={`macro-pct-chip ${isOver ? 'over' : ''}`}>
-                          {Math.round((macro.val / (macro.target || 1)) * 100)}%
-                        </span>
+                  <div
+                    key={slot}
+                    className={`today-plan-slot-card ${isActive ? 'slot-active-glow' : ''} ${logged ? 'slot-logged' : ''} ${!recipe ? 'slot-empty' : ''}`}
+                    onClick={() => {
+                      if (recipe) {
+                        setSelectedRecipe(recipe);
+                        setModalOpen(true);
+                      } else {
+                        setPickerSlot(slot);
+                        setPickerOpen(true);
+                      }
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
+                      <span
+                        className="slot-label-badge"
+                        style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30`, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                      >
+                        {slotIcons[slot]} {slot}
                       </span>
+
+                      {isActive && (
+                        <span className="slot-now-tag">NOW</span>
+                      )}
                     </div>
-                    <div className="macro-bar-container">
-                      <div
-                        className="macro-bar-fill"
-                        style={{ width: `${pct}%`, background: macro.color }}
-                      />
-                    </div>
+
+                    {recipe ? (
+                      <>
+                        <p className="slot-recipe-title">{recipe.title}</p>
+                        
+                        <div className="slot-macro-row">
+                          {recipe.calories && <span className="slot-recipe-cals">🔥 {Math.round(recipe.calories)} kcal</span>}
+                          {(recipe.protein_g || recipe.protein) && (
+                            <span className="slot-recipe-macro">💪 {recipe.protein_g || recipe.protein}g P</span>
+                          )}
+                        </div>
+
+                        <div className="slot-action-bar" onClick={(e) => e.stopPropagation()}>
+                          {logged ? (
+                            <span className="slot-logged-badge">
+                              <CheckCircle2 size={13} /> Logged
+                            </span>
+                          ) : (
+                            <button
+                              className="btn-quick-log"
+                              onClick={(e) => handleQuickLogMeal(e, entry, slot)}
+                              title="Log this meal into daily nutrition"
+                            >
+                              <Check size={13} /> Quick Log
+                            </button>
+                          )}
+
+                          <button
+                            className="btn-slot-swap"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPickerSlot(slot);
+                              setPickerOpen(true);
+                            }}
+                            title="Swap this meal"
+                          >
+                            <ArrowRightLeft size={13} />
+                          </button>
+
+                          {entry?.id && (
+                            <button
+                              className="btn-slot-remove"
+                              onClick={(e) => handleRemoveMealFromPlan(e, entry.id)}
+                              title="Remove from plan"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="slot-empty-prompt">
+                        <PlusCircle size={22} className="slot-empty-icon" />
+                        <span className="slot-empty-text">+ Add Meal</span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
-        </div>
 
-        {/* Water Tracker Card */}
-        {(() => {
-          const targetWater = targets.water || 2500;
-          const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
-          const actualPctWater = Math.round((waterTotal / targetWater) * 100);
-          const isGoalReached = waterTotal >= targetWater;
-          const isOverHydrated = actualPctWater > 125;
+          {/* Smart Pantry & Fridge Radar Section */}
+          <div id="kitchen-pantry-radar-section" style={{ marginTop: '24px' }}>
+            <PantryQuickCookBar onSelectRecipe={(r) => { setSelectedRecipe(r); setModalOpen(true); }} />
+          </div>
 
-          return (
-            <div className="card glass dashboard-widget-card water-widget">
-              <div className="water-widget-header">
-                <div>
-                  <h3 className="section-title" style={{ marginTop: 0, marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="water-title-icon">💧</span>
-                    <span>Daily Hydration</span>
-                  </h3>
-                  <p className="subtitle" style={{ margin: 0, fontSize: '0.82rem' }}>Target: <strong>{targetWater} ml</strong></p>
-                </div>
-                {isOverHydrated ? (
-                  <span className="water-goal-badge" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', animation: 'none' }}>⚠️ Over-hydrated</span>
-                ) : isGoalReached ? (
-                  <span className="water-goal-badge pulse-glow">🎉 Goal Met!</span>
-                ) : (
-                  <span className="water-pct-badge">{pctWater}%</span>
-                )}
-              </div>
-
-              {/* Realistic Glass Tumbler Container */}
-              <div className="water-glass-container">
-                {/* Volume Measurement Ticks */}
-                <div className="glass-ticks">
-                  <span className="tick-mark t-100">100%</span>
-                  <span className="tick-mark t-75">75%</span>
-                  <span className="tick-mark t-50">50%</span>
-                  <span className="tick-mark t-25">25%</span>
-                </div>
-
-                <div className="water-display">
-                  {/* Water level fill */}
-                  <div className="water-level" style={{ height: `${pctWater}%` }}>
-                    <div className="water-wave wave-1" />
-                    <div className="water-wave wave-2" />
-                    <div className="water-bubble b1" />
-                    <div className="water-bubble b2" />
-                    <div className="water-bubble b3" />
-                    <div className="water-bubble b4" />
-                  </div>
-
-                  {/* Glass reflections */}
-                  <div className="glass-glare" />
-                  <div className="glass-rim" />
-
-                  {/* Empty state prompt inside glass */}
-                  {waterTotal === 0 && (
-                    <div className="glass-empty-hint">
-                      <div className="empty-droplet-glow">
-                        <Droplet size={22} className="empty-droplet-icon" />
-                      </div>
-                      <span className="empty-hint-text">Tap + to log</span>
+          {/* Quick & Easy Grid */}
+          <h2 className="section-title" style={{ marginTop: '2.5rem' }}>⏱️ Quick & Easy (Under 30 Mins)</h2>
+          {quickLoading ? (
+            <div className="quick-recipes-grid">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="card glass skeleton" style={{ height: '180px' }}></div>
+              ))}
+            </div>
+          ) : quickRecipes.length > 0 && (
+            <div className="quick-recipes-grid">
+              {quickRecipes.map(recipe => (
+                <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }} style={{ position: 'relative' }}>
+                  {(recipe.nutri_score || recipe.chef_score) && (
+                    <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 3 }}>
+                      <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
                     </div>
                   )}
+                  {(() => {
+                    const visual = getRecipeCardVisual(recipe);
+                    return (
+                      <>
+                        {recipe.image_url ? (
+                          <img 
+                            src={recipe.image_url} 
+                            alt={recipe.title} 
+                            className="mini-recipe-image" 
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.style.display = 'none';
+                              if (e.currentTarget.nextSibling) {
+                                e.currentTarget.nextSibling.style.display = 'flex';
+                              }
+                            }} 
+                          />
+                        ) : null}
+                        <div 
+                          className="mini-recipe-image" 
+                          style={{ 
+                            display: recipe.image_url ? 'none' : 'flex', 
+                            background: visual.gradient, 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            fontSize: '22px'
+                          }}
+                        >
+                          {visual.icon}
+                        </div>
+                      </>
+                    );
+                  })()}
+                  <div className="mini-recipe-content">
+                    <h3 className="mini-recipe-title">{recipe.title}</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+                      <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>
+                      <span className="recipe-source-badge recipe-source-badge-local" style={{ fontSize: '10px', padding: '1px 5px' }}>
+                        📁 Local
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* Numerical Stat Display */}
-              <div className="water-stats-row">
-                <div className="water-stat-main">
-                  <span className="water-current-num">{waterTotal}</span>
-                  <span className="water-target-total">/ {targetWater} ml</span>
-                </div>
-                <span className={`water-status-tag ${isGoalReached ? 'success' : ''} ${isOverHydrated ? 'warning' : ''}`}>
-                  {isOverHydrated 
-                    ? '⚠️ Over upper limit — moderate intake'
-                    : isGoalReached 
-                      ? '✨ Fully Hydrated' 
-                      : `${Math.max(0, targetWater - waterTotal)} ml remaining`}
-                </span>
-              </div>
-
-              {/* Enhanced Action Buttons */}
-              <div className="water-controls">
-                <button className="water-btn preset-btn" onClick={() => handleLogWater(250)} title="Add 250ml water">
-                  <Droplet size={15} className="btn-icon-svg" />
-                  <span className="btn-text">+250 ml</span>
-                </button>
-                <button className="water-btn preset-btn bottle" onClick={() => handleLogWater(500)} title="Add 500ml water">
-                  <Droplets size={15} className="btn-icon-svg" />
-                  <span className="btn-text">+500 ml</span>
-                </button>
-                <button 
-                  className="water-btn subtract-btn" 
-                  onClick={() => handleLogWater(-250)} 
-                  disabled={waterTotal <= 0} 
-                  title="Remove 250ml water"
-                >
-                  <Minus size={15} className="btn-icon-svg" />
-                  <span className="btn-text">-250 ml</span>
-                </button>
-              </div>
+              ))}
             </div>
-          );
-        })()}
-      </div>
-
-      {/* ── Today's Meal Plan slots ── */}
-      <div className="card glass dashboard-widget-card today-plan-widget fade-in-up" style={{ marginBottom: '2rem', '--delay': '400ms' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-          <div>
-            <h3 className="section-title" style={{ marginTop: 0, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Calendar size={20} style={{ color: 'var(--primary)' }} /> Today's Meal Plan
-            </h3>
-            <p className="subtitle" style={{ margin: 0 }}>What you scheduled to eat today</p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            {/* Planned Total Calories Pill */}
-            <div className="today-plan-summary-pill">
-              <Flame size={14} style={{ color: 'var(--primary)' }} />
-              <span className="summary-val">{plannedTotals.calories}</span>
-              <span className="summary-target">/ {targets.calories} kcal Planned</span>
-            </div>
-
-            <button 
-              className="btn-ghost-sm" 
-              onClick={() => navigate('/planner')}
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', padding: '6px 12px', borderRadius: '10px', color: 'var(--primary)' }}
-            >
-              Manage Plan <ExternalLink size={13} />
-            </button>
-          </div>
+          )}
         </div>
 
-        <div className="today-plan-grid">
-          {slots.map(slot => {
-            const entry = todayMeals[slot];
-            const recipe = entry?.recipe;
-            const isActive = slot === activeSlot;
-            const logged = isMealSlotLogged(entry);
+        {/* Right Column: Facts First, then Timer, Targets, Water */}
+        <div className="kitchen-side-col">
+          {/* Science & Culinary Hacks Section Header */}
+          <div className="spotlight-header-container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+              <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                💡 Science & Hacks
+              </h2>
+            </div>
+          </div>
 
-            return (
-              <div
-                key={slot}
-                className={`today-plan-slot-card ${isActive ? 'slot-active-glow' : ''} ${logged ? 'slot-logged' : ''} ${!recipe ? 'slot-empty' : ''}`}
+          {/* Science & Culinary Hacks Carousel */}
+          <div
+            className="card glass fun-fact-card-container"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div className="fun-fact-header-toggle">
+              <div className="fact-mode-switch">
+                <button
+                  className={`fact-mode-btn ${infoCardMode === 'facts' ? 'active' : ''}`}
+                  onClick={() => { playClickSound(); setInfoCardMode('facts'); }}
+                >
+                  <Lightbulb size={13} /> Science
+                </button>
+                <button
+                  className={`fact-mode-btn ${infoCardMode === 'tips' ? 'active' : ''}`}
+                  onClick={() => { playClickSound(); setInfoCardMode('tips'); }}
+                >
+                  <ChefHat size={13} /> Hacks
+                </button>
+              </div>
+
+              <button
+                className="btn-fact-shuffle"
+                onClick={handleShuffleFactOrTip}
+                title="Shuffle next item"
+              >
+                <RefreshCw size={12} /> Next
+              </button>
+            </div>
+
+            <div className="fun-fact-categories">
+              {infoCardMode === 'facts'
+                ? ['All', 'Nutrition', 'Culture', 'Cooking', 'Health'].map(cat => (
+                  <button
+                    key={cat}
+                    className={`fact-cat-pill ${selectedFactCategory === cat ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedFactCategory(cat);
+                      setActiveFact(0);
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))
+                : ['All', 'Cooking', 'Technique', 'Flavor', 'Storage'].map(cat => (
+                  <button
+                    key={cat}
+                    className={`fact-cat-pill ${selectedTipCategory === cat ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedTipCategory(cat);
+                      setActiveTip(0);
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))
+              }
+            </div>
+
+            <div className="fun-fact-slides">
+              {infoCardMode === 'facts' ? (
+                filteredFacts.map((fact, idx) => (
+                  <div
+                    key={fact.id || idx}
+                    className={`fun-fact-slide ${idx === activeFact ? 'active' : ''}`}
+                  >
+                    <div className="fun-fact-top-row">
+                      <div className="fun-fact-icon-wrap">
+                        <span className="fun-fact-icon">{fact.icon}</span>
+                      </div>
+                      <span className={`fun-fact-category-badge cat-${(fact.category || 'Nutrition').toLowerCase().replace(/\s+/g, '')}`}>
+                        {fact.category}
+                      </span>
+                      <button 
+                        className="btn-fact-copy"
+                        onClick={() => handleCopyText(fact.fact)}
+                        title="Copy fact text"
+                      >
+                        {copiedText ? <Check size={13} style={{ color: '#10ac84' }} /> : <Copy size={13} />}
+                      </button>
+                    </div>
+                    <p className="fun-fact-text">{fact.fact}</p>
+                  </div>
+                ))
+              ) : (
+                filteredTips.map((tip, idx) => (
+                  <div
+                    key={tip.id || idx}
+                    className={`fun-fact-slide ${idx === activeTip ? 'active' : ''}`}
+                  >
+                    <div className="fun-fact-top-row">
+                      <div className="fun-fact-icon-wrap">
+                        <span className="fun-fact-icon">{tip.icon}</span>
+                      </div>
+                      <span className="fun-fact-category-badge cat-cooking">
+                        {tip.category}
+                      </span>
+                      <button 
+                        className="btn-fact-copy"
+                        onClick={() => handleCopyText(tip.tip)}
+                        title="Copy tip text"
+                      >
+                        {copiedText ? <Check size={13} style={{ color: '#10ac84' }} /> : <Copy size={13} />}
+                      </button>
+                    </div>
+                    <p className="fun-fact-text">{tip.tip}</p>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="fun-fact-controls">
+              <button
+                className="fun-fact-arrow"
                 onClick={() => {
-                  if (recipe) {
-                    setSelectedRecipe(recipe);
-                    setModalOpen(true);
+                  if (infoCardMode === 'facts') {
+                    setActiveFact(prev => (prev - 1 + filteredFacts.length) % filteredFacts.length);
                   } else {
-                    setPickerSlot(slot);
-                    setPickerOpen(true);
+                    setActiveTip(prev => (prev - 1 + filteredTips.length) % filteredTips.length);
                   }
                 }}
+                aria-label="Previous slide"
               >
-                {/* Header Badge */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
-                  <span
-                    className="slot-label-badge"
-                    style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30`, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
-                  >
-                    {slotIcons[slot]} {slot}
-                  </span>
+                <ChevronLeft size={16} />
+              </button>
+              <div className="fun-fact-dots">
+                {(infoCardMode === 'facts' ? filteredFacts : filteredTips).slice(0, 6).map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`fun-fact-dot ${(infoCardMode === 'facts' ? activeFact : activeTip) === idx ? 'active' : ''}`}
+                    onClick={() => {
+                      if (infoCardMode === 'facts') setActiveFact(idx);
+                      else setActiveTip(idx);
+                    }}
+                    aria-label={`Slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+              <button
+                className="fun-fact-arrow"
+                onClick={() => {
+                  if (infoCardMode === 'facts') {
+                    setActiveFact(prev => (prev + 1) % filteredFacts.length);
+                  } else {
+                    setActiveTip(prev => (prev + 1) % filteredTips.length);
+                  }
+                }}
+                aria-label="Next slide"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
 
-                  {isActive && (
-                    <span className="slot-now-tag">NOW</span>
-                  )}
+            <div className="fun-fact-progress">
+              <div
+                className={`fun-fact-progress-fill ${isPaused ? 'paused' : ''}`}
+                key={`${infoCardMode}-${infoCardMode === 'facts' ? activeFact : activeTip}`}
+              />
+            </div>
+          </div>
+
+          {/* Active Kitchen Multi-Timer */}
+          <div style={{ marginTop: '20px' }}>
+            <KitchenTimerWidget />
+          </div>
+
+          {/* Daily Nutrition Targets Card */}
+          <div className="card glass dashboard-widget-card daily-targets-card" style={{ marginTop: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '6px' }}>
+              <h3 className="section-title" style={{ marginTop: 0, marginBottom: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>🎯</span> Daily Targets
+              </h3>
+              <button 
+                onClick={() => navigate('/tdee')}
+                className="target-edit-pill"
+                title="Edit Target Profile"
+              >
+                ⚙️ Adjust
+              </button>
+            </div>
+
+            <p className="subtitle" style={{ marginBottom: '14px' }}>
+              {token ? (activeProfile ? `Profile: ${activeProfile.profile_name}` : "Set target profile") : "Demo preview"}
+            </p>
+
+            <div className="calorie-tracker-layout">
+              {/* SVG Progress Ring */}
+              <div className="progress-ring-container">
+                <svg width="140" height="140" viewBox="0 0 140 140">
+                  <defs>
+                    <linearGradient id="homeRingGradUnified" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="50%" stopColor="#3b82f6" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                  <circle
+                    cx="70"
+                    cy="70"
+                    r="54"
+                    stroke="var(--border-glass)"
+                    strokeWidth="10"
+                    fill="transparent"
+                    style={{ opacity: 0.5 }}
+                  />
+                  <circle
+                    className="progress-ring-circle"
+                    cx="70"
+                    cy="70"
+                    r="54"
+                    stroke="url(#homeRingGradUnified)"
+                    strokeWidth="10"
+                    fill="transparent"
+                    strokeDasharray="339"
+                    strokeDashoffset={339 - (Math.min(totals.calories / (targets.calories || 1), 1.0) * 339)}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="progress-ring-text">
+                  <span className="progress-ring-val">
+                    <AnimatedCounter end={totals.calories} />
+                  </span>
+                  <span className="progress-ring-label">of {targets.calories} kcal</span>
+                  <span className="progress-ring-pct-badge" style={{
+                    background: totals.calories > targets.calories ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                    color: totals.calories > targets.calories ? '#ef4444' : '#10b981',
+                  }}>
+                    {Math.round((totals.calories / (targets.calories || 1)) * 100)}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Macro Mini Bars */}
+              <div className="macro-bars-grid">
+                <div className="macro-summary-header">
+                  <span className="macro-summary-remaining">
+                    {targets.calories - totals.calories >= 0 
+                      ? `🔥 ${targets.calories - totals.calories} kcal left`
+                      : `⚠️ ${totals.calories - targets.calories} kcal over`}
+                  </span>
+                  <button 
+                    className="macro-quick-log-btn"
+                    onClick={() => navigate('/nutrition')}
+                    title="Log Meal"
+                  >
+                    ➕ Log
+                  </button>
                 </div>
 
-                {recipe ? (
-                  <>
-                    <p className="slot-recipe-title">{recipe.title}</p>
-                    
-                    <div className="slot-macro-row">
-                      {recipe.calories && <span className="slot-recipe-cals">🔥 {Math.round(recipe.calories)} kcal</span>}
-                      {(recipe.protein_g || recipe.protein) && (
-                        <span className="slot-recipe-macro">💪 {recipe.protein_g || recipe.protein}g P</span>
-                      )}
-                    </div>
-
-                    {/* Action Bar */}
-                    <div className="slot-action-bar" onClick={(e) => e.stopPropagation()}>
-                      {logged ? (
-                        <span className="slot-logged-badge">
-                          <CheckCircle2 size={13} /> Logged
+                {[
+                  { label: '🥩 Protein', val: totals.protein, target: targets.protein, color: 'linear-gradient(90deg, #10b981, #059669)' },
+                  { label: '🍞 Carbs', val: totals.carbs, target: targets.carbs, color: 'linear-gradient(90deg, #3b82f6, #2563eb)' },
+                  { label: '🥑 Fat', val: totals.fat, target: targets.fat, color: 'linear-gradient(90deg, #f59e0b, #d97706)' }
+                ].map(macro => {
+                  const pct = Math.min((macro.val / (macro.target || 1)) * 100, 100);
+                  const isOver = macro.val > macro.target;
+                  return (
+                    <div key={macro.label} className="macro-bar-item">
+                      <div className="macro-bar-header">
+                        <span className="macro-label-title">{macro.label}</span>
+                        <span className="macro-val-text">
+                          <strong>{macro.val}g</strong> / {macro.target}g
+                          <span className={`macro-pct-chip ${isOver ? 'over' : ''}`}>
+                            {Math.round((macro.val / (macro.target || 1)) * 100)}%
+                          </span>
                         </span>
-                      ) : (
-                        <button
-                          className="btn-quick-log"
-                          onClick={(e) => handleQuickLogMeal(e, entry, slot)}
-                          title="Log this meal into daily nutrition"
-                        >
-                          <Check size={13} /> Quick Log
-                        </button>
-                      )}
+                      </div>
+                      <div className="macro-bar-container">
+                        <div
+                          className="macro-bar-fill"
+                          style={{ width: `${pct}%`, background: macro.color }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
 
-                      {entry?.id && (
-                        <button
-                          className="btn-slot-remove"
-                          onClick={(e) => handleRemoveMealFromPlan(e, entry.id)}
-                          title="Remove from plan"
-                        >
-                          <Trash2 size={13} />
-                        </button>
+                {totals.calories > 0 && (
+                  <div className="macro-distribution-section">
+                    <div className="distribution-header">
+                      <span className="dist-title">📊 Energy Partition</span>
+                    </div>
+                    <div className="distribution-segmented-bar">
+                      {macroDistribution.breakfastPct > 0 && (
+                        <div className="dist-seg seg-breakfast" style={{ width: `${macroDistribution.breakfastPct}%` }} title={`Breakfast: ${macroDistribution.breakfastPct}%`} />
+                      )}
+                      {macroDistribution.lunchPct > 0 && (
+                        <div className="dist-seg seg-lunch" style={{ width: `${macroDistribution.lunchPct}%` }} title={`Lunch: ${macroDistribution.lunchPct}%`} />
+                      )}
+                      {macroDistribution.dinnerPct > 0 && (
+                        <div className="dist-seg seg-dinner" style={{ width: `${macroDistribution.dinnerPct}%` }} title={`Dinner: ${macroDistribution.dinnerPct}%`} />
+                      )}
+                      {macroDistribution.snackPct > 0 && (
+                        <div className="dist-seg seg-snack" style={{ width: `${macroDistribution.snackPct}%` }} title={`Snack: ${macroDistribution.snackPct}%`} />
                       )}
                     </div>
-                  </>
-                ) : (
-                  <div className="slot-empty-prompt">
-                    <PlusCircle size={22} className="slot-empty-icon" />
-                    <span className="slot-empty-text">+ Add Meal</span>
+                    <div className="distribution-legend">
+                      <span className="leg-item leg-b">🍳 {macroDistribution.breakfastPct}%</span>
+                      <span className="leg-item leg-l">🍲 {macroDistribution.lunchPct}%</span>
+                      <span className="leg-item leg-d">🥗 {macroDistribution.dinnerPct}%</span>
+                      <span className="leg-item leg-s">🍎 {macroDistribution.snackPct}%</span>
+                    </div>
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+
+          {/* Daily Hydration Glass Widget */}
+          {(() => {
+            const targetWater = targets.water || 2500;
+            const pctWater = Math.min(100, Math.round((waterTotal / targetWater) * 100));
+            const actualPctWater = Math.round((waterTotal / targetWater) * 100);
+            const isGoalReached = waterTotal >= targetWater;
+            const isOverHydrated = actualPctWater > 125;
+
+            return (
+              <div className="card glass dashboard-widget-card water-widget" style={{ marginTop: '20px' }}>
+                <div className="water-widget-header">
+                  <div>
+                    <h3 className="section-title" style={{ marginTop: 0, marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="water-title-icon">💧</span>
+                      <span>Daily Hydration</span>
+                    </h3>
+                    <p className="subtitle" style={{ margin: 0, fontSize: '0.82rem' }}>Target: <strong>{targetWater} ml</strong></p>
+                  </div>
+                  {isOverHydrated ? (
+                    <span className="water-goal-badge" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444' }}>⚠️ Over Limit</span>
+                  ) : isGoalReached ? (
+                    <span className="water-goal-badge pulse-glow">🎉 Goal Met!</span>
+                  ) : (
+                    <span className="water-pct-badge">{pctWater}%</span>
+                  )}
+                </div>
+
+                <div className="water-glass-container">
+                  <div className="glass-ticks">
+                    <span className="tick-mark t-100">100%</span>
+                    <span className="tick-mark t-75">75%</span>
+                    <span className="tick-mark t-50">50%</span>
+                    <span className="tick-mark t-25">25%</span>
+                  </div>
+
+                  <div className="water-display">
+                    <div className="water-level" style={{ height: `${pctWater}%` }}>
+                      <div className="water-wave wave-1" />
+                      <div className="water-wave wave-2" />
+                      <div className="water-bubble b1" />
+                      <div className="water-bubble b2" />
+                      <div className="water-bubble b3" />
+                      <div className="water-bubble b4" />
+                    </div>
+
+                    <div className="glass-glare" />
+                    <div className="glass-rim" />
+
+                    {waterTotal === 0 && (
+                      <div className="glass-empty-hint">
+                        <div className="empty-droplet-glow">
+                          <Droplet size={20} className="empty-droplet-icon" />
+                        </div>
+                        <span className="empty-hint-text">Tap + to log</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="water-stats-row">
+                  <div className="water-stat-main">
+                    <span className="water-current-num">{waterTotal}</span>
+                    <span className="water-target-total">/ {targetWater} ml</span>
+                  </div>
+                  <span className={`water-status-tag ${isGoalReached ? 'success' : ''}`}>
+                    {isGoalReached 
+                      ? '✨ Goal Complete' 
+                      : `${Math.max(0, targetWater - waterTotal)} ml left`}
+                  </span>
+                </div>
+
+                <div className="water-controls">
+                  <button className="water-btn preset-btn" onClick={() => handleLogWater(250)} title="Add 250ml">
+                    <Droplet size={14} className="btn-icon-svg" />
+                    <span className="btn-text">+250ml</span>
+                  </button>
+                  <button className="water-btn preset-btn bottle" onClick={() => handleLogWater(500)} title="Add 500ml">
+                    <Droplets size={14} className="btn-icon-svg" />
+                    <span className="btn-text">+500ml</span>
+                  </button>
+                  <button 
+                    className="water-btn subtract-btn" 
+                    onClick={() => handleLogWater(-250)} 
+                    disabled={waterTotal <= 0} 
+                    title="Remove 250ml"
+                  >
+                    <Minus size={14} className="btn-icon-svg" />
+                    <span className="btn-text">-250</span>
+                  </button>
+                </div>
+              </div>
             );
-          })}
+          })()}
+
         </div>
       </div>
 
-      {/* ── Quick & Easy Grid ── */}
-      <h2 className="section-title fade-in-up" style={{ marginTop: '2rem', '--delay': '500ms' }}>⏱️ Quick & Easy (Under 30 Mins)</h2>
-      {quickLoading ? (
-        <div className="quick-recipes-grid fade-in-up" style={{ '--delay': '530ms' }}>
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="card glass skeleton" style={{ height: '180px' }}></div>
-          ))}
-        </div>
-      ) : quickRecipes.length > 0 && (
-        <div className="quick-recipes-grid fade-in-up" style={{ '--delay': '530ms' }}>
-          {quickRecipes.map(recipe => (
-            <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }} style={{ position: 'relative' }}>
-              {(recipe.nutri_score || recipe.chef_score) && (
-                <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 3 }}>
-                  <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
-                </div>
-              )}
-              {(() => {
-                const visual = getRecipeCardVisual(recipe);
-                return (
-                  <>
-                    {recipe.image_url ? (
-                      <img 
-                        src={recipe.image_url} 
-                        alt={recipe.title} 
-                        className="mini-recipe-image" 
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.style.display = 'none';
-                          if (e.currentTarget.nextSibling) {
-                            e.currentTarget.nextSibling.style.display = 'flex';
-                          }
-                        }} 
-                      />
-                    ) : null}
-                    <div 
-                      className="mini-recipe-image" 
-                      style={{ 
-                        display: recipe.image_url ? 'none' : 'flex', 
-                        background: visual.gradient, 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        fontSize: '22px'
-                      }}
-                    >
-                      {visual.icon}
-                    </div>
-                  </>
-                );
-              })()}
-              <div className="mini-recipe-content">
-                <h3 className="mini-recipe-title">{recipe.title}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
-                  <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>
-                  <span className="recipe-source-badge recipe-source-badge-local" style={{ fontSize: '10px', padding: '1px 5px' }}>
-                    📁 Local
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ── Quick Actions Grid ── */}
-      <h2 className="section-title fade-in-up" style={{ marginTop: '2rem', '--delay': '600ms' }}>🚀 Explore</h2>
-      <div className="quick-actions-grid fade-in-up" style={{ '--delay': '630ms' }}>
+      {/* ── Quick Exploration Hub ── */}
+      <h2 className="section-title fade-in-up" style={{ marginTop: '2.5rem', '--delay': '200ms' }}>🚀 Quick Navigation</h2>
+      <div className="quick-actions-grid fade-in-up" style={{ '--delay': '230ms' }}>
         {quickActions.map(action => (
           <button
             key={action.path}
@@ -1194,6 +1555,7 @@ export default function Home() {
         ))}
       </div>
 
+      {/* ── Modals & Drawers ── */}
       {isModalOpen && selectedRecipe && (
         <RecipeModal recipe={selectedRecipe} onClose={() => { setModalOpen(false); setSelectedRecipe(null); }} />
       )}
@@ -1207,6 +1569,12 @@ export default function Home() {
           onAssignSuccess={() => fetchTodayStats()}
         />
       )}
+
+      <KitchenToolsDrawer
+        isOpen={isToolsDrawerOpen}
+        onClose={() => setIsToolsDrawerOpen(false)}
+        defaultTab={toolsDrawerTab}
+      />
     </section>
   );
 }
