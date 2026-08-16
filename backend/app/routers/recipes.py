@@ -71,6 +71,55 @@ def _recipe_has_allergen(recipe, allergies: list[str], exclude_ingredients: list
     return False
 
 
+# ── Daily Recipe Persistent Cache & Categorized Pools ──────────
+_DAILY_CACHE_FILE = Path(__file__).parent.parent / "daily_recipe_cache.json"
+_DAILY_RECIPE_CACHE: dict[str, dict] = {}
+
+def _load_daily_cache():
+    global _DAILY_RECIPE_CACHE
+    if _DAILY_CACHE_FILE.exists():
+        try:
+            with open(_DAILY_CACHE_FILE, "r", encoding="utf-8") as f:
+                _DAILY_RECIPE_CACHE = json.load(f)
+        except Exception as e:
+            print(f"[Daily Recipe] Error loading cache file: {e}")
+            _DAILY_RECIPE_CACHE = {}
+
+def _save_daily_cache():
+    try:
+        with open(_DAILY_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(_DAILY_RECIPE_CACHE, f, indent=2)
+    except Exception as e:
+        print(f"[Daily Recipe] Error saving cache file: {e}")
+
+_NON_VEG_KEYWORDS = {
+    "chicken", "mutton", "lamb", "beef", "pork", "fish", "prawn", "shrimp",
+    "crab", "bacon", "meat", "salmon", "tuna", "turkey", "duck", "ham",
+    "squid", "anchovy", "seafood", "egg", "eggs", "omelet", "omelette"
+}
+
+_INDIAN_REGIONS = {"indian", "bihar", "north indian", "south indian"}
+
+def _is_vegetarian_recipe(diets: list[str], title: str, ingredients: list[str]) -> bool:
+    diets_lower = [d.lower().strip() for d in (diets or []) if d]
+    if "non-vegetarian" in diets_lower or "non-veg" in diets_lower:
+        return False
+    
+    title_words = set(re.findall(r"\b\w+\b", (title or "").lower()))
+    if title_words.intersection(_NON_VEG_KEYWORDS):
+        return False
+        
+    for ing in (ingredients or []):
+        ing_words = set(re.findall(r"\b\w+\b", ing.lower()))
+        if ing_words.intersection(_NON_VEG_KEYWORDS):
+            return False
+
+    if "vegetarian" in diets_lower or "vegan" in diets_lower:
+        return True
+
+    return False
+
+
 # ── Startup: load and index recipe database ────────────────────
 _recipes_path = Path(__file__).parent.parent / "recipes.json"
 DEMO_RECIPES: list[RecipeItem] = []
@@ -79,14 +128,24 @@ RECIPES_BY_MEAL_TYPE: dict[str, set[str]] = {}
 _INGREDIENT_INDEX: dict[str, set[str]] = defaultdict(set)
 _RECIPE_BY_ID: dict[str, RecipeItem] = {}
 
+INDIAN_VEG_RECIPES: list[RecipeItem] = []
+INDIAN_ALL_RECIPES: list[RecipeItem] = []
+WORLD_VEG_RECIPES: list[RecipeItem] = []
+WORLD_ALL_RECIPES: list[RecipeItem] = []
+
 def load_recipes():
     """Load and index recipes from recipes.json into memory."""
     global DEMO_RECIPES, RECIPES_BY_REGION, RECIPES_BY_MEAL_TYPE, _INGREDIENT_INDEX, _RECIPE_BY_ID
+    global INDIAN_VEG_RECIPES, INDIAN_ALL_RECIPES, WORLD_VEG_RECIPES, WORLD_ALL_RECIPES
     DEMO_RECIPES.clear()
     RECIPES_BY_REGION.clear()
     RECIPES_BY_MEAL_TYPE.clear()
     _INGREDIENT_INDEX.clear()
     _RECIPE_BY_ID.clear()
+    INDIAN_VEG_RECIPES.clear()
+    INDIAN_ALL_RECIPES.clear()
+    WORLD_VEG_RECIPES.clear()
+    WORLD_ALL_RECIPES.clear()
 
     if _recipes_path.exists():
         with open(_recipes_path, encoding="utf-8") as _f:
@@ -145,8 +204,28 @@ def load_recipes():
                     if len(token) > 2:
                         _INGREDIENT_INDEX[token].add(item.id)
 
+            # Categorize high-quality candidates for Daily Recipe pools
+            is_hq = bool(
+                item.image_url
+                and item.instructions
+                and len(item.instructions) >= 50
+                and len(item.ingredients) >= 3
+            )
+            if is_hq:
+                is_ind = (region or "").lower() in _INDIAN_REGIONS
+                is_veg = _is_vegetarian_recipe(item.diets, item.title, item.ingredients)
+                if is_ind:
+                    INDIAN_ALL_RECIPES.append(item)
+                    if is_veg:
+                        INDIAN_VEG_RECIPES.append(item)
+                else:
+                    WORLD_ALL_RECIPES.append(item)
+                    if is_veg:
+                        WORLD_VEG_RECIPES.append(item)
+
 # Reload recipes dataset: 100% verified working images across Pages 1-5
 load_recipes()
+_load_daily_cache()
 
 
 # Load ingredient groups taxonomy
@@ -801,6 +880,181 @@ def delete_saved_recipe(
     return {"message": "Recipe deleted", "id": recipe_id}
 
 
+async def _fetch_spoonacular_daily_recipe(
+    is_indian: bool,
+    is_veg: bool,
+    rng: random.Random,
+) -> RecipeItem | None:
+    """
+    Fetch a daily featured recipe from Spoonacular API.
+    - If is_indian is True, targets Indian cuisine (tags: 'indian,vegetarian' or 'indian').
+    - If is_indian is False, targets Worldwide cuisine (e.g. 'italian,vegetarian', 'mexican,vegetarian', etc.).
+    - Prefers vegetarian recipes.
+    - Gracefully returns None on HTTP 402/429 (quota exhausted), error, or timeout so the system falls back to local recipes.
+    """
+    if not settings.SPOONACULAR_API_KEY:
+        return None
+
+    global_cuisines = [
+        "italian", "mexican", "mediterranean", "asian", "french",
+        "thai", "japanese", "greek", "spanish", "middle eastern",
+    ]
+
+    tag_candidates = []
+    if is_indian:
+        if is_veg:
+            tag_candidates.append("indian,vegetarian")
+        tag_candidates.append("indian")
+    else:
+        chosen_cuisine = rng.choice(global_cuisines)
+        if is_veg:
+            tag_candidates.append(f"{chosen_cuisine},vegetarian")
+            tag_candidates.append("vegetarian")
+        tag_candidates.append(chosen_cuisine)
+
+    for tag in tag_candidates:
+        try:
+            async with httpx.AsyncClient(timeout=8.0) as client:
+                resp = await client.get(
+                    "https://api.spoonacular.com/recipes/random",
+                    params={
+                        "apiKey": settings.SPOONACULAR_API_KEY,
+                        "number": 1,
+                        "tags": tag,
+                        "includeNutrition": True,
+                    },
+                )
+                if resp.status_code in (402, 429):
+                    print(f"[Daily Recipe] Spoonacular quota limit reached (HTTP {resp.status_code}). Switching to local catalog.")
+                    return None
+
+                if resp.status_code != 200:
+                    print(f"[Daily Recipe] Spoonacular returned HTTP {resp.status_code} for tag '{tag}'.")
+                    continue
+
+                data = resp.json()
+                recipes_list = data.get("recipes", [])
+                if not recipes_list:
+                    continue
+
+                info = recipes_list[0]
+                image_url = info.get("image", "")
+                if not image_url or not image_url.startswith("http"):
+                    continue
+
+                ext_ingredients = []
+                for ing in info.get("extendedIngredients", []):
+                    name = ing.get("original") or ing.get("name", "")
+                    if name:
+                        ext_ingredients.append(name)
+
+                if not ext_ingredients:
+                    continue
+
+                # Nutrition
+                nutrition = None
+                nutr_data = info.get("nutrition", {})
+                nutr_dict = {}
+                if nutr_data:
+                    nutrients = {
+                        n.get("name", "").lower(): n.get("amount", 0)
+                        for n in nutr_data.get("nutrients", [])
+                    }
+                    nutr_dict = {
+                        "calories": nutrients.get("calories", 0),
+                        "protein_g": nutrients.get("protein", 0),
+                        "carbs_g": nutrients.get("carbohydrates", 0),
+                        "fat_g": nutrients.get("fat", 0),
+                        "fiber_g": nutrients.get("fiber", 0),
+                        "sugar_g": nutrients.get("sugar", 0),
+                        "sodium_mg": nutrients.get("sodium", 0),
+                    }
+                    nutrition = RecipeNutrition(**nutr_dict)
+
+                instructions = _extract_instructions(info)
+                if not instructions or len(instructions) < 30:
+                    continue
+
+                summary = info.get("summary", "")
+                if summary:
+                    summary = re.sub(r"<[^>]+>", "", summary)
+
+                diets = info.get("diets", [])
+                if is_veg and not any(d.lower() in ("vegetarian", "vegan") for d in diets):
+                    diets.append("vegetarian")
+
+                # Strict vegetarian validation
+                if is_veg and not _is_vegetarian_recipe(diets, info.get("title", ""), ext_ingredients):
+                    continue
+
+                nutri_score_obj = None
+                if nutr_dict and nutr_dict.get("calories"):
+                    try:
+                        calc_res = compute_nutri_score(
+                            nutrition=nutr_dict,
+                            ingredients=ext_ingredients,
+                            servings=info.get("servings", 1) or 1,
+                            title=info.get("title", ""),
+                            meal_type=info.get("dishTypes", ["main course"])[0] if info.get("dishTypes") else "main course",
+                        )
+                        nutri_score_obj = NutriScoreResponse(**calc_res.to_dict())
+                    except Exception as e:
+                        print(f"[Daily Recipe] NutriScore computation error: {e}")
+
+                cuisine_region = "Indian" if is_indian else (
+                    info.get("cuisines", ["Global"])[0] if info.get("cuisines") else "Global"
+                )
+
+                return RecipeItem(
+                    id=f"spoonacular-{info.get('id')}",
+                    title=info.get("title", "Daily Special"),
+                    image_url=image_url,
+                    summary=summary,
+                    ready_in_minutes=info.get("readyInMinutes", 30),
+                    servings=info.get("servings", 2),
+                    ingredients=ext_ingredients,
+                    instructions=instructions or None,
+                    diets=diets,
+                    region=cuisine_region,
+                    meal_type=info.get("dishTypes", ["main course"])[0] if info.get("dishTypes") else "main course",
+                    popularity=int(info.get("spoonacularScore", 75)),
+                    nutrition=nutrition,
+                    nutri_score=nutri_score_obj,
+                    chef_score=nutri_score_obj,
+                    source_url=info.get("sourceUrl"),
+                )
+        except Exception as e:
+            print(f"[Daily Recipe] Spoonacular request exception: {e}")
+            continue
+
+    return None
+
+
+def _get_local_daily_recipe(
+    is_indian: bool,
+    prefer_veg: bool,
+    rng: random.Random,
+) -> RecipeItem:
+    """
+    Select a recipe from local catalog respecting the 70/30 Indian/Worldwide split and vegetarian preference.
+    """
+    if is_indian:
+        pool = INDIAN_VEG_RECIPES if (prefer_veg and INDIAN_VEG_RECIPES) else INDIAN_ALL_RECIPES
+        if not pool:
+            pool = INDIAN_ALL_RECIPES or DEMO_RECIPES
+    else:
+        pool = WORLD_VEG_RECIPES if (prefer_veg and WORLD_VEG_RECIPES) else WORLD_ALL_RECIPES
+        if not pool:
+            pool = WORLD_ALL_RECIPES or DEMO_RECIPES
+
+    if not pool:
+        pool = DEMO_RECIPES
+    if not pool:
+        raise HTTPException(status_code=503, detail="No recipes available in the database.")
+
+    return rng.choice(pool)
+
+
 @router.get(
     "/daily",
     response_model=RecipeItem,
@@ -814,11 +1068,12 @@ async def get_daily_recipe(
     response: Response = None,
 ):
     """
-    Get the recipe of the day — changes every 24 hours or on-demand via refresh.
-
-    **Query Parameters:**
-    - `date`: Optional client local date (YYYY-MM-DD) to align with user's timezone.
-    - `refresh`: If True, forces a fresh random recipe selection.
+    Get the recipe of the day:
+    - Stable across refreshes for the same day (deterministic & cached).
+    - Automatically updates when calendar day changes.
+    - Shuffles on-demand when refresh=True.
+    - Prioritizes Spoonacular API with Vegetarian preference and 70% Indian / 30% Worldwide split.
+    - Seamlessly falls back to local high-quality recipes when Spoonacular quota finishes or fails.
     """
     if response:
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
@@ -826,98 +1081,47 @@ async def get_daily_recipe(
         response.headers["Expires"] = "0"
 
     date_str = date or datetime.now().strftime("%Y-%m-%d")
-    rng = random.Random() if refresh else random.Random(date_str)
 
-    # ── Strategy 1: Spoonacular (accurate images + rich data) ────
-    if settings.SPOONACULAR_API_KEY:
+    # If not force refresh, check persistent daily cache first
+    if not refresh and date_str in _DAILY_RECIPE_CACHE:
         try:
-            # Pick a food-related tag to keep results interesting
-            daily_tags = [
-                "main course", "dessert", "appetizer", "salad", "soup",
-                "breakfast", "side dish", "snack", "beverage", "bread",
-            ]
-            tag = rng.choice(daily_tags)
+            cached_data = _DAILY_RECIPE_CACHE[date_str]
+            return RecipeItem(**cached_data)
+        except Exception as e:
+            print(f"[Daily Recipe] Cache load error for {date_str}: {e}")
 
-            async with httpx.AsyncClient(timeout=12.0) as client:
-                resp = await client.get(
-                    "https://api.spoonacular.com/recipes/random",
-                    params={
-                        "apiKey": settings.SPOONACULAR_API_KEY,
-                        "number": 1,
-                        "tags": tag,
-                        "includeNutrition": True,
-                    },
-                )
-                if resp.status_code == 200:
-                    data = resp.json()
-                    recipes_list = data.get("recipes", [])
-                    if recipes_list:
-                        info = recipes_list[0]
-                        # Only use if it has a valid image
-                        image_url = info.get("image", "")
-                        if image_url and image_url.startswith("http"):
-                            # Extract ingredients
-                            ext_ingredients = []
-                            for ing in info.get("extendedIngredients", []):
-                                ext_ingredients.append(
-                                    ing.get("original", ing.get("name", ""))
-                                )
+    # Seed RNG: deterministic per date, or non-deterministic if shuffle
+    rng = random.Random() if refresh else random.Random(f"daily-{date_str}")
 
-                            # Extract nutrition
-                            nutrition = None
-                            nutr_data = info.get("nutrition", {})
-                            if nutr_data:
-                                nutrients = {
-                                    n["name"].lower(): n["amount"]
-                                    for n in nutr_data.get("nutrients", [])
-                                }
-                                nutrition = RecipeNutrition(
-                                    calories=nutrients.get("calories", 0),
-                                    protein_g=nutrients.get("protein", 0),
-                                    carbs_g=nutrients.get("carbohydrates", 0),
-                                    fat_g=nutrients.get("fat", 0),
-                                )
+    # 70% Indian, 30% Worldwide
+    is_indian = rng.random() < 0.70
 
-                            # Extract instructions
-                            instructions = _extract_instructions(info)
+    selected_recipe: RecipeItem | None = None
 
-                            # Clean summary
-                            summary = info.get("summary", "")
-                            if summary:
-                                summary = re.sub(r"<[^>]+>", "", summary)
+    # Tier 1: Spoonacular API (prefer veg first)
+    if settings.SPOONACULAR_API_KEY:
+        selected_recipe = await _fetch_spoonacular_daily_recipe(
+            is_indian=is_indian,
+            is_veg=True,
+            rng=rng,
+        )
 
-                            return RecipeItem(
-                                id=str(info.get("id", "")),
-                                title=info.get("title", ""),
-                                image_url=image_url,
-                                summary=summary,
-                                ready_in_minutes=info.get("readyInMinutes"),
-                                servings=info.get("servings"),
-                                ingredients=ext_ingredients,
-                                instructions=instructions or None,
-                                diets=info.get("diets", []),
-                                nutrition=nutrition,
-                                source_url=info.get("sourceUrl"),
-                            )
-        except Exception:
-            pass  # Fall through to local database
+    # Tier 2: Local Database Fallback (respecting 70/30 Indian/World + Veg-first)
+    if not selected_recipe:
+        selected_recipe = _get_local_daily_recipe(
+            is_indian=is_indian,
+            prefer_veg=True,
+            rng=rng,
+        )
 
-    # ── Strategy 2: Local database fallback ──────────────────────
-    # Filter to only high-quality, complete recipes with verified images & instructions
-    quality_filter = [
-        r for r in DEMO_RECIPES
-        if r.image_url
-        and r.instructions
-        and len(r.instructions) >= 50
-        and len(r.ingredients) >= 3
-    ]
+    # Cache recipe for this date
+    try:
+        _DAILY_RECIPE_CACHE[date_str] = selected_recipe.model_dump()
+        _save_daily_cache()
+    except Exception as e:
+        print(f"[Daily Recipe] Failed to save daily cache: {e}")
 
-    if not quality_filter:
-        quality_filter = DEMO_RECIPES  # ultimate fallback
-    if not quality_filter:
-        raise HTTPException(status_code=503, detail="No recipes available in the database.")
-
-    return rng.choice(quality_filter)
+    return selected_recipe
 
 
 @router.get(

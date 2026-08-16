@@ -406,6 +406,24 @@ export default function Home() {
 
   const fetchDailyRecipe = useCallback(async (forceRefresh = false) => {
     const todayStr = getLocalDateString();
+
+    // Check session cache for instantaneous, zero-flash render on same day
+    if (!forceRefresh) {
+      try {
+        const cached = sessionStorage.getItem(`chef_daily_recipe_${todayStr}`);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.id) {
+            setDailyRecipe(parsed);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Session storage read error:', e);
+      }
+    }
+
     if (forceRefresh) {
       setIsRefreshingDaily(true);
     } else {
@@ -414,10 +432,15 @@ export default function Home() {
     setError(null);
     try {
       const url = forceRefresh
-        ? `/recipes/daily?refresh=true&_t=${Date.now()}`
-        : `/recipes/daily?date=${todayStr}&_t=${Date.now()}`;
+        ? `/recipes/daily?refresh=true&date=${todayStr}&_t=${Date.now()}`
+        : `/recipes/daily?date=${todayStr}`;
       const data = await api.get(url);
       setDailyRecipe(data);
+      try {
+        sessionStorage.setItem(`chef_daily_recipe_${todayStr}`, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Session storage write error:', e);
+      }
       if (forceRefresh) {
         toast.success('Loaded a fresh Recipe of the Day! 🍳');
       }
@@ -434,13 +457,36 @@ export default function Home() {
 
   const fetchQuickRecipes = useCallback(async (forceRefresh = false) => {
     const todayStr = getLocalDateString();
+
+    // Check session cache for instantaneous, zero-flash render on same day
+    if (!forceRefresh) {
+      try {
+        const cached = sessionStorage.getItem(`chef_quick_recipes_${todayStr}`);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setQuickRecipes(parsed);
+            setQuickLoading(false);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Session storage quick read error:', e);
+      }
+    }
+
     setQuickLoading(true);
     try {
       const url = forceRefresh
-        ? `/recipes/quick?refresh=true&_t=${Date.now()}`
-        : `/recipes/quick?date=${todayStr}&_t=${Date.now()}`;
+        ? `/recipes/quick?refresh=true&date=${todayStr}&_t=${Date.now()}`
+        : `/recipes/quick?date=${todayStr}`;
       const data = await api.get(url);
       setQuickRecipes(data);
+      try {
+        sessionStorage.setItem(`chef_quick_recipes_${todayStr}`, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Session storage quick write error:', e);
+      }
     } catch (err) {
       console.error("Failed to fetch quick recipes:", err);
     } finally {
