@@ -166,7 +166,7 @@ export default function TermsAndConditions() {
           </div>
 
           <div className="terms-action-bar">
-            <span className="terms-version-badge">Effective Version 1.2.0 • Updated August 2026</span>
+            <span className="terms-version-badge">Effective Version 2.1.0 • Updated August 2026</span>
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               {isAcknowledged && (
                 <span className="terms-reviewed-chip">

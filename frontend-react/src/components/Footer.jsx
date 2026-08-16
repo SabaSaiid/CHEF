@@ -20,7 +20,7 @@ export default function Footer({ onOpenFeedback }) {
             </p>
             <div className="footer-status-pill">
               <span className="status-dot"></span>
-              <span className="status-text">v1.2.0 • All Systems Operational</span>
+              <span className="status-text">v2.1.0 • All Systems Operational</span>
             </div>
           </div>
 

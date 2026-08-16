@@ -27,7 +27,7 @@ class Settings(BaseSettings):
 
     # App
     APP_NAME: str = "CHEF"
-    APP_VERSION: str = "1.0.0"
+    APP_VERSION: str = "2.1.0"
     DEBUG: bool = False  # Defaults to off — set DEBUG=true in .env for development
 
     # CORS
