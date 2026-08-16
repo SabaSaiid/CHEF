@@ -48,7 +48,7 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
 
   const negBar = (label, value = 0, max = 10) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-      <span style={{ width: 95, fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{label}</span>
+      <span style={{ width: 100, fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{label}</span>
       <div style={{
         flex: 1, height: 8, borderRadius: 4,
         background: 'rgba(255, 255, 255, 0.08)',
@@ -63,15 +63,24 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
           transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         }} />
       </div>
-      <span style={{ width: 38, fontSize: 12, fontWeight: 700, textAlign: 'right', color: 'var(--text-primary)' }}>
+      <span style={{ minWidth: 42, fontSize: 12, fontWeight: 700, textAlign: 'right', color: 'var(--text-primary)' }}>
         {value} <span style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>/{max}</span>
       </span>
     </div>
   );
 
-  const posBar = (label, value = 0, max = 5) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-      <span style={{ width: 95, fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{label}</span>
+  const posBar = (label, value = 0, max = 5, isExcluded = false) => (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8,
+      opacity: isExcluded ? 0.6 : 1,
+    }}>
+      <span style={{
+        width: 100, fontSize: 12, color: isExcluded ? 'var(--text-muted)' : 'var(--text-muted)',
+        fontWeight: 600,
+        textDecoration: isExcluded ? 'line-through' : 'none',
+      }}>
+        {label}
+      </span>
       <div style={{
         flex: 1, height: 8, borderRadius: 4,
         background: 'rgba(255, 255, 255, 0.08)',
@@ -82,12 +91,13 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
           width: `${Math.min(100, Math.max(0, (value / max) * 100))}%`,
           height: '100%',
           borderRadius: 4,
-          background: value > 3 ? '#038141' : value > 1 ? '#85BB2F' : '#FECB02',
+          background: isExcluded ? '#9ca3af' : (value > 3 ? '#038141' : value > 1 ? '#85BB2F' : '#FECB02'),
           transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         }} />
       </div>
-      <span style={{ width: 38, fontSize: 12, fontWeight: 700, textAlign: 'right', color: 'var(--text-primary)' }}>
+      <span style={{ minWidth: 60, fontSize: 12, fontWeight: 700, textAlign: 'right', color: isExcluded ? 'var(--text-muted)' : 'var(--text-primary)' }}>
         {value} <span style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>/{max}</span>
+        {isExcluded && <span style={{ fontSize: 10, color: '#EE8100', fontWeight: 700, marginLeft: 4 }}>[x]</span>}
       </span>
     </div>
   );
@@ -224,7 +234,9 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
             }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: '#038141' }}>{displayPositive}</div>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginTop: 2 }}>Positive / 15</div>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', opacity: 0.8 }}>(Fiber, Protein, Fruit/Veg/Nut)</div>
+              <div style={{ fontSize: 10, color: activeBreakdown?.protein_excluded ? '#D97706' : 'var(--text-muted)', fontWeight: activeBreakdown?.protein_excluded ? 600 : 400, opacity: 0.9 }}>
+                {activeBreakdown?.protein_excluded ? `(${activeBreakdown.pos_protein || 0} pts protein excluded)` : '(Fiber, Protein, Fruit/Veg/Nut)'}
+              </div>
             </div>
           </div>
 
@@ -269,18 +281,20 @@ export function NutriScoreBreakdown({ nutriScore, chefScore, breakdown }) {
                 Positive Nutrient Credits (Max 15 pts)
               </div>
               {posBar('Dietary Fiber', activeBreakdown.pos_fiber, 5)}
-              {posBar('Protein Content', activeBreakdown.pos_protein, 5)}
+              {posBar('Protein Content', activeBreakdown.pos_protein, 5, activeBreakdown.protein_excluded)}
               {posBar('Fruit / Veg / Nut %', activeBreakdown.pos_fvl, 5)}
 
               {activeBreakdown.protein_excluded && (
                 <div style={{
-                  fontSize: 11, color: '#EE8100', marginTop: 8,
-                  padding: '6px 10px', borderRadius: 6,
+                  fontSize: 11, color: '#EE8100', marginTop: 10,
+                  padding: '8px 12px', borderRadius: 8,
                   background: 'rgba(238, 129, 0, 0.1)', border: '1px solid rgba(238, 129, 0, 0.25)',
-                  display: 'flex', alignItems: 'center', gap: 6
+                  display: 'flex', alignItems: 'center', gap: 8, lineHeight: 1.4
                 }}>
-                  <span>⚠</span>
-                  <span><strong>Conditional Protein Rule:</strong> Protein points excluded because negative penalties total ≥ 11 and FVL is &lt; 5 pts.</span>
+                  <span style={{ fontSize: 14 }}>⚠</span>
+                  <span>
+                    <strong>Conditional Protein Rule:</strong> {activeBreakdown.pos_protein || 0} protein points are not added to the positive total because negative penalties total ≥ 11 and Fruit/Veg score is &lt; 5 pts. Reduce sodium or saturated fat to restore protein credit.
+                  </span>
                 </div>
               )}
 
