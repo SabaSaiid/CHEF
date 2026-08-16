@@ -86,7 +86,7 @@ export default function UserProfile() {
             </div>
           </div>
 
-          {currentUsername !== profile.username && (
+          {currentUsername !== profile.username ? (
             <button
               onClick={handleToggleFollow}
               className={`action-btn ${profile.is_following ? 'secondary' : 'primary'}`}
@@ -94,6 +94,14 @@ export default function UserProfile() {
             >
               {profile.is_following ? '✓ Following' : '➕ Follow Chef'}
             </button>
+          ) : (
+            <Link
+              to="/tdee"
+              className="action-btn primary"
+              style={{ padding: '10px 20px', fontSize: '14px', borderRadius: '10px', fontWeight: '700', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              ⚙️ Manage Profile & Goals
+            </Link>
           )}
         </div>
 

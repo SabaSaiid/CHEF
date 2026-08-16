@@ -720,6 +720,30 @@ class WeightLogResponse(BaseModel):
     logged_at: datetime
 
 
+class WeightSummaryResponse(BaseModel):
+    total_logs: int
+    current_weight: Optional[float] = None
+    lowest_weight: Optional[float] = None
+    highest_weight: Optional[float] = None
+    avg_7day: Optional[float] = None
+    delta_30day: Optional[float] = None
+    latest_date: Optional[str] = None
+
+
+class AdaptiveTDEEStatusResponse(BaseModel):
+    nutrition_days_count: int
+    weight_days_count: int
+    min_required_days: int = 7
+    is_ready: bool
+    days_needed_nutrition: int
+    days_needed_weight: int
+    adaptive_tdee: Optional[int] = None
+    avg_daily_intake: Optional[int] = None
+    weight_delta_kg: Optional[float] = None
+    days_analyzed: Optional[int] = None
+
+
+
 # ── Pantry Inventory ──────────────────────────────────────────
 
 class PantryItemCreate(BaseModel):

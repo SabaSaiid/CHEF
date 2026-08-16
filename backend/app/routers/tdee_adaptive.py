@@ -7,9 +7,63 @@ from sqlalchemy import func
 
 from app.database import get_db
 from app.models import User, UserProfile, WeightLog, NutritionLog
+from app.schemas import AdaptiveTDEEStatusResponse
 from app.auth import get_current_user
 
 router = APIRouter(prefix="/api/tdee", tags=["tdee_adaptive"])
+
+@router.get("/adaptive/status", response_model=AdaptiveTDEEStatusResponse)
+def get_adaptive_tdee_status(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get the data readiness status for Adaptive TDEE calculation (last 14 days).
+    """
+    today = datetime.now(timezone.utc).date()
+    start_date = today - timedelta(days=14)
+    start_date_str = start_date.strftime("%Y-%m-%d")
+    end_date_str = today.strftime("%Y-%m-%d")
+
+    distinct_nutrition_days = (
+        db.query(func.count(func.distinct(NutritionLog.date)))
+        .filter(
+            NutritionLog.user_id == current_user.id,
+            NutritionLog.date >= start_date_str,
+            NutritionLog.date <= end_date_str
+        )
+        .scalar() or 0
+    )
+
+    distinct_weight_days = (
+        db.query(func.count(func.distinct(WeightLog.date)))
+        .filter(
+            WeightLog.user_id == current_user.id,
+            WeightLog.date >= start_date_str,
+            WeightLog.date <= end_date_str
+        )
+        .scalar() or 0
+    )
+
+    is_ready = (distinct_nutrition_days >= 7 and distinct_weight_days >= 7)
+    days_needed_nutrition = max(0, 7 - distinct_nutrition_days)
+    days_needed_weight = max(0, 7 - distinct_weight_days)
+
+    active_profile = db.query(UserProfile).filter(
+        UserProfile.user_id == current_user.id,
+        UserProfile.is_active == True
+    ).first()
+
+    return AdaptiveTDEEStatusResponse(
+        nutrition_days_count=distinct_nutrition_days,
+        weight_days_count=distinct_weight_days,
+        min_required_days=7,
+        is_ready=is_ready,
+        days_needed_nutrition=days_needed_nutrition,
+        days_needed_weight=days_needed_weight,
+        adaptive_tdee=active_profile.tdee_maintenance if active_profile else None
+    )
+
 
 @router.post("/adaptive/calculate", response_model=Dict[str, Any])
 def calculate_adaptive_tdee(
