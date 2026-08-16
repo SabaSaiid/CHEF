@@ -5823,8 +5823,8 @@ h6 {
     border-color: transparent !important;
     background: var(--gradient-primary) !important;
     color: white !important;
-    box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.4), var(--glass-highlight);
-    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 2px 10px rgba(var(--primary-rgb), 0.25);
+    transform: translateY(-1px);
 }
 
 /* ── Profile Form Section Divider ───────────────────────────────── */
@@ -9744,66 +9744,665 @@ textarea:focus {
     transform: scale(1.08);
 }
 
-/* --- Dashboard Summary Cards --- */
-.pantry-summary-card {
-    padding: 20px;
+/* ── Pantry Streamlined Header & Nav ────────────────────────── */
+.pantry-compact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 4px;
+}
+
+.pantry-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pantry-main-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
     display: flex;
     align-items: center;
-    gap: 15px;
-    border-radius: 16px;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.pantry-main-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.pantry-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-secondary.danger-accent {
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, 0.3);
+    background: rgba(231, 76, 60, 0.08);
+}
+
+.btn-secondary.danger-accent:hover {
+    background: rgba(231, 76, 60, 0.16);
+}
+
+/* --- Top Navigation Tabs --- */
+.pantry-nav-tabstrip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 3px;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.pantry-nav-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+}
+
+.pantry-nav-tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pantry-nav-tab.active {
+    color: var(--text-primary);
+    background: var(--card-bg, rgba(255, 255, 255, 0.12));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-weight: 700;
+}
+
+.pantry-tab-count {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: rgba(128, 128, 128, 0.15);
+    color: var(--text-muted);
+}
+
+.pantry-tab-count.highlight {
+    background: rgba(39, 174, 96, 0.15);
+    color: #27ae60;
+}
+
+/* --- Compact Status Pill Strip --- */
+.pantry-quick-stats-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.pantry-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--border-glass);
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.pantry-stat-pill:hover {
+    border-color: var(--primary, #27ae60);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.pantry-stat-pill.active {
+    background: rgba(39, 174, 96, 0.08);
+    border-color: var(--primary, #27ae60);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.pantry-stat-pill.warning {
+    color: #f39c12;
+    border-color: rgba(243, 156, 18, 0.35);
+    background: rgba(243, 156, 18, 0.06);
+}
+
+.pantry-stat-pill.cookable-btn {
+    margin-left: auto;
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.12), rgba(39, 174, 96, 0.04));
+    border-color: rgba(39, 174, 96, 0.35);
+    color: #27ae60;
+    font-weight: 700;
+}
+
+.pantry-stat-pill.cookable-btn:hover {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(39, 174, 96, 0.08));
+}
+
+/* --- Compact Inline Alert --- */
+.pantry-compact-alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(231, 76, 60, 0.06));
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    margin-bottom: 12px;
+    font-size: 12.5px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pantry-compact-alert-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.pantry-compact-alert-action {
+    background: transparent;
+    border: none;
+    color: #f39c12;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.pantry-compact-alert-action:hover {
+    background: rgba(243, 156, 18, 0.15);
+    color: #e67e22;
+}
+
+.pantry-filter-card {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- Pantry Inputs & Form Styling --- */
+.pantry-form-card {
+    padding: 16px 18px;
+}
+
+.pantry-field-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.pantry-input,
+.pantry-textarea,
+.pantry-select-sm {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pantry-input:focus,
+.pantry-textarea:focus,
+.pantry-select-sm:focus {
+    outline: none;
+    border-color: var(--primary, #27ae60);
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.15);
+}
+
+.pantry-select-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: auto;
+}
+
+/* --- Search Input & Wrap (Fixed Icon Overlap) --- */
+.pantry-search-wrap {
+    position: relative;
+    flex: 1 1 200px;
+    display: flex;
+    align-items: center;
+}
+
+.pantry-search-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.pantry-search-input {
+    width: 100%;
+    padding: 9px 34px 9px 40px !important;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pantry-search-input:focus {
+    outline: none;
+    border-color: var(--primary, #27ae60);
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.15);
+}
+
+.pantry-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.pantry-search-clear:hover {
+    color: var(--text-primary);
+    background: rgba(128, 128, 128, 0.15);
+}
+
+/* --- Category & Filter Pills (No Orange Bleed) --- */
+.pantry-cat-selector {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 2px 0 3px 0;
+}
+
+.pantry-cat-pill {
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 1px solid var(--border-glass);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: none;
+}
+
+.pantry-cat-pill:hover {
+    color: var(--text-primary);
+    background: var(--card-bg, rgba(255, 255, 255, 0.08));
+    border-color: rgba(255, 107, 107, 0.35);
+    transform: translateY(-1px);
+}
+
+.pantry-cat-pill.active {
+    background: var(--gradient-primary, #ff6b6b) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.25) !important;
+    transform: none !important;
+}
+
+/* --- Storage Location Badge --- */
+.pantry-location-pill {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* --- View Toggle & Batch Toolbar --- */
+.pantry-view-toggle {
+    display: flex;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 2px;
+    border: 1px solid var(--border-glass);
+}
+
+.pantry-view-btn {
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.pantry-view-btn.active {
+    background: var(--card-bg, rgba(255, 255, 255, 0.1));
+    color: var(--text-primary);
+}
+
+.pantry-batch-bar {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(39, 174, 96, 0.1));
+    border: 1px solid var(--border-glass);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.pantry-select-checkbox {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 3;
+    padding: 2px;
+}
+
+.pantry-item-card.selected {
+    border-color: var(--primary, #27ae60);
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+}
+
+/* --- Grid Container --- */
+.pantry-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+}
+
+/* --- Icon Action Buttons --- */
+.pantry-icon-btn {
+    border: none;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    border: 1px solid var(--border-glass);
+}
+
+.pantry-icon-btn:hover {
+    background: rgba(128, 128, 128, 0.15);
+    color: var(--text-primary);
+    transform: scale(1.06);
+}
+
+/* --- Compact Table View --- */
+.pantry-table-wrapper {
+    overflow-x: auto;
+    border-radius: 14px;
+}
+
+.pantry-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.pantry-table th {
+    padding: 12px 14px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.pantry-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.pantry-table tr:hover {
+    background: rgba(128, 128, 128, 0.04);
+}
+
+.pantry-table tr.selected-row {
+    background: rgba(39, 174, 96, 0.06);
+}
+
+.pantry-cat-tag {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* --- Recipe Matcher Grid & Cards --- */
+.pantry-recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 15px;
+}
+
+.pantry-recipe-card {
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pantry-recipe-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.pantry-recipe-img-wrap {
+    position: relative;
+    height: 150px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.pantry-recipe-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.pantry-recipe-card:hover .pantry-recipe-img {
+    transform: scale(1.05);
+}
+
+.pantry-recipe-match-chip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pantry-recipe-expiring-chip {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 700;
+    background: rgba(231, 76, 60, 0.9);
+    color: #fff;
+    backdrop-filter: blur(4px);
+}
+
+.pantry-recipe-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+}
+
+.pantry-recipe-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.pantry-recipe-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.nutri-badge-sm {
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(39, 174, 96, 0.12);
+    color: #27ae60;
+}
+
+.pantry-recipe-ing-breakdown {
+    margin: 6px 0;
+}
+
+.pantry-ing-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.pantry-chip {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+.pantry-chip.matched {
+    background: rgba(39, 174, 96, 0.12);
+    color: #27ae60;
+}
+
+.pantry-chip.missing {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.pantry-recipe-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+/* --- Restock Kit Cards --- */
+.pantry-kit-card {
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pantry-summary-card:hover {
+.pantry-kit-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
-.pantry-summary-icon {
-    padding: 14px;
-    border-radius: 14px;
+/* --- Preview Row for Magic Import --- */
+.pantry-preview-row {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.pantry-summary-icon.total {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.12), rgba(52, 152, 219, 0.04));
-    color: #3498db;
-}
-
-.pantry-summary-icon.expiring {
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.12), rgba(231, 76, 60, 0.04));
-    color: #e74c3c;
-}
-
-.pantry-summary-icon.low-stock {
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.12), rgba(243, 156, 18, 0.04));
-    color: #f39c12;
-}
-
-.pantry-summary-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.pantry-summary-label {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-glass);
 }
 
 /* --- Quick Preset Button --- */
 .pantry-preset-btn {
-    padding: 10px 14px;
-    font-size: 13px;
+    padding: 9px 12px;
+    font-size: 12.5px;
     font-weight: 600;
     border-radius: 12px;
     background: var(--glass-bg);
@@ -9831,16 +10430,6 @@ textarea:focus {
     font-size: 18px;
 }
 
-/* --- Category Tag (small label on card) --- */
-.pantry-category-tag {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--text-muted);
-    opacity: 0.7;
-}
-
 /* Responsive tweaks for pantry grid */
 @media (max-width: 600px) {
     .pantry-qty-btn {
@@ -9857,6 +10446,10 @@ textarea:focus {
         width: 30px;
         height: 30px;
         font-size: 18px;
+    }
+
+    .pantry-stats-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
 

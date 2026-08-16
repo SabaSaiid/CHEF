@@ -96,6 +96,9 @@ async def lifespan(app: FastAPI):
                 if "category" not in p_cols:
                     logger.info("🔧 Upgrading table 'pantry_items' with 'category' column")
                     conn.execute(text("ALTER TABLE pantry_items ADD COLUMN category VARCHAR(100) DEFAULT 'Other'"))
+                if "location" not in p_cols:
+                    logger.info("🔧 Upgrading table 'pantry_items' with 'location' column")
+                    conn.execute(text("ALTER TABLE pantry_items ADD COLUMN location VARCHAR(50) DEFAULT 'Pantry'"))
                 if "days_fresh" not in p_cols:
                     logger.info("🔧 Upgrading table 'pantry_items' with 'days_fresh' column")
                     conn.execute(text("ALTER TABLE pantry_items ADD COLUMN days_fresh INTEGER DEFAULT 7"))

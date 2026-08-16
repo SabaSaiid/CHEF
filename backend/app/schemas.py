@@ -726,13 +726,16 @@ class PantryItemCreate(BaseModel):
     ingredient_name: str = Field(..., min_length=1, max_length=255, description="Name of the ingredient")
     quantity: float = Field(1.0, gt=0, description="Amount of the item in stock")
     unit: str = Field("serving", min_length=1, max_length=50, description="Unit of measurement")
-    category: Optional[str] = Field("Other", description="Ingredient category (Vegetables, Proteins, Dairy, etc.)")
+    category: Optional[str] = Field("Other", description="Ingredient category (Produce, Proteins, Dairy, Grains & Baking, Spices & Seasonings, Other)")
+    location: Optional[str] = Field("Pantry", description="Storage location (Fridge, Freezer, Pantry, Spice Rack, Countertop)")
     days_fresh: Optional[int] = Field(7, description="Number of days the item stays fresh")
 
 class PantryItemUpdate(BaseModel):
+    ingredient_name: Optional[str] = Field(None, min_length=1, max_length=255)
     quantity: Optional[float] = Field(None, gt=0)
     unit: Optional[str] = Field(None, min_length=1, max_length=50)
     category: Optional[str] = None
+    location: Optional[str] = None
     days_fresh: Optional[int] = None
 
 class PantryItemResponse(BaseModel):
@@ -744,11 +747,51 @@ class PantryItemResponse(BaseModel):
     quantity: float
     unit: str
     category: str
+    location: Optional[str] = "Pantry"
     days_fresh: int
     updated_at: datetime
     # Computed expiry fields — populated by the API endpoint
     expiry_status: Optional[str] = None   # 'fresh' | 'expiring_soon' | 'expired'
     days_remaining: Optional[int] = None  # Days until expiration (negative = past)
+
+class PantryBatchDeleteRequest(BaseModel):
+    item_ids: list[int] = Field(..., min_length=1, description="List of pantry item IDs to delete")
+
+class PantryBatchAddRequest(BaseModel):
+    items: list[PantryItemCreate] = Field(..., min_length=1, description="List of pantry items to add")
+
+class PantryClearExpiredResponse(BaseModel):
+    removed_count: int
+    message: str
+
+class PantryMatchedRecipeItem(BaseModel):
+    id: str
+    title: str
+    image: Optional[str] = None
+    ready_in_minutes: Optional[int] = 30
+    servings: Optional[int] = 2
+    dish_types: list[str] = []
+    cuisines: list[str] = []
+    nutri_score: Optional[str] = "B"
+    chef_score: Optional[int] = 85
+    calories: Optional[float] = None
+    protein: Optional[float] = None
+    carbs: Optional[float] = None
+    fat: Optional[float] = None
+    match_pct: int
+    matched_count: int
+    total_count: int
+    matched_ingredients: list[str] = []
+    missing_ingredients: list[str] = []
+    uses_expiring: bool = False
+    is_cookable_now: bool = False
+
+class PantryMatchResponse(BaseModel):
+    recipes: list[PantryMatchedRecipeItem]
+    total_matched: int
+    cookable_now_count: int
+    expiring_soon_count: int
+
 
 
 # ── Recipe Reviews & Tips ──────────────────────────────────────

@@ -240,6 +240,7 @@ class PantryItem(Base):
     quantity: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
     unit: Mapped[str] = mapped_column(String(50), nullable=False, default="serving")
     category: Mapped[str] = mapped_column(String(100), nullable=False, default="Other")
+    location: Mapped[str] = mapped_column(String(50), nullable=False, default="Pantry")
     days_fresh: Mapped[int] = mapped_column(Integer, nullable=False, default=7)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime,
