@@ -54,7 +54,9 @@ def parse_quantity_unit(food_item: str, default_qty: float, default_unit: str):
 def calculate_unit_scale(qty: float, unit: str, serving_weight_g: float = 100.0) -> float:
     """Calculate scaling multiplier relative to per-100g base values."""
     u = (unit or "").lower().strip()
-    if u in ['g', 'gram', 'grams', 'ml', 'milliliter', 'milliliters']:
+    if u in ['g', 'gram', 'grams']:
+        return qty / 100.0
+    elif u in ['ml', 'milliliter', 'milliliters']:
         return qty / 100.0
     elif u in ['kg', 'kilogram', 'kilograms']:
         return (qty * 1000.0) / 100.0
@@ -65,18 +67,27 @@ def calculate_unit_scale(qty: float, unit: str, serving_weight_g: float = 100.0)
     elif u in ['lb', 'lbs', 'pound', 'pounds']:
         return (qty * 453.59) / 100.0
     elif u in ['cup', 'cups']:
-        return (qty * 240.0) / 100.0
+        # If food has specific cup/serving weight (e.g. 120g flour, 80g oats, 185g rice, 240g curd/milk), use it!
+        cup_g = serving_weight_g if (serving_weight_g and 20.0 <= serving_weight_g <= 250.0) else 150.0
+        return (qty * cup_g) / 100.0
     elif u in ['tbsp', 'tablespoon', 'tablespoons']:
         return (qty * 15.0) / 100.0
     elif u in ['tsp', 'teaspoon', 'teaspoons']:
         return (qty * 5.0) / 100.0
-    elif u in ['serving', 'servings', 'pcs', 'piece', 'pieces', 'item', 'slice', 'slices', 'scoop', 'scoops', '']:
+    elif u in ['clove', 'cloves']:
+        return (qty * 3.0) / 100.0
+    elif u in ['pinch', 'pinches']:
+        return (qty * 0.5) / 100.0
+    elif u in ['slice', 'slices']:
+        slice_g = serving_weight_g if (serving_weight_g and serving_weight_g < 60) else 30.0
+        return (qty * slice_g) / 100.0
+    elif u in ['medium', 'pcs', 'piece', 'pieces', 'whole', 'item', 'serving', 'servings', '']:
         if qty >= 20.0 and u in ['serving', 'servings', 'pcs', 'piece', 'pieces', 'item', '']:
-            # User entered raw weight in quantity field (e.g. 150) with default unit
+            # User entered raw weight in grams in quantity field (e.g. 150)
             return qty / 100.0
         serving_g = serving_weight_g if serving_weight_g and serving_weight_g > 0 else 100.0
         return (qty * serving_g) / 100.0
-    return qty
+    return qty / 100.0 if qty > 10 else qty
 
 
 def _smart_lookup(food: str):

@@ -1,25 +1,121 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import api from '../services/api';
 import ChefScoreBadge from './ChefScoreBadge';
-import { parseIngredient, formatQuantityValue } from '../utils/ingredientParser';
+import { parseIngredient } from '../utils/ingredientParser';
 import { useToast } from '../context/ToastContext';
 
 const COMMON_UNITS = [
   { value: 'g', label: 'g (grams)' },
   { value: 'kg', label: 'kg' },
-  { value: 'cup', label: 'cup / cups' },
-  { value: 'tbsp', label: 'tbsp (tablespoon)' },
-  { value: 'tsp', label: 'tsp (teaspoon)' },
-  { value: 'ml', label: 'ml (milliliters)' },
+  { value: 'cup', label: 'cup' },
+  { value: 'tbsp', label: 'tbsp' },
+  { value: 'tsp', label: 'tsp' },
+  { value: 'ml', label: 'ml' },
   { value: 'l', label: 'l (liters)' },
-  { value: 'oz', label: 'oz (ounces)' },
-  { value: 'lb', label: 'lb (pounds)' },
+  { value: 'oz', label: 'oz' },
+  { value: 'lb', label: 'lb' },
   { value: 'pcs', label: 'pcs / whole' },
   { value: 'medium', label: 'medium' },
-  { value: 'slice', label: 'slice / slices' },
-  { value: 'clove', label: 'clove / cloves' },
+  { value: 'slice', label: 'slice' },
+  { value: 'clove', label: 'clove' },
   { value: 'pinch', label: 'pinch' },
 ];
+
+function getIngredientCategory(name) {
+  const n = (name || '').toLowerCase();
+  if (/chicken|mutton|lamb|fish|salmon|shrimp|prawn|egg|eggs|paneer|tofu|curd|yogurt|dahi|whey|protein|beef|pork|tuna|lentil|dal|chana|rajma|soy/i.test(n)) {
+    return { label: 'Protein', emoji: '🍗', color: '#10b981', bg: 'rgba(16, 185, 129, 0.12)' };
+  }
+  if (/spinach|palak|tomato|tamatar|onion|pyaaz|potato|aloo|cauliflower|gobi|cabbage|carrot|peas|matar|capsicum|pepper|broccoli|garlic|ginger|coriander|cilantro|mint|pudina|chili|lemon|cucumber|lettuce|mushroom|zucchini/i.test(n)) {
+    return { label: 'Veggie', emoji: '🥦', color: '#059669', bg: 'rgba(5, 150, 105, 0.12)' };
+  }
+  if (/rice|flour|atta|maida|bread|roti|naan|pasta|noodle|noodles|oats|quinoa|suji|semolina|poha|sabudana|tortilla|sugar|honey|jaggery/i.test(n)) {
+    return { label: 'Carbs', emoji: '🌾', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.12)' };
+  }
+  if (/oil|ghee|butter|olive oil|mustard oil|coconut oil|cream|malai|cheese|almond|cashew|walnut|peanut|seeds|chia|sesame/i.test(n)) {
+    return { label: 'Fats/Oils', emoji: '🥑', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)' };
+  }
+  if (/salt|pepper|turmeric|haldi|cumin|jeera|mustard seeds|rai|masala|hing|cardamom|cinnamon|clove|coriander powder|amchur/i.test(n)) {
+    return { label: 'Seasoning', emoji: '🧂', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.12)' };
+  }
+  return { label: 'General', emoji: '🥗', color: '#6b7280', bg: 'rgba(107, 114, 128, 0.12)' };
+}
+
+const CANONICAL_UNITS = {
+  'g': 'g', 'gram': 'g', 'grams': 'g',
+  'kg': 'kg', 'kilogram': 'kg', 'kilograms': 'kg',
+  'cup': 'cup', 'cups': 'cup', 'c': 'cup',
+  'tbsp': 'tbsp', 'tablespoon': 'tbsp', 'tablespoons': 'tbsp', 'tbs': 'tbsp',
+  'tsp': 'tsp', 'teaspoon': 'tsp', 'teaspoons': 'tsp',
+  'ml': 'ml', 'milliliter': 'ml', 'milliliters': 'ml',
+  'l': 'l', 'liter': 'l', 'liters': 'l',
+  'oz': 'oz', 'ounce': 'oz', 'ounces': 'oz',
+  'lb': 'lb', 'lbs': 'lb', 'pound': 'lb', 'pounds': 'lb',
+  'pcs': 'pcs', 'pc': 'pcs', 'piece': 'pcs', 'pieces': 'pcs', 'whole': 'pcs', 'item': 'pcs',
+  'medium': 'medium',
+  'slice': 'slice', 'slices': 'slice',
+  'clove': 'clove', 'cloves': 'clove',
+  'pinch': 'pinch', 'pinches': 'pinch',
+};
+
+function normalizeUnit(unitStr) {
+  if (!unitStr) return 'g';
+  const clean = unitStr.toLowerCase().trim();
+  return CANONICAL_UNITS[clean] || 'g';
+}
+
+function parseInitialIngredients(ingredientsList) {
+  const list = Array.isArray(ingredientsList) ? ingredientsList : [];
+  return list.map((ingStr, idx) => {
+    const parsed = parseIngredient(ingStr);
+    let name = parsed.name || (typeof ingStr === 'string' ? ingStr : '');
+    let qty = parsed.qty;
+    let unit = normalizeUnit(parsed.unit);
+
+    if (!parsed.hasQuantity || qty === null || qty === undefined || isNaN(qty)) {
+      // Smart culinary defaults based on ingredient category
+      const cat = getIngredientCategory(name);
+      if (cat.label === 'Protein') {
+        qty = 150;
+        unit = 'g';
+      } else if (cat.label === 'Carbs') {
+        qty = 1;
+        unit = 'cup';
+      } else if (cat.label === 'Fats/Oils') {
+        qty = 1;
+        unit = 'tbsp';
+      } else if (cat.label === 'Seasoning') {
+        qty = 1;
+        unit = 'tsp';
+      } else if (cat.label === 'Veggie') {
+        if (/onion|tomato|potato|bell pepper|capsicum/i.test(name)) {
+          qty = 1;
+          unit = 'medium';
+        } else if (/spinach|palak|peas|corn/i.test(name)) {
+          qty = 100;
+          unit = 'g';
+        } else if (/garlic/i.test(name)) {
+          qty = 2;
+          unit = 'clove';
+        } else {
+          qty = 100;
+          unit = 'g';
+        }
+      } else {
+        qty = 100;
+        unit = 'g';
+      }
+    }
+
+    return {
+      id: `ing-${idx}-${Date.now()}`,
+      name: name.trim(),
+      qty: Number(qty) || 1,
+      unit: unit,
+      raw: typeof ingStr === 'string' ? ingStr : '',
+    };
+  });
+}
 
 export default function RecipeCustomizer({
   recipe,
@@ -27,93 +123,94 @@ export default function RecipeCustomizer({
   initialServings = 1,
   onUpdateCalculation,
   onSaveCustomVariation,
+  onStartCookingCustom,
   onClose,
 }) {
   const toast = useToast();
 
-  // Parse initial ingredients into structured editable items
-  const parsedDefaultItems = useMemo(() => {
-    const list = Array.isArray(initialIngredients) ? initialIngredients : [];
-    return list.map((ingStr, idx) => {
-      const parsed = parseIngredient(ingStr);
-      let qty = parsed.qty || 1.0;
-      let unit = parsed.unit || 'g';
-      let name = parsed.name || (typeof ingStr === 'string' ? ingStr : '');
-
-      if (!parsed.hasQuantity) {
-        qty = 100;
-        unit = 'g';
-        name = typeof ingStr === 'string' ? ingStr : '';
-      }
-
-      return {
-        id: `ing-${idx}-${Date.now()}`,
-        name: name.trim(),
-        qty: Number(qty) || 1,
-        unit: unit || 'g',
-        raw: typeof ingStr === 'string' ? ingStr : '',
-      };
-    });
-  }, [initialIngredients]);
-
-  const [items, setItems] = useState(parsedDefaultItems);
+  const [items, setItems] = useState(() => parseInitialIngredients(initialIngredients));
   const [servings, setServings] = useState(initialServings || 1);
   const [isCalculating, setIsCalculating] = useState(false);
   const [calcResult, setCalcResult] = useState(null);
   const [customTitle, setCustomTitle] = useState(`${recipe?.title || 'Custom Recipe'} (My Variation)`);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [viewTab, setViewTab] = useState('tweak'); // 'tweak' | 'comparison'
+
+  // Ref tracking to avoid render loops
+  const onUpdateCalculationRef = useRef(onUpdateCalculation);
+  onUpdateCalculationRef.current = onUpdateCalculation;
+  const lastPayloadSigRef = useRef('');
 
   // Suggestions state for auto-complete
   const [activeSuggestIdx, setActiveSuggestIdx] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
 
-  // Reset items when recipe changes
+  // Reset items ONLY when recipe identity changes
+  const recipeKey = `${recipe?.id || ''}-${recipe?.title || ''}`;
   useEffect(() => {
-    setItems(parsedDefaultItems);
+    setItems(parseInitialIngredients(initialIngredients));
     setServings(initialServings || 1);
     setCustomTitle(`${recipe?.title || 'Custom Recipe'} (My Variation)`);
-  }, [parsedDefaultItems, initialServings, recipe?.title]);
+    lastPayloadSigRef.current = '';
+  }, [recipeKey]);
 
-  // Debounced live calculation trigger
+  // Debounced live calculation trigger with payload signature memoization
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const validItems = items.filter(it => it.name.trim().length > 0);
-      if (validItems.length === 0) {
-        setCalcResult(null);
-        return;
-      }
+    let isCancelled = false;
 
+    const validItems = items.filter(it => it.name && it.name.trim().length > 0);
+    if (validItems.length === 0) {
+      setCalcResult(null);
+      return;
+    }
+
+    const payload = {
+      title: recipe?.title || 'Custom Recipe',
+      servings: Number(servings) || 1,
+      ingredients: validItems.map(it => ({
+        name: it.name.trim(),
+        qty: Number(it.qty) || 1,
+        unit: it.unit || 'g',
+        raw: `${it.qty} ${it.unit} ${it.name}`.trim(),
+      })),
+      meal_type: recipe?.meal_type || null,
+    };
+
+    const payloadSig = JSON.stringify(payload);
+    if (payloadSig === lastPayloadSigRef.current) {
+      return; // No change in payload, avoid spamming
+    }
+
+    const timer = setTimeout(async () => {
+      lastPayloadSigRef.current = payloadSig;
       setIsCalculating(true);
       try {
-        const payload = {
-          title: recipe?.title || 'Custom Recipe',
-          servings: Number(servings) || 1,
-          ingredients: validItems.map(it => ({
-            name: it.name,
-            qty: Number(it.qty) || 1,
-            unit: it.unit,
-            raw: `${it.qty} ${it.unit} ${it.name}`.trim(),
-          })),
-          meal_type: recipe?.meal_type || null,
-        };
-
         const res = await api.post('/nutrition/recipe/calculate', payload);
-        setCalcResult(res);
-        if (onUpdateCalculation) {
-          onUpdateCalculation(res);
+        if (!isCancelled) {
+          setCalcResult(res);
+          if (onUpdateCalculationRef.current) {
+            onUpdateCalculationRef.current(res);
+          }
         }
       } catch (err) {
-        console.error('Error calculating custom recipe nutrition:', err);
+        if (!isCancelled) {
+          console.error('Error calculating custom recipe nutrition:', err);
+        }
       } finally {
-        setIsCalculating(false);
+        if (!isCancelled) {
+          setIsCalculating(false);
+        }
       }
-    }, 280);
+    }, 320);
 
-    return () => clearTimeout(timer);
-  }, [items, servings, recipe?.title, recipe?.meal_type, onUpdateCalculation]);
+    return () => {
+      isCancelled = true;
+      clearTimeout(timer);
+    };
+  }, [items, servings, recipe?.title, recipe?.meal_type]);
 
-  // Fetch suggestions when typing ingredient name
+  // Autocomplete suggestions
   const handleNameChange = async (idx, text) => {
     const updated = [...items];
     updated[idx].name = text;
@@ -141,7 +238,7 @@ export default function RecipeCustomizer({
     setActiveSuggestIdx(null);
   };
 
-  // Quantity helpers
+  // Quantity handlers
   const handleQtyChange = (idx, newQty) => {
     const val = Math.max(0.05, Number(newQty) || 0);
     const updated = [...items];
@@ -169,14 +266,14 @@ export default function RecipeCustomizer({
     setItems(updated);
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = (presetName = '', presetQty = 100, presetUnit = 'g') => {
     setItems(prev => [
       ...prev,
       {
         id: `ing-new-${Date.now()}`,
-        name: '',
-        qty: 100,
-        unit: 'g',
+        name: presetName,
+        qty: presetQty,
+        unit: presetUnit,
         raw: '',
       },
     ]);
@@ -190,6 +287,53 @@ export default function RecipeCustomizer({
     setItems(parsedDefaultItems);
     setServings(initialServings || 1);
     toast.info('Reset to standard recipe ingredients ↺');
+  };
+
+  // Quick Preset Multipliers
+  const handleQuickDoubleProtein = () => {
+    let touched = false;
+    const updated = items.map(it => {
+      const cat = getIngredientCategory(it.name);
+      if (cat.label === 'Protein') {
+        touched = true;
+        return { ...it, qty: Number((it.qty * 2).toFixed(2)) };
+      }
+      return it;
+    });
+
+    if (touched) {
+      setItems(updated);
+      toast.success('Doubled protein quantities! 🍗');
+    } else {
+      handleAddItem('chicken breast', 250, 'g');
+      toast.success('Added +250g Chicken Breast! 🍗');
+    }
+  };
+
+  const handleQuickReduceSodium = () => {
+    const updated = items.map(it => {
+      const cat = getIngredientCategory(it.name);
+      if (cat.label === 'Seasoning' && /salt|soy sauce/i.test(it.name)) {
+        return { ...it, qty: Number((it.qty * 0.5).toFixed(2)) };
+      }
+      return it;
+    });
+    setItems(updated);
+    toast.success('Cut salt/sodium by 50% 🧂');
+  };
+
+  const handleQuickAddVeggie = () => {
+    handleAddItem('spinach', 100, 'g');
+    toast.success('Added +100g Fresh Spinach for fiber & vitamins! 🥦');
+  };
+
+  const handleScaleBatch = (factor) => {
+    const updated = items.map(it => ({
+      ...it,
+      qty: Number((it.qty * factor).toFixed(2))
+    }));
+    setItems(updated);
+    toast.info(`Scaled batch by ${factor}x! ⚖️`);
   };
 
   // Save custom variation
@@ -228,11 +372,13 @@ export default function RecipeCustomizer({
     }
   };
 
-  // Helper macro delta
+  // Base values for comparison
   const baseCalories = recipe?.calories || recipe?.nutrition?.calories || 0;
   const baseProtein = recipe?.protein_g || recipe?.nutrition?.protein_g || 0;
   const baseCarbs = recipe?.carbs_g || recipe?.nutrition?.carbs_g || 0;
   const baseFat = recipe?.fat_g || recipe?.nutrition?.fat_g || 0;
+  const baseScore = recipe?.nutri_score || recipe?.chef_score;
+  const baseGrade = typeof baseScore === 'string' ? baseScore : (baseScore?.grade || 'C');
 
   const currentCals = calcResult?.per_serving_nutrition?.calories || baseCalories;
   const currentProtein = calcResult?.per_serving_nutrition?.protein_g || baseProtein;
@@ -244,26 +390,43 @@ export default function RecipeCustomizer({
   const carbDelta = currentCarbs - baseCarbs;
   const fatDelta = currentFat - baseFat;
 
-  const activeScore = calcResult?.nutri_score || recipe?.nutri_score || recipe?.chef_score;
-  const activeGrade = activeScore?.grade || 'C';
+  const activeScore = calcResult?.nutri_score || baseScore;
+  const activeGrade = activeScore?.grade || baseGrade;
 
   return (
     <div className="recipe-customizer-container">
-      {/* Top Header Banner */}
+      {/* Studio Header & Mode Tabs */}
       <div className="customizer-header-banner">
         <div className="customizer-header-title">
           <span className="customizer-icon">🎛️</span>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--text-primary)' }}>
+            <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               Interactive Recipe Studio
+              <span className="studio-live-pill">● Live Engine</span>
             </h3>
-            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              Tweak ingredient quantities or add/remove items to dynamically recalculate nutrition &amp; Nutri-Score.
+            <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              Tweak ingredient quantities or test substitutions to see live Nutri-Score &amp; macro shifts.
             </p>
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="studio-view-toggle">
+            <button
+              type="button"
+              className={`studio-toggle-btn ${viewTab === 'tweak' ? 'active' : ''}`}
+              onClick={() => setViewTab('tweak')}
+            >
+              ✏️ Tweak List
+            </button>
+            <button
+              type="button"
+              className={`studio-toggle-btn ${viewTab === 'comparison' ? 'active' : ''}`}
+              onClick={() => setViewTab('comparison')}
+            >
+              ⚖️ Before vs. After
+            </button>
+          </div>
           <button
             type="button"
             className="btn-customizer-reset"
@@ -272,22 +435,33 @@ export default function RecipeCustomizer({
           >
             ↺ Reset
           </button>
-          <button
-            type="button"
-            className="btn-customizer-save"
-            onClick={() => setShowSaveModal(true)}
-            disabled={!calcResult || isCalculating}
-            title="Save your customized recipe variation"
-          >
-            💾 Save Variation
-          </button>
         </div>
       </div>
 
-      {/* Live Real-time Comparison HUD */}
+      {/* Quick Tweak Preset Modifiers Bar */}
+      <div className="quick-modifier-bar">
+        <span className="modifier-label">⚡ 1-Tap Tweaks:</span>
+        <button type="button" className="quick-mod-btn" onClick={handleQuickDoubleProtein} title="Double all protein portions">
+          💪 2x Protein
+        </button>
+        <button type="button" className="quick-mod-btn" onClick={handleQuickReduceSodium} title="Reduce salt/sodium by 50%">
+          🧂 -50% Sodium
+        </button>
+        <button type="button" className="quick-mod-btn" onClick={handleQuickAddVeggie} title="Add 100g spinach for fiber">
+          🥦 +Veggie Boost
+        </button>
+        <button type="button" className="quick-mod-btn" onClick={() => handleScaleBatch(2)} title="Double whole recipe batch">
+          2x Batch
+        </button>
+        <button type="button" className="quick-mod-btn" onClick={() => handleScaleBatch(0.5)} title="Halve whole recipe batch">
+          0.5x Batch
+        </button>
+      </div>
+
+      {/* Live HUD Summary Card */}
       <div className="customizer-hud-card">
         <div className="hud-metric-column">
-          <div className="hud-metric-label">Live Nutri-Score</div>
+          <div className="hud-metric-label">Simulated Nutri-Score</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
             <ChefScoreBadge
               grade={activeGrade}
@@ -297,8 +471,13 @@ export default function RecipeCustomizer({
               pointsToNextTier={activeScore?.points_to_next_tier}
             />
             <div>
-              <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-primary)' }}>
+              <div style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-primary)' }}>
                 Tier {activeGrade}
+                {baseGrade !== activeGrade && (
+                  <span style={{ fontSize: '0.75rem', marginLeft: '6px', color: '#10b981', fontWeight: 700 }}>
+                    (was {baseGrade})
+                  </span>
+                )}
               </div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
                 {activeScore?.numeric_score !== undefined ? `Score: ${activeScore.numeric_score}` : 'Simulated'}
@@ -310,7 +489,7 @@ export default function RecipeCustomizer({
 
         <div className="hud-metric-divider" />
 
-        {/* Calories & Macros HUD */}
+        {/* Calories & Macros HUD Grid */}
         <div className="hud-macros-grid">
           <div className="hud-macro-pill">
             <span className="macro-name">Calories</span>
@@ -353,9 +532,9 @@ export default function RecipeCustomizer({
           </div>
         </div>
 
-        {/* Servings Adjuster */}
+        {/* Servings Stepper */}
         <div className="hud-servings-box">
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
             Servings
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
@@ -402,122 +581,248 @@ export default function RecipeCustomizer({
         </div>
       )}
 
-      {/* Ingredient Tweaker List */}
-      <div className="customizer-list-section">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <h4 style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-primary)' }}>
-            Ingredients &amp; Quantities ({items.length})
-          </h4>
-          {isCalculating && (
-            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span className="spinner-mini" /> Recalculating Nutri-Score...
-            </span>
-          )}
+      {/* VIEW TAB 1: TWEAK LIST */}
+      {viewTab === 'tweak' && (
+        <div className="customizer-list-section">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <h4 style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>📝</span> Recipe Ingredients ({items.length})
+            </h4>
+            {isCalculating && (
+              <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span className="spinner-mini" /> Recalculating Nutri-Score...
+              </span>
+            )}
+          </div>
+
+          <div className="customizer-items-stack">
+            {items.map((it, idx) => {
+              const contrib = calcResult?.ingredient_contributions?.[idx];
+              const cat = getIngredientCategory(it.name);
+
+              return (
+                <div key={it.id || idx} className="customizer-item-row">
+                  {/* Category Pill */}
+                  <span
+                    className="customizer-cat-tag"
+                    style={{ background: cat.bg, color: cat.color }}
+                    title={`Category: ${cat.label}`}
+                  >
+                    {cat.emoji} {cat.label}
+                  </span>
+
+                  {/* Stepper + Quantity */}
+                  <div className="customizer-qty-group">
+                    <button
+                      type="button"
+                      className="customizer-stepper-btn"
+                      onClick={() => handleStepQty(idx, -1)}
+                      title="Decrease Quantity"
+                    >-</button>
+                    <input
+                      type="number"
+                      step="any"
+                      min="0.1"
+                      className="customizer-qty-input"
+                      value={it.qty}
+                      onChange={(e) => handleQtyChange(idx, e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="customizer-stepper-btn"
+                      onClick={() => handleStepQty(idx, 1)}
+                      title="Increase Quantity"
+                    >+</button>
+                  </div>
+
+                  {/* Unit Selector */}
+                  <select
+                    className="customizer-unit-select"
+                    value={it.unit}
+                    onChange={(e) => handleUnitChange(idx, e.target.value)}
+                  >
+                    {COMMON_UNITS.map(u => (
+                      <option key={u.value} value={u.value}>{u.label}</option>
+                    ))}
+                  </select>
+
+                  {/* Name Input & Autocomplete */}
+                  <div className="customizer-name-wrapper">
+                    <input
+                      type="text"
+                      className="customizer-name-input"
+                      placeholder="e.g. Chicken breast, Curd, Spinach..."
+                      value={it.name}
+                      onChange={(e) => handleNameChange(idx, e.target.value)}
+                      onFocus={() => {
+                        if (it.name.trim().length >= 2 && suggestions.length > 0) {
+                          setActiveSuggestIdx(idx);
+                        }
+                      }}
+                    />
+
+                    {/* Autocomplete Dropdown */}
+                    {activeSuggestIdx === idx && suggestions.length > 0 && (
+                      <div className="customizer-suggest-dropdown">
+                        {suggestions.map((sugg, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="customizer-suggest-option"
+                            onClick={() => handleSelectSuggestion(idx, sugg)}
+                          >
+                            🔍 {sugg}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Mini Contribution Chip */}
+                    {contrib && contrib.found && (
+                      <div className="customizer-item-chip">
+                        <span>🔥 {contrib.calories} kcal</span>
+                        <span>🍗 {contrib.protein_g}g P</span>
+                        {contrib.carbs_g > 0 && <span>🌾 {contrib.carbs_g}g C</span>}
+                        {contrib.fat_g > 0 && <span>🥑 {contrib.fat_g}g F</span>}
+                        {contrib.sodium_mg > 0 && <span>🧂 {contrib.sodium_mg}mg Na</span>}
+                        {contrib.fiber_g > 0 && <span>🌱 {contrib.fiber_g}g Fib</span>}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Remove Button */}
+                  <button
+                    type="button"
+                    className="customizer-delete-btn"
+                    onClick={() => handleRemoveItem(idx)}
+                    title="Remove this ingredient"
+                  >
+                    ✕
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Add Ingredient Button */}
+          <button
+            type="button"
+            className="btn-customizer-add"
+            onClick={() => handleAddItem()}
+          >
+            ➕ Add Custom Ingredient
+          </button>
         </div>
+      )}
 
-        <div className="customizer-items-stack">
-          {items.map((it, idx) => {
-            const contrib = calcResult?.ingredient_contributions?.[idx];
-            return (
-              <div key={it.id || idx} className="customizer-item-row">
-                {/* Stepper + Quantity */}
-                <div className="customizer-qty-group">
-                  <button
-                    type="button"
-                    className="customizer-stepper-btn"
-                    onClick={() => handleStepQty(idx, -1)}
-                    title="Decrease Quantity"
-                  >-</button>
-                  <input
-                    type="number"
-                    step="any"
-                    min="0.1"
-                    className="customizer-qty-input"
-                    value={it.qty}
-                    onChange={(e) => handleQtyChange(idx, e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="customizer-stepper-btn"
-                    onClick={() => handleStepQty(idx, 1)}
-                    title="Increase Quantity"
-                  >+</button>
-                </div>
-
-                {/* Unit Selector */}
-                <select
-                  className="customizer-unit-select"
-                  value={it.unit}
-                  onChange={(e) => handleUnitChange(idx, e.target.value)}
-                >
-                  {COMMON_UNITS.map(u => (
-                    <option key={u.value} value={u.value}>{u.label}</option>
-                  ))}
-                </select>
-
-                {/* Name Input & Autocomplete */}
-                <div className="customizer-name-wrapper">
-                  <input
-                    type="text"
-                    className="customizer-name-input"
-                    placeholder="e.g. Chicken breast, Curd, Spinach..."
-                    value={it.name}
-                    onChange={(e) => handleNameChange(idx, e.target.value)}
-                    onFocus={() => {
-                      if (it.name.trim().length >= 2 && suggestions.length > 0) {
-                        setActiveSuggestIdx(idx);
-                      }
-                    }}
-                  />
-
-                  {/* Autocomplete Dropdown */}
-                  {activeSuggestIdx === idx && suggestions.length > 0 && (
-                    <div className="customizer-suggest-dropdown">
-                      {suggestions.map((sugg, sIdx) => (
-                        <div
-                          key={sIdx}
-                          className="customizer-suggest-option"
-                          onClick={() => handleSelectSuggestion(idx, sugg)}
-                        >
-                          🔍 {sugg}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Mini Contribution Chip */}
-                  {contrib && contrib.found && (
-                    <div className="customizer-item-chip">
-                      <span>🔥 {contrib.calories} kcal</span>
-                      <span>🍗 {contrib.protein_g}g P</span>
-                      {contrib.sodium_mg > 0 && <span>🧂 {contrib.sodium_mg}mg Na</span>}
-                      {contrib.fiber_g > 0 && <span>🌾 {contrib.fiber_g}g Fib</span>}
-                    </div>
-                  )}
-                </div>
-
-                {/* Remove Button */}
-                <button
-                  type="button"
-                  className="customizer-delete-btn"
-                  onClick={() => handleRemoveItem(idx)}
-                  title="Remove this ingredient"
-                >
-                  ✕
-                </button>
+      {/* VIEW TAB 2: BEFORE VS AFTER COMPARISON */}
+      {viewTab === 'comparison' && (
+        <div className="customizer-comparison-section">
+          <div className="comparison-grid">
+            {/* Standard Recipe Column */}
+            <div className="comparison-card card-standard">
+              <div className="comparison-card-header">
+                <span>📋 Standard Recipe</span>
+                <ChefScoreBadge grade={baseGrade} size="sm" showTooltip={false} />
               </div>
-            );
-          })}
+              <div className="comparison-macro-row">
+                <span>Calories:</span>
+                <strong>{baseCalories} kcal</strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Protein:</span>
+                <strong>{baseProtein}g</strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Carbs:</span>
+                <strong>{baseCarbs}g</strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Fat:</span>
+                <strong>{baseFat}g</strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Servings:</span>
+                <strong>{initialServings || 1}</strong>
+              </div>
+            </div>
+
+            {/* Custom Variation Column */}
+            <div className="comparison-card card-custom">
+              <div className="comparison-card-header">
+                <span>✨ Customized Version</span>
+                <ChefScoreBadge grade={activeGrade} size="sm" showTooltip={false} />
+              </div>
+              <div className="comparison-macro-row">
+                <span>Calories:</span>
+                <strong>
+                  {currentCals} kcal{' '}
+                  <span className={`comp-delta ${calDelta >= 0 ? 'delta-up' : 'delta-down'}`}>
+                    ({calDelta >= 0 ? `+${calDelta.toFixed(0)}` : calDelta.toFixed(0)})
+                  </span>
+                </strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Protein:</span>
+                <strong>
+                  {currentProtein}g{' '}
+                  <span className={`comp-delta ${protDelta >= 0 ? 'delta-good' : 'delta-down'}`}>
+                    ({protDelta >= 0 ? `+${protDelta.toFixed(1)}` : protDelta.toFixed(1)})
+                  </span>
+                </strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Carbs:</span>
+                <strong>
+                  {currentCarbs}g{' '}
+                  <span className="comp-delta delta-muted">
+                    ({carbDelta >= 0 ? `+${carbDelta.toFixed(1)}` : carbDelta.toFixed(1)})
+                  </span>
+                </strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Fat:</span>
+                <strong>
+                  {currentFat}g{' '}
+                  <span className="comp-delta delta-muted">
+                    ({fatDelta >= 0 ? `+${fatDelta.toFixed(1)}` : fatDelta.toFixed(1)})
+                  </span>
+                </strong>
+              </div>
+              <div className="comparison-macro-row">
+                <span>Servings:</span>
+                <strong>{servings}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Bottom Action Bar */}
+      <div className="customizer-bottom-bar">
+        <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span>💡</span>
+          <span>Ready to cook or save your custom variation?</span>
         </div>
 
-        {/* Add Ingredient Button */}
-        <button
-          type="button"
-          className="btn-customizer-add"
-          onClick={handleAddItem}
-        >
-          ➕ Add Custom Ingredient
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {onStartCookingCustom && (
+            <button
+              type="button"
+              className="btn-customizer-cook"
+              onClick={onStartCookingCustom}
+            >
+              🍳 Cook This Version
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn-customizer-save-primary"
+            onClick={() => setShowSaveModal(true)}
+            disabled={!calcResult || isCalculating}
+          >
+            💾 Save as My Variation
+          </button>
+        </div>
       </div>
 
       {/* Save Modal */}
@@ -528,7 +833,7 @@ export default function RecipeCustomizer({
               💾 Save Custom Variation
             </h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '14px' }}>
-              Save your tweaked ingredients and recalculated nutrition as a personal variation in your bookmarks.
+              Save your tailored ingredients, recalculated macros, and Nutri-Score as a personal variation in your bookmarks.
             </p>
 
             <label style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '6px' }}>

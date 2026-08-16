@@ -665,8 +665,9 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
                 recipe={recipe}
                 initialIngredients={ingredientList}
                 initialServings={targetServings || recipe.servings || 1}
-                onUpdateCalculation={(data) => setCustomCalcData(data)}
+                onUpdateCalculation={setCustomCalcData}
                 onSaveCustomVariation={() => setSavedBookmark(true)}
+                onStartCookingCustom={() => setIsCookingMode(true)}
                 onClose={() => setIsCustomizeMode(false)}
               />
             )}
@@ -730,8 +731,8 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               ingredients={effectiveIngredients}
             />
 
-            {/* Servings Adjuster */}
-            {ingredientList && ingredientList.length > 0 && (
+            {/* Servings Adjuster (Shown in standard view) */}
+            {!isCustomizeMode && ingredientList && ingredientList.length > 0 && (
               <div className="servings-control-box">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{ fontSize: '18px' }}>👥</span>
@@ -754,8 +755,8 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               </div>
             )}
 
-            {/* Ingredients Check List */}
-            {ingredientList && ingredientList.length > 0 && (
+            {/* Ingredients Check List (Shown in standard view) */}
+            {!isCustomizeMode && ingredientList && ingredientList.length > 0 && (
               <div className="modal-section" style={{marginTop: '15px'}}>
                 <h3>Ingredients</h3>
                 <ul style={{ listStyle: 'none', paddingLeft: 0, marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>

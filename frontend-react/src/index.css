@@ -2417,6 +2417,225 @@ h6 {
     to { transform: rotate(360deg); }
 }
 
+.studio-live-pill {
+    font-size: 11px;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.studio-view-toggle {
+    display: flex;
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2px;
+}
+
+.studio-toggle-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.studio-toggle-btn.active {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quick-modifier-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 6px 0;
+}
+
+.modifier-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.quick-mod-btn {
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.quick-mod-btn:hover {
+    background: rgba(255, 90, 54, 0.12);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.customizer-cat-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.customizer-comparison-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 640px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparison-card {
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comparison-card.card-custom {
+    border-color: rgba(255, 90, 54, 0.35);
+    background: rgba(255, 90, 54, 0.04);
+}
+
+.comparison-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+}
+
+.comparison-macro-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.comparison-macro-row strong {
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.comp-delta {
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+.comp-delta.delta-up {
+    color: #ef4444;
+}
+
+.comp-delta.delta-down {
+    color: #10b981;
+}
+
+.comp-delta.delta-good {
+    color: #10b981;
+}
+
+.comp-delta.delta-muted {
+    color: var(--text-muted);
+}
+
+.customizer-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+}
+
+.btn-customizer-cook {
+    background: var(--bg-hover);
+    border: 1px solid #10b981;
+    color: #10b981;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-customizer-cook:hover {
+    background: #10b981;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.btn-customizer-save-primary {
+    background: linear-gradient(135deg, #ff5a36 0%, #ea580c 100%);
+    color: #ffffff;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 90, 54, 0.3);
+}
+
+.btn-customizer-save-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(255, 90, 54, 0.45);
+}
+
+.btn-customizer-save-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .modal-title {
     font-size: 22px;
     font-weight: 700;
