@@ -10,7 +10,16 @@ import re
 import difflib
 from pathlib import Path
 from fastapi import APIRouter, Query, HTTPException
-from app.schemas import NutritionRequest, NutritionData, NutriScoreCalculateRequest, NutriScoreResponse
+from app.schemas import (
+    NutritionRequest,
+    NutritionData,
+    NutriScoreCalculateRequest,
+    NutriScoreResponse,
+    RecipeCalculateRequest,
+    RecipeCalculateResponse,
+    RecipeCalculateIngredientItem,
+    IngredientContribution,
+)
 from app.scoring.calculator import compute_nutri_score
 from app.scoring.supplementary import compute_supplementary_badges
 
@@ -283,3 +292,276 @@ def calculate_nutri_score_endpoint(req: NutriScoreCalculateRequest):
     res_dict["supplementary_badges"] = supp.to_dict()
 
     return NutriScoreResponse(**res_dict)
+
+
+@router.post("/recipe/calculate", response_model=RecipeCalculateResponse, summary="Simulate & calculate dynamic recipe nutrition & Nutri-Score from custom ingredients")
+def calculate_custom_recipe_endpoint(req: RecipeCalculateRequest):
+    """
+    Dynamically simulate and calculate the complete nutritional profile, macro percentages,
+    per-ingredient breakdown, and 6-tier Nutri-Score for custom ingredient lists and quantities.
+    Enables live interactive recipe tweaking (e.g. 250g -> 500g chicken, 1 -> 1.5 cups curd, salt reduction).
+    """
+    servings = max(0.25, float(req.servings or 1.0))
+    contributions: list[IngredientContribution] = []
+
+    total_cals = 0.0
+    total_protein = 0.0
+    total_carbs = 0.0
+    total_fat = 0.0
+    total_fiber = 0.0
+    total_sugar = 0.0
+    total_sodium = 0.0
+    total_sat_fat = 0.0
+    total_potassium = 0.0
+    total_calcium = 0.0
+    total_iron = 0.0
+    total_vit_c = 0.0
+
+    raw_ingredient_strings: list[str] = []
+
+    for ing in req.ingredients:
+        # Extract structured details
+        if isinstance(ing, str):
+            raw_str = ing.strip()
+            if not raw_str:
+                continue
+            qty, unit, name = parse_quantity_unit(raw_str, 1.0, "serving")
+            raw_ingredient_strings.append(raw_str)
+        elif isinstance(ing, dict):
+            qty = float(ing.get("qty", 1.0))
+            unit = str(ing.get("unit", "g"))
+            name = str(ing.get("name", "")).strip()
+            raw_str = ing.get("raw") or f"{qty} {unit} {name}".strip()
+            raw_ingredient_strings.append(raw_str)
+        else:
+            qty = float(ing.qty)
+            unit = str(ing.unit)
+            name = str(ing.name).strip()
+            raw_str = ing.raw or f"{qty} {unit} {name}".strip()
+            raw_ingredient_strings.append(raw_str)
+
+        if not name:
+            continue
+
+        matched_key, data, _ = _smart_lookup(name)
+
+        if data:
+            serving_weight = data.get("serving_weight_g", 100.0)
+            scale = calculate_unit_scale(qty, unit, serving_weight)
+            weight_g = qty if unit.lower() in ['g', 'gram', 'grams', 'ml'] else (scale * 100.0)
+
+            cals = round(data["calories"] * scale, 1)
+            prot = round(data["protein_g"] * scale, 1)
+            carbs = round(data["carbs_g"] * scale, 1)
+            fat = round(data["fat_g"] * scale, 1)
+            fib = round(data.get("fiber_g", 0.0) * scale, 1)
+            sug = round(data.get("sugar_g", 0.0) * scale, 1)
+            sod = round(data.get("sodium_mg", 0.0) * scale, 1)
+            sat = round(data.get("saturated_fat_g", 0.0) * scale, 1)
+            pot = round(data.get("potassium_mg", 0.0) * scale, 1)
+            calc = round(data.get("calcium_mg", 0.0) * scale, 1)
+            irn = round(data.get("iron_mg", 0.0) * scale, 1)
+            vc = round(data.get("vitamin_c_mg", 0.0) * scale, 1)
+
+            contributions.append(IngredientContribution(
+                name=name.title(),
+                quantity=qty,
+                unit=unit,
+                matched_food=matched_key,
+                found=True,
+                weight_g=round(weight_g, 1),
+                calories=cals,
+                protein_g=prot,
+                carbs_g=carbs,
+                fat_g=fat,
+                fiber_g=fib,
+                sugar_g=sug,
+                sodium_mg=sod,
+                saturated_fat_g=sat,
+                confidence="high",
+            ))
+
+            total_cals += cals
+            total_protein += prot
+            total_carbs += carbs
+            total_fat += fat
+            total_fiber += fib
+            total_sugar += sug
+            total_sodium += sod
+            total_sat_fat += sat
+            total_potassium += pot
+            total_calcium += calc
+            total_iron += irn
+            total_vit_c += vc
+        else:
+            # Smart culinary fallback for unlisted items (e.g. salt, spices, herbs, oil)
+            lower_name = name.lower()
+            scale = calculate_unit_scale(qty, unit, 10.0)
+            weight_g = qty if unit.lower() in ['g', 'gram', 'grams'] else (scale * 10.0)
+
+            cals = 0.0
+            prot = 0.0
+            carbs = 0.0
+            fat = 0.0
+            fib = 0.0
+            sug = 0.0
+            sod = 0.0
+            sat = 0.0
+
+            if 'salt' in lower_name:
+                # 1g salt ~ 387mg sodium. 1 tsp salt = 5g = ~1935mg sodium
+                sod = round(weight_g * 387.5, 1)
+            elif 'oil' in lower_name or 'ghee' in lower_name or 'butter' in lower_name:
+                cals = round(weight_g * 8.84, 1)
+                fat = round(weight_g * 0.99, 1)
+                sat = round(weight_g * (0.6 if 'ghee' in lower_name or 'butter' in lower_name else 0.15), 1)
+            elif 'sugar' in lower_name or 'honey' in lower_name or 'jaggery' in lower_name:
+                cals = round(weight_g * 3.87, 1)
+                carbs = round(weight_g * 0.98, 1)
+                sug = round(weight_g * 0.95, 1)
+            elif 'chili' in lower_name or 'turmeric' in lower_name or 'cumin' in lower_name or 'coriander' in lower_name or 'masala' in lower_name or 'spice' in lower_name:
+                cals = round(weight_g * 2.8, 1)
+                carbs = round(weight_g * 0.5, 1)
+                fib = round(weight_g * 0.25, 1)
+                prot = round(weight_g * 0.1, 1)
+
+            contributions.append(IngredientContribution(
+                name=name.title(),
+                quantity=qty,
+                unit=unit,
+                matched_food=None,
+                found=False,
+                weight_g=round(weight_g, 1),
+                calories=cals,
+                protein_g=prot,
+                carbs_g=carbs,
+                fat_g=fat,
+                fiber_g=fib,
+                sugar_g=sug,
+                sodium_mg=sod,
+                saturated_fat_g=sat,
+                confidence="medium" if cals > 0 or sod > 0 else "low",
+            ))
+
+            total_cals += cals
+            total_protein += prot
+            total_carbs += carbs
+            total_fat += fat
+            total_fiber += fib
+            total_sugar += sug
+            total_sodium += sod
+            total_sat_fat += sat
+
+    # Compute per-serving values
+    per_serving_cals = round(total_cals / servings, 1)
+    per_serving_prot = round(total_protein / servings, 1)
+    per_serving_carbs = round(total_carbs / servings, 1)
+    per_serving_fat = round(total_fat / servings, 1)
+    per_serving_fib = round(total_fiber / servings, 1)
+    per_serving_sug = round(total_sugar / servings, 1)
+    per_serving_sod = round(total_sodium / servings, 1)
+    per_serving_sat = round(total_sat_fat / servings, 1)
+    per_serving_pot = round(total_potassium / servings, 1)
+    per_serving_calc = round(total_calcium / servings, 1)
+    per_serving_irn = round(total_iron / servings, 1)
+    per_serving_vc = round(total_vit_c / servings, 1)
+
+    # Macro percentages via Largest Remainder Method
+    p_cal = per_serving_prot * 4.0
+    c_cal = per_serving_carbs * 4.0
+    f_cal = per_serving_fat * 9.0
+    macro_cal_total = p_cal + c_cal + f_cal
+
+    macro_pcts = {"proteinPct": 0, "carbsPct": 0, "fatPct": 0}
+    if macro_cal_total > 0:
+        raw_pcts = [
+            ("proteinPct", (p_cal / macro_cal_total) * 100),
+            ("carbsPct", (c_cal / macro_cal_total) * 100),
+            ("fatPct", (f_cal / macro_cal_total) * 100),
+        ]
+        floor_sum = sum(int(val) for _, val in raw_pcts)
+        rem_order = sorted(raw_pcts, key=lambda x: x[1] - int(x[1]), reverse=True)
+        deficit = min(100, max(0, 100 - floor_sum))
+        for i, (k, val) in enumerate(rem_order):
+            bonus = 1 if i < deficit else 0
+            macro_pcts[k] = int(val) + bonus
+
+    # Compute Nutri-Score on per-serving values
+    nutrition_dict = {
+        "calories": per_serving_cals,
+        "protein_g": per_serving_prot,
+        "carbs_g": per_serving_carbs,
+        "fat_g": per_serving_fat,
+        "fiber_g": per_serving_fib,
+        "saturated_fat_g": per_serving_sat,
+        "sugar_g": per_serving_sug,
+        "sodium_mg": per_serving_sod,
+    }
+
+    nutri_score_result = compute_nutri_score(
+        nutrition=nutrition_dict,
+        ingredients=raw_ingredient_strings,
+        servings=servings,
+        title=req.title or "Custom Recipe",
+        meal_type=req.meal_type,
+    )
+
+    supp_badges = compute_supplementary_badges(
+        nutrition=nutrition_dict,
+        ingredients=raw_ingredient_strings,
+    )
+
+    nutri_dict = nutri_score_result.to_dict()
+    nutri_dict["supplementary_badges"] = supp_badges.to_dict()
+
+    total_nutrition_obj = NutritionData(
+        food_item=f"{req.title or 'Recipe'} (Total Batch)",
+        quantity=servings,
+        unit="servings",
+        calories=round(total_cals, 1),
+        protein_g=round(total_protein, 1),
+        carbs_g=round(total_carbs, 1),
+        fat_g=round(total_fat, 1),
+        fiber_g=round(total_fiber, 1),
+        sugar_g=round(total_sugar, 1),
+        sodium_mg=round(total_sodium, 1),
+        potassium_mg=round(total_potassium, 1),
+        calcium_mg=round(total_calcium, 1),
+        iron_mg=round(total_iron, 1),
+        vitamin_c_mg=round(total_vit_c, 1),
+        saturated_fat_g=round(total_sat_fat, 1),
+        serving_weight_g=100.0 * servings,
+        found=True,
+    )
+
+    per_serving_obj = NutritionData(
+        food_item=f"{req.title or 'Recipe'} (Per Serving)",
+        quantity=1.0,
+        unit="serving",
+        calories=per_serving_cals,
+        protein_g=per_serving_prot,
+        carbs_g=per_serving_carbs,
+        fat_g=per_serving_fat,
+        fiber_g=per_serving_fib,
+        sugar_g=per_serving_sug,
+        sodium_mg=per_serving_sod,
+        potassium_mg=per_serving_pot,
+        calcium_mg=per_serving_calc,
+        iron_mg=per_serving_irn,
+        vitamin_c_mg=per_serving_vc,
+        saturated_fat_g=per_serving_sat,
+        serving_weight_g=100.0,
+        found=True,
+    )
+
+    return RecipeCalculateResponse(
+        servings=servings,
+        total_nutrition=total_nutrition_obj,
+        per_serving_nutrition=per_serving_obj,
+        macro_percentages=macro_pcts,
+        nutri_score=NutriScoreResponse(**nutri_dict),
+        supplementary_badges=supp_badges.to_dict() if hasattr(supp_badges, 'to_dict') else supp_badges,
+        ingredient_contributions=contributions,
+        is_customized=True,
+    )
+

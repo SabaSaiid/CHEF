@@ -10,6 +10,7 @@ import { parseIngredient, formatIngredientForServings } from '../utils/ingredien
 import ChefScoreBadge from './ChefScoreBadge';
 import ChefScoreBreakdown from './ChefScoreBreakdown';
 import SupplementaryBadges from './SupplementaryBadges';
+import RecipeCustomizer from './RecipeCustomizer';
 import { checkRecipeAllergens } from '../utils/allergenUtils';
 import { getRecipeCardVisual } from '../utils/recipeVisuals';
 
@@ -123,6 +124,10 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   const [deductList, setDeductList] = useState([]);
   const [savedBookmark, setSavedBookmark] = useState(false);
 
+  // Customizer Studio states
+  const [isCustomizeMode, setIsCustomizeMode] = useState(false);
+  const [customCalcData, setCustomCalcData] = useState(null);
+
   // Servings state
   const [targetServings, setTargetServings] = useState(recipe?.servings || 1);
   const defaultServings = recipe?.servings || 1;
@@ -134,6 +139,8 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
       setAppliedSwaps({});
       setSubstitution({});
       setIsCookingMode(false);
+      setIsCustomizeMode(false);
+      setCustomCalcData(null);
       setCurrentStepIdx(0);
       setTimerSeconds(0);
       setTimerActive(false);
@@ -261,8 +268,18 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
 
   if (!recipe) return null;
 
-  const scoreData = recipe.nutri_score || recipe.chef_score;
-  const grade = typeof scoreData === 'string' ? scoreData : scoreData?.grade;
+  const effectiveScore = customCalcData?.nutri_score || recipe.nutri_score || recipe.chef_score;
+  const effectiveGrade = typeof effectiveScore === 'string' ? effectiveScore : effectiveScore?.grade;
+  const effectiveIngredients = customCalcData?.ingredient_contributions && customCalcData.ingredient_contributions.length > 0
+    ? customCalcData.ingredient_contributions.map(c => `${c.quantity} ${c.unit} ${c.name}`.trim())
+    : ingredientList;
+  const effectiveNutrition = customCalcData?.per_serving_nutrition || recipe.nutrition || {
+    calories: recipe.calories,
+    protein_g: recipe.protein_g,
+    carbs_g: recipe.carbs_g,
+    fat_g: recipe.fat_g,
+  };
+  const effectiveSuppBadges = customCalcData?.supplementary_badges || recipe.supplementary_badges || (recipe.nutri_score && recipe.nutri_score.supplementary_badges);
 
   const handleSaveBookmark = async () => {
     if (!token) {
@@ -271,15 +288,15 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
     }
     try {
       await api.post('/recipes/save', {
-        title: recipe.title,
+        title: customCalcData ? `${recipe.title} (Customized)` : recipe.title,
         image_url: recipe.image_url || null,
         summary: recipe.summary || null,
-        ingredients: Array.isArray(ingredientList) ? ingredientList.join(', ') : '',
+        ingredients: Array.isArray(effectiveIngredients) ? effectiveIngredients.join(', ') : '',
         instructions: typeof recipe.instructions === 'string' ? recipe.instructions : (Array.isArray(recipe.instructions) ? recipe.instructions.join('\n') : null),
-        calories: recipe.calories || recipe.nutrition?.calories || null,
-        protein_g: recipe.protein_g || recipe.nutrition?.protein_g || null,
-        carbs_g: recipe.carbs_g || recipe.nutrition?.carbs_g || null,
-        fat_g: recipe.fat_g || recipe.nutrition?.fat_g || null,
+        calories: effectiveNutrition?.calories || recipe.calories || null,
+        protein_g: effectiveNutrition?.protein_g || recipe.protein_g || null,
+        carbs_g: effectiveNutrition?.carbs_g || recipe.carbs_g || null,
+        fat_g: effectiveNutrition?.fat_g || recipe.fat_g || null,
         ready_in_minutes: recipe.ready_in_minutes || null,
         servings: targetServings || recipe.servings || null,
       });
@@ -318,13 +335,13 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
   };
 
   const handleFinishCooking = () => {
-    if (!token || ingredientList.length === 0) {
+    if (!token || effectiveIngredients.length === 0) {
       setIsCookingMode(false);
       return;
     }
     
     // Convert ingredients to checklist
-    const list = ingredientList.map(ingStr => {
+    const list = effectiveIngredients.map(ingStr => {
       const parsed = parseIngredient(ingStr);
       const matchInfo = getPantryStatus(ingStr);
       const qtyToDeduct = (parsed.hasQuantity && parsed.qty) ? Number((parsed.qty * servingRatio).toFixed(2)) : 1.0;
@@ -557,20 +574,42 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               {/* Row 1: NutriScore Badge + Title */}
               <div className="recipe-modal-title-row">
                 <div className="recipe-modal-title-left">
-                  {(recipe.nutri_score || recipe.chef_score) && (
+                  {effectiveScore && (
                     <ChefScoreBadge
-                      grade={(recipe.nutri_score || recipe.chef_score).grade}
+                      grade={effectiveGrade}
                       size="md"
-                      nextTier={(recipe.nutri_score || recipe.chef_score).next_tier}
-                      pointsToNextTier={(recipe.nutri_score || recipe.chef_score).points_to_next_tier}
+                      placement="bottom-start"
+                      nextTier={effectiveScore?.next_tier}
+                      pointsToNextTier={effectiveScore?.points_to_next_tier}
                     />
                   )}
-                  <h2>{recipe.title}</h2>
+                  <h2>
+                    {recipe.title}
+                    {customCalcData && (
+                      <span style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: 700, marginLeft: '8px', background: 'rgba(255, 90, 54, 0.12)', padding: '2px 8px', borderRadius: '8px' }}>
+                        ★ Customized
+                      </span>
+                    )}
+                  </h2>
                 </div>
               </div>
 
               {/* Row 2: Action Toolbar & Meta Chips */}
               <div className="recipe-modal-toolbar">
+                <button
+                  type="button"
+                  onClick={() => setIsCustomizeMode(!isCustomizeMode)}
+                  className={`modal-action-btn ${isCustomizeMode ? 'btn-saved' : 'btn-save'}`}
+                  style={{
+                    background: isCustomizeMode ? 'linear-gradient(135deg, #ff5a36 0%, #ea580c 100%)' : 'rgba(255, 90, 54, 0.1)',
+                    color: isCustomizeMode ? '#ffffff' : 'var(--primary)',
+                    borderColor: 'rgba(255, 90, 54, 0.4)',
+                    fontWeight: 700,
+                  }}
+                  title="Tweak ingredient quantities & simulate live Nutri-Score"
+                >
+                  {isCustomizeMode ? '✓ Close Studio' : '🎛️ Customize & Tweak'}
+                </button>
                 <button
                   type="button"
                   onClick={handleSaveBookmark}
@@ -619,6 +658,19 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
                 )}
               </div>
             </div>
+
+            {/* ── Interactive Recipe Studio / Tweaker ── */}
+            {isCustomizeMode && (
+              <RecipeCustomizer
+                recipe={recipe}
+                initialIngredients={ingredientList}
+                initialServings={targetServings || recipe.servings || 1}
+                onUpdateCalculation={(data) => setCustomCalcData(data)}
+                onSaveCustomVariation={() => setSavedBookmark(true)}
+                onClose={() => setIsCustomizeMode(false)}
+              />
+            )}
+
             {recipe.summary && <p style={{color: 'var(--text-secondary)', fontSize: '14px'}} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(recipe.summary)}}></p>}
             
             {/* ── YouTube Video Embed or Image ── */}
@@ -667,15 +719,15 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
             })()}
 
             {/* Nutri-Score Breakdown */}
-            {(recipe.nutri_score || recipe.chef_score) && (
-              <ChefScoreBreakdown nutriScore={recipe.nutri_score || recipe.chef_score} />
+            {effectiveScore && (
+              <ChefScoreBreakdown nutriScore={effectiveScore} />
             )}
 
             {/* Supplementary Health Indicators */}
             <SupplementaryBadges
-              badges={recipe.supplementary_badges || (recipe.nutri_score && recipe.nutri_score.supplementary_badges)}
-              nutrition={recipe.nutrition}
-              ingredients={ingredientList}
+              badges={effectiveSuppBadges}
+              nutrition={effectiveNutrition}
+              ingredients={effectiveIngredients}
             />
 
             {/* Servings Adjuster */}

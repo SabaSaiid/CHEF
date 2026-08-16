@@ -2,7 +2,7 @@
 Pydantic schemas — all request/response models in one file.
 """
 
-from typing import Optional
+from typing import Optional, Union, Any, Dict, List
 from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator, model_validator
 
@@ -405,6 +405,53 @@ class NutritionData(BaseModel):
     suggestions: Optional[list[str]] = None
 
 
+# ── Recipe Ingredient Customizer Models ─────────────────────────
+
+class RecipeCalculateIngredientItem(BaseModel):
+    name: str = Field(..., description="Ingredient name e.g. chicken breast")
+    qty: float = Field(1.0, ge=0.0, description="Quantity amount")
+    unit: str = Field("g", description="Measurement unit (g, cup, tbsp, etc.)")
+    raw: Optional[str] = None
+
+
+class IngredientContribution(BaseModel):
+    name: str
+    quantity: float
+    unit: str
+    matched_food: Optional[str] = None
+    found: bool = False
+    weight_g: float = 0.0
+    calories: float = 0.0
+    protein_g: float = 0.0
+    carbs_g: float = 0.0
+    fat_g: float = 0.0
+    fiber_g: float = 0.0
+    sugar_g: float = 0.0
+    sodium_mg: float = 0.0
+    saturated_fat_g: float = 0.0
+    confidence: str = "high"
+
+
+class RecipeCalculateRequest(BaseModel):
+    title: Optional[str] = "Custom Recipe"
+    servings: float = Field(1.0, ge=0.25, le=50.0, description="Target number of servings")
+    ingredients: list[Union[str, RecipeCalculateIngredientItem, dict]] = Field(
+        default_factory=list,
+        description="List of raw ingredient strings or structured ingredient items"
+    )
+    meal_type: Optional[str] = None
+    base_nutrition: Optional[dict] = None
+
+
+class RecipeCalculateResponse(BaseModel):
+    servings: float = 1.0
+    total_nutrition: NutritionData
+    per_serving_nutrition: NutritionData
+    macro_percentages: dict = Field(default_factory=dict)
+    nutri_score: NutriScoreResponse
+    supplementary_badges: Optional[SupplementaryBadgesSchema] = None
+    ingredient_contributions: list[IngredientContribution] = Field(default_factory=list)
+    is_customized: bool = True
 
 
 # ── Detection ───────────────────────────────────────────────────
