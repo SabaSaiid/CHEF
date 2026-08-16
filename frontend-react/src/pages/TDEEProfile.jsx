@@ -670,7 +670,7 @@ export default function TDEEProfile() {
           className={`profile-tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
-          <Activity size={17} />
+          <Activity size={14} />
           <span>Overview & Targets</span>
         </button>
 
@@ -678,7 +678,7 @@ export default function TDEEProfile() {
           className={`profile-tab-btn ${activeTab === 'biometrics' ? 'active' : ''}`}
           onClick={() => setActiveTab('biometrics')}
         >
-          <Target size={17} />
+          <Target size={14} />
           <span>Edit Biometrics</span>
         </button>
 
@@ -686,8 +686,8 @@ export default function TDEEProfile() {
           className={`profile-tab-btn ${activeTab === 'diets' ? 'active' : ''}`}
           onClick={() => setActiveTab('diets')}
         >
-          <Salad size={17} />
-          <span>Diet & Clinical Health</span>
+          <Salad size={14} />
+          <span>Diet & Health</span>
           {activeConditions.length > 0 && (
             <span className="profile-tab-badge">{activeConditions.length}</span>
           )}
@@ -697,16 +697,16 @@ export default function TDEEProfile() {
           className={`profile-tab-btn ${activeTab === 'weight' ? 'active' : ''}`}
           onClick={() => setActiveTab('weight')}
         >
-          <Scale size={17} />
-          <span>Weight & Adaptive TDEE</span>
+          <Scale size={14} />
+          <span>Weight & TDEE</span>
         </button>
 
         <button
           className={`profile-tab-btn ${activeTab === 'hub' ? 'active' : ''}`}
           onClick={() => setActiveTab('hub')}
         >
-          <Award size={17} />
-          <span>Profiles & Badges</span>
+          <Award size={14} />
+          <span>Profiles</span>
         </button>
       </div>
 

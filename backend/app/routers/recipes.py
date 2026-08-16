@@ -1132,16 +1132,23 @@ async def get_daily_recipe(
     "/quick",
     response_model=list[RecipeItem],
     response_model_exclude_none=True,
-    summary="Get 4 quick and easy recipes under 30 minutes",
+    summary="Get curated recipes by category or under 30 minutes",
 )
 async def get_quick_recipes(
+    tab: str = "quick",
     date: str | None = None,
     refresh: bool = False,
+    limit: int = 4,
     response: Response = None,
 ):
     """
-    Get 4 randomized quick recipes (under 30 minutes).
-    Changes daily to match the recipe of the day's seed behavior or on-demand via refresh.
+    Get curated randomized recipes for kitchen showcase shelf.
+    Supports tabs:
+    - quick: ready_in_minutes <= 30
+    - protein: high protein (>= 18g or highest protein)
+    - fit: balanced calories (<= 450 kcal)
+    - rush: ready_in_minutes <= 20
+    - veg: vegetarian recipes
     """
     if response:
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
@@ -1149,24 +1156,44 @@ async def get_quick_recipes(
         response.headers["Expires"] = "0"
 
     date_str = date or datetime.now().strftime("%Y-%m-%d")
-    seed = None if refresh else f"quick-{date_str}"
+    seed = None if refresh else f"shelf-{tab}-{date_str}"
     rng = random.Random(seed)
     
-    # Filter to high-quality, quick recipes
-    quick_filter = [
+    # Base filter: High quality recipes with images and instructions
+    base_pool = [
         r for r in DEMO_RECIPES
-        if r.ready_in_minutes and r.ready_in_minutes <= 30
-        and r.image_url
-        and r.instructions
-        and len(r.instructions) >= 50
+        if r.image_url and r.instructions and len(r.instructions) >= 30
     ]
     
-    if not quick_filter:
+    filtered = []
+    if tab == "protein":
+        filtered = [r for r in base_pool if r.nutrition and r.nutrition.protein_g and r.nutrition.protein_g >= 18]
+        if not filtered:
+            filtered = sorted(base_pool, key=lambda r: (r.nutrition.protein_g if r.nutrition and r.nutrition.protein_g else 0), reverse=True)[:20]
+    elif tab == "fit":
+        filtered = [r for r in base_pool if r.nutrition and r.nutrition.calories and r.nutrition.calories <= 450]
+        if not filtered:
+            filtered = sorted(base_pool, key=lambda r: (r.nutrition.calories if r.nutrition and r.nutrition.calories else 999))[:20]
+    elif tab == "rush":
+        filtered = [r for r in base_pool if r.ready_in_minutes and r.ready_in_minutes <= 20]
+        if not filtered:
+            filtered = [r for r in base_pool if r.ready_in_minutes and r.ready_in_minutes <= 30]
+    elif tab == "veg":
+        filtered = [
+            r for r in base_pool
+            if _is_vegetarian_recipe(r.diets, r.title, r.ingredients)
+        ]
+    else:  # quick (default)
+        filtered = [r for r in base_pool if r.ready_in_minutes and r.ready_in_minutes <= 30]
+    
+    if not filtered:
+        filtered = base_pool
+        
+    if not filtered:
         return []
     
-    # Randomly select up to 4
-    sample_size = min(4, len(quick_filter))
-    return rng.sample(quick_filter, sample_size)
+    sample_size = min(max(1, limit), len(filtered))
+    return rng.sample(filtered, sample_size)
 
 
 @router.get(

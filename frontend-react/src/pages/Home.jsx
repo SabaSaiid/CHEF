@@ -90,6 +90,14 @@ const COOKING_VIBES = [
   { id: 'low_carb', label: '🥑 Low Carb', icon: '🥗' },
 ];
 
+const RECIPE_SHELF_TABS = [
+  { id: 'quick', label: 'Quick & Easy', icon: '⏱️', subtitle: 'Fast & delicious recipes under 30 minutes' },
+  { id: 'protein', label: 'High Protein', icon: '💪', subtitle: 'Nutrient-dense power meals with ≥ 18g protein' },
+  { id: 'fit', label: 'Balanced & Fit', icon: '🥗', subtitle: 'Light, calorie-controlled dishes ≤ 450 kcal' },
+  { id: 'rush', label: '15-Min Rush', icon: '⚡', subtitle: 'Lightning-fast recipes for busy schedules' },
+  { id: 'veg', label: 'Pure Veg', icon: '🌱', subtitle: 'Flavorful vegetarian culinary favorites' },
+];
+
 /* ── Animated Counter Component ─────────────────────────────── */
 function AnimatedCounter({ end, suffix = '', duration = 1400 }) {
   const [count, setCount] = useState(0);
@@ -123,6 +131,9 @@ export default function Home() {
   // Recipe state
   const [dailyRecipe, setDailyRecipe] = useState(null);
   const [quickRecipes, setQuickRecipes] = useState([]);
+  const [shelfTab, setShelfTab] = useState('quick');
+  const [shelfRecipes, setShelfRecipes] = useState([]);
+  const [shelfLoading, setShelfLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [quickLoading, setQuickLoading] = useState(true);
   const [isRefreshingDaily, setIsRefreshingDaily] = useState(false);
@@ -561,48 +572,61 @@ export default function Home() {
     }
   }, [toast]);
 
-  const fetchQuickRecipes = useCallback(async (forceRefresh = false) => {
+  const fetchShelfRecipes = useCallback(async (tabId = 'quick', forceRefresh = false) => {
     const todayStr = getLocalDateString();
+    const cacheKey = `chef_shelf_${tabId}_${todayStr}`;
 
     if (!forceRefresh) {
       try {
-        const cached = sessionStorage.getItem(`chef_quick_recipes_${todayStr}`);
+        const cached = sessionStorage.getItem(cacheKey);
         if (cached) {
           const parsed = JSON.parse(cached);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setQuickRecipes(parsed);
+            setShelfRecipes(parsed);
+            if (tabId === 'quick') setQuickRecipes(parsed);
+            setShelfLoading(false);
             setQuickLoading(false);
             return;
           }
         }
       } catch (e) {
-        console.warn('Session storage quick read error:', e);
+        console.warn('Session storage shelf read error:', e);
       }
     }
 
-    setQuickLoading(true);
+    setShelfLoading(true);
+    if (tabId === 'quick') setQuickLoading(true);
     try {
       const url = forceRefresh
-        ? `/recipes/quick?refresh=true&date=${todayStr}&_t=${Date.now()}`
-        : `/recipes/quick?date=${todayStr}`;
+        ? `/recipes/quick?tab=${tabId}&limit=4&refresh=true&date=${todayStr}&_t=${Date.now()}`
+        : `/recipes/quick?tab=${tabId}&limit=4&date=${todayStr}`;
       const data = await api.get(url);
-      setQuickRecipes(data);
+      const recipesList = Array.isArray(data) ? data : [];
+      setShelfRecipes(recipesList);
+      if (tabId === 'quick') setQuickRecipes(recipesList);
       try {
-        sessionStorage.setItem(`chef_quick_recipes_${todayStr}`, JSON.stringify(data));
+        sessionStorage.setItem(cacheKey, JSON.stringify(recipesList));
       } catch (e) {
-        console.warn('Session storage quick write error:', e);
+        console.warn('Session storage shelf write error:', e);
+      }
+      if (forceRefresh) {
+        toast.success(`Refreshed ${RECIPE_SHELF_TABS.find(t => t.id === tabId)?.label || 'recipes'}! 🍳`);
       }
     } catch (err) {
-      console.error("Failed to fetch quick recipes:", err);
+      console.error("Failed to fetch shelf recipes:", err);
+      if (forceRefresh) {
+        toast.error('Failed to refresh dishes');
+      }
     } finally {
+      setShelfLoading(false);
       setQuickLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     fetchDailyRecipe();
-    fetchQuickRecipes();
-  }, [fetchDailyRecipe, fetchQuickRecipes, location.pathname]);
+    fetchShelfRecipes(shelfTab);
+  }, [fetchDailyRecipe, fetchShelfRecipes, location.pathname]);
 
   // Vibe filtered spotlight recipe selection
   const spotlightRecipe = useMemo(() => {
@@ -833,11 +857,8 @@ export default function Home() {
                 </div>
 
                 <div className="recipe-info" style={{ padding: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
-                    <div className="recipe-title" style={{ fontSize: '1.45rem', flex: 1 }}>{spotlightRecipe.title}</div>
-                    {(spotlightRecipe.nutri_score || spotlightRecipe.chef_score) && (
-                      <ChefScoreBadge grade={(spotlightRecipe.nutri_score || spotlightRecipe.chef_score).grade} size="sm" />
-                    )}
+                  <div className="recipe-title" style={{ fontSize: '1.45rem', marginBottom: '8px' }}>
+                    {spotlightRecipe.title}
                   </div>
 
                   {spotlightRecipe.summary && (
@@ -849,50 +870,10 @@ export default function Home() {
                   )}
 
                   {spotlightRecipe.diets?.length > 0 && (
-                    <div className="diet-tags" style={{ marginBottom: '14px' }}>
+                    <div className="diet-tags" style={{ marginBottom: '16px' }}>
                       {spotlightRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}
                     </div>
                   )}
-
-                  {/* Servings Scaler & Scaled Macros */}
-                  <div className="spotlight-scaler-row">
-                    <div className="servings-stepper">
-                      <span className="scaler-label">Servings:</span>
-                      {[1, 2, 4, 6].map(num => (
-                        <button
-                          key={num}
-                          className={`btn-servings-chip ${servingsScale === num ? 'active' : ''}`}
-                          onClick={() => { playClickSound(); setServingsScale(num); }}
-                        >
-                          {num}
-                        </button>
-                      ))}
-                    </div>
-
-                    <div className="scaled-macro-chips">
-                      <span className="scaled-macro-val">
-                        🔥 <strong>{scaledNutrition?.calories || spotlightRecipe.nutrition?.calories || 0}</strong> kcal
-                      </span>
-                      <span className="scaled-macro-val">
-                        💪 <strong>{scaledNutrition?.protein_g || spotlightRecipe.nutrition?.protein_g || 0}g</strong> P
-                      </span>
-                      <span className="scaled-macro-val">
-                        🍞 <strong>{scaledNutrition?.carbs_g || spotlightRecipe.nutrition?.carbs_g || 0}g</strong> C
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="recipe-meta" style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    {spotlightRecipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{spotlightRecipe.ready_in_minutes} min</span></span>}
-                    {(() => {
-                      const isSpoonacular = spotlightRecipe.source === 'Spoonacular' || String(spotlightRecipe.id).startsWith('spoonacular');
-                      return (
-                        <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
-                          {isSpoonacular ? '🌐 Spoonacular' : '📁 Local Dataset'}
-                        </span>
-                      );
-                    })()}
-                  </div>
 
                   {spotlightRecipe.video_url && (
                     <div className="recipe-video" style={{ marginBottom: '15px' }}>
@@ -978,10 +959,10 @@ export default function Home() {
                       }
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
+                    <div className="slot-card-header">
                       <span
                         className="slot-label-badge"
-                        style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30`, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                        style={{ background: `${slotColors[slot]}15`, color: slotColors[slot], border: `1px solid ${slotColors[slot]}30` }}
                       >
                         {slotIcons[slot]} {slot}
                       </span>
@@ -992,57 +973,64 @@ export default function Home() {
                     </div>
 
                     {recipe ? (
-                      <>
-                        <p className="slot-recipe-title">{recipe.title}</p>
+                      <div className="slot-recipe-body">
+                        <h4 className="slot-recipe-title" title={recipe.title}>{recipe.title}</h4>
                         
-                        <div className="slot-macro-row">
-                          {recipe.calories && <span className="slot-recipe-cals">🔥 {Math.round(recipe.calories)} kcal</span>}
-                          {(recipe.protein_g || recipe.protein) && (
-                            <span className="slot-recipe-macro">💪 {recipe.protein_g || recipe.protein}g P</span>
-                          )}
+                        <div className="slot-macro-line">
+                          {recipe.calories ? (
+                            <span className="slot-macro-val cal">🔥 {Math.round(recipe.calories)} kcal</span>
+                          ) : null}
+                          {recipe.calories && (recipe.protein_g || recipe.protein) ? (
+                            <span className="slot-macro-dot">•</span>
+                          ) : null}
+                          {(recipe.protein_g || recipe.protein) ? (
+                            <span className="slot-macro-val prot">💪 {recipe.protein_g || recipe.protein}g P</span>
+                          ) : null}
                         </div>
 
                         <div className="slot-action-bar" onClick={(e) => e.stopPropagation()}>
                           {logged ? (
-                            <span className="slot-logged-badge">
-                              <CheckCircle2 size={13} /> Logged
+                            <span className="slot-logged-tag" title="Meal logged in daily nutrition">
+                              <CheckCircle2 size={11} /> Logged
                             </span>
                           ) : (
                             <button
-                              className="btn-quick-log"
+                              className="btn-slot-log-action"
                               onClick={(e) => handleQuickLogMeal(e, entry, slot)}
-                              title="Log this meal into daily nutrition"
+                              title="Log this meal to tracker"
                             >
-                              <Check size={13} /> Quick Log
+                              <Check size={12} /> Log
                             </button>
                           )}
 
                           <button
-                            className="btn-slot-swap"
+                            className="btn-slot-icon-btn"
                             onClick={(e) => {
                               e.stopPropagation();
                               setPickerSlot(slot);
                               setPickerOpen(true);
                             }}
-                            title="Swap this meal"
+                            title="Swap recipe"
+                            aria-label="Swap recipe"
                           >
-                            <ArrowRightLeft size={13} />
+                            <ArrowRightLeft size={12} />
                           </button>
 
                           {entry?.id && (
                             <button
-                              className="btn-slot-remove"
+                              className="btn-slot-icon-btn btn-slot-del"
                               onClick={(e) => handleRemoveMealFromPlan(e, entry.id)}
-                              title="Remove from plan"
+                              title="Remove meal"
+                              aria-label="Remove meal"
                             >
-                              <Trash2 size={13} />
+                              <Trash2 size={12} />
                             </button>
                           )}
                         </div>
-                      </>
+                      </div>
                     ) : (
                       <div className="slot-empty-prompt">
-                        <PlusCircle size={22} className="slot-empty-icon" />
+                        <PlusCircle size={18} className="slot-empty-icon" />
                         <span className="slot-empty-text">+ Add Meal</span>
                       </div>
                     )}
@@ -1057,69 +1045,6 @@ export default function Home() {
             <PantryQuickCookBar onSelectRecipe={(r) => { setSelectedRecipe(r); setModalOpen(true); }} />
           </div>
 
-          {/* Quick & Easy Grid */}
-          <h2 className="section-title" style={{ marginTop: '2.5rem' }}>⏱️ Quick & Easy (Under 30 Mins)</h2>
-          {quickLoading ? (
-            <div className="quick-recipes-grid">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="card glass skeleton" style={{ height: '180px' }}></div>
-              ))}
-            </div>
-          ) : quickRecipes.length > 0 && (
-            <div className="quick-recipes-grid">
-              {quickRecipes.map(recipe => (
-                <div key={recipe.id} className="card glass mini-recipe-card" onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }} style={{ position: 'relative' }}>
-                  {(recipe.nutri_score || recipe.chef_score) && (
-                    <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 3 }}>
-                      <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
-                    </div>
-                  )}
-                  {(() => {
-                    const visual = getRecipeCardVisual(recipe);
-                    return (
-                      <>
-                        {recipe.image_url ? (
-                          <img 
-                            src={recipe.image_url} 
-                            alt={recipe.title} 
-                            className="mini-recipe-image" 
-                            onError={(e) => {
-                              e.currentTarget.onerror = null;
-                              e.currentTarget.style.display = 'none';
-                              if (e.currentTarget.nextSibling) {
-                                e.currentTarget.nextSibling.style.display = 'flex';
-                              }
-                            }} 
-                          />
-                        ) : null}
-                        <div 
-                          className="mini-recipe-image" 
-                          style={{ 
-                            display: recipe.image_url ? 'none' : 'flex', 
-                            background: visual.gradient, 
-                            alignItems: 'center', 
-                            justifyContent: 'center',
-                            fontSize: '22px'
-                          }}
-                        >
-                          {visual.icon}
-                        </div>
-                      </>
-                    );
-                  })()}
-                  <div className="mini-recipe-content">
-                    <h3 className="mini-recipe-title">{recipe.title}</h3>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
-                      <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>
-                      <span className="recipe-source-badge recipe-source-badge-local" style={{ fontSize: '10px', padding: '1px 5px' }}>
-                        📁 Local
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Right Column: Facts First, then Timer, Targets, Water */}
@@ -1537,6 +1462,143 @@ export default function Home() {
           })()}
 
         </div>
+      </div>
+
+      {/* ── Full-Width Curated Recipe Showcase with Interactive Tabs ── */}
+      <div className="kitchen-recipe-shelf-section fade-in-up" style={{ '--delay': '180ms' }}>
+        <div className="recipe-shelf-header">
+          <div className="recipe-shelf-title-group">
+            <div className="recipe-shelf-heading-row">
+              <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>{RECIPE_SHELF_TABS.find(t => t.id === shelfTab)?.icon || '🍳'}</span>
+                <span>{RECIPE_SHELF_TABS.find(t => t.id === shelfTab)?.label || 'Curated Recipes'}</span>
+              </h2>
+              {shelfRecipes.length > 0 && (
+                <span className="recipe-shelf-count-tag">{shelfRecipes.length} dishes</span>
+              )}
+            </div>
+            <p className="subtitle" style={{ margin: '4px 0 0 0' }}>
+              {RECIPE_SHELF_TABS.find(t => t.id === shelfTab)?.subtitle}
+            </p>
+          </div>
+
+          <div className="recipe-shelf-actions">
+            <button
+              className="btn-shelf-shuffle"
+              onClick={() => fetchShelfRecipes(shelfTab, true)}
+              disabled={shelfLoading}
+              title="Shuffle new dishes for this category"
+            >
+              <RefreshCw size={13} className={shelfLoading ? 'spin' : ''} />
+              <span>Shuffle</span>
+            </button>
+
+            <button
+              className="btn-shelf-browse"
+              onClick={() => navigate('/recipes')}
+              title="Explore complete recipe catalog"
+            >
+              <span>Browse All</span>
+              <ExternalLink size={13} />
+            </button>
+          </div>
+        </div>
+
+        {/* Dynamic Category Tabs Track */}
+        <div className="recipe-shelf-tabs-track">
+          {RECIPE_SHELF_TABS.map(tab => {
+            const isActive = shelfTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                className={`recipe-tab-pill ${isActive ? 'active' : ''}`}
+                onClick={() => {
+                  playClickSound();
+                  setShelfTab(tab.id);
+                  fetchShelfRecipes(tab.id);
+                }}
+              >
+                <span className="tab-pill-icon">{tab.icon}</span>
+                <span className="tab-pill-text">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Full-Width Grid of Recipe Cards */}
+        {shelfLoading ? (
+          <div className="recipe-shelf-grid">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="card glass skeleton shelf-recipe-skeleton"></div>
+            ))}
+          </div>
+        ) : shelfRecipes.length > 0 ? (
+          <div className="recipe-shelf-grid">
+            {shelfRecipes.map(recipe => {
+              const visual = getRecipeCardVisual(recipe);
+              return (
+                <div
+                  key={recipe.id}
+                  className="card glass shelf-recipe-card"
+                  onClick={() => { setSelectedRecipe(recipe); setModalOpen(true); }}
+                >
+                  {(recipe.nutri_score || recipe.chef_score) && (
+                    <div className="shelf-card-badge">
+                      <ChefScoreBadge grade={(recipe.nutri_score || recipe.chef_score).grade} size="sm" />
+                    </div>
+                  )}
+
+                  <div className="shelf-card-image-wrap">
+                    {recipe.image_url ? (
+                      <img
+                        src={recipe.image_url}
+                        alt={recipe.title}
+                        className="shelf-recipe-image"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = 'flex';
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="shelf-recipe-image-fallback"
+                      style={{
+                        display: recipe.image_url ? 'none' : 'flex',
+                        background: visual.gradient,
+                      }}
+                    >
+                      <span style={{ fontSize: '28px' }}>{visual.icon}</span>
+                    </div>
+                  </div>
+
+                  <div className="shelf-recipe-content">
+                    <h3 className="shelf-recipe-title" title={recipe.title}>{recipe.title}</h3>
+                    <div className="shelf-recipe-stats">
+                      <span className="shelf-stat-item">⏱️ {recipe.ready_in_minutes || 25}m</span>
+                      {recipe.calories && (
+                        <span className="shelf-stat-item cal">🔥 {Math.round(recipe.calories)} kcal</span>
+                      )}
+                      {(recipe.protein_g || recipe.protein) && (
+                        <span className="shelf-stat-item prot">💪 {recipe.protein_g || recipe.protein}g P</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="card glass shelf-empty-state">
+            <p>No dishes found for this category right now.</p>
+            <button className="btn-primary-sm" onClick={() => fetchShelfRecipes(shelfTab, true)}>
+              Try Refreshing
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Quick Exploration Hub ── */}
