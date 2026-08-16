@@ -1,4 +1,35 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useMemo } from 'react';
+import { 
+  Calendar, 
+  ChevronLeft, 
+  ChevronRight, 
+  Sparkles, 
+  Zap, 
+  Share2, 
+  ShoppingCart, 
+  Plus, 
+  Trash2, 
+  Copy, 
+  MoreHorizontal, 
+  RotateCcw, 
+  Check, 
+  Printer, 
+  Search, 
+  SlidersHorizontal, 
+  Utensils, 
+  Flame, 
+  Clock, 
+  ArrowRight, 
+  PieChart, 
+  Grid, 
+  Eye, 
+  RefreshCw, 
+  TrendingUp, 
+  Heart, 
+  Info,
+  Layers,
+  ChevronDown
+} from 'lucide-react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -15,6 +46,13 @@ export default function MealPlanner() {
   const toast = useToast();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
+  // Active view: 'grid' (7-day calendar) | 'day' (Daily Focus) | 'analytics' (Macro & Nutri Breakdown)
+  const [viewMode, setViewMode] = useState('grid');
+  const [focusedDayIndex, setFocusedDayIndex] = useState(() => {
+    const day = new Date().getDay();
+    return day === 0 ? 6 : day - 1; // 0 for Mon ... 6 for Sun
+  });
+
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
     const day = today.getDay();
@@ -29,18 +67,32 @@ export default function MealPlanner() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
+  // Recipe Picker Modal State
   const [isRecipePickerOpen, setIsRecipePickerOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null); // {date: '2026-04-20', slot: 'Breakfast'}
+  const [pickerSearch, setPickerSearch] = useState('');
+  const [pickerTag, setPickerTag] = useState('all');
+  const [pickerTab, setPickerTab] = useState('saved'); // 'saved' | 'custom'
+  const [customDishName, setCustomDishName] = useState('');
+  const [customDishCals, setCustomDishCals] = useState('');
+  const [customDishProtein, setCustomDishProtein] = useState('');
+
+  // Active Single Recipe Modal
   const [activeRecipeModal, setActiveRecipeModal] = useState(null);
   
+  // Shopping List State
   const [isShoppingListOpen, setIsShoppingListOpen] = useState(false);
   const [shoppingList, setShoppingList] = useState({ categories: {}, in_pantry_skipped: [] });
   const [loadingShoppingList, setLoadingShoppingList] = useState(false);
   const [checkedListItems, setCheckedListItems] = useState({});
+  const [grocerySearch, setGrocerySearch] = useState('');
 
+  // Bulk Actions & Modals
   const [smartFilling, setSmartFilling] = useState(false);
   const [loggingToday, setLoggingToday] = useState(false);
   const [sharingPlan, setSharingPlan] = useState(false);
+  const [isPlanActionsOpen, setIsPlanActionsOpen] = useState(false);
+  const [activeDayMenuDate, setActiveDayMenuDate] = useState(null);
 
   const [groceryFilter, setGroceryFilter] = useState('all'); // 'all' | 'tobuy' | 'checked'
   const [customItems, setCustomItems] = useState([]);
@@ -52,11 +104,15 @@ export default function MealPlanner() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragScrollLeft, setDragScrollLeft] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const isDragEnabled = settings?.dragPlannerEnabled ?? true;
 
   const handleGridMouseDown = (e) => {
     if (!isDragEnabled || !gridRef.current) return;
+    // Don't drag if clicking buttons, links, or cards
+    if (e.target.closest('button') || e.target.closest('.day-action-trigger')) return;
     setIsDragging(true);
     setDragStartX(e.pageX - gridRef.current.offsetLeft);
     setDragScrollLeft(gridRef.current.scrollLeft);
@@ -76,9 +132,37 @@ export default function MealPlanner() {
     const x = e.pageX - gridRef.current.offsetLeft;
     const walk = (x - dragStartX) * 1.5;
     gridRef.current.scrollLeft = dragScrollLeft - walk;
+    updateScrollButtons();
   };
 
-  const SLOTS = ['Breakfast', 'Lunch', 'Snack', 'Dinner'];
+  const updateScrollButtons = () => {
+    if (!gridRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = gridRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+
+  const scrollGrid = (direction) => {
+    if (!gridRef.current) return;
+    const scrollAmount = direction === 'left' ? -320 : 320;
+    gridRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    setTimeout(updateScrollButtons, 350);
+  };
+
+  const scrollToToday = () => {
+    if (!gridRef.current) return;
+    const todayCard = gridRef.current.querySelector('.calendar-day.today');
+    if (todayCard) {
+      todayCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
+
+  const SLOTS = [
+    { name: 'Breakfast', icon: '🌅', time: '8:00 AM', defaultRatio: 0.25 },
+    { name: 'Lunch', icon: '☀️', time: '1:00 PM', defaultRatio: 0.35 },
+    { name: 'Snack', icon: '🍎', time: '4:30 PM', defaultRatio: 0.10 },
+    { name: 'Dinner', icon: '🌙', time: '7:30 PM', defaultRatio: 0.30 }
+  ];
 
   const getWeekDays = () => {
     const days = [];
@@ -93,6 +177,15 @@ export default function MealPlanner() {
   const weekDays = getWeekDays();
   const startDateStr = getLocalDateString(weekDays[0]);
   const endDateStr = getLocalDateString(weekDays[6]);
+
+  const isCurrentWeek = useMemo(() => {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+    const thisMon = new Date(today.setDate(diff));
+    thisMon.setHours(0,0,0,0);
+    return getLocalDateString(thisMon) === startDateStr;
+  }, [startDateStr]);
 
   const fetchData = async () => {
     if (!token) return;
@@ -131,18 +224,43 @@ export default function MealPlanner() {
     }
   }, [startDateStr, endDateStr]);
 
+  useEffect(() => {
+    const el = gridRef.current;
+    if (el) {
+      el.addEventListener('scroll', updateScrollButtons);
+      updateScrollButtons();
+      return () => el.removeEventListener('scroll', updateScrollButtons);
+    }
+  }, [viewMode, mealPlans]);
+
   const changeWeek = (weeks) => {
     const newStart = new Date(currentWeekStart);
     newStart.setDate(newStart.getDate() + (weeks * 7));
     setCurrentWeekStart(newStart);
   };
 
-  const getMealForSlot = (dateStr, slot) => {
-    return mealPlans.find(mp => mp.date === dateStr && mp.meal_slot === slot);
+  const jumpToCurrentWeek = () => {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+    const thisMon = new Date(today.setDate(diff));
+    thisMon.setHours(0,0,0,0);
+    setCurrentWeekStart(thisMon);
+    setTimeout(scrollToToday, 200);
   };
 
-  const openRecipePicker = (dateStr, slot) => {
-    setSelectedSlot({ date: dateStr, slot });
+  const getMealForSlot = (dateStr, slotName) => {
+    return mealPlans.find(mp => mp.date === dateStr && mp.meal_slot === slotName);
+  };
+
+  const openRecipePicker = (dateStr, slotName) => {
+    setSelectedSlot({ date: dateStr, slot: slotName });
+    setPickerSearch('');
+    setPickerTag('all');
+    setPickerTab('saved');
+    setCustomDishName('');
+    setCustomDishCals('');
+    setCustomDishProtein('');
     setIsRecipePickerOpen(true);
   };
 
@@ -163,6 +281,35 @@ export default function MealPlanner() {
     }
   };
 
+  const handleAddCustomDishToSlot = async (e) => {
+    e.preventDefault();
+    if (!customDishName.trim()) {
+      toast.error("Please enter dish title");
+      return;
+    }
+    try {
+      // Save custom dish as bookmark first
+      const saved = await api.post('/recipes/save', {
+        title: customDishName.trim(),
+        calories: customDishCals ? parseFloat(customDishCals) : 400,
+        protein_g: customDishProtein ? parseFloat(customDishProtein) : 20,
+        summary: 'Custom quick meal',
+        ingredients: 'Custom ingredients'
+      });
+      await api.post('/mealplan', {
+        recipe_id: saved.id,
+        date: selectedSlot.date,
+        meal_slot: selectedSlot.slot
+      });
+      toast.success(`Added custom dish "${customDishName}" to ${selectedSlot.slot}! ✓`);
+      setIsRecipePickerOpen(false);
+      setSelectedSlot(null);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to add custom meal");
+    }
+  };
+
   const removeMeal = async (mealPlanId, e) => {
     if (e) e.stopPropagation();
     try {
@@ -171,6 +318,79 @@ export default function MealPlanner() {
       fetchData();
     } catch (err) {
       toast.error(err.message || 'Failed to remove meal.');
+    }
+  };
+
+  // 1-Click Copy Meal to Tomorrow
+  const handleDuplicateMealToNextDay = async (meal, e) => {
+    if (e) e.stopPropagation();
+    try {
+      const mealDate = new Date(meal.date);
+      mealDate.setDate(mealDate.getDate() + 1);
+      const nextDateStr = getLocalDateString(mealDate);
+      await api.post('/mealplan', {
+        recipe_id: meal.recipe_id || meal.recipe?.id,
+        date: nextDateStr,
+        meal_slot: meal.meal_slot
+      });
+      toast.success(`Repeated "${meal.recipe?.title}" to next day! 📋`);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to copy meal to next day");
+    }
+  };
+
+  // Copy Entire Day to Tomorrow
+  const handleCopyDayToTomorrow = async (sourceDateStr) => {
+    setActiveDayMenuDate(null);
+    try {
+      const srcDate = new Date(sourceDateStr);
+      srcDate.setDate(srcDate.getDate() + 1);
+      const targetDateStr = getLocalDateString(srcDate);
+      await api.post(`/mealplan/copy-day?source_date=${sourceDateStr}&target_date=${targetDateStr}`);
+      toast.success(`Copied all meals to tomorrow (${targetDateStr})! ✨`);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to copy day's plan");
+    }
+  };
+
+  // Clear Day
+  const handleClearDay = async (dateStr) => {
+    setActiveDayMenuDate(null);
+    try {
+      await api.delete(`/mealplan/clear-range?start_date=${dateStr}&end_date=${dateStr}`);
+      toast.success(`Cleared all meals for ${dateStr}`);
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to clear day");
+    }
+  };
+
+  // Clear Week
+  const handleClearWeek = async () => {
+    setIsPlanActionsOpen(false);
+    if (!window.confirm("Are you sure you want to clear all meals for this week?")) return;
+    try {
+      await api.delete(`/mealplan/clear-range?start_date=${startDateStr}&end_date=${endDateStr}`);
+      toast.success("Week meal plan cleared!");
+      fetchData();
+    } catch (err) {
+      toast.error(err.message || "Failed to clear week");
+    }
+  };
+
+  // Copy Week to Next Week
+  const handleCopyWeekToNext = async () => {
+    setIsPlanActionsOpen(false);
+    try {
+      const nextStart = new Date(currentWeekStart);
+      nextStart.setDate(nextStart.getDate() + 7);
+      const nextStartStr = getLocalDateString(nextStart);
+      await api.post(`/mealplan/copy-week?source_start_date=${startDateStr}&target_start_date=${nextStartStr}`);
+      toast.success("Successfully copied full meal plan to next week! 🚀");
+    } catch (err) {
+      toast.error(err.message || "Failed to copy week plan");
     }
   };
 
@@ -348,16 +568,88 @@ export default function MealPlanner() {
     toast.success("📋 Grocery checklist copied to clipboard!");
   };
 
+  // Weekly Nutrition Stats computation
+  const weeklyStats = useMemo(() => {
+    const totalSlots = 28; // 7 days * 4 slots
+    const filledSlots = mealPlans.length;
+    const targetCals = activeProfile?.target_calories || 2000;
+    
+    let totalCals = 0;
+    let totalProtein = 0;
+    let totalCarbs = 0;
+    let totalFat = 0;
+    const scores = [];
+
+    mealPlans.forEach(mp => {
+      if (mp.recipe) {
+        totalCals += mp.recipe.calories || 0;
+        totalProtein += mp.recipe.protein_g || 0;
+        totalCarbs += mp.recipe.carbs_g || 0;
+        totalFat += mp.recipe.fat_g || 0;
+        const score = mp.recipe.nutri_score || mp.recipe.chef_score;
+        if (score?.numeric_score !== undefined) scores.push(score.numeric_score);
+      }
+    });
+
+    const avgDailyCals = Math.round(totalCals / 7);
+    const avgDailyProtein = Math.round(totalProtein / 7);
+    const avgDailyCarbs = Math.round(totalCarbs / 7);
+    const avgDailyFat = Math.round(totalFat / 7);
+
+    let weeklyGrade = null;
+    if (scores.length > 0) {
+      const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+      if (avgScore <= -4) weeklyGrade = 'S';
+      else if (avgScore <= -1) weeklyGrade = 'A';
+      else if (avgScore <= 2) weeklyGrade = 'B';
+      else if (avgScore <= 10) weeklyGrade = 'C';
+      else if (avgScore <= 18) weeklyGrade = 'D';
+      else weeklyGrade = 'E';
+    }
+
+    return {
+      filledSlots,
+      totalSlots,
+      fillPercent: Math.round((filledSlots / totalSlots) * 100),
+      avgDailyCals,
+      targetCals,
+      avgDailyProtein,
+      avgDailyCarbs,
+      avgDailyFat,
+      weeklyGrade,
+    };
+  }, [mealPlans, activeProfile]);
+
+  // Filtered Saved Recipes in Picker
+  const filteredPickerRecipes = useMemo(() => {
+    return savedRecipes.filter(r => {
+      if (pickerSearch.trim()) {
+        const q = pickerSearch.toLowerCase();
+        const matchesTitle = r.title?.toLowerCase().includes(q);
+        const matchesIng = typeof r.ingredients === 'string' && r.ingredients.toLowerCase().includes(q);
+        if (!matchesTitle && !matchesIng) return false;
+      }
+      if (pickerTag === 'high-protein') return (r.protein_g || 0) >= 25;
+      if (pickerTag === 'low-cal') return (r.calories || 0) <= 400 && (r.calories || 0) > 0;
+      if (pickerTag === 'quick') return (r.ready_in_minutes || 0) <= 30 && (r.ready_in_minutes || 0) > 0;
+      if (pickerTag === 'veg') {
+        const t = (r.title || '').toLowerCase();
+        return !t.includes('chicken') && !t.includes('beef') && !t.includes('pork') && !t.includes('fish') && !t.includes('shrimp');
+      }
+      return true;
+    });
+  }, [savedRecipes, pickerSearch, pickerTag]);
+
   if (!token) {
     return (
       <section className="page active meal-planner-page" style={{ textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-        <div className="card glass" style={{ maxWidth: '500px', margin: '0 auto', padding: '40px 30px', borderRadius: '24px' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📅</div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '10px' }}>Weekly Meal Planner</h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: '1.6' }}>
-            Plan your weekly meals, auto-log daily nutrition, and generate smart grocery checklists based on pantry stock.
+        <div className="card glass" style={{ maxWidth: '540px', margin: '0 auto', padding: '48px 32px', borderRadius: '28px', border: '1px solid var(--border-glass)' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>📅</div>
+          <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '12px', letterSpacing: '-0.5px' }}>Smart Weekly Meal Planner</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '28px', lineHeight: '1.6', fontSize: '1rem' }}>
+            Plan 7 days of balanced nutrition, auto-generate grocery lists matching your pantry stock, and sync daily meals in one click.
           </p>
-          <button className="btn-primary" onClick={() => setAuthModalOpen(true)} style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: '14px' }}>
+          <button className="btn-primary" onClick={() => setAuthModalOpen(true)} style={{ padding: '14px 32px', fontSize: '1.05rem', borderRadius: '16px', fontWeight: '700' }}>
             🔐 Log In / Sign Up to Access Planner
           </button>
         </div>
@@ -368,260 +660,879 @@ export default function MealPlanner() {
 
   return (
     <section className="page active meal-planner-page">
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <h1>Weekly Meal Planner</h1>
-          <p className="subtitle">Plan your meals, automatically log them, and generate groceries.</p>
+      {/* ── Main Planner Header ── */}
+      <div className="planner-header-container">
+        <div className="planner-title-block">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '2rem' }}>🗓️</span>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '1.9rem', fontWeight: 800, letterSpacing: '-0.5px' }}>Weekly Meal Planner</h1>
+              <p className="subtitle" style={{ margin: '2px 0 0', fontSize: '0.9rem' }}>
+                Drag & pan your 7-day culinary schedule, auto-log macros, and generate smart groceries.
+              </p>
+            </div>
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '12px', marginTop: '10px', flexWrap: 'wrap' }}>
-          <button className="btn-secondary" onClick={handleSharePlanToFeed} disabled={sharingPlan} style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(8px)', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-card)', transition: 'all 0.2s', padding: '10px 16px' }}>
-            {sharingPlan ? 'Sharing...' : '📢 Share to Feed'}
+
+        {/* Action Toolbar */}
+        <div className="planner-actions-toolbar">
+          <button 
+            className="planner-action-btn share-btn" 
+            onClick={handleSharePlanToFeed} 
+            disabled={sharingPlan}
+            title="Share this week's plan to Community Feed"
+          >
+            <Share2 size={16} />
+            <span>{sharingPlan ? 'Sharing...' : 'Share Plan'}</span>
           </button>
-          <button className="btn-secondary" onClick={handleSmartAutofill} disabled={smartFilling} style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(8px)', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-card)', transition: 'all 0.2s', padding: '10px 16px' }}>
-            {smartFilling ? '🤖 Thinking...' : '✨ Magic Fill'}
+
+          <button 
+            className="planner-action-btn magic-btn" 
+            onClick={handleSmartAutofill} 
+            disabled={smartFilling}
+            title="Auto-fill 7 days matching your target calories & macros"
+          >
+            <Sparkles size={16} />
+            <span>{smartFilling ? 'Generating...' : 'Magic Fill'}</span>
           </button>
-          <button className="btn-primary" onClick={handleLogToday} disabled={loggingToday} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 18px', background: 'var(--gradient-primary)', boxShadow: 'var(--shadow-glow)', transition: 'transform 0.2s, box-shadow 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <span style={{ fontSize: '1.2rem' }}>⚡</span> Log Today's Meals
+
+          <button 
+            className="planner-action-btn log-today-btn" 
+            onClick={handleLogToday} 
+            disabled={loggingToday}
+            title="Log all today's planned meals into tracker"
+          >
+            <Zap size={16} />
+            <span>Log Today's Meals</span>
           </button>
-          <button className="btn-secondary" onClick={generateShoppingList} style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(8px)', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-card)', transition: 'all 0.2s', padding: '10px 16px' }}>
-            🛒 Groceries
+
+          <button 
+            className="planner-action-btn grocery-btn" 
+            onClick={generateShoppingList}
+            title="Generate smart grocery list (pantry stock excluded)"
+          >
+            <ShoppingCart size={16} />
+            <span>Groceries</span>
+          </button>
+
+          <div style={{ position: 'relative' }}>
+            <button 
+              className="planner-action-btn more-btn"
+              onClick={() => setIsPlanActionsOpen(prev => !prev)}
+              title="More Plan Options"
+            >
+              <MoreHorizontal size={18} />
+            </button>
+
+            {isPlanActionsOpen && (
+              <div className="planner-dropdown-menu glass fade-in">
+                <button onClick={handleCopyWeekToNext}>
+                  <Copy size={15} /> Copy Week to Next Week
+                </button>
+                <button onClick={() => window.print()}>
+                  <Printer size={15} /> Print Meal Plan Poster
+                </button>
+                <div className="dropdown-divider" />
+                <button onClick={handleClearWeek} style={{ color: '#ef4444' }}>
+                  <Trash2 size={15} /> Clear Entire Week
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Week Carousel Navigation & View Mode Switcher ── */}
+      <div className="planner-navigation-card glass">
+        <div className="week-nav-cluster">
+          <button className="week-nav-arrow" onClick={() => changeWeek(-1)} title="Previous Week">
+            <ChevronLeft size={20} />
+          </button>
+          
+          <div className="week-label-box">
+            <div className="week-range-text">
+              {weekDays[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {weekDays[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </div>
+            {isCurrentWeek ? (
+              <span className="current-week-badge">✨ Current Week</span>
+            ) : (
+              <button className="jump-today-btn" onClick={jumpToCurrentWeek}>
+                Jump to Current Week
+              </button>
+            )}
+          </div>
+
+          <button className="week-nav-arrow" onClick={() => changeWeek(1)} title="Next Week">
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        {/* View Switcher Tabs */}
+        <div className="planner-view-tabs">
+          <button 
+            className={`view-tab-btn ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+          >
+            <Grid size={15} /> 7-Day Grid
+          </button>
+          <button 
+            className={`view-tab-btn ${viewMode === 'day' ? 'active' : ''}`}
+            onClick={() => setViewMode('day')}
+          >
+            <Eye size={15} /> Daily Focus
+          </button>
+          <button 
+            className={`view-tab-btn ${viewMode === 'analytics' ? 'active' : ''}`}
+            onClick={() => setViewMode('analytics')}
+          >
+            <PieChart size={15} /> Macro Analytics
           </button>
         </div>
       </div>
 
-      <div className="planner-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', background: 'var(--glass-bg)', border: '1px solid var(--border-glass)', padding: '12px 20px', borderRadius: '16px', boxShadow: 'var(--shadow-card)' }}>
-        <button className="btn-secondary" onClick={() => changeWeek(-1)} style={{ padding: '6px 12px' }}>← Prev</button>
-        <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
-          {weekDays[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {weekDays[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+      {/* ── Weekly Nutritional Overview & Day Strip ── */}
+      <div className="planner-summary-ribbon glass">
+        <div className="summary-stat-cell">
+          <div className="stat-label">Planned Meals</div>
+          <div className="stat-value">{weeklyStats.filledSlots} <span className="stat-sub">/ {weeklyStats.totalSlots} slots</span></div>
+          <div className="stat-progress-line">
+            <div className="stat-progress-fill" style={{ width: `${weeklyStats.fillPercent}%` }} />
+          </div>
         </div>
-        <button className="btn-secondary" onClick={() => changeWeek(1)} style={{ padding: '6px 12px' }}>Next →</button>
+
+        <div className="summary-stat-cell">
+          <div className="stat-label">Daily Avg Energy</div>
+          <div className="stat-value">{weeklyStats.avgDailyCals} <span className="stat-sub">/ {weeklyStats.targetCals} kcal</span></div>
+          <span className={`stat-badge ${weeklyStats.avgDailyCals > weeklyStats.targetCals ? 'badge-warn' : 'badge-good'}`}>
+            {weeklyStats.avgDailyCals === 0 ? 'Empty Plan' : (weeklyStats.avgDailyCals <= weeklyStats.targetCals ? '✓ On Target' : '⚠️ Over Budget')}
+          </span>
+        </div>
+
+        <div className="summary-stat-cell">
+          <div className="stat-label">Weekly Health Score</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+            {weeklyStats.weeklyGrade ? (
+              <>
+                <ChefScoreBadge grade={weeklyStats.weeklyGrade} size="md" showTooltip={true} />
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Grade {weeklyStats.weeklyGrade}</span>
+              </>
+            ) : (
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Plan meals to grade</span>
+            )}
+          </div>
+        </div>
+
+        <div className="summary-stat-cell macro-split-cell">
+          <div className="stat-label">Avg Daily Macros</div>
+          <div className="macro-chips-row">
+            <span className="macro-chip protein">🥩 {weeklyStats.avgDailyProtein}g P</span>
+            <span className="macro-chip carbs">🍞 {weeklyStats.avgDailyCarbs}g C</span>
+            <span className="macro-chip fat">🥑 {weeklyStats.avgDailyFat}g F</span>
+          </div>
+        </div>
+
+        {/* Quick Day Mini Strip */}
+        <div className="mini-day-strip">
+          {weekDays.map((dObj, idx) => {
+            const dStr = getLocalDateString(dObj);
+            const isToday = dStr === getLocalDateString();
+            const dayMeals = SLOTS.map(s => getMealForSlot(dStr, s.name)).filter(Boolean);
+            const dayCals = dayMeals.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
+            const isSelected = focusedDayIndex === idx;
+
+            return (
+              <button 
+                key={dStr}
+                className={`mini-day-pill ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}`}
+                onClick={() => {
+                  setFocusedDayIndex(idx);
+                  if (viewMode !== 'day') {
+                    // Scroll to this day card in grid
+                    const cards = gridRef.current?.querySelectorAll('.calendar-day');
+                    if (cards && cards[idx]) {
+                      cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                  }
+                }}
+                title={`${dObj.toLocaleDateString('en-US', { weekday: 'short' })}: ${Math.round(dayCals)} kcal (${dayMeals.length}/4 meals)`}
+              >
+                <span className="mini-day-name">{dObj.toLocaleDateString('en-US', { weekday: 'narrow' })}</span>
+                <span className="mini-day-num">{dObj.getDate()}</span>
+                <span className={`mini-day-dot ${dayMeals.length === 4 ? 'dot-full' : (dayMeals.length > 0 ? 'dot-partial' : 'dot-empty')}`} />
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {error && <div style={{ color: '#dc2626', marginBottom: '20px', padding: '10px', background: 'rgba(220,38,38,0.1)', borderRadius: '8px' }}>{error}</div>}
-      
-      <div 
-        ref={gridRef}
-        className="calendar-grid" 
-        onMouseDown={handleGridMouseDown}
-        onMouseLeave={handleGridMouseLeave}
-        onMouseUp={handleGridMouseUp}
-        onMouseMove={handleGridMouseMove}
-        style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          overflowX: 'auto', 
-          cursor: isDragEnabled ? (isDragging ? 'grabbing' : 'grab') : 'default',
-          userSelect: isDragging ? 'none' : 'auto',
-          padding: '12px 20px 30px 20px' 
-        }}
-      >
-        {weekDays.map((dateObj, dayIdx) => {
-          const dateStr = getLocalDateString(dateObj);
-          const isToday = dateStr === getLocalDateString();
-          
-          // Calculate daily planned macros
-          const todaysMeals = SLOTS.map(slot => getMealForSlot(dateStr, slot)).filter(Boolean);
-          const dailyCals = todaysMeals.reduce((sum, mp) => sum + (mp.recipe?.calories || 0), 0);
-          const targetCals = activeProfile?.target_calories || 2000;
-          const calPercent = Math.min(100, Math.max(0, (dailyCals / targetCals) * 100));
-          const isOverTarget = dailyCals > targetCals;
+      {error && (
+        <div className="planner-error-banner">
+          <span>⚠️ {error}</span>
+          <button onClick={fetchData}>Retry</button>
+        </div>
+      )}
 
-          // Compute daily aggregate Nutri-Score grade
-          const dayMeals = SLOTS.map(slot => getMealForSlot(dateStr, slot)).filter(Boolean);
-          const dayNutriScores = dayMeals.map(m => m.recipe?.nutri_score || m.recipe?.chef_score).filter(Boolean);
-          let dailyGrade = null;
-          if (dayNutriScores.length > 0) {
-            const avgScore = Math.round(dayNutriScores.reduce((acc, s) => acc + (s.numeric_score ?? 0), 0) / dayNutriScores.length);
-            if (avgScore <= -4) dailyGrade = 'S';
-            else if (avgScore <= -1) dailyGrade = 'A';
-            else if (avgScore <= 2) dailyGrade = 'B';
-            else if (avgScore <= 10) dailyGrade = 'C';
-            else if (avgScore <= 18) dailyGrade = 'D';
-            else dailyGrade = 'E';
-          }
-          
-          return (
-            <div key={dateStr} className={`calendar-day ${isToday ? 'today' : ''}`} style={{ flex: '1', minWidth: '220px', background: isToday ? 'rgba(255,255,255,0.9)' : 'var(--glass-bg)', borderRadius: '24px', overflow: 'hidden', border: isToday ? '2px solid var(--primary)' : '1px solid var(--border-glass)', boxShadow: isToday ? 'var(--shadow-card-hover)' : 'var(--shadow-card)', transition: 'transform 0.2s', animation: `fadeInUp 0.4s ease forwards ${dayIdx * 0.05}s`, opacity: 0 }}>
-              <div className="day-header" style={{ padding: '16px', textAlign: 'center', background: isToday ? 'var(--primary)' : 'rgba(255,255,255,0.5)', borderBottom: '1px solid var(--border-glass)', color: isToday ? 'white' : 'var(--text-primary)', position: 'relative' }}>
-                {dailyGrade && (
-                  <div style={{ position: 'absolute', top: 12, right: 12 }} title={`Daily Nutri-Score: ${dailyGrade}`}>
-                    <ChefScoreBadge grade={dailyGrade} size="sm" showTooltip={true} />
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* VIEW MODE 1: 7-DAY SLIDING GRID                              */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {viewMode === 'grid' && (
+        <div className="planner-grid-wrapper">
+          {/* Scroll Navigation Chevrons */}
+          {canScrollLeft && (
+            <button className="grid-scroll-arrow arrow-left" onClick={() => scrollGrid('left')} title="Scroll Left">
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          {canScrollRight && (
+            <button className="grid-scroll-arrow arrow-right" onClick={() => scrollGrid('right')} title="Scroll Right">
+              <ChevronRight size={24} />
+            </button>
+          )}
+
+          <div 
+            ref={gridRef}
+            className={`calendar-grid ${isDragging ? 'is-dragging' : ''}`}
+            onMouseDown={handleGridMouseDown}
+            onMouseLeave={handleGridMouseLeave}
+            onMouseUp={handleGridMouseUp}
+            onMouseMove={handleGridMouseMove}
+          >
+            {weekDays.map((dateObj, dayIdx) => {
+              const dateStr = getLocalDateString(dateObj);
+              const isToday = dateStr === getLocalDateString();
+              
+              // Daily macro totals
+              const todaysMeals = SLOTS.map(slot => getMealForSlot(dateStr, slot.name)).filter(Boolean);
+              const dailyCals = todaysMeals.reduce((sum, mp) => sum + (mp.recipe?.calories || 0), 0);
+              const targetCals = activeProfile?.target_calories || 2000;
+              const calPercent = Math.min(100, Math.max(0, (dailyCals / targetCals) * 100));
+              const isOverTarget = dailyCals > targetCals;
+
+              // Daily Nutri-Score grade
+              const dayNutriScores = todaysMeals.map(m => m.recipe?.nutri_score || m.recipe?.chef_score).filter(Boolean);
+              let dailyGrade = null;
+              if (dayNutriScores.length > 0) {
+                const avgScore = Math.round(dayNutriScores.reduce((acc, s) => acc + (s.numeric_score ?? 0), 0) / dayNutriScores.length);
+                if (avgScore <= -4) dailyGrade = 'S';
+                else if (avgScore <= -1) dailyGrade = 'A';
+                else if (avgScore <= 2) dailyGrade = 'B';
+                else if (avgScore <= 10) dailyGrade = 'C';
+                else if (avgScore <= 18) dailyGrade = 'D';
+                else dailyGrade = 'E';
+              }
+              
+              return (
+                <div 
+                  key={dateStr} 
+                  className={`calendar-day ${isToday ? 'today' : ''} fade-in-up`}
+                  style={{ animationDelay: `${dayIdx * 0.04}s` }}
+                >
+                  {/* Day Header */}
+                  <div className="day-header">
+                    <div className="day-header-top">
+                      <div className="day-weekday">{dateObj.toLocaleDateString('en-US', { weekday: 'long' })}</div>
+                      
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {dailyGrade && (
+                          <ChefScoreBadge grade={dailyGrade} size="sm" showTooltip={true} />
+                        )}
+                        
+                        {/* Day Action Dropdown */}
+                        <div style={{ position: 'relative' }}>
+                          <button 
+                            className="day-action-trigger" 
+                            onClick={() => setActiveDayMenuDate(activeDayMenuDate === dateStr ? null : dateStr)}
+                            title="Day actions"
+                          >
+                            <MoreHorizontal size={14} />
+                          </button>
+                          
+                          {activeDayMenuDate === dateStr && (
+                            <div className="day-dropdown-menu glass fade-in">
+                              <button onClick={() => handleCopyDayToTomorrow(dateStr)}>
+                                <Copy size={13} /> Copy to Tomorrow
+                              </button>
+                              <button onClick={() => { setFocusedDayIndex(dayIdx); setViewMode('day'); }}>
+                                <Eye size={13} /> Focus on Day
+                              </button>
+                              <div className="dropdown-divider" />
+                              <button onClick={() => handleClearDay(dateStr)} style={{ color: '#ef4444' }}>
+                                <Trash2 size={13} /> Clear Day
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="day-date-number">{dateObj.getDate()}</div>
+                    
+                    {/* Calorie Progress Ring / Bar */}
+                    <div className="day-calorie-status">
+                      <div className="cal-text-line">
+                        <span className="cal-val">{Math.round(dailyCals)}</span>
+                        <span className="cal-target">/ {targetCals} kcal</span>
+                      </div>
+                      <div className="calorie-progress-container">
+                        <div 
+                          className="calorie-progress-bar" 
+                          style={{ 
+                            width: `${calPercent}%`, 
+                            backgroundColor: isOverTarget ? '#ef4444' : (isToday ? 'var(--primary)' : 'var(--accent-2)') 
+                          }} 
+                        />
+                      </div>
+                    </div>
                   </div>
-                )}
-                <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.8 }}>{dateObj.toLocaleDateString('en-US', { weekday: 'long' })}</div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '4px 0' }}>{dateObj.getDate()}</div>
-                
-                <div style={{ fontSize: '0.75rem', marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div style={{ opacity: 0.9, fontWeight: '600', color: isOverTarget && !isToday ? '#dc2626' : 'inherit' }}>
-                    {Math.round(dailyCals)} / {targetCals} kcal
+                  
+                  {/* Day Slots */}
+                  <div className="day-slots">
+                    {SLOTS.map(slot => {
+                      const meal = getMealForSlot(dateStr, slot.name);
+                      return (
+                        <div key={slot.name} className="meal-slot-wrapper">
+                          <div className="slot-badge-line">
+                            <span className="slot-icon-name">{slot.icon} {slot.name}</span>
+                            <span className="slot-time-hint">{slot.time}</span>
+                          </div>
+
+                          {meal ? (
+                            <div 
+                              className="planned-meal-card glass"
+                              onClick={() => setActiveRecipeModal(meal.recipe)}
+                            >
+                              {(() => {
+                                const visual = getRecipeCardVisual(meal.recipe);
+                                return (
+                                  <>
+                                    {meal.recipe?.image_url ? (
+                                      <img 
+                                        src={meal.recipe.image_url} 
+                                        alt={meal.recipe?.title}
+                                        className="meal-thumb-img"
+                                        onError={(e) => {
+                                          e.target.onerror = null;
+                                          e.target.style.display = 'none';
+                                          if (e.target.nextSibling) {
+                                            e.target.nextSibling.style.display = 'flex';
+                                          }
+                                        }}
+                                      />
+                                    ) : null}
+                                    <div 
+                                      className="meal-thumb-fallback"
+                                      style={{ 
+                                        display: meal.recipe?.image_url ? 'none' : 'flex', 
+                                        background: visual.gradient 
+                                      }}
+                                    >
+                                      {visual.icon}
+                                    </div>
+                                  </>
+                                );
+                              })()}
+
+                              <div className="meal-info-block">
+                                <div className="meal-title-text">{meal.recipe?.title}</div>
+                                <div className="meal-meta-pills">
+                                  <span className="pill-cals">🔥 {Math.round(meal.recipe?.calories || 0)} kcal</span>
+                                  {meal.recipe?.protein_g && (
+                                    <span className="pill-protein">🥩 {Math.round(meal.recipe.protein_g)}g</span>
+                                  )}
+                                  {(meal.recipe?.nutri_score || meal.recipe?.chef_score) && (
+                                    <ChefScoreBadge grade={(meal.recipe?.nutri_score || meal.recipe?.chef_score).grade} size="sm" />
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Hover Quick Actions */}
+                              <div className="meal-hover-actions">
+                                <button 
+                                  className="action-icon-btn copy-btn"
+                                  onClick={(e) => handleDuplicateMealToNextDay(meal, e)}
+                                  title="Repeat to Tomorrow"
+                                >
+                                  <Copy size={13} />
+                                </button>
+                                <button 
+                                  className="action-icon-btn remove-btn"
+                                  onClick={(e) => removeMeal(meal.id, e)}
+                                  title="Remove Meal"
+                                >
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <button 
+                              className="empty-slot-btn" 
+                              onClick={() => openRecipePicker(dateStr, slot.name)}
+                            >
+                              <Plus size={14} />
+                              <span>Plan {slot.name}</span>
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                  <div className="calorie-progress-container">
-                    <div className="calorie-progress-bar" style={{ width: `${calPercent}%`, backgroundColor: isOverTarget ? '#ef4444' : (isToday ? 'rgba(255,255,255,0.9)' : 'var(--accent-2)') }} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* VIEW MODE 2: DAILY FOCUS DEEP-DIVE                            */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {viewMode === 'day' && (
+        <div className="daily-focus-container fade-in">
+          {/* Day Selector Carousel Header */}
+          <div className="focus-day-carousel glass">
+            {weekDays.map((dObj, idx) => {
+              const dStr = getLocalDateString(dObj);
+              const isSelected = focusedDayIndex === idx;
+              const isToday = dStr === getLocalDateString();
+              const dayMeals = SLOTS.map(s => getMealForSlot(dStr, s.name)).filter(Boolean);
+
+              return (
+                <button 
+                  key={dStr}
+                  className={`focus-day-tab ${isSelected ? 'active' : ''} ${isToday ? 'is-today' : ''}`}
+                  onClick={() => setFocusedDayIndex(idx)}
+                >
+                  <span className="focus-tab-weekday">{dObj.toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                  <span className="focus-tab-daynum">{dObj.getDate()}</span>
+                  <span className="focus-tab-meals-badge">{dayMeals.length}/4</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Focused Day Timeline Content */}
+          {(() => {
+            const activeDateObj = weekDays[focusedDayIndex];
+            const activeDateStr = getLocalDateString(activeDateObj);
+            const dayMeals = SLOTS.map(s => getMealForSlot(activeDateStr, s.name)).filter(Boolean);
+            const totalCals = dayMeals.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
+            const totalP = dayMeals.reduce((sum, m) => sum + (m.recipe?.protein_g || 0), 0);
+            const totalC = dayMeals.reduce((sum, m) => sum + (m.recipe?.carbs_g || 0), 0);
+            const totalF = dayMeals.reduce((sum, m) => sum + (m.recipe?.fat_g || 0), 0);
+            const targetCals = activeProfile?.target_calories || 2000;
+
+            return (
+              <div className="focus-day-content-grid">
+                {/* Timeline Slots */}
+                <div className="focus-timeline-column">
+                  <div className="focus-column-header">
+                    <h2>
+                      {activeDateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </h2>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button className="btn-secondary-sm" onClick={() => handleCopyDayToTomorrow(activeDateStr)}>
+                        <Copy size={13} /> Copy to Tomorrow
+                      </button>
+                      <button className="btn-secondary-sm" onClick={() => handleClearDay(activeDateStr)}>
+                        <Trash2 size={13} /> Clear
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="focus-slots-timeline">
+                    {SLOTS.map((slot, sIdx) => {
+                      const meal = getMealForSlot(activeDateStr, slot.name);
+                      return (
+                        <div key={slot.name} className="focus-timeline-slot glass">
+                          <div className="timeline-slot-left">
+                            <div className="timeline-time">{slot.time}</div>
+                            <div className="timeline-icon">{slot.icon}</div>
+                            <div className="timeline-slot-name">{slot.name}</div>
+                          </div>
+
+                          <div className="timeline-slot-body">
+                            {meal ? (
+                              <div className="focus-meal-card" onClick={() => setActiveRecipeModal(meal.recipe)}>
+                                {meal.recipe?.image_url && (
+                                  <img src={meal.recipe.image_url} alt={meal.recipe.title} className="focus-meal-img" />
+                                )}
+                                <div style={{ flex: 1 }}>
+                                  <h4 style={{ margin: '0 0 6px 0', fontSize: '1.1rem' }}>{meal.recipe?.title}</h4>
+                                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', fontSize: '0.85rem' }}>
+                                    <span style={{ color: 'var(--primary)', fontWeight: 700 }}>🔥 {Math.round(meal.recipe?.calories || 0)} kcal</span>
+                                    <span>🥩 {Math.round(meal.recipe?.protein_g || 0)}g Protein</span>
+                                    <span>🍞 {Math.round(meal.recipe?.carbs_g || 0)}g Carbs</span>
+                                    <span>🥑 {Math.round(meal.recipe?.fat_g || 0)}g Fat</span>
+                                  </div>
+                                </div>
+                                <button className="btn-ghost-sm" onClick={(e) => removeMeal(meal.id, e)} title="Remove">
+                                  <Trash2 size={15} style={{ color: '#ef4444' }} />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="focus-empty-slot">
+                                <span>No meal scheduled for {slot.name}</span>
+                                <button className="btn-primary-sm" onClick={() => openRecipePicker(activeDateStr, slot.name)}>
+                                  <Plus size={14} /> Add Recipe
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Day Nutrition Breakdown Card */}
+                <div className="focus-nutrition-column glass">
+                  <h3 style={{ marginTop: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Flame size={20} style={{ color: 'var(--primary)' }} /> Daily Macro Budget
+                  </h3>
+
+                  <div className="focus-cal-summary-card">
+                    <div style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                      {Math.round(totalCals)}
+                      <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}> / {targetCals} kcal</span>
+                    </div>
+                    <div className="calorie-progress-container" style={{ height: '10px', marginTop: '12px' }}>
+                      <div 
+                        className="calorie-progress-bar" 
+                        style={{ 
+                          width: `${Math.min(100, (totalCals / targetCals) * 100)}%`,
+                          backgroundColor: totalCals > targetCals ? '#ef4444' : 'var(--primary)'
+                        }} 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="focus-macro-progress-list" style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
+                        <span>🥩 Protein</span>
+                        <span>{Math.round(totalP)}g</span>
+                      </div>
+                      <div className="macro-bar-track"><div className="macro-bar-fill protein" style={{ width: `${Math.min(100, (totalP / 120) * 100)}%` }} /></div>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
+                        <span>🍞 Carbohydrates</span>
+                        <span>{Math.round(totalC)}g</span>
+                      </div>
+                      <div className="macro-bar-track"><div className="macro-bar-fill carbs" style={{ width: `${Math.min(100, (totalC / 200) * 100)}%` }} /></div>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 600, marginBottom: '6px' }}>
+                        <span>🥑 Healthy Fats</span>
+                        <span>{Math.round(totalF)}g</span>
+                      </div>
+                      <div className="macro-bar-track"><div className="macro-bar-fill fat" style={{ width: `${Math.min(100, (totalF / 60) * 100)}%` }} /></div>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '30px', padding: '16px', background: 'rgba(255, 90, 54, 0.08)', borderRadius: '16px', border: '1px solid rgba(255, 90, 54, 0.2)' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--primary)', marginBottom: '4px' }}>💡 Chef's Prep Tip</div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                      Prep vegetables and marinate proteins the evening before to shave 15 minutes off your morning and lunch cooking times.
+                    </div>
                   </div>
                 </div>
               </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* VIEW MODE 3: WEEKLY NUTRITION & MACRO ANALYTICS               */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {viewMode === 'analytics' && (
+        <div className="planner-analytics-container fade-in">
+          <div className="analytics-grid-row">
+            {/* Calorie Distribution Across Week */}
+            <div className="analytics-card glass">
+              <h3 style={{ marginTop: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <TrendingUp size={18} style={{ color: 'var(--primary)' }} /> 7-Day Caloric Trajectory
+              </h3>
               
-              <div className="day-slots" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {SLOTS.map(slot => {
-                  const meal = getMealForSlot(dateStr, slot);
+              <div className="weekly-cal-bars-chart">
+                {weekDays.map((dObj) => {
+                  const dStr = getLocalDateString(dObj);
+                  const meals = SLOTS.map(s => getMealForSlot(dStr, s.name)).filter(Boolean);
+                  const cals = meals.reduce((sum, m) => sum + (m.recipe?.calories || 0), 0);
+                  const target = activeProfile?.target_calories || 2000;
+                  const barHeight = Math.min(100, (cals / (target * 1.3)) * 100);
+
                   return (
-                    <div key={slot} className="meal-slot" style={{ background: 'rgba(255,255,255,0.4)', borderRadius: '12px', padding: meal ? '0' : '12px', position: 'relative', overflow: 'hidden', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                      
-                      {meal ? (
-                        <div className="planned-meal-card" style={{ display: 'flex', height: '100%', cursor: 'pointer' }} onClick={() => setActiveRecipeModal(meal.recipe)}>
-                          {(() => {
-                            const visual = getRecipeCardVisual(meal.recipe);
-                            return (
-                              <>
-                                {meal.recipe?.image_url ? (
-                                  <img 
-                                    src={meal.recipe.image_url} 
-                                    alt={meal.recipe?.title}
-                                    onError={(e) => {
-                                      e.target.onerror = null;
-                                      e.target.style.display = 'none';
-                                      if (e.target.nextSibling) {
-                                        e.target.nextSibling.style.display = 'flex';
-                                      }
-                                    }}
-                                    style={{ width: '70px', height: '80px', flexShrink: 0, objectFit: 'cover', borderRadius: '8px' }} 
-                                  />
-                                ) : null}
-                                <div style={{ display: meal.recipe?.image_url ? 'none' : 'flex', width: '70px', height: '80px', flexShrink: 0, background: visual.gradient, alignItems: 'center', justifyContent: 'center', borderRadius: '8px', fontSize: '24px' }}>
-                                  {visual.icon}
-                                </div>
-                              </>
-                            );
-                          })()}
-                          <div style={{ padding: '8px 10px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                             <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '2px' }}>{slot}</div>
-                             <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{meal.recipe?.title}</div>
-                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                               <span>{Math.round(meal.recipe?.calories)} kcal</span>
-                               {(meal.recipe?.nutri_score || meal.recipe?.chef_score) && <ChefScoreBadge grade={(meal.recipe?.nutri_score || meal.recipe?.chef_score).grade} size="sm" />}
-                             </div>
-                          </div>
-                          <button 
-                            className="remove-meal-btn"
-                            style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(255,255,255,0.9)', width: '24px', height: '24px', borderRadius: '50%', border: 'none', color: '#dc2626', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-                            onClick={(e) => removeMeal(meal.id, e)}
-                            title="Remove Meal"
-                          >×</button>
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: 'center' }}>
-                          <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '8px', letterSpacing: '0.5px' }}>{slot}</div>
-                          <button 
-                            className="empty-slot-btn" 
-                            onClick={() => openRecipePicker(dateStr, slot)}
-                          >
-                            <span>+</span> Assign
-                          </button>
-                        </div>
-                      )}
+                    <div key={dStr} className="cal-chart-col">
+                      <div className="cal-chart-val">{Math.round(cals)}</div>
+                      <div className="cal-chart-bar-slot">
+                        <div 
+                          className="cal-chart-bar-fill"
+                          style={{ 
+                            height: `${barHeight}%`,
+                            background: cals > target ? '#ef4444' : 'var(--primary)'
+                          }} 
+                        />
+                      </div>
+                      <div className="cal-chart-day">{dObj.toLocaleDateString('en-US', { weekday: 'short' })}</div>
                     </div>
                   );
                 })}
               </div>
             </div>
-          );
-        })}
-      </div>
 
-      {/* Recipe Picker Modal */}
-      {isRecipePickerOpen && (
-        <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setIsRecipePickerOpen(false)}>
-          <div className="modal-content glass" style={{ maxWidth: '700px', width: '90%', padding: '30px' }}>
-            <button className="modal-close" onClick={() => setIsRecipePickerOpen(false)}>×</button>
-            <h2 className="modal-title" style={{ marginBottom: '5px' }}>Assign to {selectedSlot.slot}</h2>
-            <p className="subtitle" style={{ marginBottom: '20px' }}>Select a recipe from your saved collection</p>
-            
-            {savedRecipes.length === 0 ? (
-              <div className="empty-state">
-                <span className="empty-icon">📚</span>
-                <p>You don't have any saved recipes yet. Explore the Kitchen to save some!</p>
+            {/* Macro Breakdown Pie / Distribution */}
+            <div className="analytics-card glass">
+              <h3 style={{ marginTop: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <PieChart size={18} style={{ color: 'var(--accent-2)' }} /> Average Macro Distribution
+              </h3>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
+                <div className="macro-stat-row">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '14px', height: '14px', borderRadius: '4px', background: '#3b82f6' }} />
+                    <span style={{ fontWeight: 600 }}>Protein</span>
+                  </div>
+                  <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{weeklyStats.avgDailyProtein}g / day</span>
+                </div>
+
+                <div className="macro-stat-row">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '14px', height: '14px', borderRadius: '4px', background: '#f59e0b' }} />
+                    <span style={{ fontWeight: 600 }}>Carbohydrates</span>
+                  </div>
+                  <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{weeklyStats.avgDailyCarbs}g / day</span>
+                </div>
+
+                <div className="macro-stat-row">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '14px', height: '14px', borderRadius: '4px', background: '#10b981' }} />
+                    <span style={{ fontWeight: 600 }}>Fats</span>
+                  </div>
+                  <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{weeklyStats.avgDailyFat}g / day</span>
+                </div>
               </div>
-            ) : (
-              <div className="recipe-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', maxHeight: '50vh', overflowY: 'auto', paddingRight: '10px' }}>
-                {savedRecipes.map(r => (
-                  <div key={r.id} className="recipe-card glass" onClick={() => assignRecipeToSlot(r.id)} style={{ cursor: 'pointer', border: '2px solid transparent', transition: '0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary)'} onMouseOut={e => e.currentTarget.style.borderColor = 'transparent'}>
-                    {(() => {
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* RECIPE PICKER MODAL                                           */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {isRecipePickerOpen && selectedSlot && (
+        <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setIsRecipePickerOpen(false)}>
+          <div className="modal-content glass recipe-picker-dialog">
+            <button className="modal-close" onClick={() => setIsRecipePickerOpen(false)}>×</button>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+              <span style={{ fontSize: '1.6rem' }}>🍽️</span>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800 }}>
+                  Assign to {selectedSlot.slot}
+                </h2>
+                <p className="subtitle" style={{ margin: 0, fontSize: '0.85rem' }}>
+                  {new Date(selectedSlot.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                </p>
+              </div>
+            </div>
+
+            {/* Picker Tab Switcher */}
+            <div className="picker-tabs-row">
+              <button 
+                className={`picker-tab-btn ${pickerTab === 'saved' ? 'active' : ''}`}
+                onClick={() => setPickerTab('saved')}
+              >
+                📚 Saved Recipes ({savedRecipes.length})
+              </button>
+              <button 
+                className={`picker-tab-btn ${pickerTab === 'custom' ? 'active' : ''}`}
+                onClick={() => setPickerTab('custom')}
+              >
+                ✏️ Custom Quick Dish
+              </button>
+            </div>
+
+            {pickerTab === 'saved' ? (
+              <>
+                {/* Search & Tag Filter Bar */}
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+                  <div className="picker-search-input-wrap">
+                    <Search size={16} className="search-icon" />
+                    <input 
+                      type="text"
+                      placeholder="Search recipes or ingredients..."
+                      value={pickerSearch}
+                      onChange={(e) => setPickerSearch(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="picker-filter-tags">
+                  {[
+                    { id: 'all', label: 'All Recipes' },
+                    { id: 'high-protein', label: '🥩 High Protein (>25g)' },
+                    { id: 'low-cal', label: '🥗 Low Calorie (<400)' },
+                    { id: 'quick', label: '⏱️ Quick (<30m)' },
+                    { id: 'veg', label: '🌱 Vegetarian' }
+                  ].map(t => (
+                    <button 
+                      key={t.id}
+                      className={`picker-tag-pill ${pickerTag === t.id ? 'active' : ''}`}
+                      onClick={() => setPickerTag(t.id)}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Recipe Grid */}
+                {filteredPickerRecipes.length === 0 ? (
+                  <div className="empty-state" style={{ padding: '40px 20px' }}>
+                    <span className="empty-icon">🍳</span>
+                    <p style={{ margin: 0, fontWeight: 600 }}>No matching recipes found.</p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Try adjusting your filters or switch to Custom Quick Dish!</p>
+                  </div>
+                ) : (
+                  <div className="picker-recipe-grid">
+                    {filteredPickerRecipes.map(r => {
                       const visual = getRecipeCardVisual(r);
                       return (
-                        <>
+                        <div 
+                          key={r.id} 
+                          className="picker-recipe-item glass"
+                          onClick={() => assignRecipeToSlot(r.id)}
+                        >
                           {r.image_url ? (
                             <img 
-                              className="recipe-image" 
                               src={r.image_url} 
-                              alt={r.title} 
-                              style={{ height: '120px' }} 
+                              alt={r.title}
+                              className="picker-item-img"
                               onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.style.display = 'none';
-                                if (e.currentTarget.nextSibling) {
-                                  e.currentTarget.nextSibling.style.display = 'flex';
-                                }
-                              }} 
+                                e.target.onerror = null;
+                                e.target.style.display = 'none';
+                                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                              }}
                             />
                           ) : null}
-                          <div style={{ display: r.image_url ? 'none' : 'flex', height: '120px', background: visual.gradient, alignItems: 'center', justifyContent: 'center', fontSize: '32px' }}>
+                          <div 
+                            className="picker-item-fallback"
+                            style={{ 
+                              display: r.image_url ? 'none' : 'flex', 
+                              background: visual.gradient 
+                            }}
+                          >
                             {visual.icon}
                           </div>
-                        </>
+
+                          <div className="picker-item-info">
+                            <div className="picker-item-title">{r.title}</div>
+                            <div className="picker-item-meta">
+                              {r.calories && <span className="item-cals">🔥 {Math.round(r.calories)} kcal</span>}
+                              {r.protein_g && <span className="item-prot">🥩 {Math.round(r.protein_g)}g</span>}
+                              {(r.nutri_score || r.chef_score) && (
+                                <ChefScoreBadge grade={(r.nutri_score || r.chef_score).grade} size="sm" />
+                              )}
+                            </div>
+                          </div>
+
+                          <button className="picker-assign-btn">
+                            <Plus size={16} />
+                          </button>
+                        </div>
                       );
-                    })()}
-                    <div className="recipe-info" style={{ padding: '12px' }}>
-                      <div className="recipe-title" style={{ fontSize: '1rem', WebkitLineClamp: 2 }}>{r.title}</div>
-                      {r.calories && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', marginTop: '6px', fontWeight: '600' }}>🔥 {Math.round(r.calories)} kcal</div>}
-                    </div>
+                    })}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
+            ) : (
+              /* Custom Quick Dish Form */
+              <form onSubmit={handleAddCustomDishToSlot} className="custom-dish-form">
+                <div className="form-group">
+                  <label>Dish Name *</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g., Grilled Chicken Wrap, Protein Shake, Greek Salad"
+                    value={customDishName}
+                    onChange={(e) => setCustomDishName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Calories (kcal)</label>
+                    <input 
+                      type="number" 
+                      placeholder="450"
+                      value={customDishCals}
+                      onChange={(e) => setCustomDishCals(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Protein (grams)</label>
+                    <input 
+                      type="number" 
+                      placeholder="25"
+                      value={customDishProtein}
+                      onChange={(e) => setCustomDishProtein(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" className="btn-primary" style={{ marginTop: '10px', padding: '12px' }}>
+                  ⚡ Add Custom Dish to {selectedSlot.slot}
+                </button>
+              </form>
             )}
           </div>
         </div>
       )}
 
-      {/* Grocery List Drawer */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* GROCERY LIST DRAWER                                           */}
+      {/* ───────────────────────────────────────────────────────────── */}
       {isShoppingListOpen && (
-        <div className="modal-overlay grocery-modal-overlay" onClick={(e) => e.target === e.currentTarget && setIsShoppingListOpen(false)} style={{ alignItems: 'flex-start', justifyContent: 'flex-end', paddingTop: '0' }}>
-          <div className="modal-content glass grocery-drawer" style={{ width: '480px', height: '100vh', margin: '0', borderRadius: '24px 0 0 24px', animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards', display: 'flex', flexDirection: 'column', borderRight: 'none' }}>
+        <div className="modal-overlay grocery-modal-overlay" onClick={(e) => e.target === e.currentTarget && setIsShoppingListOpen(false)}>
+          <div className="modal-content glass grocery-drawer">
             <button className="modal-close no-print" onClick={() => setIsShoppingListOpen(false)}>×</button>
 
-            {/* Print Only Header */}
+            {/* Print Header */}
             <div className="grocery-print-header" style={{ display: 'none' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
                 <div>
-                  <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: '0 0 4px 0', color: '#000' }}>🛒 CHEF — Grocery Checklist</h1>
-                  <p style={{ fontSize: '0.9rem', color: '#333', margin: 0 }}>
+                  <h1 style={{ fontSize: '1.8rem', fontWeight: 800, margin: 0 }}>🛒 CHEF — Grocery Checklist</h1>
+                  <p style={{ margin: '4px 0 0', color: '#444' }}>
                     Week of {weekDays[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {weekDays[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </p>
                 </div>
-                <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#444' }}>
-                  <div style={{ fontWeight: '700' }}>{completedItemsCount} / {totalItemsCount} Completed</div>
-                  <div>Printed: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontWeight: 700 }}>{completedItemsCount} / {totalItemsCount} Completed</div>
                 </div>
               </div>
             </div>
             
             {/* Screen Header */}
-            <div className="grocery-screen-header no-print" style={{ padding: '16px 0 10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '42px', height: '42px', background: 'rgba(129, 178, 154, 0.15)', color: 'var(--accent-2)', borderRadius: '14px', fontSize: '1.4rem' }}>🛒</div>
+            <div className="grocery-screen-header no-print">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="grocery-icon-box">🛒</div>
                 <div>
-                  <h2 className="modal-title" style={{ fontSize: '1.6rem', marginBottom: '0px' }}>Grocery List</h2>
-                  <p className="subtitle" style={{ fontSize: '0.85rem', margin: 0 }}>Categorized ingredients (pantry stock excluded)</p>
+                  <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>Smart Grocery List</h2>
+                  <p className="subtitle" style={{ margin: 0, fontSize: '0.82rem' }}>Pantry ingredients automatically deducted</p>
                 </div>
               </div>
 
               {/* Progress Bar */}
               {totalItemsCount > 0 && (
-                <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.06)', borderRadius: '10px', padding: '10px 14px', border: '1px solid var(--border-glass)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: '700', marginBottom: '6px', color: 'var(--text-primary)' }}>
+                <div className="grocery-progress-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 700, marginBottom: '6px' }}>
                     <span>Shopping Progress</span>
-                    <span>{completedItemsCount} of {totalItemsCount} items ({progressPercent}%)</span>
+                    <span>{completedItemsCount} / {totalItemsCount} ({progressPercent}%)</span>
                   </div>
-                  <div style={{ height: '8px', background: 'var(--border-glass)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '8px', background: 'rgba(0,0,0,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: `${progressPercent}%`, background: 'var(--primary)', transition: 'width 0.4s ease' }} />
                   </div>
                 </div>
@@ -629,40 +1540,40 @@ export default function MealPlanner() {
 
               {/* Action Toolbar */}
               <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-                <button className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', borderRadius: '8px' }} onClick={handleCheckAll}>
+                <button className="btn-secondary-sm" onClick={handleCheckAll}>
                   ✓ Select All
                 </button>
-                <button className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', borderRadius: '8px' }} onClick={handleUncheckAll}>
-                  ↺ Clear Checked
+                <button className="btn-secondary-sm" onClick={handleUncheckAll}>
+                  ↺ Clear
                 </button>
-                <button className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', borderRadius: '8px', marginLeft: 'auto' }} onClick={copyListToClipboard}>
-                  📋 Copy Text List
+                <button className="btn-secondary-sm" onClick={copyListToClipboard} style={{ marginLeft: 'auto' }}>
+                  📋 Copy List
                 </button>
               </div>
 
               {/* Filter Tabs */}
-              <div style={{ display: 'flex', background: 'var(--bg-secondary)', borderRadius: '10px', padding: '3px', marginTop: '12px', gap: '4px' }}>
+              <div className="grocery-filter-tabs">
                 <button 
                   onClick={() => setGroceryFilter('all')}
-                  style={{ flex: 1, padding: '6px 0', border: 'none', borderRadius: '8px', background: groceryFilter === 'all' ? 'var(--card-bg)' : 'transparent', color: groceryFilter === 'all' ? 'var(--primary)' : 'var(--text-muted)', fontWeight: '700', fontSize: '0.78rem', cursor: 'pointer', boxShadow: groceryFilter === 'all' ? 'var(--shadow-card)' : 'none', transition: '0.2s' }}
+                  className={groceryFilter === 'all' ? 'active' : ''}
                 >
                   All ({totalItemsCount})
                 </button>
                 <button 
                   onClick={() => setGroceryFilter('tobuy')}
-                  style={{ flex: 1, padding: '6px 0', border: 'none', borderRadius: '8px', background: groceryFilter === 'tobuy' ? 'var(--card-bg)' : 'transparent', color: groceryFilter === 'tobuy' ? 'var(--primary)' : 'var(--text-muted)', fontWeight: '700', fontSize: '0.78rem', cursor: 'pointer', boxShadow: groceryFilter === 'tobuy' ? 'var(--shadow-card)' : 'none', transition: '0.2s' }}
+                  className={groceryFilter === 'tobuy' ? 'active' : ''}
                 >
                   To Buy ({totalItemsCount - completedItemsCount})
                 </button>
                 <button 
                   onClick={() => setGroceryFilter('checked')}
-                  style={{ flex: 1, padding: '6px 0', border: 'none', borderRadius: '8px', background: groceryFilter === 'checked' ? 'var(--card-bg)' : 'transparent', color: groceryFilter === 'checked' ? 'var(--primary)' : 'var(--text-muted)', fontWeight: '700', fontSize: '0.78rem', cursor: 'pointer', boxShadow: groceryFilter === 'checked' ? 'var(--shadow-card)' : 'none', transition: '0.2s' }}
+                  className={groceryFilter === 'checked' ? 'active' : ''}
                 >
                   Checked ({completedItemsCount})
                 </button>
               </div>
 
-              {/* Quick Add Custom Item Input */}
+              {/* Quick Add Custom Item */}
               <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
                 <input 
                   type="text" 
@@ -670,27 +1581,28 @@ export default function MealPlanner() {
                   value={newItemName}
                   onChange={(e) => setNewItemName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddCustomItem()}
-                  style={{ flex: 1, padding: '8px 12px', fontSize: '0.85rem', borderRadius: '10px', border: '1px solid var(--border-glass)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                  className="grocery-add-input"
                 />
-                <button className="btn-primary" onClick={handleAddCustomItem} style={{ padding: '8px 14px', fontSize: '0.85rem', borderRadius: '10px', whiteSpace: 'nowrap' }}>
+                <button className="btn-primary-sm" onClick={handleAddCustomItem}>
                   Add
                 </button>
               </div>
             </div>
             
-            <div className="grocery-scroll-area" style={{ flex: 1, overflowY: 'auto', paddingRight: '6px', marginTop: '10px' }}>
+            {/* Scrollable Categories Area */}
+            <div className="grocery-scroll-area">
               {loadingShoppingList ? (
                 <div style={{ textAlign: 'center', marginTop: '60px', color: 'var(--text-muted)' }}>
-                  <div style={{ fontSize: '2rem', marginBottom: '10px', animation: 'pulse 1.5s infinite' }}>🥑</div>
-                  Analyzing your recipes...
+                  <div style={{ fontSize: '2.5rem', marginBottom: '10px', animation: 'spin 2s linear infinite' }}>🥑</div>
+                  Analyzing planned recipe ingredients...
                 </div>
-              ) : (totalItemsCount === 0) ? (
-                <div className="empty-state">
+              ) : totalItemsCount === 0 ? (
+                <div className="empty-state" style={{ padding: '60px 20px' }}>
                   <span className="empty-icon">📝</span>
-                  <p>No ingredients needed! Your scheduled meals match your pantry stock or planner is empty.</p>
+                  <p style={{ fontWeight: 600 }}>All ingredients in pantry or plan is empty!</p>
                 </div>
               ) : (
-                <div className="grocery-categories-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div className="grocery-categories-container">
                   {allCategoryEntries.map(([category, items]) => {
                     const filteredItems = items.filter(item => {
                       const isChecked = !!checkedListItems[item.name];
@@ -703,60 +1615,58 @@ export default function MealPlanner() {
 
                     return (
                       <div key={category} className="grocery-category-group">
-                        <h4 className="grocery-category-header" style={{ fontSize: '0.92rem', fontWeight: '800', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px', borderBottom: '1px solid var(--border-glass)', paddingBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span>{getCategoryIcon(category)}</span>
-                          <span>{category}</span>
-                          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginLeft: 'auto' }}>({filteredItems.length})</span>
+                        <h4 className="grocery-category-header">
+                          <span>{getCategoryIcon(category)} {category}</span>
+                          <span className="cat-count">({filteredItems.length})</span>
                         </h4>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                        
+                        <div className="grocery-items-list">
                           {filteredItems.map((item, idx) => {
                             const isChecked = !!checkedListItems[item.name];
                             const isCustom = category === 'Custom Additions';
                             return (
-                              <li key={idx} className={`grocery-item-row ${isChecked ? 'is-checked' : ''}`} style={{ padding: '10px 12px', marginBottom: '6px', background: isChecked ? 'transparent' : 'var(--bg-secondary)', border: '1px solid', borderColor: isChecked ? 'transparent' : 'var(--border-glass)', borderRadius: '10px', display: 'flex', alignItems: 'center', transition: 'all 0.2s', opacity: isChecked ? 0.6 : 1 }}>
-                                <div 
-                                  className="no-print"
-                                  onClick={() => toggleCheck(item.name)}
-                                  style={{ width: '20px', height: '20px', borderRadius: '5px', border: `2px solid ${isChecked ? 'var(--primary)' : 'var(--border-glass)'}`, background: isChecked ? 'var(--primary)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '12px', cursor: 'pointer', transition: '0.2s', flexShrink: 0 }}
-                                >
-                                  {isChecked && <span style={{ color: 'white', fontSize: '12px' }}>✓</span>}
+                              <div 
+                                key={idx} 
+                                className={`grocery-item-row ${isChecked ? 'is-checked' : ''}`}
+                                onClick={() => toggleCheck(item.name)}
+                              >
+                                <div className={`grocery-checkbox ${isChecked ? 'checked' : ''}`}>
+                                  {isChecked && <Check size={12} color="white" />}
                                 </div>
-                                <span className="printable-checkbox-box">{isChecked ? '✓' : ''}</span>
-                                <div style={{ display: 'flex', flexDirection: 'column', flex: 1, cursor: 'pointer' }} onClick={() => toggleCheck(item.name)}>
-                                  <label className="grocery-item-title" style={{ fontWeight: '600', fontSize: '0.92rem', textTransform: 'capitalize', color: 'var(--text-primary)', textDecoration: isChecked ? 'line-through' : 'none', cursor: 'pointer' }}>
-                                    {item.name}
-                                  </label>
-                                  <span className="grocery-item-sub" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                                    {isCustom ? 'Added manually' : `Needed for: ${item.recipes.join(', ')}`}
-                                  </span>
+                                
+                                <div style={{ flex: 1 }}>
+                                  <div className="item-title-text">{item.name}</div>
+                                  <div className="item-subtitle-text">
+                                    {isCustom ? 'Added manually' : `Used in: ${item.recipes.join(', ')}`}
+                                  </div>
                                 </div>
+
                                 {isCustom && (
                                   <button 
-                                    className="no-print"
+                                    className="delete-custom-btn no-print"
                                     onClick={(e) => { e.stopPropagation(); handleRemoveCustomItem(item.name); }}
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#e74c3c', fontSize: '0.9rem', opacity: 0.7, padding: '4px' }}
-                                    title="Delete custom item"
+                                    title="Remove item"
                                   >
-                                    🗑️
+                                    <Trash2 size={14} />
                                   </button>
                                 )}
-                              </li>
+                              </div>
                             );
                           })}
-                        </ul>
+                        </div>
                       </div>
                     );
                   })}
 
-                  {/* Pantry Skipped List */}
+                  {/* Pantry Stock Skipped Chips */}
                   {showPantryInPrint && shoppingList.in_pantry_skipped && shoppingList.in_pantry_skipped.length > 0 && (
-                    <div className="grocery-pantry-section" style={{ marginTop: '10px', padding: '15px', background: 'rgba(129, 178, 154, 0.06)', borderRadius: '12px', border: '1px dashed rgba(129, 178, 154, 0.3)' }}>
-                      <h4 style={{ fontSize: '0.88rem', fontWeight: '700', color: '#27ae60', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>✅ Already In Pantry ({shoppingList.in_pantry_skipped.length})</span>
-                      </h4>
+                    <div className="grocery-pantry-section">
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#10b981', marginBottom: '8px' }}>
+                        ✅ Already In Pantry ({shoppingList.in_pantry_skipped.length})
+                      </div>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                         {shoppingList.in_pantry_skipped.map((ing, idx) => (
-                          <span key={idx} className="grocery-pantry-chip" style={{ fontSize: '11px', padding: '3px 8px', background: 'rgba(129, 178, 154, 0.15)', borderRadius: '20px', color: '#27ae60', textTransform: 'capitalize', textDecoration: 'line-through' }}>
+                          <span key={idx} className="pantry-chip">
                             {ing}
                           </span>
                         ))}
@@ -767,26 +1677,14 @@ export default function MealPlanner() {
               )}
             </div>
 
-            {/* Print Footer Notice */}
-            <div className="grocery-print-footer" style={{ display: 'none' }}>
-              <div style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px', textAlign: 'center', fontSize: '0.75rem', color: '#666' }}>
-                Generated by CHEF — Smart Meal & Recipe Manager • chef-app.com
-              </div>
-            </div>
-            
+            {/* Print & Footer Actions */}
             <div className="no-print" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)', cursor: 'pointer' }}>
-                <input 
-                  type="checkbox" 
-                  checked={showPantryInPrint} 
-                  onChange={(e) => setShowPantryInPrint(e.target.checked)} 
-                  style={{ borderRadius: '4px', cursor: 'pointer' }}
-                />
-                Include pantry items in list & printout
-              </label>
-
-              <button className="btn-primary" style={{ padding: '14px', fontSize: '1rem', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={() => window.print()}>
-                <span>🖨️</span>
+              <button 
+                className="btn-primary" 
+                style={{ padding: '14px', borderRadius: '16px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                onClick={() => window.print()}
+              >
+                <Printer size={18} />
                 <span>Print Grocery Checklist</span>
               </button>
             </div>
@@ -794,9 +1692,17 @@ export default function MealPlanner() {
         </div>
       )}
 
-      {/* Individual Recipe Viewer Modal */}
+      {/* ───────────────────────────────────────────────────────────── */}
+      {/* INDIVIDUAL RECIPE MODAL                                       */}
+      {/* ───────────────────────────────────────────────────────────── */}
       {activeRecipeModal && (
-        <RecipeModal recipe={{...activeRecipeModal, ingredients: activeRecipeModal.ingredients ? activeRecipeModal.ingredients.split(', ') : []}} onClose={() => setActiveRecipeModal(null)} />
+        <RecipeModal 
+          recipe={{
+            ...activeRecipeModal, 
+            ingredients: activeRecipeModal.ingredients ? (typeof activeRecipeModal.ingredients === 'string' ? activeRecipeModal.ingredients.split(', ') : activeRecipeModal.ingredients) : []
+          }} 
+          onClose={() => setActiveRecipeModal(null)} 
+        />
       )}
     </section>
   );

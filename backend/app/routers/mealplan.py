@@ -81,6 +81,110 @@ def create_meal_plan(
     return mp
 
 
+@router.delete("/clear-range", status_code=200)
+def clear_meal_plan_range(
+    start_date: str = Query(..., description="YYYY-MM-DD"),
+    end_date: str = Query(..., description="YYYY-MM-DD"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Clear all planned meals within the specified date range."""
+    _parse_and_validate_dates(start_date, end_date)
+    deleted = db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date >= start_date,
+        MealPlan.date <= end_date
+    ).delete(synchronize_session=False)
+    db.commit()
+    return {"message": f"Cleared {deleted} planned meals", "deleted_count": deleted}
+
+
+@router.post("/copy-day", status_code=200)
+def copy_day_plan(
+    source_date: str = Query(..., description="YYYY-MM-DD source"),
+    target_date: str = Query(..., description="YYYY-MM-DD target"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Copy all planned meals from source_date to target_date."""
+    source_plans = db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date == source_date
+    ).all()
+    if not source_plans:
+        raise HTTPException(status_code=400, detail="No planned meals found on source date to copy")
+
+    # Remove existing on target_date
+    db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date == target_date
+    ).delete(synchronize_session=False)
+
+    copied = []
+    for sp in source_plans:
+        new_mp = MealPlan(
+            user_id=current_user.id,
+            recipe_id=sp.recipe_id,
+            date=target_date,
+            meal_slot=sp.meal_slot
+        )
+        db.add(new_mp)
+        copied.append(new_mp)
+
+    db.commit()
+    return {"message": f"Copied {len(copied)} meals to {target_date}", "copied_count": len(copied)}
+
+
+@router.post("/copy-week", status_code=200)
+def copy_week_plan(
+    source_start_date: str = Query(..., description="YYYY-MM-DD start of source week"),
+    target_start_date: str = Query(..., description="YYYY-MM-DD start of target week"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Copy an entire 7-day meal plan starting at source_start_date to target_start_date."""
+    try:
+        src_start = datetime.date.fromisoformat(source_start_date)
+        tgt_start = datetime.date.fromisoformat(target_start_date)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format, expected YYYY-MM-DD")
+
+    src_end = src_start + datetime.timedelta(days=6)
+    tgt_end = tgt_start + datetime.timedelta(days=6)
+
+    source_plans = db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date >= src_start.isoformat(),
+        MealPlan.date <= src_end.isoformat()
+    ).all()
+    if not source_plans:
+        raise HTTPException(status_code=400, detail="No planned meals found in source week to copy")
+
+    # Clear target week
+    db.query(MealPlan).filter(
+        MealPlan.user_id == current_user.id,
+        MealPlan.date >= tgt_start.isoformat(),
+        MealPlan.date <= tgt_end.isoformat()
+    ).delete(synchronize_session=False)
+
+    days_offset = (tgt_start - src_start).days
+    copied_count = 0
+    for sp in source_plans:
+        sp_date = datetime.date.fromisoformat(sp.date)
+        new_date = (sp_date + datetime.timedelta(days=days_offset)).isoformat()
+        new_mp = MealPlan(
+            user_id=current_user.id,
+            recipe_id=sp.recipe_id,
+            date=new_date,
+            meal_slot=sp.meal_slot
+        )
+        db.add(new_mp)
+        copied_count += 1
+
+    db.commit()
+    return {"message": f"Successfully copied week plan ({copied_count} meals)", "copied_count": copied_count}
+
+
 @router.delete("/{plan_id}", status_code=200)
 def delete_meal_plan(
     plan_id: int,
