@@ -269,6 +269,7 @@ class RecipeItem(BaseModel):
     region: Optional[str] = None
     popularity: float = 0
     match_score: float = 0.0
+    source: Optional[str] = Field(default="Local Dataset", description="Source of recipe: 'Local Dataset' or 'Spoonacular'")
 
 
 class RecipeSearchRequest(BaseModel):
@@ -359,6 +360,7 @@ class SavedRecipeResponse(BaseModel):
     ready_in_minutes: Optional[int] = None
     servings: Optional[int] = None
     rating: Optional[int] = None
+    source: Optional[str] = None
     nutri_score: Optional[NutriScoreResponse] = None
 
 

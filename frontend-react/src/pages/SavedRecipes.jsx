@@ -268,10 +268,18 @@ export default function SavedRecipes() {
                     {(r.nutri_score || r.chef_score) && <ChefScoreBadge grade={(r.nutri_score || r.chef_score).grade} size="sm" />}
                   </div>
                   {r.summary && <div className="recipe-summary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(r.summary)}}></div>}
-                  <div className="recipe-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      {r.calories && <span className="recipe-meta-item" style={{marginRight: '10px'}}>🔥 <span className="value">{Math.round(r.calories)} kcal</span></span>}
+                  <div className="recipe-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      {r.calories && <span className="recipe-meta-item">🔥 <span className="value">{Math.round(r.calories)} kcal</span></span>}
                       {r.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{r.ready_in_minutes} min</span></span>}
+                      {(() => {
+                        const isSpoonacular = r.source === 'Spoonacular' || String(r.id).startsWith('spoonacular') || (r.source_url && r.source_url.includes('spoonacular'));
+                        return (
+                          <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
+                            {isSpoonacular ? '🌐 Spoonacular' : '📁 Local'}
+                          </span>
+                        );
+                      })()}
                     </div>
                     <div className="recipe-rating" style={{ fontSize: '1.2rem', cursor: 'pointer' }}>
                       {[1, 2, 3, 4, 5].map(star => (

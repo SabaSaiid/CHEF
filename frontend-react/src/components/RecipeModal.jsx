@@ -1012,7 +1012,33 @@ export default function RecipeModal({ recipe, onClose, onOpenFeedback }) {
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {/* Recipe Source Attribution Banner */}
+            {(() => {
+              const isSpoonacular = recipe.source?.toLowerCase().includes('spoonacular') || 
+                String(recipe.id).startsWith('spoonacular') || 
+                (recipe.source_url && recipe.source_url.toLowerCase().includes('spoonacular'));
+              
+              return (
+                <div className={`recipe-modal-source-banner ${isSpoonacular ? 'spoonacular' : 'local'}`}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '22px' }}>{isSpoonacular ? '🌐' : '📁'}</span>
+                    <div>
+                      <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                        Recipe Source
+                      </div>
+                      <div style={{ fontSize: '14px', fontWeight: 700, color: isSpoonacular ? '#3b82f6' : '#10b981' }}>
+                        {isSpoonacular ? 'Spoonacular API Database' : 'CHEF Local Dataset'}
+                      </div>
+                    </div>
+                  </div>
+                  <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
+                    {isSpoonacular ? 'External API' : 'Local Catalog'}
+                  </span>
+                </div>
+              );
+            })()}
+
+            <div style={{ display: 'flex', gap: '12px', marginTop: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
               {steps.length > 0 && (
                 <button
                   className="btn-primary"

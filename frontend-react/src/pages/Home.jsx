@@ -628,10 +628,18 @@ export default function Home() {
                       {dailyRecipe.diets.map(d => <span key={d} className="diet-tag">{d}</span>)}
                     </div>
                   )}
-                  <div className="recipe-meta" style={{ marginBottom: '15px' }}>
+                  <div className="recipe-meta" style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                     {dailyRecipe.ready_in_minutes && <span className="recipe-meta-item">⏱️ <span className="value">{dailyRecipe.ready_in_minutes} min</span></span>}
                     {dailyRecipe.nutrition?.calories && <span className="recipe-meta-item">🔥 <span className="value">{Math.round(dailyRecipe.nutrition.calories)} kcal</span></span>}
                     {dailyRecipe.servings && <span className="recipe-meta-item">🍽️ <span className="value">{dailyRecipe.servings} servings</span></span>}
+                    {(() => {
+                      const isSpoonacular = dailyRecipe.source === 'Spoonacular' || String(dailyRecipe.id).startsWith('spoonacular');
+                      return (
+                        <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
+                          {isSpoonacular ? '🌐 Spoonacular' : '📁 Local Dataset'}
+                        </span>
+                      );
+                    })()}
                   </div>
                   {dailyRecipe.video_url && (
                     <div className="recipe-video" style={{ marginBottom: '15px' }}>
@@ -1158,7 +1166,12 @@ export default function Home() {
               })()}
               <div className="mini-recipe-content">
                 <h3 className="mini-recipe-title">{recipe.title}</h3>
-                <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+                  <span className="mini-recipe-time">⏱️ {recipe.ready_in_minutes} min</span>
+                  <span className="recipe-source-badge recipe-source-badge-local" style={{ fontSize: '10px', padding: '1px 5px' }}>
+                    📁 Local
+                  </span>
+                </div>
               </div>
             </div>
           ))}

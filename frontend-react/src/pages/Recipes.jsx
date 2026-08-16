@@ -453,18 +453,18 @@ export default function Recipes() {
 
         {results && results.recipes.length > 0 && (
           <div className="fade-in-up">
-            <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: 500 }}>
-                {results.total} recipe(s) found via {results.source}
-              </span>
-              {results.constraints_applied?.map(c => <span key={c} className="constraints-badge">⚙️ {c}</span>)}
-            </div>
+            {results.constraints_applied?.length > 0 && (
+              <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                {results.constraints_applied.map(c => <span key={c} className="constraints-badge">⚙️ {c}</span>)}
+              </div>
+            )}
 
             {/* Magazine Style Grid */}
             <div className="magazine-grid">
               {results.recipes.map((recipe, idx) => {
                 const flaggedAllergens = checkRecipeAllergens(recipe.ingredients || [], userAllergens);
                 const visual = getRecipeCardVisual(recipe);
+                const isSpoonacular = recipe.source === 'Spoonacular' || String(recipe.id).startsWith('spoonacular');
 
                 return (
                   <div 
@@ -543,6 +543,9 @@ export default function Recipes() {
                     <div className="magazine-card-meta">
                       {recipe.ready_in_minutes && <span>⏱️ {recipe.ready_in_minutes}m</span>}
                       {recipe.nutrition?.calories && <span>🔥 {Math.round(recipe.nutrition.calories)} kcal</span>}
+                      <span className={`recipe-source-badge ${isSpoonacular ? 'recipe-source-badge-spoonacular' : 'recipe-source-badge-local'}`}>
+                        {isSpoonacular ? '🌐 Spoonacular' : '📁 Local Dataset'}
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -185,6 +185,7 @@ def load_recipes():
                 nutrition=RecipeNutrition(**_nutr) if _nutr else None,
                 nutri_score=_nutri_score_obj,
                 chef_score=_nutri_score_obj,
+                source="Local Dataset",
             )
             DEMO_RECIPES.append(item)
             _RECIPE_BY_ID[item.id] = item
@@ -573,6 +574,7 @@ async def _search_spoonacular(
                     chef_score=cached_score,
                     source_url=info.get("sourceUrl"),
                     match_score=match_scores.get(rid, 0.0),
+                    source="Spoonacular",
                 ))
 
             return results
@@ -777,6 +779,7 @@ def _format_saved_recipe_response(recipe: SavedRecipe) -> SavedRecipeResponse:
         ready_in_minutes=recipe.ready_in_minutes,
         servings=recipe.servings,
         rating=recipe.rating,
+        source="Spoonacular" if recipe.source_url and "spoonacular" in recipe.source_url.lower() else "Local Dataset",
         nutri_score=ns_obj,
     )
 
@@ -1022,6 +1025,7 @@ async def _fetch_spoonacular_daily_recipe(
                     nutri_score=nutri_score_obj,
                     chef_score=nutri_score_obj,
                     source_url=info.get("sourceUrl"),
+                    source="Spoonacular",
                 )
         except Exception as e:
             print(f"[Daily Recipe] Spoonacular request exception: {e}")

@@ -11326,3 +11326,59 @@ input[type="text"].help-search-input,
     background: rgba(255, 90, 54, 0.25) !important;
     transform: scale(1.04);
 }
+
+/* ── Recipe Source Attribution Badges ────────────────────────── */
+.recipe-source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 8px;
+    letter-spacing: 0.2px;
+    backdrop-filter: blur(4px);
+}
+
+.recipe-source-badge-local {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.recipe-source-badge-spoonacular {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.recipe-modal-source-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    transition: all 0.2s ease;
+}
+
+.recipe-modal-source-banner.local {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.recipe-modal-source-banner.spoonacular {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.recipe-source-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
