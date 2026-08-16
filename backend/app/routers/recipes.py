@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 from datetime import datetime
 import random
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 import httpx
 from collections import defaultdict
@@ -749,16 +749,25 @@ def delete_saved_recipe(
     summary="Get the recipe of the day",
     responses={503: {"description": "No recipes available"}},
 )
-async def get_daily_recipe():
+async def get_daily_recipe(
+    date: str | None = None,
+    refresh: bool = False,
+    response: Response = None,
+):
     """
-    Get the recipe of the day — changes every 24 hours.
+    Get the recipe of the day — changes every 24 hours or on-demand via refresh.
 
-    **Strategy (in order):**
-    1. Spoonacular API — fetches a random recipe with accurate images and full details.
-    2. Local database — filters for high-quality recipes with images and instructions.
+    **Query Parameters:**
+    - `date`: Optional client local date (YYYY-MM-DD) to align with user's timezone.
+    - `refresh`: If True, forces a fresh random recipe selection.
     """
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    rng = random.Random(date_str)
+    if response:
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+
+    date_str = date or datetime.now().strftime("%Y-%m-%d")
+    rng = random.Random() if refresh else random.Random(date_str)
 
     # ── Strategy 1: Spoonacular (accurate images + rich data) ────
     if settings.SPOONACULAR_API_KEY:
@@ -835,7 +844,7 @@ async def get_daily_recipe():
             pass  # Fall through to local database
 
     # ── Strategy 2: Local database fallback ──────────────────────
-    # Filter to only high-quality, complete recipes
+    # Filter to only high-quality, complete recipes with verified images & instructions
     quality_filter = [
         r for r in DEMO_RECIPES
         if r.image_url
@@ -844,16 +853,12 @@ async def get_daily_recipe():
         and len(r.ingredients) >= 3
     ]
 
-    # Prefer vegetarian from the quality pool
-    eligible = [r for r in quality_filter if "vegetarian" in r.diets]
-    if not eligible:
-        eligible = quality_filter
-    if not eligible:
-        eligible = DEMO_RECIPES  # ultimate fallback
-    if not eligible:
+    if not quality_filter:
+        quality_filter = DEMO_RECIPES  # ultimate fallback
+    if not quality_filter:
         raise HTTPException(status_code=503, detail="No recipes available in the database.")
 
-    return rng.choice(eligible)
+    return rng.choice(quality_filter)
 
 
 @router.get(
@@ -862,13 +867,23 @@ async def get_daily_recipe():
     response_model_exclude_none=True,
     summary="Get 4 quick and easy recipes under 30 minutes",
 )
-async def get_quick_recipes():
+async def get_quick_recipes(
+    date: str | None = None,
+    refresh: bool = False,
+    response: Response = None,
+):
     """
     Get 4 randomized quick recipes (under 30 minutes).
-    Changes daily to match the recipe of the day's seed behavior.
+    Changes daily to match the recipe of the day's seed behavior or on-demand via refresh.
     """
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    rng = random.Random(f"quick-{date_str}")
+    if response:
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+
+    date_str = date or datetime.now().strftime("%Y-%m-%d")
+    seed = None if refresh else f"quick-{date_str}"
+    rng = random.Random(seed)
     
     # Filter to high-quality, quick recipes
     quick_filter = [

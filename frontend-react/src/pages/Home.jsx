@@ -80,6 +80,7 @@ export default function Home() {
   const [quickRecipes, setQuickRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quickLoading, setQuickLoading] = useState(true);
+  const [isRefreshingDaily, setIsRefreshingDaily] = useState(false);
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -403,27 +404,54 @@ export default function Home() {
     navigate('/recipes', { state: { ingredients: fridgeQuery } });
   };
 
-  useEffect(() => {
-    api.get('/recipes/daily')
-      .then(data => {
-        setDailyRecipe(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      });
+  const fetchDailyRecipe = useCallback(async (forceRefresh = false) => {
+    const todayStr = getLocalDateString();
+    if (forceRefresh) {
+      setIsRefreshingDaily(true);
+    } else {
+      setLoading(true);
+    }
+    setError(null);
+    try {
+      const url = forceRefresh
+        ? `/recipes/daily?refresh=true&_t=${Date.now()}`
+        : `/recipes/daily?date=${todayStr}&_t=${Date.now()}`;
+      const data = await api.get(url);
+      setDailyRecipe(data);
+      if (forceRefresh) {
+        toast.success('Loaded a fresh Recipe of the Day! 🍳');
+      }
+    } catch (err) {
+      setError(err.message);
+      if (forceRefresh) {
+        toast.error('Failed to refresh daily recipe');
+      }
+    } finally {
+      setLoading(false);
+      setIsRefreshingDaily(false);
+    }
+  }, [toast]);
 
-    api.get('/recipes/quick')
-      .then(data => {
-        setQuickRecipes(data);
-        setQuickLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch quick recipes:", err);
-        setQuickLoading(false);
-      });
+  const fetchQuickRecipes = useCallback(async (forceRefresh = false) => {
+    const todayStr = getLocalDateString();
+    setQuickLoading(true);
+    try {
+      const url = forceRefresh
+        ? `/recipes/quick?refresh=true&_t=${Date.now()}`
+        : `/recipes/quick?date=${todayStr}&_t=${Date.now()}`;
+      const data = await api.get(url);
+      setQuickRecipes(data);
+    } catch (err) {
+      console.error("Failed to fetch quick recipes:", err);
+    } finally {
+      setQuickLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchDailyRecipe();
+    fetchQuickRecipes();
+  }, [fetchDailyRecipe, fetchQuickRecipes, location.pathname]);
 
   const handleSaveRecipe = async () => {
     if (!dailyRecipe) return;
@@ -486,7 +514,19 @@ export default function Home() {
       {/* ── Recipe of the Day + Fun Fact ── */}
       <div className="kitchen-layout fade-in-up" style={{ '--delay': '200ms' }}>
         <div className="kitchen-main-col">
-          <h2 className="section-title">✨ Recipe of the Day</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h2 className="section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              ✨ Recipe of the Day
+            </h2>
+            <button
+              className="btn-fact-shuffle"
+              onClick={() => fetchDailyRecipe(true)}
+              disabled={loading || isRefreshingDaily}
+              title="Shuffle a new Recipe of the Day"
+            >
+              <RefreshCw size={13} className={isRefreshingDaily ? 'spin-anim' : ''} /> Shuffle
+            </button>
+          </div>
           <div className="card glass daily-recipe-card">
             {loading ? (
               <div style={{ padding: '20px' }}>
