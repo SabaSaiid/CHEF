@@ -139,7 +139,10 @@ app = FastAPI(
     contact={
         "name": "IIT Patna · Capstone-I · BS Data Analytics Team",
     },
-    license_info={"name": "MIT License"},
+    license_info={
+        "name": "PolyForm Noncommercial License 1.0.0",
+        "url": "https://polyformproject.org/licenses/noncommercial/1.0.0",
+    },
     openapi_tags=[
         {"name": "auth",        "description": "Signup, login, and user profile management"},
         {"name": "tdee",        "description": "TDEE calculator — Mifflin-St Jeor formula, macro targets"},
