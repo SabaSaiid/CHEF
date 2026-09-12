@@ -15,11 +15,11 @@ import {
 } from 'lucide-react';
 
 const QUICK_NAV_ITEMS = [
-  { path: '/',          label: 'Kitchen',   icon: Home,              end: true },
-  { path: '/recipes',   label: 'Recipes',   icon: UtensilsCrossed },
-  { path: '/planner',   label: 'Planner',   icon: CalendarDays },
-  { path: '/tracker',   label: 'Tracker',   icon: BarChart3 },
-  { path: '/saved',     label: 'Saved',     icon: Bookmark },
+  { path: '/', label: 'Kitchen', icon: Home, end: true },
+  { path: '/recipes', label: 'Recipes', icon: UtensilsCrossed },
+  { path: '/planner', label: 'Planner', icon: CalendarDays },
+  { path: '/tracker', label: 'Tracker', icon: BarChart3 },
+  { path: '/saved', label: 'Saved', icon: Bookmark },
   { path: '/community', label: 'Community', icon: Users },
 ];
 

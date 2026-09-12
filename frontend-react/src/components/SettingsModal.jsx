@@ -2,18 +2,18 @@ import React, { useState, useRef } from 'react';
 import { useSettings } from '../context/SettingsContext';
 import { useToast } from '../context/ToastContext';
 import DataPrivacyPortal from './DataPrivacyPortal';
-import { 
-  Settings as SettingsIcon, 
-  ShieldAlert, 
-  PieChart, 
-  Palette, 
-  Database, 
-  Download, 
-  Upload, 
-  Trash2, 
-  RotateCcw, 
-  Check, 
-  Sliders, 
+import {
+  Settings as SettingsIcon,
+  ShieldAlert,
+  PieChart,
+  Palette,
+  Database,
+  Download,
+  Upload,
+  Trash2,
+  RotateCcw,
+  Check,
+  Sliders,
   Search,
   Sparkles,
   Volume2,
@@ -37,17 +37,17 @@ const ALLERGEN_LIST = [
 ];
 
 export default function SettingsModal({ onClose }) {
-  const { 
-    settings, 
-    updateSetting, 
-    resetSettings, 
-    exportUserData, 
-    importUserData, 
+  const {
+    settings,
+    updateSetting,
+    resetSettings,
+    exportUserData,
+    importUserData,
     clearAppCache,
     getStorageMetrics
   } = useSettings();
   const { addToast } = useToast();
-  
+
   const [activeTab, setActiveTab] = useState('general');
   const [searchQuery, setSearchQuery] = useState('');
   const [confirmingClear, setConfirmingClear] = useState(false);
@@ -112,7 +112,7 @@ export default function SettingsModal({ onClose }) {
 
   const toggleAllergen = (id) => {
     const current = settings.defaultAllergens || [];
-    const next = current.includes(id) 
+    const next = current.includes(id)
       ? current.filter(item => item !== id)
       : [...current, id];
     updateSetting('defaultAllergens', next);
@@ -125,13 +125,13 @@ export default function SettingsModal({ onClose }) {
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div 
-        className="modal-content glass" 
-        style={{ 
-          maxWidth: '740px', 
-          width: '95%', 
-          borderRadius: '24px', 
-          padding: '0', 
+      <div
+        className="modal-content glass"
+        style={{
+          maxWidth: '740px',
+          width: '95%',
+          borderRadius: '24px',
+          padding: '0',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -140,17 +140,17 @@ export default function SettingsModal({ onClose }) {
         }}
       >
         {/* Header */}
-        <div style={{ 
-          padding: '20px 24px 16px 24px', 
+        <div style={{
+          padding: '20px 24px 16px 24px',
           borderBottom: '1px solid var(--border-glass)',
           background: 'rgba(255, 255, 255, 0.03)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ 
-                width: '42px', 
-                height: '42px', 
-                borderRadius: '14px', 
+              <div style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '14px',
                 background: 'linear-gradient(135deg, var(--accent-primary, #10b981), #3b82f6)',
                 display: 'flex',
                 alignItems: 'center',
@@ -204,16 +204,16 @@ export default function SettingsModal({ onClose }) {
         {/* Modal Body with Sidebar Tabs */}
         <div className="settings-modal-wrapper" style={{ display: 'flex', flex: 1, overflow: 'hidden', minHeight: '430px' }}>
           {/* Navigation Sidebar */}
-          <div className="settings-sidebar-tabs" style={{ 
-            width: '210px', 
-            borderRight: '1px solid var(--border-glass)', 
+          <div className="settings-sidebar-tabs" style={{
+            width: '210px',
+            borderRight: '1px solid var(--border-glass)',
             padding: '16px 12px',
             display: 'flex',
             flexDirection: 'column',
             gap: '6px',
             background: 'var(--bg-secondary, rgba(0,0,0,0.02))'
           }}>
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'general' ? 'active' : ''}`}
               onClick={() => setActiveTab('general')}
               style={tabBtnStyle(activeTab === 'general')}
@@ -221,7 +221,7 @@ export default function SettingsModal({ onClose }) {
               <Sliders size={16} /> General & Units
             </button>
 
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'dietary' ? 'active' : ''}`}
               onClick={() => setActiveTab('dietary')}
               style={tabBtnStyle(activeTab === 'dietary')}
@@ -232,7 +232,7 @@ export default function SettingsModal({ onClose }) {
               )}
             </button>
 
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'planner' ? 'active' : ''}`}
               onClick={() => setActiveTab('planner')}
               style={tabBtnStyle(activeTab === 'planner')}
@@ -240,7 +240,7 @@ export default function SettingsModal({ onClose }) {
               <PieChart size={16} /> Targets & Limits
             </button>
 
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'appearance' ? 'active' : ''}`}
               onClick={() => setActiveTab('appearance')}
               style={tabBtnStyle(activeTab === 'appearance')}
@@ -248,7 +248,7 @@ export default function SettingsModal({ onClose }) {
               <Palette size={16} /> Theme & Style
             </button>
 
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'data' ? 'active' : ''}`}
               onClick={() => setActiveTab('data')}
               style={tabBtnStyle(activeTab === 'data')}
@@ -256,7 +256,7 @@ export default function SettingsModal({ onClose }) {
               <Database size={16} /> Data & Backup
             </button>
 
-            <button 
+            <button
               className={`tab-nav-btn ${activeTab === 'legal' ? 'active' : ''}`}
               onClick={() => setActiveTab('legal')}
               style={tabBtnStyle(activeTab === 'legal')}
@@ -267,12 +267,12 @@ export default function SettingsModal({ onClose }) {
 
           {/* Tab Content Panel */}
           <div style={{ flex: 1, padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            
+
             {/* GENERAL TAB */}
             {(activeTab === 'general' || searchQuery.trim() !== '') && (
               <>
                 {activeTab === 'general' && <h3 style={sectionHeadingStyle}>General Preferences</h3>}
-                
+
                 {/* Measurement Units */}
                 {isMatch('measurement units metric imperial weight volume') && (
                   <div style={settingRowStyle}>
@@ -356,7 +356,7 @@ export default function SettingsModal({ onClose }) {
             {(activeTab === 'dietary' || searchQuery.trim() !== '') && (
               <>
                 {activeTab === 'dietary' && <h3 style={sectionHeadingStyle}>Dietary Profile & Safety Filters</h3>}
-                
+
                 {/* Default Diet Preference */}
                 {isMatch('diet preference vegetarian vegan keto gluten free high protein') && (
                   <div style={settingRowStyle}>
@@ -388,7 +388,7 @@ export default function SettingsModal({ onClose }) {
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
                       {ALLERGEN_LIST.map(alg => (
-                        <label 
+                        <label
                           key={alg.id}
                           style={{
                             display: 'flex',
@@ -397,7 +397,7 @@ export default function SettingsModal({ onClose }) {
                             padding: '10px 14px',
                             borderRadius: '12px',
                             background: (settings.defaultAllergens || []).includes(alg.id)
-                              ? 'rgba(239, 68, 68, 0.12)' 
+                              ? 'rgba(239, 68, 68, 0.12)'
                               : 'var(--card-bg, rgba(255, 255, 255, 0.04))',
                             border: `1px solid ${(settings.defaultAllergens || []).includes(alg.id) ? 'rgba(239, 68, 68, 0.35)' : 'var(--border-glass)'}`,
                             fontSize: '0.85rem',
@@ -600,17 +600,17 @@ export default function SettingsModal({ onClose }) {
                           Accent Theme Preview
                         </span>
                       </div>
-                      <button 
-                        type="button" 
-                        style={{ 
-                          padding: '6px 14px', 
-                          borderRadius: '10px', 
-                          background: 'var(--accent-primary, #10b981)', 
-                          color: '#fff', 
-                          border: 'none', 
-                          fontWeight: 600, 
+                      <button
+                        type="button"
+                        style={{
+                          padding: '6px 14px',
+                          borderRadius: '10px',
+                          background: 'var(--accent-primary, #10b981)',
+                          color: '#fff',
+                          border: 'none',
+                          fontWeight: 600,
                           fontSize: '0.8rem',
-                          boxShadow: '0 2px 8px var(--accent-glow)' 
+                          boxShadow: '0 2px 8px var(--accent-glow)'
                         }}
                       >
                         Sample Action
@@ -651,14 +651,14 @@ export default function SettingsModal({ onClose }) {
                       <div style={settingTitleStyle}>Factory Reset Settings</div>
                       <div style={settingDescStyle}>Reset preferences to original application default parameters</div>
                     </div>
-                    <button 
+                    <button
                       type="button"
                       onClick={handleResetSettings}
-                      style={{ 
-                        ...actionBtnStyle, 
-                        background: confirmingReset ? '#f59e0b' : 'rgba(245, 158, 11, 0.1)', 
-                        color: confirmingReset ? '#ffffff' : '#f59e0b', 
-                        border: '1px solid rgba(245, 158, 11, 0.3)' 
+                      style={{
+                        ...actionBtnStyle,
+                        background: confirmingReset ? '#f59e0b' : 'rgba(245, 158, 11, 0.1)',
+                        color: confirmingReset ? '#ffffff' : '#f59e0b',
+                        border: '1px solid rgba(245, 158, 11, 0.3)'
                       }}
                     >
                       <RotateCcw size={15} /> {confirmingReset ? 'Confirm Reset?' : 'Reset Defaults'}
@@ -679,9 +679,9 @@ export default function SettingsModal({ onClose }) {
                         <div style={settingTitleStyle}>Terms of Service & Privacy Policy</div>
                         <div style={settingDescStyle}>Review legal agreements, user responsibilities, and privacy rights</div>
                       </div>
-                      <a 
-                        href="/terms?tab=terms" 
-                        target="_blank" 
+                      <a
+                        href="/terms?tab=terms"
+                        target="_blank"
                         rel="noopener noreferrer"
                         style={{ ...actionBtnStyle, background: 'var(--accent-1)', color: '#ffffff', textDecoration: 'none' }}
                       >
@@ -694,9 +694,9 @@ export default function SettingsModal({ onClose }) {
                         <div style={settingTitleStyle}>Medical & Nutritional Disclaimer</div>
                         <div style={settingDescStyle}>Important safety notices on algorithmic macro recommendations</div>
                       </div>
-                      <a 
-                        href="/terms?tab=disclaimer" 
-                        target="_blank" 
+                      <a
+                        href="/terms?tab=disclaimer"
+                        target="_blank"
                         rel="noopener noreferrer"
                         style={{ ...actionBtnStyle, background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', textDecoration: 'none', border: '1px solid rgba(239, 68, 68, 0.3)' }}
                       >
@@ -709,9 +709,9 @@ export default function SettingsModal({ onClose }) {
                         <div style={settingTitleStyle}>Data & AI Image Policy</div>
                         <div style={settingDescStyle}>Overview of vision model execution and browser storage policies</div>
                       </div>
-                      <a 
-                        href="/terms?tab=data" 
-                        target="_blank" 
+                      <a
+                        href="/terms?tab=data"
+                        target="_blank"
                         rel="noopener noreferrer"
                         style={{ ...actionBtnStyle, background: 'var(--bg-secondary)', color: 'var(--text-primary)', textDecoration: 'none', border: '1px solid var(--border-glass)' }}
                       >
@@ -727,20 +727,20 @@ export default function SettingsModal({ onClose }) {
         </div>
 
         {/* Footer */}
-        <div style={{ 
-          padding: '16px 24px', 
+        <div style={{
+          padding: '16px 24px',
           borderTop: '1px solid var(--border-glass)',
-          display: 'flex', 
-          justify: 'space-between', 
+          display: 'flex',
+          justify: 'space-between',
           alignItems: 'center',
           background: 'rgba(0, 0, 0, 0.02)'
         }}>
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             CHEF v2.4 • Client Preferences Persisted Locally
           </span>
-          <button 
-            className="btn-primary" 
-            onClick={onClose} 
+          <button
+            className="btn-primary"
+            onClick={onClose}
             style={{ padding: '8px 24px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <Check size={16} /> Save & Close

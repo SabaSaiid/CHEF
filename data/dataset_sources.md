@@ -1,16 +1,44 @@
-# Dataset and Nutrition Sources
+# Dataset, Nutrition, and Culinary Sources
 
-This repository uses a curated, offline SQLite database for demonstration purposes to avoid API rate limits during academic evaluation.
+This document details the data provenance, nutritional calibration standards, and recipe curation methodologies utilized across the **CHEF** platform.
 
-## Sources
-1. **USDA FoodData Central**: Base nutritional values for the 350+ food items were referenced from the USDA database (per-100g basis). Covers proteins, dairy, grains, pulses, vegetables, fruits, nuts, oils, spices, sweeteners, and beverages — including localized Indian ingredients (paneer, ghee, dal, sattu, roti, etc.).
-2. **Spoonacular Demo Data**: Recipe structures and images were adapted from open recipe APIs and cached locally. A unified dataset (`recipes.json`, ~7.4 MB, 7,100+ recipes) provides broad coverage of Indian regional cuisines (Bihar, North Indian, South Indian) plus snacks, non-veg, and desserts.
-3. **YOLOv8 Computer Vision**: The `detection.py` module uses a **real YOLOv8 Nano** pre-trained model (`yolov8n.pt`) for food object detection. It filters predictions to 10 COCO food class indices (banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake) with a 0.25 confidence threshold.
-4. **Ingredient Substitutions**: Hand-curated `substitutions.json` mapping 20 common ingredients to 3–5 healthier or allergy-safe alternatives.
+---
 
-## Data Preprocessing
-- Constraints (calories, prep time) were normalized.
-- Text parsing dictionaries were hand-crafted to catch common Indian/Western ingredient nomenclatures.
-- Extended nutrition data (`nutrition_extra.json`) supplements the in-line database with rarer/global foods.
+## 🥗 Nutritional Calibration Standards
 
-*Note: For live recipe data, configure the `SPOONACULAR_API_KEY` in the backend `.env` file.*
+### 1. USDA FoodData Central & ICMR-NIN Recalibration
+- **Base Database**: Per-100g nutritional compositions across 350+ base ingredients derived from USDA FoodData Central foundation foods.
+- **Indian Culinary Recalibration**: Recalibrated against ICMR-NIN (Indian Council of Medical Research — National Institute of Nutrition) *Indian Food Composition Tables (IFCT)*. Special attention was applied to authentic regional staples (paneer, desi ghee, mustard oil, sattu, besan, atta, ragi, moong/chana/urad dals, and Indian spices).
+- **Technique-Aware Fat & Moisture Scaling**: Accounted for thermal moisture evaporation and cooking fat absorption across roasting, boiling, pressure cooking, shallow frying, and deep frying techniques to ensure caloric integrity across all 5,250 curated local recipes.
+
+---
+
+## 📖 Recipe Repository Architecture
+
+### 1. Curated Local Recipe Dataset (`recipes.json`)
+- **Scale**: 5,250 fully parsed and normalized recipes (~7.4 MB).
+- **Geographic Coverage**: Rich representation of Indian regional cuisines (Bihari, Punjabi, South Indian, Bengali, Gujarati, Maharashtrian) alongside popular Continental, Mediterranean, East Asian, and Mexican preparations.
+- **Dietary Tagging**: Explicit Boolean tagging for `vegetarian`, `vegan`, `gluten_free`, `dairy_free`, `keto`, and `high_protein`.
+- **Nutri-Score Enrichment**: Pre-computed 6-tier Nutri-Score ($S, A, B, C, D, E$) with positive (fiber, protein, FVL%) and negative (energy, sat fat, sugars, sodium) nutrient breakdowns.
+
+### 2. Live Spoonacular API Integration
+- **Distribution Ratio**: Configured with a 70/30 World-to-Indian ratio to broaden global gastronomy while prioritizing local culinary accessibility.
+- **Dietary Priority**: Prioritizes vegetarian and allergen-free alternatives when user profiles indicate dietary constraints.
+- **Persistent Daily Recipe Cache**: Implements `daily_recipe_cache.json` ensuring that the selected Recipe of the Day remains persistent for 24 hours across all user sessions before automatically refreshing.
+
+---
+
+## 🔄 Ingredient Substitutions Database (`substitutions.json`)
+
+- **Scale**: 50+ common culinary swaps covering dairy, grain, egg, sweetener, and protein alternatives.
+- **Contextual Categories**:
+  - **Allergy Replacements**: Gluten-free flours (almond flour, oat flour, coconut flour), dairy-free milk/butter (oat milk, almond milk, olive oil).
+  - **Health & Low-Calorie**: Greek yogurt for sour cream/mayo, applesauce for baking oil, cauliflower rice for white rice.
+  - **Cultural & Regional**: Sattu for whey protein, tofu for paneer, jaggery for refined white sugar.
+
+---
+
+## 📷 Computer Vision Datasets
+
+- **ETH Zurich Food-101**: 101,000 images across 101 prepared dish classes used for fine-tuning YOLOv8 Nano (`yolov8_food101.pt`).
+- **MS COCO (Common Objects in Context)**: 10 primary food indices (banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake) used as a lightweight baseline detection tier (`yolov8n.pt`).
